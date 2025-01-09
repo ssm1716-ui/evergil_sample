@@ -3,6 +3,10 @@
 }
 
 
+.footer {
+    background-color: #EFEFE7 !important;
+}
+
 @media (max-width: 991px) {
     .menu-order {
         width:unset;

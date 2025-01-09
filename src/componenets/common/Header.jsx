@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import defaultLogo from '@/assets/images/header-logo.png';
 
 const Header = () => {
@@ -31,33 +33,24 @@ const Header = () => {
             >
               <ul className="navbar-nav navbar-left justify-content-end">
                 <li className="nav-item">
-                  <a href="demo-hotel-and-resort.html" className="nav-link">
+                  <Link to="/" className="nav-link">
                     메인페이지
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
-                    href="demo-hotel-and-resort-about-us.html"
-                    className="nav-link"
-                  >
+                  <Link to="/shop" className="nav-link">
                     구매하기
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown dropdown-with-icon">
-                  <a
-                    href="demo-hotel-and-resort-rooms.html"
-                    className="nav-link"
-                  >
+                  <Link to="/about" className="nav-link">
                     회사소개
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown dropdown-with-icon">
-                  <a
-                    href="demo-hotel-and-resort-rooms.html"
-                    className="nav-link"
-                  >
+                  <Link to="/contact" className="nav-link">
                     문의하기
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item dropdown dropdown-with-icon d-none">
                   <a
@@ -70,12 +63,9 @@ const Header = () => {
               </ul>
               <ul className="navbar-nav navbar-right justify-content-start">
                 <li className="nav-item">
-                  <a
-                    href="demo-hotel-and-resort-amenities.html"
-                    className="nav-link"
-                  >
+                  <Link to="/signin" className="nav-link">
                     로그인
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item d-none">
                   <a
@@ -86,12 +76,9 @@ const Header = () => {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a
-                    href="demo-hotel-and-resort-contact.html"
-                    className="nav-link"
-                  >
+                  <Link to="/cart" className="nav-link">
                     장바구니
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

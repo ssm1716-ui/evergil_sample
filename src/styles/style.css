@@ -9057,15 +9057,15 @@ button:focus {
 }
 .navbar-toggler-line:nth-child(1) {
   top: -4px;
-  width: 29px;
+  width: 22px;
 }
 .navbar-toggler-line:nth-child(2) {
   top: 8px;
-  width: 29px;
+  width: 22px;
 }
 .navbar-toggler-line:nth-child(3) {
   top: 20px;
-  width: 29px;
+  width: 22px;
 }
 .navbar-toggler-line:nth-child(4) {
   top: 12px;
@@ -13274,7 +13274,7 @@ button.mfp-close:active:before {
   position: relative !important;
   background-size: cover !important;
   overflow: hidden;
-  background-attachment: fixed !important;
+  /* background-attachment: fixed !important; */
   transition-duration: 0s;
   -webkit-transition-duration: 0s;
 }
@@ -19239,6 +19239,9 @@ canvas {
 footer {
   padding-top: 110px;
   padding-bottom: 110px;
+  font-size: 20px;
+  font-weight: 400; 
+  background-color: #EFEFE7 !important;
 }
 footer.half-footer {
   padding-top: 70px;
