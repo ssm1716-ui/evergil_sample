@@ -1,9 +1,9 @@
 import mainBannerImage from '@/assets/images/main-banner.png';
-const Main = () => {
+const HomePage = () => {
   return (
     <>
       <section
-        className="p-0 top-space-margin full-screen md-h-600px sm-h-500px border-top position-relative"
+        className="p-0 md-h-600px sm-h-500px border-top position-relative"
         data-parallax-background-ratio="0.3"
         style={{
           backgroundImage: `url(${mainBannerImage})`,
@@ -128,4 +128,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default HomePage;

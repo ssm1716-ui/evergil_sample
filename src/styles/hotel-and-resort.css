@@ -6,7 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&display=swap');
 /* variable */
 :root {     
-    --base-color: #ac8d56;
+    --base-color: #8FC5B7;
     --medium-gray:#817F7C;
     --very-light-gray:#F4F1ED;
     --alt-font: 'Rufina', serif;
@@ -72,7 +72,7 @@ header .navbar-brand img {
 }
 /* btn */
 .btn {
-    font-weight: 600;
+    font-weight: 400;
     text-transform: inherit;
     font-family: var(--primary-font);
     letter-spacing: 0;

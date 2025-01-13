@@ -40,7 +40,7 @@ Table of contents
     02. CSS color variable
 ====================================== */
 :root {
-  --base-color: #2946f3;
+  --base-color: #8FC5B7;
   --white: #ffffff;
   --black: #000000;
   --red: #dc3131;
@@ -77,6 +77,9 @@ Table of contents
   --camarone: #20642b;
   --seal-brown: #0e0708;
   --Wasabi: #8ea63a;
+  --kakao: #FDDC3F;
+  --naver: #00C300;
+  --everlink-default-bk-color: #D9D9D9;
 }
 /* ===================================
     03. Reset
@@ -1274,7 +1277,7 @@ input, select, textarea, .form-control, .form-select {
   max-width: 100%;
   resize: none;
   outline: none;
-  font-size: 16px;
+  font-size: 18px;
   border: 1px solid #e4e4e4;
   color: var(--medium-gray);
   line-height: inherit;
@@ -3195,6 +3198,13 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .bg-base-color {
   background-color: var(--base-color);
 }
+.bg-base-default-color {
+  background-color: #EFEFE7;
+}
+.bg-everlink-default-color {
+  background-color: var(--everlink-default-bk-color);
+}
+
 .bg-dark-gray,
 .bg-dark-gray:focus {
   background-color: var(--dark-gray);
@@ -3259,7 +3269,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .bg-solitude-blue {
   background-color: var(--solitude-blue);
 }
-.bg-aluminium-grey {
+.tng-aluminium-grey {
   background-color: var(--aluminium-grey);
 }
 .bg-selago {
@@ -3301,6 +3311,14 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .bg-Wasabi {
   background-color: var(--Wasabi);
 }
+.bg-kakao {
+  background-color: var(--kakao);
+}
+
+.bg-naver {
+  background-color: var(--naver);
+}
+
 /* Gradient background color */
 .bg-gradient-light-pink-light-orange {
   background-image: linear-gradient(to right top, #ffafbd, #ffb3b4, #ffb7ac, #ffbda5, #ffc3a0);
@@ -9890,13 +9908,13 @@ blockquote footer {
 }
 .btn {
   display: inline-block;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   width: auto;
   font-family: var(--alt-font);
-  font-weight: 500;
+  font-weight: 400;
   -webkit-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out;
 }
@@ -9911,24 +9929,31 @@ blockquote footer {
   position: relative;
   margin-left: 6px;
 }
+
+.btn.radius-on {
+  border-radius:35px;
+}
+
 .btn.btn-extra-large {
-  font-size: 16px;
-  padding: 24px 46px;
+  /* font-size: 20px;
+  padding: 24px 46px; */
+  padding: 10px 46px;
+  font-size: 1.5rem;
 }
 .btn.btn-large {
-  font-size: 14px;
-  padding: 18px 34px;
+  font-size: 18px;
+  /* padding: 18px 34px; */
 }
 .btn.btn-medium {
-  font-size: 13px;
+  font-size: 16px;
   padding: 16px 30px;
 }
 .btn.btn-small {
-  font-size: 12px;
+  font-size: 14px;
   padding: 13px 26px;
 }
 .btn.btn-very-small {
-  font-size: 11px;
+  font-size: 12px;
   padding: 10px 20px;
 }
 .btn.btn-rounded.btn-extra-large {
@@ -10382,8 +10407,8 @@ blockquote footer {
 }
 .btn.btn-base-color:hover, .btn.btn-base-color:active {
   background-color: transparent;
-  border-color: var(--base-color);
-  color: var(--base-color);
+  border-color: var(--black);
+  color: var(--black);
 }
 .btn.btn-dark-gray {
   background-color: var(--dark-gray);
@@ -10405,12 +10430,26 @@ blockquote footer {
 }
 .btn.btn-white {
   background-color: var(--white);
-  color: var(--dark-gray);
+  border-color: var(--black);
+  color: var(--black);
 }
 .btn.btn-white:hover, .btn.btn-white:active {
-  background-color: transparent;
-  border-color: var(--white);
+  background-color: var(--base-color);
+  border-color:unset;
   color: var(--white);
+}
+.btn.btn-google {
+  background-color: var(--white);
+  border: 1px solid #BFBFBF;
+  color: var(--black);
+}
+.btn.btn-kakao {
+  background-color: var(--kakao);
+  color: var(--black);
+}
+.btn.btn-naver {
+  background-color: var(--naver);
+  color: var(--black);
 }
 .btn.btn-cornflower-blue {
   background-color: var(--cornflower-blue);
