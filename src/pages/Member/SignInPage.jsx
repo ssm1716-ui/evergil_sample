@@ -1,7 +1,15 @@
+import { useState, useRef } from 'react';
+import { postSignIn, getAccessToken } from '@/api/memberApi';
+
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 
 const SignInPage = () => {
+  const [member, setMember] = useState({
+    loginEmail: '',
+    password: '',
+  });
+
   return (
     <section className="bg-base-default-color">
       <div className="container">

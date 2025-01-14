@@ -1,4 +1,11 @@
 import { useState, useRef } from 'react';
+import {
+  postSignUp,
+  getVerificationCodeVerify,
+  getVerificationEmailResend,
+  getAccessToken,
+} from '@/api/memberApi';
+
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 
@@ -16,11 +23,11 @@ import checkCircle from '@/assets/images/check-circle-solid.png';
 const SignUpPage = () => {
   const [step, byStep] = useState(0);
   const [member, setMember] = useState({
-    login_email: '',
+    loginEmail: '',
     password: '',
     passwordConfirm: '',
-    display_name: '',
-    phone_number: '',
+    displayName: '',
+    phoneNumber: '',
   });
   const [verificationCode, setVerificationCode] = useState({
     first_code: '',
@@ -68,12 +75,12 @@ const SignUpPage = () => {
     });
   };
 
-  const secondStep = () => {
+  const secondStep = async () => {
     if (member.password !== member.passwordConfirm) {
       alert('비밀번호가 동일하지 않습니다. 다시 입력 해주세요.');
       return;
     }
-    if (!isValidEmail(member.login_email)) {
+    if (!isValidEmail(member.loginEmail)) {
       alert('이메일을 다시 입력 해 주세요.');
       return;
     }
@@ -81,15 +88,16 @@ const SignUpPage = () => {
       alert('패스워드를 다시 입력 해 주세요.');
       return;
     }
-    if (!isValidName(member.display_name)) {
+    if (!isValidName(member.displayName)) {
       alert('이름을 다시 입력 해 주세요.');
       return;
     }
-    if (!isValidPhoneNumber(member.phone_number)) {
+    if (!isValidPhoneNumber(member.phoneNumber)) {
       alert('핸드폰번호를 다시 입력 해 주세요.');
       return;
     }
 
+    const response = await postSignUp(member);
     nextStep(step + 1);
   };
 
@@ -101,7 +109,7 @@ const SignUpPage = () => {
     });
   };
 
-  const thirdStep = () => {
+  const thirdStep = async () => {
     const concatCode =
       verificationCode.first_code +
       verificationCode.secod_code +
@@ -113,6 +121,12 @@ const SignUpPage = () => {
       alert('올바른 인증코드를 입력해주세요.');
       return;
     }
+
+    //이메일 인증번호 발송
+    const response = await getVerificationCodeVerify(concatCode);
+
+    //accessToken 가져오기
+    const tokenResponse = await getAccessToken();
 
     nextStep(step + 1);
   };
@@ -213,8 +227,8 @@ const SignUpPage = () => {
                   <input
                     className="mb-20px bg-very-light-white form-control required"
                     type="text"
-                    name="login_email"
-                    value={member.login_email}
+                    name="loginEmail"
+                    value={member.loginEmail}
                     onChange={handleMemberInfoChange}
                     placeholder="이메일을 입력해 주세요."
                   />
@@ -246,8 +260,8 @@ const SignUpPage = () => {
                   <input
                     className="mb-20px bg-very-light-white form-control required"
                     type="text"
-                    name="display_name"
-                    value={member.display_name}
+                    name="displayName"
+                    value={member.displayName}
                     onChange={handleMemberInfoChange}
                     placeholder="이름을 입력해 주세요."
                   />
@@ -257,8 +271,8 @@ const SignUpPage = () => {
                   <input
                     className="mb-20px bg-very-light-white form-control required"
                     type="text"
-                    name="phone_number"
-                    value={member.phone_number}
+                    name="phoneNumber"
+                    value={member.phoneNumber}
                     onChange={handleMemberInfoChange}
                     placeholder="휴대폰 번호를 입력해주세요."
                   />
