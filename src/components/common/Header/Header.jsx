@@ -1,18 +1,34 @@
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '@/state/slices/authSlices';
+import { useNavigate } from 'react-router-dom';
+import { signLogout } from '@/api/memberApi';
 
 import defaultLogo from '@/assets/images/header-logo.png';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Redux 상태에서 로그인 여부와 사용자 정보 가져오기
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const handleLogout = async () => {
+    await signLogout();
+    dispatch(logout());
+    navigate('/signin'); // 로그아웃 후 로그인 페이지로 이동
+  };
+
   return (
     <header>
       <nav className="navbar navbar-expand-lg header-light bg-white center-logo header-reverse">
         <div className="container-fluid">
           <div className="col-auto">
-            <a className="navbar-brand" href="demo-hotel-and-resort.html">
+            <Link className="navbar-brand" to="/">
               <img src={defaultLogo} alt="" className="default-logo" />
               <img src={defaultLogo} alt="" className="alt-logo" />
               <img src={defaultLogo} alt="" className="mobile-logo" />
-            </a>
+            </Link>
           </div>
           <div className="col-auto col-xl-8 col-lg-10 menu-order">
             <button
@@ -42,39 +58,46 @@ const Header = () => {
                     구매하기
                   </Link>
                 </li>
-                <li className="nav-item dropdown dropdown-with-icon">
+                <li className="nav-item">
                   <Link to="/about" className="nav-link">
                     회사소개
                   </Link>
                 </li>
-                <li className="nav-item dropdown dropdown-with-icon">
-                  <Link to="/contact" className="nav-link">
-                    문의하기
-                  </Link>
-                </li>
-                <li className="nav-item dropdown dropdown-with-icon d-none">
-                  <a
-                    href="demo-hotel-and-resort-rooms.html"
-                    className="nav-link"
-                  >
-                    My Everlinks
-                  </a>
-                </li>
+                {!isAuthenticated ? (
+                  <li className="nav-item">
+                    <Link to="/contact" className="nav-link">
+                      문의하기
+                    </Link>
+                  </li>
+                ) : (
+                  <li className="nav-item">
+                    <Link to="/profile" className="nav-link">
+                      My Everlinks
+                    </Link>
+                  </li>
+                )}
               </ul>
               <ul className="navbar-nav navbar-right justify-content-start">
-                <li className="nav-item">
-                  <Link to="/signin" className="nav-link">
-                    로그인
-                  </Link>
-                </li>
-                <li className="nav-item d-none">
-                  <a
-                    href="demo-hotel-and-resort-bistro.html"
-                    className="nav-link"
-                  >
-                    로그아웃
-                  </a>
-                </li>
+                {!isAuthenticated ? (
+                  <li className="nav-item">
+                    <Link to="/signin" className="nav-link">
+                      로그인
+                    </Link>
+                  </li>
+                ) : (
+                  <li className="nav-item">
+                    <Link className="nav-link" onClick={handleLogout}>
+                      로그아웃
+                    </Link>
+                  </li>
+                )}
+                {isAuthenticated && (
+                  <li className="nav-item">
+                    <Link to="/mypage" className="nav-link">
+                      마이페이지
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item">
                   <Link to="/cart" className="nav-link">
                     장바구니

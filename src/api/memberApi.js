@@ -1,22 +1,12 @@
-import axios from 'axios';
-
-export const API_SERVER_HOST = 'https://dev-api.everlink.kr';
-
-const prefix = `${API_SERVER_HOST}`;
-
-const axiosInstance = axios.create({
-    baseURL: prefix,
-    withCredentials: true, // 쿠키 전송 허용
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+import axiosInstance from './axiosInstance';
 
 //회원가입
 export const postSignUp = async (param) => {
     try {
         const res = await axiosInstance.post('/sign-up', param);
-        return res.data;
+        const emailVerificationCode = res.headers['x-email-verification-code'];
+        localStorage.setItem('dev_emailVerificationCode', emailVerificationCode);
+        return res.status;
     } catch (err) {
         console.error(err);
     }
@@ -26,7 +16,19 @@ export const postSignUp = async (param) => {
 export const postSignIn = async (param) => {
     try {
         const res = await axiosInstance.post('/authenticate', param);
-        return res.data;
+        return res.status;
+    } catch (err) {
+        console.log(err);
+        console.error(err);
+    }
+};
+
+//로그아웃
+export const signLogout = async (param) => {
+    try {
+        localStorage.removeItem('dev_accessToken'); // Access Token 삭제
+        delete axiosInstance.defaults.headers.common['Authorization']; // Axios 헤더 초기화
+        console.log('User logged out');
     } catch (err) {
         console.error(err);
     }
@@ -35,14 +37,14 @@ export const postSignIn = async (param) => {
 //회원가입 후 이메일 인증코드로 계정 활성화
 export const getVerificationCodeVerify = async (param) => {
     try {
-        console.log(param);
         const res = await axiosInstance.get('/verification-codes.verify', {
             params: {
                 code: param,
             },
         });
-        console.log(res);
-        return res.data;
+
+        localStorage.removeItem('dev_emailVerificationCode'); // emailVerificationCode 삭제
+        return res.status;
     } catch (err) {
         console.error(err);
     }
@@ -51,20 +53,34 @@ export const getVerificationCodeVerify = async (param) => {
 //이메일 인증코드 재발송 요청
 export const getVerificationEmailResend = async (param) => {
     try {
-        const res = await axiosInstance.post('/verification-emails.resend', param);
+
+        const emailVerificationCode = localStorage.getItem('dev_emailVerificationCode');
+        const res = await axiosInstance.post('/verification-emails.resend', param, {
+            headers:
+                { 'X-Email-Verification-Code': emailVerificationCode }
+        });
+
         return res.data;
     } catch (err) {
         console.error(err);
     }
 };
 
-//이메일 인증후 토큰 값 가져오기 
-export const getAccessToken = async (param) => {
+//토큰 요청 -> localStorage 토큰 저장
+export const getAccessToken = async () => {
     try {
-        console.log(param);
         const res = await axiosInstance.get('/api/access-tokens.refresh');
-        console.log(res);
-        return res.data;
+        const newAccessToken = res.headers['authorization'];
+
+        if (newAccessToken) {
+            // Axios 기본 헤더에 Authorization 설정/ 상태관리 / 로컬스토리지 설정
+            axiosInstance.defaults.headers.common['Authorization'] = newAccessToken;
+            localStorage.setItem('dev_accessToken', newAccessToken);
+
+            console.log('Authorization Header Set:', newAccessToken);
+        }
+
+        return newAccessToken;
     } catch (err) {
         console.error(err);
     }

@@ -1,5 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { postSignIn, getAccessToken } from '@/api/memberApi';
+import { loginSuccess } from '@/state/slices/authSlices.js';
 
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
@@ -9,6 +12,38 @@ const SignInPage = () => {
     loginEmail: '',
     password: '',
   });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleMemberRegisterChange = (e) => {
+    setMember({
+      ...member,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const resLoginStats = await postSignIn(member);
+      if (resLoginStats !== 200) {
+        alert('이메일, 비밀번호를 확인 해주세요.');
+        return;
+      }
+
+      const restokenStats = await getAccessToken();
+      if (!restokenStats) {
+        alert('토큰 통신에러가 발생하였습니다');
+        return;
+      }
+
+      dispatch(loginSuccess('success'));
+
+      navigate('/profile');
+    } catch (error) {
+      console.error('Login error:', error.response?.data || error.message);
+    }
+  };
 
   return (
     <section className="bg-base-default-color">
@@ -19,14 +54,16 @@ const SignInPage = () => {
               <h3 className="fw-600 text-dark-gray mb-8 ls-minus-1px">
                 로그인
               </h3>
-              <form action="#" method="post">
+              <form>
                 <label className="text-dark-gray mb-10px fw-500 d-block text-start">
                   이메일<span className="text-red">*</span>
                 </label>
                 <input
                   className="mb-20px bg-very-light-white form-control required"
                   type="text"
-                  name="name"
+                  name="loginEmail"
+                  value={member.loginEmail}
+                  onChange={handleMemberRegisterChange}
                   placeholder="이메일을 입력 하세요"
                 />
                 <label className="text-dark-gray mb-10px fw-500 d-block text-start">
@@ -36,6 +73,8 @@ const SignInPage = () => {
                   className="mb-20px bg-very-light-white form-control required"
                   type="password"
                   name="password"
+                  value={member.password}
+                  onChange={handleMemberRegisterChange}
                   placeholder="비밀번호를 입력하세요"
                 />
                 <input type="hidden" name="redirect" value="" />
@@ -45,17 +84,18 @@ const SignInPage = () => {
                   size="extra-large"
                   radiusOn="radius-on"
                   className="btn-large submit w-80 mt-60px mb-20px d-block"
+                  onClick={handleLogin}
                 >
                   로그인
                 </Button>
-                <div className="form-results mt-20px d-none"></div>
+                {/* <div className="form-results mt-20px d-none"></div> */}
               </form>
               <div className="pt-15 text-center">
                 <Link to="/signup">회원가입</Link>
                 <span className="px-5">|</span>
-                <Link to="/forgot">비밀번호찾기</Link>
+                <Link to="/password-forgot">비밀번호찾기</Link>
               </div>
-              <div className="pt-15 text-center">
+              {/* <div className="pt-15 text-center">
                 <Button
                   type="submit"
                   size="extra-large"
@@ -80,7 +120,7 @@ const SignInPage = () => {
                 >
                   네이버로 시작하기
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

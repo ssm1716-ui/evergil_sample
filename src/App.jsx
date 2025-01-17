@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 import Layout from '@/components/common/Layout';
 
 import HomePage from '@/pages/Home/HomePage';
@@ -10,14 +11,16 @@ import SignUpPage from '@/pages/Member/SignUpPage';
 import ForgotPage from '@/pages/Password/ForgotPage';
 import ProfilePage from '@/pages/Profile/ProfilePage';
 import CartPage from '@/pages/Cart/CartPage';
+import MyPage from '@/pages/Mypage/MyPage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
-import TestPage from './pages/TestPage';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
+import TestPage from '@/pages/TestPage';
 
 const App = () => {
   return (
-    <>
+    <ErrorBoundary>
       <Router>
         <Layout>
           <Routes>
@@ -26,9 +29,24 @@ const App = () => {
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/forgot" element={<ForgotPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/password-forgot" element={<ForgotPage />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/contact" element={<ContactPage />} />
+            <Route
+              path="/mypage"
+              element={
+                <ProtectedRoute>
+                  <MyPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
@@ -36,7 +54,7 @@ const App = () => {
           </Routes>
         </Layout>
       </Router>
-    </>
+    </ErrorBoundary>
   );
 };
 

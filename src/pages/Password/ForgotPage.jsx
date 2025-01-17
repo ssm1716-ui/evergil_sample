@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { postPasswordRequest } from '@/api/guestApi';
+
 import Button from '@/components/common/Button/Button';
 
 import { isValidEmail } from '@/utils/validators';
@@ -15,11 +17,16 @@ const ForgotPage = () => {
   };
 
   //이메일유효성 검사체크 로직
-  const handleEmailCheck = () => {
+  const handleEmailCheck = async () => {
     if (!isValidEmail(email)) {
       alert('이메일을 다시 확인 해 주세요.');
-    } else {
-      alert('정상적으로 메일로 발송 하였습니다.');
+      return;
+    }
+
+    const res = await postPasswordRequest(email);
+
+    if (res === 200) {
+      alert('이메일로 전송 하였습니다.');
     }
   };
 
@@ -27,7 +34,7 @@ const ForgotPage = () => {
     <section className="bg-base-white-color">
       <div className="container">
         <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
-          <div className="col contact-form-style-04">
+          <div className="col ">
             <div className="mt-20 py-5 text-center ">
               <a className="navbar-brand" href="demo-hotel-and-resort.html">
                 <img src={forgotImage} alt="" className="default-logo" />
@@ -38,7 +45,7 @@ const ForgotPage = () => {
               <h6 className="fw-600 text-dark-gray mb-10 ls-minus-1px">
                 이메일을 통해 비밀번호 수정 링크가 전송됩니다.
               </h6>
-              <form action="#" className="mt-50px">
+              <form className="mt-50px">
                 <input
                   className="mb-30px bg-very-light-white form-control required"
                   type="email"
@@ -48,7 +55,6 @@ const ForgotPage = () => {
                   onChange={handleEmailChange}
                 />
                 <Button
-                  type="submit"
                   size="extra-large"
                   radiusOn="radius-on"
                   className="btn-large submit w-80 mt-60px mb-20px d-block"

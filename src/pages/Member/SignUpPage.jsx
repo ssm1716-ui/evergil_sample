@@ -17,6 +17,8 @@ import {
   isInteger,
 } from '@/utils/validators';
 
+import { removeHyphens } from '@/utils/utils';
+
 import signup from '@/assets/images/signup.png';
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
@@ -69,9 +71,19 @@ const SignUpPage = () => {
 
   //2스텝- 회원가입 정보 검사 및 필수 체크
   const handleMemberInfoChange = (e) => {
+    //핸드폰번호는 하이픈 제거
+
+    let removeHyphensPhoneNumber;
+    if (e.target.name === 'phoneNumber') {
+      removeHyphensPhoneNumber = removeHyphens(e.target.value);
+    }
+
     setMember({
       ...member,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.name === 'phoneNumber'
+          ? removeHyphensPhoneNumber
+          : e.target.value,
     });
   };
 
@@ -97,7 +109,12 @@ const SignUpPage = () => {
       return;
     }
 
-    const response = await postSignUp(member);
+    const res = await postSignUp(member);
+    if (res !== 201) {
+      alert('회원가입 시 통신 에러가 발생하였습니다.');
+      return;
+    }
+
     nextStep(step + 1);
   };
 
@@ -123,16 +140,30 @@ const SignUpPage = () => {
     }
 
     //이메일 인증번호 발송
-    const response = await getVerificationCodeVerify(concatCode);
+    const resEmailStats = await getVerificationCodeVerify(concatCode);
+
+    if (resEmailStats !== 200) {
+      alert('이메일 인증번호 통신에러가 발생하였습니다');
+      return;
+    }
 
     //accessToken 가져오기
-    const tokenResponse = await getAccessToken();
+    const restokenStats = await getAccessToken();
+    if (restokenStats !== 200) {
+      alert('이메일 인증번호 통신에러가 발생하였습니다');
+      return;
+    }
 
     nextStep(step + 1);
   };
 
-  const verificationCodeResetSend = () => {
-    alert('이메일로 인증번호를 전송하였습니다.');
+  const verificationCodeResetSend = async () => {
+    //이메일 인증번호 재전송
+    const resEmailResendStats = await getVerificationEmailResend();
+    if (resEmailResendStats !== '200') {
+      alert('인증번호 재전송 통신에러가 발생하였습니다.');
+    }
+    alert('이메일로 인증번호를 재전송하였습니다.');
   };
 
   return (
