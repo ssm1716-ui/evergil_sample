@@ -88,14 +88,13 @@ const SignInPage = () => {
                 >
                   로그인
                 </Button>
-                {/* <div className="form-results mt-20px d-none"></div> */}
               </form>
               <div className="pt-15 text-center">
                 <Link to="/signup">회원가입</Link>
                 <span className="px-5">|</span>
                 <Link to="/password-forgot">비밀번호찾기</Link>
               </div>
-              {/* <div className="pt-15 text-center">
+              <div className="pt-15 text-center">
                 <Button
                   type="submit"
                   size="extra-large"
@@ -120,7 +119,7 @@ const SignInPage = () => {
                 >
                   네이버로 시작하기
                 </Button>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
