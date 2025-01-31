@@ -1,3 +1,6 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap");
 /* -------------------------------------------------------
     Theme Name: Crafto - The Multipurpose HTML5 Template
     Theme URL: https://craftohtml.themezaa.com/
@@ -30,8 +33,6 @@ Table of contents
 /* ===================================
     01. Google font
 ====================================== */
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap");
 :root {
   --alt-font: "Plus Jakarta Sans", sans-serif;
   --primary-font: "Inter", sans-serif;
@@ -327,7 +328,6 @@ b, strong {
   font-size: 2.25rem;
   line-height: 2.5rem;
 }
-
 .fs-40 {
   font-size: 2.5rem;
   line-height: 2.5rem;
@@ -3209,7 +3209,6 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .bg-everlink-default-color {
   background-color: var(--everlink-default-bk-color);
 }
-
 .bg-dark-gray,
 .bg-dark-gray:focus {
   background-color: var(--dark-gray);
@@ -3319,11 +3318,9 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .bg-kakao {
   background-color: var(--kakao);
 }
-
 .bg-naver {
   background-color: var(--naver);
 }
-
 /* Gradient background color */
 .bg-gradient-light-pink-light-orange {
   background-image: linear-gradient(to right top, #ffafbd, #ffb3b4, #ffb7ac, #ffbda5, #ffc3a0);
@@ -9937,11 +9934,9 @@ blockquote footer {
   position: relative;
   margin-left: 6px;
 }
-
 .btn.radius-on {
   border-radius:35px;
 }
-
 .btn.btn-extra-large {
   /* font-size: 20px;
   padding: 24px 46px; */

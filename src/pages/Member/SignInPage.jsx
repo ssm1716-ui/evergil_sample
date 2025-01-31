@@ -45,6 +45,28 @@ const SignInPage = () => {
     }
   };
 
+  //SNS 회원가입& 로그인 이벤트
+  const handleSnsLoginAction = (e) => {
+    let url;
+    const value = e.target.dataset.value || e.currentTarget.dataset.value;
+    console.log('Clicked button dataset value:', value);
+    switch (value) {
+      case 'kakao':
+        url = 'https://dev-api.everlink.kr/oauth2/authorization/kakao';
+        break;
+      case 'naver':
+        url = 'https://dev-api.everlink.kr/oauth2/authorization/naver';
+        break;
+      case 'google':
+        url = 'https://dev-api.everlink.kr/oauth2/authorization/google';
+        break;
+      default:
+        break;
+    }
+
+    location.href = url;
+  };
+
   return (
     <section className="bg-base-default-color">
       <div className="container">
@@ -96,26 +118,30 @@ const SignInPage = () => {
               </div>
               <div className="pt-15 text-center">
                 <Button
-                  type="submit"
+                  data-value="google"
+                  name="google"
                   size="extra-large"
                   color="google"
                   className="btn-large w-80 mt-20px mb-10px d-block btn-box-shadow"
+                  onClick={handleSnsLoginAction}
                 >
                   구글로 시작하기
                 </Button>
                 <Button
-                  type="submit"
+                  data-value="kakao"
                   size="extra-large"
                   color="kakao"
                   className="btn-large w-80 mt-20px mb-10px d-block btn-box-shadow"
+                  onClick={handleSnsLoginAction}
                 >
                   카카오로 시작하기
                 </Button>
                 <Button
-                  type="submit"
+                  data-value="naver"
                   size="extra-large"
                   color="naver"
-                  className="btn-large  w-80 mt-20px mb-10px d-block btn-box-shadow"
+                  className="btn-large w-80 mt-20px mb-10px d-block btn-box-shadow"
+                  onClick={handleSnsLoginAction}
                 >
                   네이버로 시작하기
                 </Button>

@@ -144,15 +144,16 @@ const PrivacyPolicyPage = () => {
   `;
   return (
     <section className="bg-base-default-color">
-      <h4 className="mt-2 py-3 fw-800 text-black bg-white text-center">
+      <h4 className="mt-2 mb-10px py-3 fw-800 text-black bg-white text-center">
         개인정보처리방침
       </h4>
       <pre
-        className="col-lg-12 bg-white"
+        className="col-lg-6 bg-white offset-lg-3"
         style={{
           padding: '10px',
           borderRadius: '5px',
-          overflowX: 'auto', // 긴 텍스트에 스크롤 표시
+          overflow: 'auto', // 긴 텍스트에 스크롤 표시
+          whiteSpace: 'pre-line',
         }}
       >
         {privacyPolicyText}

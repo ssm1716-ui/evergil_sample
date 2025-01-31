@@ -8,6 +8,7 @@ const Button = ({
   size = 'medium', // 버튼 크기 (very-small, small, medium, large, extra-large)
   color = 'base-color', // 버튼 색상(base, white, yellow, green)
   radiusOn, //border-radius 비활성화 상태
+  ...props
 }) => {
   return (
     <>
@@ -16,6 +17,7 @@ const Button = ({
         className={`btn btn-${size} btn-${color} ${radiusOn} d-table d-lg-inline-block lg-mb-15px md-mx-auto ${className}`} // 동적 클래스 구성
         onClick={onClick}
         disabled={disabled}
+        {...props}
       >
         {children}
       </button>

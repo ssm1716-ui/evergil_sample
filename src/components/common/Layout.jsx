@@ -6,12 +6,14 @@ import Footer from '@/components/common/Footer/Footer';
 const Layout = ({ children }) => {
   const location = useLocation();
 
-  const hideHeaderFooter = location.pathname === '/test';
+  // 특정 경로에서 Header와 Footer를 숨김
+  const hideLayout = ['/check-point', '/test'].includes(location.pathname);
+
   return (
     <>
-      {!hideHeaderFooter && <Header />}
+      {!hideLayout && <Header />}
       <main>{children}</main>
-      {!hideHeaderFooter && <Footer />}
+      {!hideLayout && <Footer />}
     </>
   );
 };

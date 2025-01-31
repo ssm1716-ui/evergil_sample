@@ -16,6 +16,7 @@ import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
 import ErrorBoundary from '@/components/common/ErrorBoundary';
+import CheckPointPage from '@/pages/CheckPointPage';
 import TestPage from '@/pages/TestPage';
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/check-point" element={<CheckPointPage />} />
             <Route path="/test" element={<TestPage />} />
           </Routes>
         </Layout>
