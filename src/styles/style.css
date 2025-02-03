@@ -3978,6 +3978,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .w-1000px {
   width: 1000px !important;
 }
+
 .w-10 {
   width: 10% !important;
 }
@@ -19063,7 +19064,7 @@ canvas {
   border: 0;
   background-color: transparent;
   padding: 0;
-  margin: -9px 0 0 0;
+  margin: -6px 0 0 0;
   font-size: 22px;
   line-height: 18px;
   position: absolute;
@@ -19072,6 +19073,9 @@ canvas {
   color: var(--dark-gray);
   -webkit-transform: translateY(-3px);
   transform: translateY(-3px);
+}
+.quantity button.qty-minus {
+  left: 18px;
 }
 .quantity button.qty-plus {
   right: 15px;

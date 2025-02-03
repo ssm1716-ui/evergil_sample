@@ -12,6 +12,8 @@ import ForgotPage from '@/pages/Password/ForgotPage';
 import ProfilePage from '@/pages/Profile/ProfilePage';
 import CartPage from '@/pages/Cart/CartPage';
 import MyPage from '@/pages/Mypage/MyPage';
+import CheckOutPage from './pages/Order/CheckOutPage';
+import CompletePage from './pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
@@ -31,7 +33,7 @@ const App = () => {
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/password-forgot" element={<ForgotPage />} />
-            <Route
+            {/* <Route
               path="/profile"
               element={
                 <ProtectedRoute>
@@ -39,7 +41,6 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/contact" element={<ContactPage />} />
             <Route
               path="/mypage"
               element={
@@ -47,8 +48,14 @@ const App = () => {
                   <MyPage />
                 </ProtectedRoute>
               }
-            />
+            /> */}
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/mypage" element={<MyPage />} />
+
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckOutPage />} />
+            <Route path="/complete" element={<CompletePage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/check-point" element={<CheckPointPage />} />

@@ -14,9 +14,16 @@
     display: inline-block;
     vertical-align: middle;
     padding: 0 10px 0 0px;
-
 }
 
+
+.flex-0 {
+    flex: 0;
+}
+
+.flex-1 {
+    flex: 1;
+}
 
 @media (max-width: 991px) {
     .menu-order {
