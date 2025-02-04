@@ -87,7 +87,7 @@ const ProfilePage = () => {
           </div>
 
           <div className="text-center pt-12">
-            <Link>
+            <Link to="/create-profile">
               <div className="pb-2">
                 <i className="fa-solid fa-circle-plus align-middle icon-extra-super-double-large text-extra-medium-gray"></i>
               </div>

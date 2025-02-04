@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
-export const API_SERVER_HOST = 'https://dev-api.everlink.kr';
+export const API_SERVER_HOST = API_BASE_URL;
 
 const prefix = `${API_SERVER_HOST}`;
 
@@ -51,12 +52,14 @@ axiosInstance.interceptors.response.use(
 // 새로고침 후 Access Token 복원
 export const restoreAuthorizationHeader = () => {
     const accessToken = localStorage.getItem('dev_accessToken');
+    console.log(accessToken);
+
     if (accessToken) {
         axiosInstance.defaults.headers.common['Authorization'] = `${accessToken}`;
         console.log('Authorization header restored');
     }
 };
 
-// restoreAuthorizationHeader();
+restoreAuthorizationHeader();
 
 export default axiosInstance;

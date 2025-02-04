@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postSignIn, getAccessToken } from '@/api/memberApi';
-import { loginSuccess } from '@/state/slices/authSlices.js';
+import { loginSuccess } from '@/state/slices/authSlices';
 
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
@@ -31,13 +31,14 @@ const SignInPage = () => {
         return;
       }
 
-      const restokenStats = await getAccessToken();
-      if (!restokenStats) {
+      const { status, token } = await getAccessToken();
+      console.log(status, token);
+      if (status !== 200) {
         alert('토큰 통신에러가 발생하였습니다');
         return;
       }
 
-      dispatch(loginSuccess('success'));
+      dispatch(loginSuccess('success', token));
 
       navigate('/profile');
     } catch (error) {

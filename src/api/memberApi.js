@@ -70,7 +70,11 @@ export const getVerificationEmailResend = async (param) => {
 export const getAccessToken = async () => {
     try {
         const res = await axiosInstance.get('/api/access-tokens.refresh');
+        console.log('res :', res);
+
         const newAccessToken = res.headers['authorization'];
+        console.log('newAccessToken :', newAccessToken);
+
 
         if (newAccessToken) {
             // Axios 기본 헤더에 Authorization 설정/ 상태관리 / 로컬스토리지 설정
@@ -80,13 +84,10 @@ export const getAccessToken = async () => {
             console.log('Authorization Header Set:', newAccessToken);
         }
 
-        return newAccessToken;
+
+
+        return { status: res.status, token: newAccessToken };
     } catch (err) {
         console.error(err);
     }
 };
-
-
-
-
-

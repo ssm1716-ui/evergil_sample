@@ -1,4 +1,6 @@
 import { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '@/state/slices/authSlices';
 import {
   postSignUp,
   getVerificationCodeVerify,
@@ -24,6 +26,8 @@ import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SignUpPage = () => {
   const [step, byStep] = useState(0);
+  const dispatch = useDispatch();
+
   const [member, setMember] = useState({
     loginEmail: '',
     password: '',
@@ -143,17 +147,17 @@ const SignUpPage = () => {
     const resEmailStats = await getVerificationCodeVerify(concatCode);
 
     if (resEmailStats !== 200) {
-      alert('이메일 인증번호 통신에러가 발생하였습니다');
+      alert('resEmailStats 이메일 인증번호 통신에러가 발생하였습니다');
       return;
     }
 
     //accessToken 가져오기
-    const restokenStats = await getAccessToken();
-    if (restokenStats !== 200) {
-      alert('이메일 인증번호 통신에러가 발생하였습니다');
+    const { status, token } = await getAccessToken();
+    if (status !== 200) {
+      alert('restokenStats 이메일 인증번호 통신에러가 발생하였습니다');
       return;
     }
-
+    dispatch(loginSuccess('success', token));
     nextStep(step + 1);
   };
 
