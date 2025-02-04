@@ -32,7 +32,8 @@ axiosInstance.interceptors.response.use(
 
                 // 새 Access Token 설정
                 const newAccessToken = refreshResponse.data.accessToken;
-                axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+                console.log('newAccessToken : ', newAccessToken);
+                axiosInstance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
                 originalRequest.headers['Authorization'] = newAccessToken;
 
                 // 원래 요청 재시도
@@ -51,11 +52,11 @@ axiosInstance.interceptors.response.use(
 export const restoreAuthorizationHeader = () => {
     const accessToken = localStorage.getItem('dev_accessToken');
     if (accessToken) {
-        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        axiosInstance.defaults.headers.common['Authorization'] = `${accessToken}`;
         console.log('Authorization header restored');
     }
 };
 
-restoreAuthorizationHeader();
+// restoreAuthorizationHeader();
 
 export default axiosInstance;

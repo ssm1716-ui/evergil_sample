@@ -10,6 +10,7 @@ import SignInPage from '@/pages/Member/SignInPage';
 import SignUpPage from '@/pages/Member/SignUpPage';
 import ForgotPage from '@/pages/Password/ForgotPage';
 import ProfilePage from '@/pages/Profile/ProfilePage';
+import CreateProfilePage from '@/pages/Profile/CreateProfilePage';
 import CartPage from '@/pages/Cart/CartPage';
 import MyPage from '@/pages/Mypage/MyPage';
 import CheckOutPage from './pages/Order/CheckOutPage';
@@ -33,7 +34,7 @@ const App = () => {
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/password-forgot" element={<ForgotPage />} />
-            {/* <Route
+            <Route
               path="/profile"
               element={
                 <ProtectedRoute>
@@ -42,15 +43,25 @@ const App = () => {
               }
             />
             <Route
+              path="/create-profile"
+              element={
+                <ProtectedRoute>
+                  <CreateProfilePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
               path="/mypage"
               element={
                 <ProtectedRoute>
                   <MyPage />
                 </ProtectedRoute>
               }
-            /> */}
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/mypage" element={<MyPage />} />
+            />
+            {/* <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/create-profile" element={<CreateProfilePage />} />
+            <Route path="/mypage" element={<MyPage />} /> */}
 
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />

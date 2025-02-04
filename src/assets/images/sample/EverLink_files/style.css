@@ -10454,6 +10454,10 @@ blockquote footer {
   background-color: var(--naver);
   color: var(--black);
 }
+.btn.btn-profile {
+  background-color: var(--naver);
+  color: var(--black);
+}
 .btn.btn-cornflower-blue {
   background-color: var(--cornflower-blue);
   color: var(--white);

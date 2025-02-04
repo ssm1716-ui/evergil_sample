@@ -162,6 +162,93 @@ const TextPage = () => {
             </Button>
           </div>
         </div>
+
+        <div className="p-5 row row-cols-1 justify-content-center">
+          <div className="pb-1 col btn-dual text-center">
+            <Button variant="primary" color="profile" size="extra-large">
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="large"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="medium"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="small"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="very-small"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+          </div>
+          <div className="col btn-dual text-center">
+            <Button
+              variant="primary"
+              color="white"
+              size="extra-large"
+              radiusOn="radius-on"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="large"
+              radiusOn="radius-on"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="medium"
+              radiusOn="radius-on"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="small"
+              radiusOn="radius-on"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+            <Button
+              variant="primary"
+              color="white"
+              size="very-small"
+              radiusOn="radius-on"
+              onClick={handleClick}
+            >
+              Button
+            </Button>
+          </div>
+        </div>
       </div>
     </>
   );
