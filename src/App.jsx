@@ -13,6 +13,15 @@ import ProfilePage from '@/pages/Profile/ProfilePage';
 import CreateProfilePage from '@/pages/Profile/CreateProfilePage';
 import CartPage from '@/pages/Cart/CartPage';
 import MyPage from '@/pages/Mypage/MyPage';
+import OrderListPage from '@/pages/Mypage/OrderListPage';
+import OrderDetailPage from '@/pages/Mypage/OrderDetailPage';
+import MyReviewPage from '@/pages/Mypage/MyReviewPage';
+import ExchagePage from '@/pages/Mypage/ExchagePage';
+import ReturnPage from '@/pages/Mypage/ReturnPage';
+import MyContactPage from '@/pages/Mypage/MyContactPage';
+import FaqPage from '@/pages/Mypage/FaqPage';
+import MyInfoPage from '@/pages/Mypage/MyInfoPage';
+
 import CheckOutPage from './pages/Order/CheckOutPage';
 import CompletePage from './pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
@@ -58,10 +67,16 @@ const App = () => {
                   <MyPage />
                 </ProtectedRoute>
               }
-            />
-            {/* <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/create-profile" element={<CreateProfilePage />} />
-            <Route path="/mypage" element={<MyPage />} /> */}
+            >
+              <Route path="order-list" element={<OrderListPage />} />
+              <Route path="order-detail" element={<OrderDetailPage />} />
+              <Route path="my-review" element={<MyReviewPage />} />
+              <Route path="exchage" element={<ExchagePage />} />
+              <Route path="return" element={<ReturnPage />} />
+              <Route path="my-contact" element={<MyContactPage />} />
+              <Route path="faq" element={<FaqPage />} />
+              <Route path="myinfo" element={<MyInfoPage />} />
+            </Route>
 
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />

@@ -8,9 +8,27 @@ const TextPage = () => {
 
   return (
     <>
-      <div className="p-5">
-        <Label />
+      <div className="p-5 row row-cols-1 justify-content-center">
+        <Label text="Label" className="mb-1 w-100 bg-dark-gray text-white" />
+        <Label text="Label" className="mb-1 w-100 bg-medium-gray text-white" />
+        <Label
+          text="Label"
+          className="mb-1 w-100 bg-light-medium-gray text-white"
+        />
+        <Label
+          text="Label"
+          className="mb-1 w-100 bg-dark-gray text-white border-radius-10px"
+        />
+        <Label
+          text="Label"
+          className="mb-1 w-100 bg-medium-gray text-white border-radius-10px"
+        />
+        <Label
+          text="Label"
+          className="mb-1 w-100 bg-light-medium-gray text-black border-radius-10px"
+        />
       </div>
+
       <div className="p-5 row row-cols-1 justify-content-center">
         <div className="pb-1 col btn-dual text-center">
           <Button variant="primary" size="extra-large" onClick={handleClick}>

@@ -21587,6 +21587,9 @@
     padding-right: 25px;
     margin-bottom: 15px;
   }
+  .cart-products tbody tr .product-btn {
+    width: 50%;
+  }
   .cart-products tbody tr td.product-quantity:before {
     margin-top: 8px;
   }

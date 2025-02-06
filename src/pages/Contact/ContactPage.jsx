@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FaqComponents from '@/components/Faq/FaqComponents';
 import Button from '@/components/common/Button/Button';
+import ContactComponents from '@/components/Contact/contactComponents';
 import { postPasswordRequest } from '@/api/guestApi';
 import { isValidEmail } from '@/utils/validators';
 import ContactImage from '@/assets/images/contact-image.png';
@@ -44,44 +45,7 @@ const ContactPage = () => {
                       문의사항은 메세지로 남겨주세요.
                     </h6>
                   </div>
-                  <form>
-                    <div className="row">
-                      <div className="col-lg-6 col-md-6 mb-50px">
-                        <label className="fs-20 fw-400 mb-10px">이름</label>
-                        <input
-                          className="border-radius-10px input-medium"
-                          type="text"
-                          aria-label="text"
-                          required
-                        />
-                      </div>
-                      <div className="col-lg-6 col-md-6 mb-50px">
-                        <label className="fs-20 fw-400 mb-10px">이메일</label>
-                        <input
-                          className="border-radius-10px input-medium"
-                          type="text"
-                          aria-label="text"
-                          required
-                        />
-                      </div>
-                      <div className="col-12">
-                        <label className="fs-20 fw-400 mb-10px">메세지</label>
-                        <textarea
-                          className="border-radius-10px textarea-medium"
-                          rows="5"
-                          cols="5"
-                        ></textarea>
-                      </div>
-
-                      <Button
-                        type="submit"
-                        size="extra-large"
-                        className="btn-large submit w-100 mt-60px mb-20px d-block"
-                      >
-                        메시지 남기기
-                      </Button>
-                    </div>
-                  </form>
+                  <ContactComponents />
                 </div>
               </div>
             </div>

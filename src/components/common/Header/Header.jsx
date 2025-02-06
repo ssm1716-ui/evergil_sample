@@ -93,7 +93,7 @@ const Header = () => {
                 )}
                 {isAuthenticated && (
                   <li className="nav-item">
-                    <Link to="/mypage" className="nav-link">
+                    <Link to="/mypage/order-list" className="nav-link">
                       마이페이지
                     </Link>
                   </li>
