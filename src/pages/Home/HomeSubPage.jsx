@@ -302,7 +302,7 @@ const HomeSubPage = () => {
             <div className="row justify-content-center mb-5 xs-mb-7">
               <div
                 className="col-md-12 text-start"
-                data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
+                data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1000, "delay": 2000, "staggervalue": 300, "easing": "easeOutQuad" }'
               >
                 <FaqComponents />
               </div>
