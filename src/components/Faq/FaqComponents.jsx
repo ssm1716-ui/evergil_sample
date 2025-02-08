@@ -4,7 +4,7 @@ const FaqComponents = () => {
       <div className="text-center">
         <h3 className="fs-36 fw-400 text-dark-gray ls-minus-1px mb-0">FAQ</h3>
         <p className="fs-16 fw-400 mb-5 text-dark-gray">
-          공통적인 질문사항에 대한 대답
+          공통적인 질문사항의 대한 대답
         </p>
       </div>
       <div className="col-lg-6 offset-lg-3 md-ps-40px md-pe-40px ">

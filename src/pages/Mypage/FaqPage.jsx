@@ -1,5 +1,3 @@
-import FaqComponents from '@/components/faq/FaqComponents';
-
 const FaqPage = () => {
   return (
     <>
