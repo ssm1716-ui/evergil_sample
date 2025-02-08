@@ -4,13 +4,6 @@ import { useState } from 'react';
 const ContactComponents = ({ message }) => {
   const [isMypage, setMypage] = useState(false);
 
-  const getMessageByPath = (pathname) => {
-    if (pathname.includes('mypage')) {
-      setMypage(true);
-    } else {
-      setMypage(false);
-    }
-  };
   return (
     <>
       <form>
