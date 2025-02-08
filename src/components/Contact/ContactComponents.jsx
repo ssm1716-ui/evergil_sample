@@ -1,10 +1,8 @@
-import { Link, useLocation } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import { useState } from 'react';
 
 const ContactComponents = ({ message }) => {
   const [isMypage, setMypage] = useState(false);
-  const location = useLocation();
 
   const getMessageByPath = (pathname) => {
     if (pathname.includes('mypage')) {

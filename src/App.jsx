@@ -3,6 +3,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Layout from '@/components/common/Layout';
 
 import HomePage from '@/pages/Home/HomePage';
+import HomeSubPage from '@/pages/Home/HomeSubPage';
 import AboutPage from '@/pages/About/AboutPage';
 import ShopPage from '@/pages/Shop/ShopPage';
 import ContactPage from '@/pages/Contact/ContactPage';
@@ -11,6 +12,7 @@ import SignUpPage from '@/pages/Member/SignUpPage';
 import ForgotPage from '@/pages/Password/ForgotPage';
 import ProfilePage from '@/pages/Profile/ProfilePage';
 import CreateProfilePage from '@/pages/Profile/CreateProfilePage';
+import EditProfilePage from '@/pages/Profile/EditProfilePage';
 import CartPage from '@/pages/Cart/CartPage';
 import MyPage from '@/pages/Mypage/MyPage';
 import OrderListPage from '@/pages/Mypage/OrderListPage';
@@ -21,7 +23,7 @@ import ReturnPage from '@/pages/Mypage/ReturnPage';
 import MyContactPage from '@/pages/Mypage/MyContactPage';
 import FaqPage from '@/pages/Mypage/FaqPage';
 import MyInfoPage from '@/pages/Mypage/MyInfoPage';
-
+import AddressPage from './pages/Mypage/AddressPage';
 import CheckOutPage from './pages/Order/CheckOutPage';
 import CompletePage from './pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
@@ -35,6 +37,9 @@ const App = () => {
   return (
     <ErrorBoundary>
       <Router>
+        <Routes>
+          <Route path="/sub" element={<HomeSubPage />} />
+        </Routes>
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -43,29 +48,42 @@ const App = () => {
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/password-forgot" element={<ForgotPage />} />
+
+            {/* 프로필 영역 start*/}
             <Route
               path="/profile"
               element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <ProfilePage />
+                // </ProtectedRoute>
               }
             />
             <Route
               path="/create-profile"
               element={
-                <ProtectedRoute>
-                  <CreateProfilePage />
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <CreateProfilePage />
+                // </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-profile"
+              element={
+                // <ProtectedRoute>
+                <EditProfilePage />
+                // </ProtectedRoute>
               }
             />
 
+            {/* 프로필 영역 end*/}
+
+            {/* 마이페이지 영억 start*/}
             <Route
               path="/mypage"
               element={
-                <ProtectedRoute>
-                  <MyPage />
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <MyPage />
+                // </ProtectedRoute>
               }
             >
               <Route path="order-list" element={<OrderListPage />} />
@@ -76,7 +94,9 @@ const App = () => {
               <Route path="my-contact" element={<MyContactPage />} />
               <Route path="faq" element={<FaqPage />} />
               <Route path="myinfo" element={<MyInfoPage />} />
+              <Route path="address" element={<AddressPage />} />
             </Route>
+            {/* 마이페이지 영억 end*/}
 
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />

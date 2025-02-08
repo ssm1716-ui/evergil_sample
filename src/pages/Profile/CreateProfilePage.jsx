@@ -1,13 +1,18 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postSignIn, getAccessToken } from '@/api/memberApi';
 import { loginSuccess } from '@/state/slices/authSlices.js';
 
 import Button from '@/components/common/Button/Button';
-import { Link } from 'react-router-dom';
+import Modal from '@/components/common/Modal/Modal';
+import { isValidEmail } from '@/utils/validators';
+
+import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const CreateProfilePage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleProfileType = (e) => {
     const el = e.currentTarget;
     el.classList.add('btn-black');
@@ -108,9 +113,45 @@ const CreateProfilePage = () => {
                   size="extra-large"
                   radiusOn="radius-on"
                   className="btn-large submit w-40 mt-60px mb-20px d-block"
+                  onClick={() => setIsModalOpen(true)}
                 >
                   저장하기
                 </Button>
+
+                {/* 모달 컴포넌트 */}
+                <Modal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                  title="Slide up animation"
+                >
+                  <div className="row justify-content-center overflow-hidden">
+                    <div className="col contact-form-style-04">
+                      <div className="py-5 text-center ">
+                        <a
+                          className="navbar-brand"
+                          href="demo-hotel-and-resort.html"
+                        >
+                          <img src={checkCircle} alt="" />
+                        </a>
+                        <h4 className="fw-800 text-dark-gray mt-15 mb-2 ls-minus-1px">
+                          추모페이지 생성 완료
+                        </h4>
+                        <Link to="/edit-profile">
+                          <Button
+                            size="extra-large"
+                            radiusOn="radius-on"
+                            className="w-50 mt-20px mb-20px d-block"
+                          >
+                            계속하기
+                          </Button>
+                        </Link>
+                        <h6 className=" mb-8 ls-minus-1px">
+                          추모페이지를 꾸며보세요.
+                        </h6>
+                      </div>
+                    </div>
+                  </div>
+                </Modal>
               </form>
             </div>
           </div>

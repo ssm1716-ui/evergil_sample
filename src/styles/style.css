@@ -77,6 +77,7 @@ Table of contents
   --camarone: #20642b;
   --seal-brown: #0e0708;
   --Wasabi: #8ea63a;
+  --navy: #161938;
   --kakao: #FDDC3F;
   --naver: #00C300;
   --everlink-default-bk-color: #D9D9D9;
@@ -10490,6 +10491,11 @@ blockquote footer {
   color: var(--white);
 }
 
+.btn.btn-navy {
+  background-color: var(--navy);
+  color: var(--white);
+}
+
 .btn.btn-google {
   background-color: var(--white);
   border: 1px solid #BFBFBF;
@@ -18916,7 +18922,8 @@ canvas {
 .shop-sidebar .shop-filter li a:hover .product-cb:after {
   opacity: 1;
 }
-.shop-sidebar .shop-filter li .product-cb {
+.shop-sidebar .shop-filter li .product-cb,
+.address-cb {
   width: 16px;
   height: 16px;
   border: 1px solid var(--medium-gray);
@@ -18926,7 +18933,8 @@ canvas {
   left: 0;
   top: 8px;
 }
-.shop-sidebar .shop-filter li .product-cb:after {
+.shop-sidebar .shop-filter li .product-cb:after, 
+.address-cb:after {
   width: 8px;
   height: 8px;
   background-color: var(--dark-gray);

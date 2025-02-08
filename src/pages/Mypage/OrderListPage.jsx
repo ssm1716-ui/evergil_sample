@@ -1,21 +1,14 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Outlet,
-} from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
-
-import OrderDetailPage from '@/pages/Mypage/OrderDetailPage';
-import MyReviewPage from '@/pages/Mypage/MyReviewPage';
-import ExchagePage from '@/pages/Mypage/ExchagePage';
-import ReturnPage from '@/pages/Mypage/ReturnPage';
+import Modal from '@/components/common/Modal/Modal';
 
 import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
 
 const OrderListPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
@@ -348,8 +341,9 @@ const OrderListPage = () => {
                               size="small"
                               color="white"
                               className="btn w-10 mt-10px d-inline w-30"
+                              onClick={() => setIsModalOpen(true)}
                             >
-                              리뷰 보기
+                              리뷰 쓰기
                             </Button>
                           </a>
                         </div>
@@ -527,8 +521,8 @@ const OrderListPage = () => {
                               배송 조회
                             </Button>
                           </a>
-                          <a
-                            href="#"
+                          <Link
+                            to="/mypage/my-review"
                             className="fs-20 fw-500 d-inline lh-initial ps-2"
                           >
                             <Button
@@ -538,7 +532,7 @@ const OrderListPage = () => {
                             >
                               리뷰 보기
                             </Button>
-                          </a>
+                          </Link>
                         </div>
                       </td>
                     </tr>
@@ -633,6 +627,97 @@ const OrderListPage = () => {
               </ul>
             </div> */}
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="modal-header bg-base-color p-2">
+          <h5 className="modal-title text-dark fw-bold">리뷰 쓰기</h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setIsModalOpen(false)}
+          ></button>
+        </div>
+
+        <div className="">
+          {/* QR 프레임 */}
+          <div className="pt-1 ps-2 border-bottom border-10 border-gray">
+            <section className="p-0">
+              <div className="">
+                <div className="col-12">
+                  <table className="table cart-products">
+                    <tbody>
+                      <tr>
+                        <td className="product-thumbnail border-0">
+                          <img
+                            className="cart-product-image"
+                            src={CartImage1}
+                            alt=""
+                          />
+                        </td>
+                        <td className="product-name border-0 fw-600 text-black ps-2">
+                          <span className="row">Textured sweater</span>
+                          <span className="row">80,000원</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          {/* 별점 평가 */}
+          <div className="text-center py-5 border-bottom border-3 border-gray ">
+            <h6 className="text-black fw-600">EverLink QR 만족도</h6>
+            {[...Array(5)].map((_, index) => (
+              <i
+                key={index}
+                className="bi bi-star-fill fs-70 pe-1 text-yellow"
+              ></i>
+            ))}
+          </div>
+
+          {/* 리뷰 작성란 */}
+          <form className="mb-1 p-3 text-black">
+            <label className="fs-28 fw-600">리뷰 작성란</label>
+
+            <textarea
+              className="border-radius-10px mt-1 flex-1"
+              rows="5"
+              cols="5"
+              placeholder="최소 10자 이상 입력해주세요."
+            ></textarea>
+
+            {/* 파일 첨부 */}
+            <div className="border-1 border-dashed rounded mt-1 p-1 text-center">
+              <i className="bi bi-camera fs-5 me-2"></i>
+              사진/동영상 첨부하기
+            </div>
+
+            {/* 이미지 업로드 */}
+            <div className="pt-15"></div>
+          </form>
+        </div>
+
+        <div className="modal-footer justify-content-center ">
+          <Button
+            size="extra-large"
+            radiusOn="radius-on"
+            className="btn w-20 px-5 me-5"
+          >
+            등록
+          </Button>
+          <Button
+            size="extra-large"
+            radiusOn="radius-on"
+            color="profile"
+            className="btn w-20 px-5"
+            onClick={() => setIsModalOpen(false)}
+          >
+            취소
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };

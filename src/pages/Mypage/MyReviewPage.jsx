@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
+import Modal from '@/components/common/Modal/Modal';
 
 import ShopDetailImage1 from '@/assets/images/shop-detail-image1.png';
 import ShopDetailImage2 from '@/assets/images/shop-detail-image2.png';
@@ -11,7 +13,7 @@ const MyReviewPage = () => {
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="mb-1 fs-40 fw-400 pb-2 border-bottom border-2 border-black text-start text-black">
+        <h6 className="mb-1 fs-40 fw-600 pb-2 border-bottom border-2 border-black text-start text-black">
           내가 쓴 리뷰
         </h6>
         <div className="toolbar-wrapper d-flex flex-column flex-sm-row align-items-center w-100 mb-40px md-mb-30px">
@@ -106,11 +108,11 @@ const MyReviewPage = () => {
           <div className="col-12 text-black">
             <div className="tab-content">
               <div className="tab-pane fade in active show" id="tab_five1">
-                <div className="row mb-4 md-mb-35px">
+                <div className="mb-4 md-mb-35px">
                   <div className="col-12 p-50px mb-10px xs-pb-30px xs-mb-30px bg-light-medium-gray position-relative">
                     <div className="d-block d-md-flex w-100 align-items-center">
-                      <div className="d-block d-md-flex align-items-center w-40">
-                        <div className="md-w-250px sm-mb-10px">
+                      <div className="d-block d-md-flex align-items-center w-60">
+                        <div className="md-w-300px sm-mb-10px">
                           <img
                             src={ShopDetailImage3}
                             className="w-100 mb-10px"
@@ -124,7 +126,7 @@ const MyReviewPage = () => {
                       </div>
 
                       <div className="w-auto last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <ul className="mb-0">
+                        <ul className="mb-0 ms-5">
                           <li className="pt-2">
                             <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block fs-20">
                               <i className="bi bi-star-fill"></i>
@@ -175,7 +177,7 @@ const MyReviewPage = () => {
 
                   <div className="col-12 p-50px mb-10px xs-pb-30px xs-mb-30px bg-light-medium-gray position-relative">
                     <div className="d-block d-md-flex w-100 align-items-center">
-                      <div className="d-block d-md-flex align-items-center w-40">
+                      <div className="d-block d-md-flex align-items-center w-60">
                         <div className="md-w-250px sm-mb-10px">
                           <img
                             src={ShopDetailImage3}
@@ -183,14 +185,14 @@ const MyReviewPage = () => {
                             alt=""
                           />
                         </div>
-                        <div className="ps-30px">
+                        <div className="ps-30px ">
                           <span className="row">qr code</span>
                           <span className="row">80,000원</span>
                         </div>
                       </div>
 
                       <div className="w-auto last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <ul className="mb-0">
+                        <ul className="mb-0 ms-5">
                           <li className="pt-2">
                             <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block fs-20">
                               <i className="bi bi-star-fill"></i>
@@ -241,7 +243,7 @@ const MyReviewPage = () => {
 
                   <div className="col-12 p-50px mb-10px xs-pb-30px xs-mb-30px bg-light-medium-gray position-relative">
                     <div className="d-block d-md-flex w-100 align-items-center">
-                      <div className="d-block d-md-flex align-items-center w-40">
+                      <div className="d-block d-md-flex align-items-center w-60">
                         <div className="md-w-250px sm-mb-10px">
                           <img
                             src={ShopDetailImage3}
@@ -249,14 +251,14 @@ const MyReviewPage = () => {
                             alt=""
                           />
                         </div>
-                        <div className="ps-30px">
+                        <div className="ps-30px ">
                           <span className="row">qr code</span>
                           <span className="row">80,000원</span>
                         </div>
                       </div>
 
                       <div className="w-auto last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <ul className="mb-0">
+                        <ul className="mb-0 ms-5">
                           <li className="pt-2">
                             <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block fs-20">
                               <i className="bi bi-star-fill"></i>
