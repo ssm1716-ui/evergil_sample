@@ -72,7 +72,7 @@ const CheckOutPage = () => {
                       className="mb-20px bg-very-light-white form-control flex-1 me-20px required "
                       type="text"
                       name="loginEmail"
-                      placeholder=""
+                      placeholder="우편번호"
                     />
                     <Button
                       size="large"
@@ -89,7 +89,7 @@ const CheckOutPage = () => {
                       className="mb-20px bg-very-light-white form-control flex-1 required"
                       type="text"
                       name="loginEmail"
-                      placeholder=""
+                      placeholder="상세주소1"
                     />
                   </div>
                   <div className="row d-flex align-items-baseline">
@@ -98,7 +98,7 @@ const CheckOutPage = () => {
                       className="mb-20px bg-very-light-white form-control flex-1 required"
                       type="text"
                       name="loginEmail"
-                      placeholder=""
+                      placeholder="상세주소2"
                     />
                   </div>
                   <div className="row d-flex align-items-baseline position-relative terms-condition-box text-start d-flex align-items-center">

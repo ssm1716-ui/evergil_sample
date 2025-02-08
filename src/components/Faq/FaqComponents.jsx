@@ -7,7 +7,7 @@ const FaqComponents = () => {
           공통적인 질문사항에 대한 대답
         </p>
       </div>
-      <div className="col-lg-4 offset-lg-4 md-ps-40px md-pe-40px ">
+      <div className="col-lg-6 offset-lg-3 md-ps-40px md-pe-40px ">
         <div className="tab-content h-100">
           <div className="tab-pane fade in active show" id="tab_seven1">
             <div className="row">
