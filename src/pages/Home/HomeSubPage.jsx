@@ -4,7 +4,6 @@ import FaqComponents from '@/components/Faq/FaqComponents';
 import mainBannerImage from '@/assets/images/main-banner.png';
 import mainSubImage1 from '@/assets/images/main-sub-image1.png';
 import mainSubImage2 from '@/assets/images/main-sub-image2.png';
-import mainSubImage3 from '@/assets/images/main-sub-image3.png';
 
 const HomeSubPage = () => {
   return (

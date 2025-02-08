@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FaqComponents from '@/components/Faq/FaqComponents';
-import Button from '@/components/common/Button/Button';
-import ContactComponents from '@/components/Contact/contactComponents';
+import ContactComponents from '@/components/Contact/ContactComponents';
 import { postPasswordRequest } from '@/api/guestApi';
 import { isValidEmail } from '@/utils/validators';
 import ContactImage from '@/assets/images/contact-image.png';
