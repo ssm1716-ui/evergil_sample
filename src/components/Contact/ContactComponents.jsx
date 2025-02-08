@@ -41,7 +41,7 @@ const ContactComponents = ({ message }) => {
                 size="extra-large"
                 className="btn-large submit w-100 mt-60px mb-20px d-block"
               >
-                메시지 남기기
+                메시지를 남기세요
               </Button>
             ) : (
               <Button
