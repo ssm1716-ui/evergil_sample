@@ -19647,8 +19647,10 @@
     position: static;
   }
   .navbar-expand-lg > .container-fluid {
-    padding-right: 0;
-    padding-left: 0;
+    /* padding-right: 0;
+    padding-left: 0; */
+    padding-right: 15px;
+    padding-left: 15px;
   }
   .navbar-expand-lg .container-lg {
     padding-right: 0;

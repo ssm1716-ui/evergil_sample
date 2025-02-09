@@ -23,14 +23,29 @@ const Header = () => {
     <header>
       <nav className="navbar navbar-expand-lg header-light bg-white center-logo header-reverse">
         <div className="container-fluid">
-          <div className="col-auto">
-            <Link className="navbar-brand" to="/">
-              <img src={defaultLogo} alt="" className="default-logo" />
-              <img src={defaultLogo} alt="" className="alt-logo" />
-              <img src={defaultLogo} alt="" className="mobile-logo" />
+          <div className="menu-logo">
+            <Link to="/" className="navbar-brand">
+              <img
+                src={defaultLogo}
+                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                alt=""
+                className="default-logo"
+              />
+              <img
+                src={defaultLogo}
+                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                alt=""
+                className="alt-logo"
+              />
+              <img
+                src={defaultLogo}
+                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                alt=""
+                className="mobile-logo"
+              />
             </Link>
           </div>
-          <div className="col-auto col-xl-8 col-lg-10 menu-order">
+          <div className="col-auto col-xl-12 col-lg-12 menu-order">
             <button
               className="navbar-toggler float-end"
               type="button"
@@ -39,6 +54,7 @@ const Header = () => {
               aria-controls="navbarNav"
               aria-label="Toggle navigation"
             >
+              <span className="navbar-toggler-line"></span>
               <span className="navbar-toggler-line"></span>
               <span className="navbar-toggler-line"></span>
               <span className="navbar-toggler-line"></span>
@@ -105,9 +121,6 @@ const Header = () => {
                 </li>
               </ul>
             </div>
-          </div>
-          <div className="col-auto text-end">
-            <div className="d-none d-xl-flex align-items-center widget-text fw-600"></div>
           </div>
         </div>
       </nav>
