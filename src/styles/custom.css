@@ -1,0 +1,94 @@
+.menu-order {
+    width: 100%;
+}
+
+.footer {
+    background-color: #EFEFE7 !important;
+}
+
+.border-base-color {
+    border: 1px solid var(--base-color) !important;
+    color: var(--base-color) !important;
+    margin-left:5px;
+    padding:5px;
+    vertical-align: bottom;
+    
+  }
+
+.login-text-icon::before {
+    content: "\e843";
+    font-family: "feather";
+    font-size: 20px;
+    font-weight: 900;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 10px 0 0px;
+}
+
+
+.order-detail-text-icon::after {
+    content: "\e844";
+    font-family: "feather";
+    font-size: 20px;
+    font-weight: 900;
+    display: inline-block;
+    vertical-align: bottom;
+    padding: 0;
+}
+
+
+.address-chk > input[type=radio] + label {
+    display: flex;
+}
+
+.address-chk > input[type=radio] + label span {
+    height: 32px;
+    width: 32px;
+    border-radius: 100%;
+    margin-right: 6px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid #87a968;
+}
+
+.shop-color > input[type=radio]:checked + label span::after  {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    color: #87a968;
+    height: 28px;
+    width: 28px;
+    border: 2px solid var(--white);
+    border-radius: 100%;
+    text-align: center;
+    content: "";
+    font-weight: 900;
+    background-color: #87a968;
+}
+
+
+.swiper-slide {
+    opacity: 0.5; /* 기본적으로 흐릿하게 설정 */
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .swiper-slide-active {
+    opacity: 1 !important; /* 가운데 슬라이드는 선명하게 */
+  }
+
+
+.flex-0 {
+    flex: 0;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+@media (max-width: 991px) {
+    .menu-order {
+        width:unset;
+    }
+}

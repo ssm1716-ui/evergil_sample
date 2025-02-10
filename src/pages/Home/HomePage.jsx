@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import AnimatedSection from '@/components/AnimatedSection';
 
 import FaqComponents from '@/components/Faq/FaqComponents';
@@ -90,19 +91,14 @@ const HomeSubPage = () => {
                   그들을 평생 기억할 수 있는 플랫폼을 제공할 것입니다.
                 </p>
                 <div className="d-inline-block w-100">
-                  <a
-                    href="demo-hotel-and-resort-about-us.html"
+                  <Link
+                    to="/shop"
                     className="btn btn-extra-large btn-switch-text btn-dark-gray btn-box-shadow btn-round-edge d-inline-block align-middle me-30px xs-me-10px xs-mt-20px"
                   >
-                    <span>
-                      <span
-                        className="btn-double-text"
-                        data-text="About resort"
-                      >
-                        구매하러 가기
-                      </span>
+                    <span className="btn-double-text" data-text="구매하러 가기">
+                      구매하러 가기
                     </span>
-                  </a>
+                  </Link>
                   <div className="fs-20 fw-600 d-inline-block align-middle text-dark-gray xs-mt-20px">
                     <a href="tel:010-5922-1221">
                       <i className="bi bi-telephone-outbound text-medium-gray icon-small me-10px"></i>
@@ -341,7 +337,7 @@ const HomeSubPage = () => {
         >
           <div className="container">
             <div
-              className="row justify-content-center mb-5 xs-mb-7"
+              className="row justify-content-center xs-mb-7"
               data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1000, "delay": 1000, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
               <div className="col-md-8 text-center">
@@ -391,7 +387,7 @@ const HomeSubPage = () => {
           // style=background-image: url('images/vertical-center-line-bg.svg')"
         >
           <div className="container">
-            <div className="row justify-content-center mb-5 xs-mb-7">
+            <div className="row justify-content-center xs-mb-7">
               <div
                 className="col-md-12 text-start"
                 data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 100, "delay": 700, "staggervalue": 300, "easing": "easeOutQuad" }'

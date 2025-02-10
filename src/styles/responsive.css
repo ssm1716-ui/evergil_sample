@@ -1443,6 +1443,12 @@
 }
 @media (max-width: 1399px) {
   /* Width */
+  .xl-w-hidden {
+    display: none;
+  }
+  .xl-w-block {
+    display: block;
+  }
   .xl-w-220px {
     width: 220px !important;
   }
@@ -1596,6 +1602,12 @@
     height: 750px !important;
   }
   /* Width */
+  .lg-w-hidden {
+    display: none;
+  }
+  .lg-w-block {
+    display: block;
+  }
   .lg-w-10px {
     width: 10px !important;
   }
@@ -2151,6 +2163,12 @@
     height: 650px !important;
   }
   /* Width */
+  .md-w-hidden {
+    display: none;
+  }
+  .md-w-block {
+    display: block;
+  }
   .md-w-5px {
     width: 5px !important;
   }
@@ -2859,6 +2877,12 @@
     height: 650px !important;
   }
   /* Width */
+  .sm-w-hidden {
+    display: none;
+  }
+  .sm-w-block {
+    display: block;
+  }
   .sm-w-5px {
     width: 5px !important;
   }
@@ -21554,7 +21578,24 @@
   .cart-products tbody tr:last-child {
     margin-bottom: 0;
   }
-  .cart-products tbody tr .product-remove {
+  .cart-products tbody tr .product-checkbox {
+    width: 20px;
+    position: absolute;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    text-align: right !important;
+    top: 0px;
+    z-index: 11;
+  }
+  .cart-products tbody tr .product-checkbox a {
+    line-height: 13px;
+    width: 20px;
+    height: 20px;
+    display: block;
+    text-align: center;
+  }
+  .cart-products tbody tr .product-remo0e {
     width: 20px;
     position: absolute;
     right: 0;

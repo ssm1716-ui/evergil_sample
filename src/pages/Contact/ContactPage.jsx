@@ -5,6 +5,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import { postPasswordRequest } from '@/api/guestApi';
 import { isValidEmail } from '@/utils/validators';
 import ContactImage from '@/assets/images/contact-image.png';
+import VerticalCenterLineBg from '@/assets/images/vertical-center-line-bg.svg';
 
 const ContactPage = () => {
   const [email, setEmail] = useState('');
@@ -81,7 +82,7 @@ const ContactPage = () => {
 
         <section
           className="background-position-center background-repeat position-relative"
-          // style="background-image: url('images/vertical-center-line-bg.svg')"
+          style={{ backgroundImage: `url(${VerticalCenterLineBg})` }}
         >
           <div className="container position-relative">
             <div className="row g-0">
@@ -182,7 +183,7 @@ const ContactPage = () => {
 
         <section
           className="background-position-center background-repeat"
-          // style=background-image: url('images/vertical-center-line-bg.svg')"
+          style={{ backgroundImage: `url(${VerticalCenterLineBg})` }}
         >
           <div className="container">
             <div className="row justify-content-center mb-5 xs-mb-7">

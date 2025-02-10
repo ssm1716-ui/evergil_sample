@@ -17,28 +17,37 @@ const Footer = () => {
         <div className="container">
           <div className="row justify-content-center mb-4">
             <div className="col-xl-6 col-lg-8 col-md-10 text-center">
-              <h3 className="text-dark-gray ls-minus-2px fw-400 mb-40px xs-mb-30px w-80 xs-w-100 mx-auto">
-                Remember it forever with Everlink.
-              </h3>
+              <img
+                src={defaultLogo}
+                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                alt=""
+                className="default-logo"
+              />
             </div>
           </div>
 
-          <div className="row row-cols-3 row-cols-lg-5 row-cols-sm-3 align-items-center justify-content-center mb-4 md-mb-50px xs-mb-40px instagram-follow-api position-relative">
-            <div className="absolute-middle-center z-index-1 w-auto">
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                className="btn btn-large btn-switch-text btn-white btn-rounded left-icon btn-box-shadow instagram-button"
-              >
-                <span>
-                  <span>
-                    <i className="fa-brands fa-instagram text-base-color"></i>
-                  </span>
-                  <span className="btn-double-text" data-text="EverLink">
-                    EverLink
-                  </span>
-                </span>
-              </a>
+          <div className="row row-cols-3 row-cols-lg-5 row-cols-sm-3 align-items-start justify-content-evenly mb-4 md-mb-25px xs-mb-25px instagram-follow-api position-relative pt-25px">
+            <div className="w-auto">
+              <p className="fs-16">
+                (우)14441
+                <br />
+                주소: 경기 부천시 오정구 오정로211번길 35-24 <br />
+                대표: 전경아 <br />
+                사업자 등록번호: 136-04-69494 <br />
+                통신판매업신고: 12345-000 <br />
+                <p className="xl-w-hidden sm-w-block fs-16">
+                  고객센터: 010-5922-1221
+                  <br />
+                  이메일: everlink@everlink.com
+                </p>
+              </p>
+            </div>
+            <div className="sm-w-hidden w-auto">
+              <p className="fs-16">
+                고객센터: 010-5922-1221
+                <br />
+                이메일: everlink@everlink.com
+              </p>
             </div>
           </div>
           <div className="row align-items-center">
@@ -78,7 +87,7 @@ const Footer = () => {
               </ul>
             </div>
             <div className="col-xl-3 col-sm-6 position-relative text-center text-sm-end elements-social social-text-style-01 order-2 order-xl-3 xs-mb-10px ">
-              <ul className="fs-16 dark fw-600 d-flex justify-content-end align-items-center">
+              <ul className="fs-16 dark fw-600 d-flex justify-content-center align-items-center">
                 <li>
                   <Link
                     className="facebook"

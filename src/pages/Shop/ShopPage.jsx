@@ -21,7 +21,9 @@ const ShopPage = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   return (
     <>
-      <section className="pt-15 pb-5 pb-0 md-pt-30px">
+      <section className="top-space-margin bg-gradient-very-light-gray pt-20px pb-20px ps-45px pe-45px sm-ps-15px sm-pe-15px"></section>
+
+      <section className="pt-60px pb-0 md-pt-30px">
         <div className="container">
           <div className="row">
             <div className="col-lg-7 pe-50px md-pe-15px md-mb-40px">
@@ -126,49 +128,42 @@ const ShopPage = () => {
               </div>
             </div>
 
-            {/* Product Information Section */}
             <div className="col-12 col-lg-5 product-info">
-              {/* <span className="fw-500 text-dark-gray d-block">Zalando</span> */}
-
-              <div className="d-block d-sm-flex align-items-center mb-15px justify-content-between mb-5">
-                <h4 className="text-dark-gray fw-500 mb-5px">에버링크 QR</h4>
-                {/* <div className="me-10px xs-me-0">
+              <span className="fw-500 text-dark-gray d-block">배송비 무료</span>
+              <h4 className="text-dark-gray fw-500 mb-5px">에버링크 QR</h4>
+              <div className="d-block d-sm-flex align-items-center mb-15px">
+                <div className="me-10px xs-me-0">
                   <a
                     href="#tab"
                     className="section-link ls-minus-1px icon-small"
                   >
-                    <i className="bi bi-star-fill text-black"></i>
-                    <i className="bi bi-star-fill text-base-color"></i>
-                    <i className="bi bi-star-fill text-base-color"></i>
-                    <i className="bi bi-star-fill text-base-color"></i>
-                    <i className="bi bi-star-fill text-base-color"></i>
-                  </a>
-                </div> */}
-                <a
-                  href="#"
-                  className="me-25px text-dark-gray fw-500 section-link xs-me-0"
-                >
-                  <i className="bi bi-star-fill text-black me-5px"></i>
-                  리뷰 10건
-                </a>
-                <div className="feature-box-icon me-10px">
-                  <a href="#">
-                    <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
+                    <i className="bi bi-star-fill text-golden-yellow"></i>
                   </a>
                 </div>
-                {/* <div>
-                  <span className="text-dark-gray fw-500">SKU: </span>M492300
-                </div> */}
+                <a
+                  href="#tab"
+                  className="me-25px text-dark-gray fw-500 section-link xs-me-0"
+                >
+                  리뷰 165건
+                </a>
+                <div></div>
               </div>
-              <div className="product-price mb-15">
+              <div className="product-price mb-10px">
                 <span className="text-dark-gray fs-28 xs-fs-24 fw-700 ls-minus-1px">
                   <del className="text-medium-gray me-10px fw-400">
-                    60,000원
+                    100,000원
                   </del>
-                  50,000원
+                  80,000원
                 </span>
               </div>
-
+              <p>
+                Lorem ipsum is simply dummy text of the printing and typesetting
+                industry lorem ipsum standard. Lorem ipsum is simply dummy text
+                of the printing and typesetting industry lorem ipsum standard.
+                Lorem ipsum is simply dummy text of the printing and typesetting
+                industry lorem ipsum standard. Lorem ipsum is simply dummy text
+                of the printing and typesetting industry lorem ipsum standard.
+              </p>
               {/* <div className="d-flex align-items-center mb-20px">
                 <label className="text-dark-gray me-15px fw-500">Color</label>
                 <ul className="shop-color mb-0">
@@ -178,6 +173,7 @@ const ShopPage = () => {
                       type="radio"
                       id="color-1"
                       name="color"
+                      checked=""
                     />
                     <label htmlFor="color-1">
                       <span style={{ backgroundColor: '#D4AF37' }}></span>
@@ -189,6 +185,7 @@ const ShopPage = () => {
                       type="radio"
                       id="color-2"
                       name="color"
+                      checked=""
                     />
                     <label htmlFor="color-2">
                       <span style={{ backgroundColor: '#5881bf' }}></span>
@@ -200,6 +197,7 @@ const ShopPage = () => {
                       type="radio"
                       id="color-3"
                       name="color"
+                      checked=""
                     />
                     <label htmlFor="color-3">
                       <span style={{ backgroundColor: '#87a968' }}></span>
@@ -207,8 +205,10 @@ const ShopPage = () => {
                   </li>
                 </ul>
               </div> */}
-              {/* <div className="d-flex align-items-center mb-35px">
-                <label className="text-dark-gray me-15px fw-500">Size</label>
+              <div className="d-flex align-items-center mb-25px">
+                <label className="text-dark-gray me-15px fw-500">
+                  선택 사항
+                </label>
                 <ul className="shop-size mb-0">
                   <li>
                     <input
@@ -217,8 +217,8 @@ const ShopPage = () => {
                       id="size-1"
                       name="size"
                     />
-                    <label htmlFor="size-1">
-                      <span>S</span>
+                    <label htmlFor="size-1" className="btn-double-text ls-0px">
+                      <span>부착용</span>
                     </label>
                   </li>
                   <li>
@@ -229,36 +229,14 @@ const ShopPage = () => {
                       name="size"
                     />
                     <label htmlFor="size-2">
-                      <span>M</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input
-                      className="d-none"
-                      type="radio"
-                      id="size-3"
-                      name="size"
-                    />
-                    <label htmlFor="size-3">
-                      <span>L</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input
-                      className="d-none"
-                      type="radio"
-                      id="size-4"
-                      name="size"
-                    />
-                    <label htmlFor="size-4">
-                      <span>XL</span>
+                      <span>거치용</span>
                     </label>
                   </li>
                 </ul>
-              </div> */}
+              </div>
               <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative">
+                <label className="text-dark-gray me-15px fw-500">수량</label>
                 <div className="quantity me-15px xs-mb-15px order-1">
-                  <label className="text-dark-gray me-15px fw-500">수량</label>
                   <button type="button" className="qty-minus">
                     -
                   </button>
@@ -266,151 +244,70 @@ const ShopPage = () => {
                     className="qty-text"
                     type="text"
                     id="1"
+                    value="1"
                     aria-label="submit"
                   />
                   <button type="button" className="qty-plus">
                     +
                   </button>
                 </div>
-              </div>
-              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative">
-                <div className="me-15px xs-mb-15px order-1">
-                  <label className="text-dark-gray me-15px fw-500">
-                    선택사항
-                  </label>
-
-                  <Button
-                    className="position-static border me-10px"
-                    variant="primary"
-                    color="white"
-                    size="small"
-                    radiusOn="radius-on"
-                  >
-                    부착용
-                  </Button>
-
-                  <Button
-                    className="position-static border"
-                    variant="primary"
-                    color="white"
-                    size="small"
-                    radiusOn="radius-on"
-                  >
-                    거치용
-                  </Button>
-                </div>
-              </div>
-              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative">
-                <div className="me-15px xs-mb-15px order-1">
-                  <label className="text-dark-gray me-15px fw-500">
-                    배송비 무료
-                  </label>
-                </div>
-                {/* <a
-                  href="#"
-                  className="btn btn-cart btn-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2"
+                <Link
+                  to="/cart"
+                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2"
                 >
                   <span>
-                    <i className="feather icon-feather-shopping-bag"></i>
+                    <span>
+                      <i className="feather icon-feather-shopping-bag"></i>
+                    </span>
+                    <span
+                      className="btn-double-text ls-0px"
+                      data-text="장바구니"
+                    >
+                      장바구니
+                    </span>
                   </span>
-                  <span
-                    className="btn-double-text ls-0px"
-                    data-text="Add to cart"
-                  >
-                    Add to cart
-                  </span>
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3"
                 >
-                  <i className="feather icon-feather-heart icon-small text-dark-gray"></i>
-                </a> */}
+                  <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
+                </a>
               </div>
-              <div className="d-flex mb-20px mt-10">
-                <div className="me-15px xs-mb-15px ">
-                  <Button
-                    className="me-10px"
-                    variant="primary"
-                    color="white"
-                    size="extra-large"
-                  >
-                    장바구니
-                  </Button>
 
-                  <Button variant="primary" size="extra-large">
-                    구매하기
-                  </Button>
-                </div>
+              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative">
+                <Link
+                  to="/checkout"
+                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2 w-100"
+                >
+                  <span>
+                    <span></span>
+                    <span
+                      className="btn-double-text ls-0px"
+                      data-text="바로 구매"
+                    >
+                      구매하기
+                    </span>
+                  </span>
+                </Link>
               </div>
-              <p className="mt-10">
-                Lorem ipsum is simply dummy text of the printing and typesetting
-                industry lorem ipsum standard.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section>
-        <div className="col-lg-12 text-center mb-10">
-          <img src={ShopDetailImage1} alt="" className="w-70 lg-w-90" />
-        </div>
-        <div className="text-center text-dark">
-          <h6 className="m-0 fs-24 fw-400 ls-minus-1px">가상 추모 페이지</h6>
-          <h6 className="m-0 fs-24 fw-400 ls-minus-1px">
-            구매하기 전 미리 보기
-          </h6>
-          <Link>
-            <Button
-              type="button"
-              size="medium"
-              radiusOn="radius-on"
-              className="mt-1 mb-15px w-15 lg-w-60"
-            >
-              추모 페이지 미리보기
-            </Button>
-          </Link>
-        </div>
-      </section>
-      <section>
-        <div className="text-center text-dark">
-          <Link>
-            <div className="col-lg-12 text-center mb-2">
-              <img src={ShopDetailImage2} alt="" className="w-65 lg-w-80" />
-            </div>
-          </Link>
-        </div>
-      </section>
-      <section>
-        <div className="text-center text-dark">
-          <h6 className="m-0 fs-24 fw-400 ls-minus-1px">
-            프로필 설정부터 추모페이지 수정 등
-          </h6>
-          <h6 className="m-0 fs-24 fw-400 ls-minus-1px">
-            단계 별 동영상으로 설명
-          </h6>
-          <Link>
-            <div className="col-lg-12 text-center mb-2">
-              <img src={mainSubImage3} alt="" className="w-35 lg-w-80" />
-            </div>
-          </Link>
-        </div>
-      </section>
-
-      <section className="pt-4 sm-pt-40px pb-0">
+      <section id="tab" className="pt-4 sm-pt-40px">
         <div className="container">
           <div className="row">
-            <div className="col-12 tab-style-04 p-20px text-black border border-black">
-              <h6 className="mb-3 fs-40 fw-400">상품 리뷰</h6>
-              <ul className="nav nav-tabs border-bottom border-2 border-black justify-content-start fs-20 pb-2">
+            <div className="col-12 tab-style-04">
+              <ul className="nav nav-tabs border-0 justify-content-center fs-19">
                 <li className="nav-item">
                   <a
                     data-bs-toggle="tab"
                     href="#tab_five1"
                     className="nav-link active"
                   >
-                    베스트순<span className="tab-border"></span>
+                    상품 설명<span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
                 <li className="nav-item">
@@ -419,8 +316,8 @@ const ShopPage = () => {
                     data-bs-toggle="tab"
                     href="#tab_five2"
                   >
-                    최근 등록순
-                    <span className="tab-border"></span>
+                    추가 정보
+                    <span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
                 <li className="nav-item">
@@ -429,8 +326,8 @@ const ShopPage = () => {
                     data-bs-toggle="tab"
                     href="#tab_five3"
                   >
-                    평점 높은순
-                    <span className="tab-border"></span>
+                    배송 및 반품
+                    <span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
                 <li className="nav-item">
@@ -440,334 +337,128 @@ const ShopPage = () => {
                     href="#tab_five4"
                     data-tab="review-tab"
                   >
-                    평점 낮은순<span className="tab-border"></span>
+                    리뷰 (165)<span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
               </ul>
               <div className="mb-5 h-1px w-100 bg-extra-medium-gray sm-mt-10px xs-mb-8"></div>
               <div className="tab-content">
                 <div className="tab-pane fade in active show" id="tab_five1">
-                  <div className="row g-0 mb-4 md-mb-35px">
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
+                  <div className="row align-items-center justify-content-center">
+                    <div className="col-lg-6 md-mb-40px">
+                      <div className="d-flex align-items-center mb-5px">
+                        <div className="col-auto pe-5px">
+                          <i className="bi bi-heart-fill text-red fs-16"></i>
                         </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
+                        <div className="col fw-500 text-dark-gray">
+                          We make you feel special
                         </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
+                      </div>
+                      <h4 className="text-dark-gray fw-500 mb-20px w-90 lg-w-100">
+                        Unique and quirky designs for the latest trends product.
+                      </h4>
+                      <p className="w-90">
+                        Lorem ipsum is simply dummy text of the printing and
+                        typesetting industry lorem ipsum has been the standard
+                        dummy text.
+                      </p>
+                      <div>
+                        <div className="feature-box feature-box-left-icon-middle mb-10px">
+                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
+                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
+                          </div>
+                          <div className="feature-box-content">
+                            <span className="d-block text-dark-gray fw-500">
+                              Made from soft yet durable 100% organic cotton
+                              twill.
+                            </span>
+                          </div>
                         </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
+                        <div className="feature-box feature-box-left-icon-middle mb-10px">
+                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
+                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
+                          </div>
+                          <div className="feature-box-content">
+                            <span className="d-block text-dark-gray fw-500">
+                              Front and back yoke seams allow a full range of
+                              shoulder.
+                            </span>
+                          </div>
                         </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
+                        <div className="feature-box feature-box-left-icon-middle mb-10px">
+                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
+                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
+                          </div>
+                          <div className="feature-box-content">
+                            <span className="d-block text-dark-gray fw-500">
+                              Interior storm flap and zipper garage at chin for
+                              comfort.
+                            </span>
+                          </div>
+                        </div>
+                        <div className="feature-box feature-box-left-icon-middle">
+                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
+                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
+                          </div>
+                          <div className="feature-box-content">
+                            <span className="d-block text-dark-gray fw-500">
+                              Color may slightly vary depending on your screen.
+                            </span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
-                        </div>
-                      </div>
+                    <div className="col-lg-6 col-md-8">
+                      <img
+                        src="https://via.placeholder.com/580x555"
+                        alt=""
+                        className="w-100"
+                      />
                     </div>
                   </div>
                 </div>
 
                 <div className="tab-pane fade in" id="tab_five2">
-                  <div className="row g-0 mb-4 md-mb-35px">
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
+                  <div className="row m-0">
+                    <div className="col-12">
+                      <div className="row">
+                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
+                          Color:
                         </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
+                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
+                          Black, yellow
                         </div>
                       </div>
-                    </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
+                      <div className="row bg-very-light-gray">
+                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
+                          Style/Type:
                         </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
+                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
+                          Sports, Formal
                         </div>
                       </div>
-                    </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
+                      <div className="row">
+                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
+                          Lining:
                         </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
+                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
+                          100% polyester taffeta with a DWR finish
                         </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
+                      </div>
+                      <div className="row bg-very-light-gray">
+                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
+                          Material:
                         </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
+                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
+                          Lather, Cotton, Silk
                         </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
+                          Free shipping:
+                        </div>
+                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
+                          On all orders over $50
                         </div>
                       </div>
                     </div>
@@ -775,129 +466,42 @@ const ShopPage = () => {
                 </div>
 
                 <div className="tab-pane fade in" id="tab_five3">
-                  <div className="row g-0 mb-4 md-mb-35px">
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
-                        </div>
+                  <div className="row">
+                    <div className="col-12 col-md-6 last-paragraph-no-margin sm-mb-30px">
+                      <div className="fs-22 text-dark-gray mb-15px fw-500">
+                        Shipping information
                       </div>
+                      <p className="mb-0">
+                        <span className="fw-500 text-dark-gray">Standard:</span>{' '}
+                        Arrives in 5-8 business days
+                      </p>
+                      <p>
+                        <span className="fw-500 text-dark-gray">Express:</span>{' '}
+                        Arrives in 2-3 business days
+                      </p>
+                      <p className="w-80 md-w-100">
+                        These shipping rates are not applicable for orders
+                        shipped outside of the US. Some oversized items may
+                        require an additional shipping charge. Free Shipping
+                        applies only to merchandise taxes and gift cards do not
+                        count toward the free shipping total.
+                      </p>
                     </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
-                        </div>
+                    <div className="col-12 col-md-6 last-paragraph-no-margin">
+                      <div className="fs-22 text-dark-gray mb-15px fw-500">
+                        Return information
                       </div>
-                    </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
-                        </div>
-                      </div>
+                      <p className="w-80 md-w-100">
+                        Orders placed between 10/1/2023 and 12/23/2023 can be
+                        returned by 2/27/2023.
+                      </p>
+                      <p className="w-80 md-w-100">
+                        Return or exchange any unused or defective merchandise
+                        by mail or at one of our US or Canada store locations.
+                        Returns made within 30 days of the order delivery date
+                        will be issued a full refund to the original form of
+                        payment.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -905,18 +509,28 @@ const ShopPage = () => {
                 <div className="tab-pane fade in" id="tab_five4">
                   <div className="row g-0 mb-4 md-mb-35px">
                     <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                      <div className="d-block d-md-flex w-100 align-items-center">
+                        <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
+                          <img
+                            src={ShopDetailImage3}
+                            className="w-90px mb-10px"
+                            alt=""
+                          />
+                          <span className="text-dark-gray fw-600 d-block">
+                            Herman miller@gmail.com
+                          </span>
+                          <div className="fs-14 lh-18">2025.02.01</div>
+                        </div>
+                        <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
+                          <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
                           </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
+
+                          <p className="w-85 sm-w-100 sm-mt-15px">
                             Lorem ipsum dolor sit sed do eiusmod tempor
                             incididunt labore enim ad minim veniam, quis nostrud
                             exercitation ullamco laboris nisi ut aliquip ex ea
@@ -925,152 +539,192 @@ const ShopPage = () => {
                             eu fugiat nulla pariatur. Excepteur sint occaecat
                             cupidatat non proident.
                           </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-100 mb-10px"
-                            alt=""
-                          />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
-                          <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
-                          </span>
-                        </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
                         </div>
                       </div>
                     </div>
                     <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
+                      <div className="d-block d-md-flex w-100 align-items-center">
+                        <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
                           <img
                             src={ShopDetailImage3}
-                            className="w-100 mb-10px"
+                            className="w-90px mb-10px"
                             alt=""
                           />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
                           <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
+                            Herman miller@gmail.com
                           </span>
+                          <div className="fs-14 lh-18">2025.02.01</div>
                         </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
+                        <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
+                          <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                          </span>
+
+                          <p className="w-85 sm-w-100 sm-mt-15px">
+                            Lorem ipsum dolor sit sed do eiusmod tempor
+                            incididunt labore enim ad minim veniamnisi ut
+                            aliquip ex ea commodo consequat. Duis aute irure
+                            dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident.
+                          </p>
                         </div>
                       </div>
                     </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 justify-content-between  align-items-start">
-                        <div className="w-10 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-base-color ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-                        </div>
-                        <div className="w-50 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <p className="w-90 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                        <div className="md-w-250px sm-w-100 sm-mb-10px">
+                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px md-mb-25px">
+                      <div className="d-block d-md-flex w-100 align-items-center">
+                        <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
                           <img
                             src={ShopDetailImage3}
-                            className="w-100 mb-10px"
+                            className="w-90px mb-10px"
                             alt=""
                           />
-                        </div>
-                        <div className="w-200px sm-w-100 sm-mb-10px text-center">
                           <span className="text-dark-gray fw-600 d-block">
-                            defas***@gmail.com
+                            Herman miller@gmail.com
                           </span>
+                          <div className="fs-14 lh-18">2025.02.01</div>
                         </div>
-                        <div className=" md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <div className="text-dark-gray fw-600 d-block">
-                            2024.12.23
-                          </div>
+                        <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
+                          <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                            <i className="bi bi-star-fill"></i>
+                          </span>
+
+                          <p className="w-85 sm-w-100 sm-mt-15px">
+                            Lorem ipsum dolor sit sed do eiusmod tempor
+                            incididunt labore enim adquis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla
+                            pariatur. Excepteur sint occaecat cupidatat non
+                            proident.
+                          </p>
                         </div>
                       </div>
+                    </div>
+                    <div className="col-12 last-paragraph-no-margin text-center">
+                      <a
+                        href="#"
+                        className="btn btn-link btn-hover-animation-switch btn-extra-large text-dark-gray"
+                      >
+                        <span>
+                          <span className="btn-text">Show more reviews</span>
+                          <span className="btn-icon">
+                            <i className="fa-solid fa-chevron-down"></i>
+                          </span>
+                          <span className="btn-icon">
+                            <i className="fa-solid fa-chevron-down"></i>
+                          </span>
+                        </span>
+                      </a>
                     </div>
                   </div>
+                  {/* <div className="row justify-content-center">
+                    <div className="col-12">
+                      <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
+                        <div className="row justify-content-center mb-30px sm-mb-10px">
+                          <div className="col-md-9 text-center">
+                            <h4 className="text-dark-gray fw-500 mb-15px">
+                              Add a review
+                            </h4>
+                          </div>
+                        </div>
+                        <form
+                          action="email-templates/contact-form.php"
+                          method="post"
+                          className="row contact-form-style-02"
+                        >
+                          <div className="col-lg-5 col-md-6 mb-20px">
+                            <label className="form-label mb-15px">
+                              Your name*
+                            </label>
+                            <input
+                              className="input-name border-radius-4px form-control required"
+                              type="text"
+                              name="name"
+                              placeholder="Enter your name"
+                            />
+                          </div>
+                          <div className="col-lg-5 col-md-6 mb-20px">
+                            <label className="form-label mb-15px">
+                              Your email address*
+                            </label>
+                            <input
+                              className="border-radius-4px form-control required"
+                              type="email"
+                              name="email"
+                              placeholder="Enter your email address"
+                            />
+                          </div>
+                          <div className="col-lg-2 mb-20px">
+                            <label className="form-label">Your rating*</label>
+                            <div>
+                              <span className="ls-minus-1px icon-small d-block mt-20px md-mt-0">
+                                <i className="feather icon-feather-star text-golden-yellow"></i>
+                                <i className="feather icon-feather-star text-golden-yellow"></i>
+                                <i className="feather icon-feather-star text-golden-yellow"></i>
+                                <i className="feather icon-feather-star text-golden-yellow"></i>
+                                <i className="feather icon-feather-star text-golden-yellow"></i>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="col-md-12 mb-20px">
+                            <label className="form-label mb-15px">
+                              Your review
+                            </label>
+                            <textarea
+                              className="border-radius-4px form-control"
+                              cols="40"
+                              rows="4"
+                              name="comment"
+                              placeholder="Your message"
+                            ></textarea>
+                          </div>
+                          <div className="col-lg-9 md-mb-25px">
+                            <div className="position-relative terms-condition-box text-start is-invalid mt-10px">
+                              <label className="d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  name="terms_condition"
+                                  id="terms_condition"
+                                  value="1"
+                                  className="terms-condition check-box align-middle required"
+                                />
+                                <span className="box fs-15">
+                                  I accept the crafto terms and conditions and I
+                                  have read the privacy policy.
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 text-start text-lg-end">
+                            <input type="hidden" name="redirect" value="" />
+                            <button
+                              className="btn btn-dark-gray btn-small btn-box-shadow btn-round-edge submit"
+                              type="submit"
+                            >
+                              Submit review
+                            </button>
+                          </div>
+                          <div className="col-12">
+                            <div className="form-results mt-20px d-none"></div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div> */}
                 </div>
-              </div>
-              <div className="w-100 d-flex mt-4 justify-content-end md-mt-30px">
-                <ul className="pagination pagination-style-01 fs-13 fw-500 mb-0">
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      <i className="feather icon-feather-arrow-left fs-18 d-xs-none"></i>
-                    </a>
-                  </li>
-                  <li className="page-item active">
-                    <a className="page-link" href="#">
-                      01
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      02
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      03
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      04
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      <i className="feather icon-feather-arrow-right fs-18 d-xs-none"></i>
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      <section>
-        <FaqComponents />
       </section>
     </>
   );

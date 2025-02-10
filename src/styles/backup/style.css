@@ -3351,7 +3351,6 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .bg-kakao {
   background-color: var(--kakao);
 }
-
 .bg-naver {
   background-color: var(--naver);
 }

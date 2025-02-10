@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
+import AnimatedSection from '@/components/AnimatedSection';
 
 const AddressPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,189 +10,200 @@ const AddressPage = () => {
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="mb-1 fs-40 fw-400 pb-2 mb-3 border-bottom border-2 border-black text-start text-black">
+        <h6 className="mb-1 fs-40 fw-400 pb-1 text-start text-black text-decoration-line-bottom">
           배송지 관리
         </h6>
 
-        <div className="row">
-          <div className="col-12 text-black">
-            <div className="tab-content">
-              <div className="tab-pane fade in active show" id="tab_five1">
-                <div className="mb-4 md-mb-35px">
-                  <div className="col-12 p-50px mb-35px xs-pb-30px xs-mb-30px border border-1 border-black border-radius-15px position-relative">
-                    <div className="d-block d-md-flex w-100 align-items-center">
-                      <div className="d-block d-md-flex align-items-center w-10 address-chk justify-content-center">
-                        <input
-                          className="d-none"
-                          type="radio"
-                          id="color-3"
-                          name="color"
-                        />
-                        <label htmlFor="color-3">
-                          <span></span>
-                        </label>
-                      </div>
-
-                      <div className="w-60 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <ul className="mb-0 p-0 fw-600">
-                          <li className="pt-2">
-                            <h6 className="m-0">
-                              손성민
-                              <span className="fs-10 text-base-color border border-1 border-base-color">
+        <div className="container">
+          <AnimatedSection>
+            <div className="row align-items-center justify-content-center pricing-table-style-07">
+              <div className="col-lg-12 col-md-12 md-mb-30px p-0">
+                <ul
+                  className="nav nav-tabs justify-content-center border-0 text-left"
+                  data-anime='{ "el": "childs", "translateY": [-30, 0], "perspective": [1200,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
+                >
+                  <li className="nav-item mb-30px p-0">
+                    <a
+                      data-bs-toggle="tab"
+                      href="#tab_four1"
+                      className="nav-link active box-shadow-extra-large ps-45px pe-45px pt-35px pb-35px lg-p-5 xs-p-8 border-radius-8px"
+                    >
+                      <div className="flex-column flex-sm-row d-flex align-items-center">
+                        <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
+                          <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
+                            <i className="fa-solid fa-check"></i>
+                          </div>
+                        </div>
+                        <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
+                          <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
+                            <div className="feature-box-content">
+                              <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px">
+                                손성민
+                              </span>
+                              <span className="py-1 ps-15px pe-15px md-mt-10px md-mb-10px border-radius-100px text-uppercase bg-yellow text-black fs-12 lh-28 fw-700">
                                 기본 배송지
                               </span>
-                            </h6>
-                          </li>
-                          <li>
-                            <p>010-4343-5454</p>
-                          </li>
-                          <li>
-                            <p className="m-0 p-0">
-                              [01234]경기도 시흥시 비둘기공원 7길 10 (대야동,
-                              e편한세상 시흥 센터하임) 101동 505호
-                            </p>
-                          </li>
-                        </ul>
+                              <p className="w-100 m-0">010-1234-1234</p>
+                              <p className="w-100">
+                                [01234]경기도 시흥시 비둘기공원 7길 10 (대야동,
+                                e편한세상 시흥 센터하임) 101동 505호
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-md-3  text-md-start text-sm-center text-center">
+                          <a
+                            href="#"
+                            className="btn btn-white btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-100"
+                          >
+                            <span>
+                              <span
+                                className=" btn-double-text"
+                                data-text="수정"
+                              >
+                                수정
+                              </span>
+                            </span>
+                          </a>
+                          <a
+                            href="#"
+                            className="btn btn-dark-gray btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-100"
+                          >
+                            <span>
+                              <span
+                                className="btn-double-text"
+                                data-text="삭제"
+                              >
+                                삭제
+                              </span>
+                            </span>
+                          </a>
+                        </div>
                       </div>
+                    </a>
+                  </li>
+                  <li className="nav-item mb-30px p-0">
+                    <a
+                      data-bs-toggle="tab"
+                      href="#tab_four1"
+                      className="nav-link box-shadow-extra-large ps-45px pe-45px pt-35px pb-35px lg-p-5 xs-p-8 border-radius-8px"
+                    >
+                      <div className="flex-column flex-sm-row d-flex align-items-center">
+                        <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
+                          <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
+                            <i className="fa-solid fa-check"></i>
+                          </div>
+                        </div>
+                        <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
+                          <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
+                            <div className="feature-box-content">
+                              <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px">
+                                손성민
+                              </span>
 
-                      <div className="w-30 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <Button
-                          variant="primary"
-                          size="extra-large"
-                          color="white"
-                          radiusOn="radius-on"
-                          className="border border-1 border-gray me-2"
-                        >
-                          수정
-                        </Button>
-                        <Button
-                          variant="primary"
-                          size="extra-large"
-                          color="white"
-                          radiusOn="radius-on"
-                          className="border border-1 border-gray"
-                        >
-                          삭제
-                        </Button>
+                              <p className="w-100 m-0">010-1234-1234</p>
+                              <p className="w-100">
+                                [01234]경기도 시흥시 비둘기공원 7길 10 (대야동,
+                                e편한세상 시흥 센터하임) 101동 505호
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-md-3  text-md-start text-sm-center text-center">
+                          <a
+                            href="#"
+                            className="btn btn-white btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-100"
+                          >
+                            <span>
+                              <span
+                                className=" btn-double-text"
+                                data-text="수정"
+                              >
+                                수정
+                              </span>
+                            </span>
+                          </a>
+                          <a
+                            href="#"
+                            className="btn btn-dark-gray btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-100"
+                          >
+                            <span>
+                              <span
+                                className="btn-double-text"
+                                data-text="삭제"
+                              >
+                                삭제
+                              </span>
+                            </span>
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </a>
+                  </li>
+                  <li className="nav-item mb-30px p-0">
+                    <a
+                      data-bs-toggle="tab"
+                      href="#tab_four1"
+                      className="nav-link box-shadow-extra-large ps-45px pe-45px pt-35px pb-35px lg-p-5 xs-p-8 border-radius-8px"
+                    >
+                      <div className="flex-column flex-sm-row d-flex align-items-center">
+                        <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
+                          <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
+                            <i className="fa-solid fa-check"></i>
+                          </div>
+                        </div>
+                        <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
+                          <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
+                            <div className="feature-box-content">
+                              <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px">
+                                손성민
+                              </span>
 
-                  <div className="col-12 p-50px mb-35px xs-pb-30px xs-mb-30px border border-1 border-black border-radius-15px position-relative">
-                    <div className="d-block d-md-flex w-100 align-items-center">
-                      <div className="d-block d-md-flex align-items-center w-10 address-chk justify-content-center">
-                        <input
-                          className="d-none"
-                          type="radio"
-                          id="color-3"
-                          name="color"
-                        />
-                        <label htmlFor="color-3">
-                          <span></span>
-                        </label>
+                              <p className="w-100 m-0">010-1234-1234</p>
+                              <p className="w-100">
+                                [01234]경기도 시흥시 비둘기공원 7길 10 (대야동,
+                                e편한세상 시흥 센터하임) 101동 505호
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-md-3  text-md-start text-sm-center text-center">
+                          <a
+                            href="#"
+                            className="btn btn-white btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-100"
+                          >
+                            <span>
+                              <span
+                                className=" btn-double-text"
+                                data-text="수정"
+                              >
+                                수정
+                              </span>
+                            </span>
+                          </a>
+                          <a
+                            href="#"
+                            className="btn btn-dark-gray btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-100"
+                          >
+                            <span>
+                              <span
+                                className="btn-double-text"
+                                data-text="삭제"
+                              >
+                                삭제
+                              </span>
+                            </span>
+                          </a>
+                        </div>
                       </div>
-
-                      <div className="w-60 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <ul className="mb-0 p-0 fw-600">
-                          <li className="pt-2">
-                            <h6 className="m-0">손성민</h6>
-                          </li>
-                          <li>
-                            <p>010-4343-5454</p>
-                          </li>
-                          <li>
-                            <p className="m-0 p-0">
-                              [01234]경기도 시흥시 비둘기공원 7길 10 (대야동,
-                              e편한세상 시흥 센터하임) 101동 505호
-                            </p>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div className="w-30 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <Button
-                          variant="primary"
-                          size="extra-large"
-                          color="white"
-                          radiusOn="radius-on"
-                          className="border border-1 border-gray me-2"
-                        >
-                          수정
-                        </Button>
-                        <Button
-                          variant="primary"
-                          size="extra-large"
-                          color="white"
-                          radiusOn="radius-on"
-                          className="border border-1 border-gray"
-                        >
-                          삭제
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-12 p-50px mb-35px xs-pb-30px xs-mb-30px border border-1 border-black border-radius-15px position-relative">
-                    <div className="d-block d-md-flex w-100 align-items-center">
-                      <div className="d-block d-md-flex align-items-center w-10 address-chk justify-content-center">
-                        <input
-                          className="d-none"
-                          type="radio"
-                          id="color-3"
-                          name="color"
-                        />
-                        <label htmlFor="color-3">
-                          <span></span>
-                        </label>
-                      </div>
-
-                      <div className="w-60 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <ul className="mb-0 p-0 fw-600">
-                          <li className="pt-2">
-                            <h6 className="m-0">손성민</h6>
-                          </li>
-                          <li>
-                            <p>010-4343-5454</p>
-                          </li>
-                          <li>
-                            <p className="m-0 p-0">
-                              [01234]경기도 시흥시 비둘기공원 7길 10 (대야동,
-                              e편한세상 시흥 센터하임) 101동 505호
-                            </p>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div className="w-30 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                        <Button
-                          variant="primary"
-                          size="extra-large"
-                          color="white"
-                          radiusOn="radius-on"
-                          className="border border-1 border-gray me-2"
-                        >
-                          수정
-                        </Button>
-                        <Button
-                          variant="primary"
-                          size="extra-large"
-                          color="white"
-                          radiusOn="radius-on"
-                          className="border border-1 border-gray"
-                        >
-                          삭제
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+                    </a>
+                  </li>
+                </ul>
                 <div className="text-center">
                   <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                     <Button
                       size="small"
-                      color="white"
-                      className="btn w-10 mt-10px d-inline w-30"
+                      className="btn w-10 mt-10px d-inline w-40 "
                       onClick={() => setIsModalOpen(true)}
                     >
                       배송지 추가
@@ -200,8 +212,8 @@ const AddressPage = () => {
                   <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                     <Button
                       size="small"
-                      color="navy"
-                      className="btn w-10 mt-10px d-inline w-30"
+                      color="black"
+                      className="btn w-10 mt-10px d-inline w-40"
                     >
                       기본 배송지 지정
                     </Button>
@@ -209,7 +221,7 @@ const AddressPage = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </div>
 

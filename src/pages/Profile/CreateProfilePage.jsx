@@ -87,8 +87,8 @@ const CreateProfilePage = () => {
                 </label>
                 <input
                   className="mb-20px bg-very-light-white form-control"
-                  type="password"
-                  name="password"
+                  type="text"
+                  name="text"
                   placeholder="https://everlink.kr/'닉네임'"
                 />
                 <input type="hidden" name="redirect" value="" />
@@ -112,7 +112,7 @@ const CreateProfilePage = () => {
                   type="submit"
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large submit w-40 mt-60px mb-20px d-block"
+                  className="btn-large submit w-40 mt-60px mb-20px"
                   onClick={() => setIsModalOpen(true)}
                 >
                   저장하기
@@ -127,20 +127,15 @@ const CreateProfilePage = () => {
                   <div className="row justify-content-center overflow-hidden">
                     <div className="col contact-form-style-04">
                       <div className="py-5 text-center ">
-                        <a
-                          className="navbar-brand"
-                          href="demo-hotel-and-resort.html"
-                        >
-                          <img src={checkCircle} alt="" />
-                        </a>
-                        <h4 className="fw-800 text-dark-gray mt-15 mb-2 ls-minus-1px">
+                        <img src={checkCircle} alt="" />
+                        <h4 className="fw-800 text-dark-gray mt-2 mb-2 ls-minus-1px">
                           추모페이지 생성 완료
                         </h4>
                         <Link to="/edit-profile">
                           <Button
                             size="extra-large"
                             radiusOn="radius-on"
-                            className="w-50 mt-20px mb-20px d-block"
+                            className="w-50 mt-20px mb-20px"
                           >
                             계속하기
                           </Button>

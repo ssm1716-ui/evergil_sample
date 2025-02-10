@@ -341,7 +341,7 @@ const HomeSubPage = () => {
         >
           <div className="container">
             <div
-              className="row justify-content-center mb-5 xs-mb-7"
+              className="row justify-content-center xs-mb-7"
               data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1000, "delay": 1000, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
               <div className="col-md-8 text-center">
@@ -387,11 +387,11 @@ const HomeSubPage = () => {
         </section>
 
         <section
-          className="background-position-center background-repeat"
+          className="background-position-center background-repeat p-0"
           // style=background-image: url('images/vertical-center-line-bg.svg')"
         >
           <div className="container">
-            <div className="row justify-content-center mb-5 xs-mb-7">
+            <div className="row justify-content-center xs-mb-7">
               <div
                 className="col-md-12 text-start"
                 data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1000, "delay": 2000, "staggervalue": 300, "easing": "easeOutQuad" }'

@@ -14,7 +14,7 @@ const Button = ({
     <>
       <button
         type={type}
-        className={`btn btn-${size} btn-${color} ${radiusOn} d-table d-lg-inline-block lg-mb-15px ${className}`} // 동적 클래스 구성
+        className={`btn btn-${size} btn-${color} ${radiusOn} d-inline d-lg-inline-block ${className}`} // 동적 클래스 구성
         onClick={onClick}
         disabled={disabled}
         {...props}

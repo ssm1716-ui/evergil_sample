@@ -23,7 +23,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
       className="modal modal-overlay fade show d-flex align-items-center justify-content-center bg-dark bg-opacity-50 "
       style={{ display: 'block' }}
     >
-      <div className="w-70">
+      <div className="w-40 lg-w-80 sm-w-70">
         <div className="modal-content p-0 rounded shadow-lg">{children}</div>
       </div>
     </div>
