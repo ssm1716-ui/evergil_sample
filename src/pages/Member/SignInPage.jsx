@@ -187,7 +187,7 @@ const SignInPage = () => {
                     name="google"
                     size="extra-large"
                     color="google"
-                    className="btn-large w-80 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-100 mt-20px mb-10px d-block btn-box-shadow"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -234,7 +234,7 @@ const SignInPage = () => {
                     data-value="kakao"
                     size="extra-large"
                     color="kakao"
-                    className="btn-large w-80 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-100 mt-20px mb-10px d-block btn-box-shadow"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -265,7 +265,7 @@ const SignInPage = () => {
                     data-value="naver"
                     size="extra-large"
                     color="naver"
-                    className="btn-large w-80 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-100 mt-20px mb-10px d-block btn-box-shadow"
                     onClick={handleSnsLoginAction}
                   >
                     <svg

@@ -34,7 +34,11 @@ const AnimatedSection = ({ children }) => {
     return () => observer.disconnect();
   }, []);
 
-  return <div ref={sectionRef}>{children}</div>;
+  return (
+    <div className="m-0 p-0" ref={sectionRef}>
+      {children}
+    </div>
+  );
 };
 
 export default AnimatedSection;

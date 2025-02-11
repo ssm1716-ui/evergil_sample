@@ -21,7 +21,7 @@ const ShopPage = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   return (
     <>
-      <section className="top-space-margin bg-gradient-very-light-gray pt-20px pb-20px ps-45px pe-45px sm-ps-15px sm-pe-15px"></section>
+      <section className="top-space-margin pt-20px pb-20px ps-45px pe-45px sm-ps-15px sm-pe-15px"></section>
 
       <section className="pt-60px pb-0 md-pt-30px">
         <div className="container">
@@ -135,17 +135,13 @@ const ShopPage = () => {
                 <div className="me-10px xs-me-0">
                   <a
                     href="#tab"
-                    className="section-link ls-minus-1px icon-small"
+                    className="section-link ls-minus-1px icon-small me-25px text-dark-gray fw-500 section-link xs-me-0"
                   >
-                    <i className="bi bi-star-fill text-golden-yellow"></i>
+                    <i className="bi bi-star-fill text-golden-yellow pe-5"></i>
+                    리뷰 165건
                   </a>
                 </div>
-                <a
-                  href="#tab"
-                  className="me-25px text-dark-gray fw-500 section-link xs-me-0"
-                >
-                  리뷰 165건
-                </a>
+
                 <div></div>
               </div>
               <div className="product-price mb-10px">
@@ -234,9 +230,9 @@ const ShopPage = () => {
                   </li>
                 </ul>
               </div>
-              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative">
-                <label className="text-dark-gray me-15px fw-500">수량</label>
-                <div className="quantity me-15px xs-mb-15px order-1">
+              <div className="d-flex align-items-baseline flex-row flex-sm-row mb-20px position-relative">
+                <label className="text-dark-gray me-10px fw-500">수량</label>
+                <div className="quantity me-10px xs-mb-15px order-1">
                   <button type="button" className="qty-minus">
                     -
                   </button>
@@ -253,7 +249,7 @@ const ShopPage = () => {
                 </div>
                 <Link
                   to="/cart"
-                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2"
+                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-3 order-sm w-45"
                 >
                   <span>
                     <span>
@@ -615,7 +611,7 @@ const ShopPage = () => {
                         className="btn btn-link btn-hover-animation-switch btn-extra-large text-dark-gray"
                       >
                         <span>
-                          <span className="btn-text">Show more reviews</span>
+                          <span className="btn-text">더보기</span>
                           <span className="btn-icon">
                             <i className="fa-solid fa-chevron-down"></i>
                           </span>
@@ -626,6 +622,7 @@ const ShopPage = () => {
                       </a>
                     </div>
                   </div>
+
                   {/* <div className="row justify-content-center">
                     <div className="col-12">
                       <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">

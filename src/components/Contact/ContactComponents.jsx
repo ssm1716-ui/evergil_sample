@@ -80,7 +80,7 @@ const ContactComponents = ({ message }) => {
                             explicit consent.
                           </p> */}
                     </div>
-                    <div className="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-end text-lg-start text-xl-end xs-mt-25px">
+                    <div className="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-end text-lg-center text-xl-end xs-mt-25px">
                       <input
                         id="exampleInputEmail3"
                         type="hidden"

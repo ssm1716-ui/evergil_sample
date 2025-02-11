@@ -7936,7 +7936,7 @@ header.sticky .navbar.disable-fixed {
   position: absolute;
   right: 0;
   top: 100%;
-  padding: 20px;
+  padding: 10px;
   list-style: none;
   background-color: var(--white);
   display: none;
@@ -7946,11 +7946,11 @@ header.sticky .navbar.disable-fixed {
   z-index: 9;
   text-align: left;
   margin: 0;
-  min-width: 140px;
+  min-width: 110px;
 }
 .header-language-icon .header-language .language-dropdown li a {
   color: var(--medium-gray);
-  font-size: 12px;
+  font-size: 18px;
   line-height: 28px;
   padding: 0;
 }
@@ -10421,11 +10421,12 @@ blockquote footer {
 .btn.btn-white {
   background-color: var(--white);
   color: var(--dark-gray);
+  border: 1px solid #BFBFBF;
 }
 .btn.btn-white:hover, .btn.btn-white:active {
-  background-color: transparent;
-  border-color: var(--white);
-  color: var(--white);
+  /* background-color: transparent; */
+  border-color: var(--base-color);
+  color: var(--base-color);
 }
 .btn.btn-navy {
   background-color: var(--navy);

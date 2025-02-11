@@ -21,8 +21,16 @@
     font-size: 20px;
     font-weight: 900;
     display: inline-block;
-    vertical-align: middle;
-    padding: 0 10px 0 0px;
+    padding: 0 5px 0 0px;
+}
+
+.order-text-icon::after {
+    content: "\e844";
+    font-family: "feather";
+    font-size: 20px;
+    font-weight: 900;
+    display: inline-block;
+    padding: 0 0px 0 5px;
 }
 
 

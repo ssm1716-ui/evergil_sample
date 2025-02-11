@@ -3,99 +3,91 @@ import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
 
+import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
+
 const MyPage = () => {
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="mb-1 fs-40 fw-400 pb-2 border-bottom border-2 border-black text-start text-black">
-          주문 상세 내역
-        </h6>
+        <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+          <h1 className="fw-600 text-dark-gray mb-10px">주문/상세내역</h1>
+        </div>
         <section className="pt-1 pb-1">
           <div>
-            <div className="col-12">
-              <table className="table order-products">
-                <tbody>
-                  <tr>
-                    <td className="product-thumbnail">
-                      <a href="#">
-                        <img
-                          className="cart-product-image"
-                          src={CartImage1}
-                          alt=""
-                        />
-                      </a>
-                    </td>
-                    <td className="product-name">
-                      <div className="ps-10px text-black fw-600">
-                        <span className="row">qr code</span>
-                        <span className="row">80,000원</span>
-                      </div>
-                    </td>
-                    <td className="product-btn text-end">
-                      <div>
-                        <Link
-                          to="/mypage/exchage"
-                          className="fs-20 fw-500 d-inline lh-initial ps-2"
-                        >
-                          <Button
-                            size="small"
-                            color="white"
-                            className="btn mt-10px d-inline w-30"
-                          >
-                            교환
-                          </Button>
-                        </Link>
-                        <Link
-                          to="/mypage/return"
-                          className="fs-20 fw-500 d-inline lh-initial ps-2"
-                        >
-                          <Button
-                            size="small"
-                            color="white"
-                            className="btn w-10 mt-10px d-inline w-30"
-                          >
-                            환불
-                          </Button>
-                        </Link>
-                      </div>
-                      <div>
-                        <a
-                          href="#"
-                          className="fs-20 fw-500 d-inline lh-initial ps-2"
-                        >
-                          <Button
-                            size="small"
-                            color="white"
-                            className="btn w-10 mt-10px d-inline w-30"
-                          >
-                            배송 조회
-                          </Button>
-                        </a>
-                        <a
-                          href="#"
-                          className="fs-20 fw-500 d-inline lh-initial ps-2"
-                        >
-                          <Button
-                            size="small"
-                            color="white"
-                            className="btn w-10 mt-10px d-inline w-30"
-                          >
-                            구매 확정
-                          </Button>
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="5" className="p-0">
-                      <Label
-                        text="배송완료"
-                        className="mb-1 ps-1 w-100 bg-light-medium-gray fw-600 text-black border-radius-10px"
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div
+              className="col-12"
+              // data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
+            >
+              <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
+                <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+                  <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                    <img
+                      src={ShopDetailImage3}
+                      className="w-120px mb-10px"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">
+                  <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
+                    <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                      <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
+                        QR Code
+                      </span>
+                      <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                        80,000원
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 text-center text-md-end">
+                  <div>
+                    <Link
+                      to="/mypage/exchage"
+                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                    >
+                      <span>
+                        <span className="btn-double-text" data-text="교환">
+                          교환
+                        </span>
+                      </span>
+                    </Link>
+                    <Link
+                      to="/mypage/return"
+                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                    >
+                      <span>
+                        <span className="btn-double-text" data-text="환불">
+                          환불
+                        </span>
+                      </span>
+                    </Link>
+                  </div>
+
+                  <div>
+                    <a
+                      href="#"
+                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                    >
+                      <span>
+                        <span className="btn-double-text" data-text="배송조회">
+                          배송조회
+                        </span>
+                      </span>
+                    </a>
+                    <a
+                      href="#"
+                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                    >
+                      <span>
+                        <span className="btn-double-text" data-text="구매확정">
+                          구매확정
+                        </span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="col pt-1">

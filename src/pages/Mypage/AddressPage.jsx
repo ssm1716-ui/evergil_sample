@@ -9,10 +9,10 @@ const AddressPage = () => {
 
   return (
     <>
-      <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="mb-1 fs-40 fw-400 pb-1 text-start text-black text-decoration-line-bottom">
-          배송지 관리
-        </h6>
+      <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+        <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+          <h1 className="fw-600 text-dark-gray mb-10px">배송지 관리</h1>
+        </div>
 
         <div className="container">
           <AnimatedSection>
@@ -20,7 +20,7 @@ const AddressPage = () => {
               <div className="col-lg-12 col-md-12 md-mb-30px p-0">
                 <ul
                   className="nav nav-tabs justify-content-center border-0 text-left"
-                  data-anime='{ "el": "childs", "translateY": [-30, 0], "perspective": [1200,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
+                  data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
                 >
                   <li className="nav-item mb-30px p-0">
                     <a
@@ -51,7 +51,7 @@ const AddressPage = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-lg-3 col-md-3  text-md-start text-sm-center text-center">
+                        <div className="col-lg-3 col-md-3  text-md-center text-sm-center text-center">
                           <a
                             href="#"
                             className="btn btn-white btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-100"

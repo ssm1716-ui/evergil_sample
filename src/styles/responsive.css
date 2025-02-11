@@ -21637,7 +21637,7 @@
 }
 @media (max-width: 575px) {
   .product-info .quantity {
-    margin-right: auto !important;
+    /* margin-right: auto !important; */
   }
   .product-info .wishlist {
     position: absolute;

@@ -23,7 +23,7 @@ const CartPage = () => {
   return (
     <>
       <AnimatedSection>
-        <section className="top-space-margin half-section bg-gradient-very-light-gray">
+        <section className="top-space-margin half-section">
           <div className="container">
             <div
               className="row align-items-center justify-content-center"

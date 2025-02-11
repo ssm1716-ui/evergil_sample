@@ -2,14 +2,15 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
+import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 
 const ReturnPage = () => {
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="mb-1 fs-40 fw-400 pb-2 border-bottom border-2 border-black text-start text-black">
-          반품 신청
-        </h6>
+        <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+          <h1 className="fw-600 text-dark-gray mb-10px">반품 신청</h1>
+        </div>
         <section className="p-0">
           <div className="pt-1 border-bottom border-2 border-gray">
             <section className="p-0">
@@ -26,7 +27,7 @@ const ReturnPage = () => {
                           />
                         </td>
                         <td className="product-name border-0 fw-600 text-black ps-2">
-                          <span className="row">Textured sweater</span>
+                          <span className="row">QR Code</span>
                           <span className="row">80,000원</span>
                         </td>
                       </tr>
@@ -89,7 +90,7 @@ const ReturnPage = () => {
                 radiusOn="radius-on"
                 className="btn-large submit w-30 mt-60px mb-20px d-block"
               >
-                배송비 결제
+                반품 신청
               </Button>
             </div>
           </div>

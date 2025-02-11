@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import Modal from '@/components/common/Modal/Modal';
+import AnimatedSection from '@/components/AnimatedSection';
 
 import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
+import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 
 const OrderListPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,185 +14,60 @@ const OrderListPage = () => {
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="mb-1 fs-40 fw-400 pb-2 border-bottom border-2 border-black text-start text-black">
-          주문/배송 내역
-        </h6>
-        <div className="toolbar-wrapper d-flex flex-column flex-sm-row align-items-center w-100 md-mb-30px pt-2">
-          <div className="col xs-mt-10px">
-            <ul className="fs-15 d-flex justify-content-around ps-0">
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  전체 0
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>|
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  입금/결제 0
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>|
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  배송중 0
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>|
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  배송완료 0
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>|
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  구매확정 0
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>|
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  교환 0
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>|
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  환불 0
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>|
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span className="product-category-cb"></span>
-                  취소 0
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+          <h1 className="fw-600 text-dark-gray mb-10px">주문/배송내역</h1>
         </div>
-        <div className="toolbar-wrapper d-flex flex-column flex-sm-row align-items-center w-100 mb-40px md-mb-30px">
-          <div className="col xs-mt-10px">
-            <ul className="fs-15 d-flex justify-content-start ps-0 gap-1">
-              <li>
-                <Button
-                  className="position-static border"
-                  variant="primary"
-                  color="white"
-                  size="small"
-                  radiusOn="radius-on"
-                >
-                  전체기간
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="position-static border"
-                  variant="primary"
-                  color="white"
-                  size="small"
-                  radiusOn="radius-on"
-                >
-                  1주일
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="position-static border"
-                  variant="primary"
-                  color="white"
-                  size="small"
-                  radiusOn="radius-on"
-                >
-                  1개월
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="position-static border"
-                  variant="primary"
-                  color="white"
-                  size="small"
-                  radiusOn="radius-on"
-                >
-                  3개월
-                </Button>
-              </li>
-              <li>
-                <div className="date-time row gutter-very-small ps-10px">
-                  <div className="date-icon col-xl-6 lg-mb-25px">
-                    <input
-                      className="rounded-pill py-8px"
-                      type="date"
-                      name="date"
-                      value="2024-02-01"
-                      min="2024-02-01"
-                      max="2099-12-31"
-                    />
-                  </div>
-                  {/* <div className="col-xl-1 lg-mb-25px">~</div> */}
-                  <div className="date-icon col-xl-6 lg-mb-25px">
-                    <input
-                      className="rounded-pill py-8px"
-                      type="date"
-                      name="date"
-                      value="2024-02-29"
-                      min="2024-02-29"
-                      max="2099-12-31"
-                    />
-                  </div>
-                </div>
-              </li>
-              <li className="flex-1">
-                <div className="date-time row gutter-very-small ps-10px">
-                  <div className="search-icon col-xl-12 lg-mb-25px">
-                    <input
-                      className="rounded-pill py-8px"
-                      type="search"
-                      name="search"
-                      placeholder="검색어를 입력해주세요."
-                    />
-                  </div>
-                </div>
-              </li>
-            </ul>
+        <AnimatedSection>
+          <div
+            className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row flex-wrap align-items-center w-100 mb-40px md-mb-30px pb-15px"
+            data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+          >
+            <div className="sm-mb-10px">
+              <a href="#" className="me-10px">
+                전체 4
+              </a>
+              <span className="me-10px">|</span>
+              <a href="#" className="me-10px">
+                입금/결제 0
+              </a>
+              <span className="me-10px">|</span>
+              <a href="#" className="me-10px">
+                배송중 0
+              </a>
+              <span className="me-10px">|</span>
+              <a href="#" className="me-10px">
+                배송 완료 0
+              </a>
+              <span className="me-10px">|</span>
+              <a href="#" className="me-10px">
+                구매 확정 0
+              </a>
+              <span className="me-10px">|</span>
+              <a href="#" className="me-10px">
+                교환 0
+              </a>
+              <span className="me-10px">|</span>
+              <a href="#" className="me-10px">
+                환불 0
+              </a>
+              <span className="me-10px">|</span>
+              <a href="#" className="me-10px">
+                취소 0
+              </a>
+            </div>
+            <div className="mx-auto me-md-0">
+              <select
+                className="fs-18 form-select border-1"
+                aria-label="Default sorting"
+              >
+                <option selected>전체 기간</option>
+                <option value="2">1주일</option>
+                <option value="3">1개월</option>
+                <option value="4">3개월</option>
+              </select>
+            </div>
           </div>
-        </div>
+        </AnimatedSection>
 
         {/* <div className="row row-cols-1 row-cols-lg-12 row-cols-sm-12 justify-content-center">
               <div className="col-12 text-center">
@@ -207,385 +84,235 @@ const OrderListPage = () => {
               </div>
             </div> */}
 
-        <div className="row align-items-start">
-          <div className="col-lg-12 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
-            <div className="row align-items-center">
-              <div className="col-12">
-                <table className="table order-products">
-                  <thead>
-                    <tr>
-                      <th scope="col" colSpan={2} className="fs-24">
-                        2024.02.01
-                      </th>
-                      <th
-                        scope="col"
-                        className="text-end order-detail-text-icon"
-                      >
-                        <Link to="/mypage/order-detail">주문상세</Link>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="product-thumbnail">
-                        <a href="#">
-                          <img
-                            className="cart-product-image"
-                            src={CartImage1}
-                            alt=""
-                          />
-                        </a>
-                      </td>
-                      <td className="product-name">
-                        <a href="#" className="text-dark-gray fw-500 d-block">
-                          qrcode1
-                        </a>
-                      </td>
-                      <td className="product-btn text-end">
-                        <div>
-                          <Link
-                            to="/mypage/exchage"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn mt-10px d-inline w-30"
-                            >
-                              교환
-                            </Button>
-                          </Link>
-                          <Link
-                            to="/mypage/return"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              환불
-                            </Button>
-                          </Link>
-                        </div>
-                        <div>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              배송 조회
-                            </Button>
-                          </a>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              구매 확정
-                            </Button>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="p-0">
-                        <Label
-                          text="배송확정"
-                          className="mb-1 ps-1 w-100 bg-light-medium-gray fw-600 text-black border-radius-10px"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="product-thumbnail">
-                        <a href="#">
-                          <img
-                            className="cart-product-image"
-                            src={CartImage1}
-                            alt=""
-                          />
-                        </a>
-                      </td>
-                      <td className="product-name">
-                        <a href="#" className="text-dark-gray fw-500 d-block">
-                          qrcode1
-                        </a>
-                      </td>
-                      <td className="product-btn text-end">
-                        <div>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              배송 조회
-                            </Button>
-                          </a>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                              onClick={() => setIsModalOpen(true)}
-                            >
-                              리뷰 쓰기
-                            </Button>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="p-0">
-                        <Label
-                          text="구매확정"
-                          className="mb-1 ps-1 w-100 bg-light-medium-gray fw-600 text-black border-radius-10px"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="product-thumbnail">
-                        <a href="#">
-                          <img
-                            className="cart-product-image"
-                            src={CartImage1}
-                            alt=""
-                          />
-                        </a>
-                      </td>
-                      <td className="product-name">
-                        <a href="#" className="text-dark-gray fw-500 d-block">
-                          qrcode1
-                        </a>
-                      </td>
-                      <td className="product-btn text-end">
-                        <div>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn mt-10px d-inline w-30"
-                            >
-                              결제 취소
-                            </Button>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="p-0">
-                        <Label
-                          text="결제 완료"
-                          className="mb-1 ps-1 w-100 bg-light-medium-gray fw-600 text-black border-radius-10px"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table className="table order-products">
-                  <thead>
-                    <tr>
-                      <th scope="col" colSpan={2} className="fs-24">
-                        2024.02.02
-                      </th>
-                      <th
-                        scope="col"
-                        className="text-end order-detail-text-icon"
-                      >
-                        <Link to="/order-detail">주문상세</Link>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="product-thumbnail">
-                        <a href="#">
-                          <img
-                            className="cart-product-image"
-                            src={CartImage1}
-                            alt=""
-                          />
-                        </a>
-                      </td>
-                      <td className="product-name">
-                        <a href="#" className="text-dark-gray fw-500 d-block">
-                          qrcode1
-                        </a>
-                      </td>
-                      <td className="product-btn text-end">
-                        <div>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn mt-10px d-inline w-30"
-                            >
-                              교환
-                            </Button>
-                          </a>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              환불
-                            </Button>
-                          </a>
-                        </div>
-                        <div>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              배송 조회
-                            </Button>
-                          </a>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              구매 확정
-                            </Button>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="p-0">
-                        <Label
-                          text="배송확정"
-                          className="mb-1 ps-1 w-100 bg-light-medium-gray fw-600 text-black border-radius-10px"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="product-thumbnail">
-                        <a href="#">
-                          <img
-                            className="cart-product-image"
-                            src={CartImage1}
-                            alt=""
-                          />
-                        </a>
-                      </td>
-                      <td className="product-name">
-                        <a href="#" className="text-dark-gray fw-500 d-block">
-                          qrcode1
-                        </a>
-                      </td>
-                      <td className="product-btn text-end">
-                        <div>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              배송 조회
-                            </Button>
-                          </a>
-                          <Link
-                            to="/mypage/my-review"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn w-10 mt-10px d-inline w-30"
-                            >
-                              리뷰 보기
-                            </Button>
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="p-0">
-                        <Label
-                          text="구매확정"
-                          className="mb-1 ps-1 w-100 bg-light-medium-gray fw-600 text-black border-radius-10px"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="product-thumbnail">
-                        <a href="#">
-                          <img
-                            className="cart-product-image"
-                            src={CartImage1}
-                            alt=""
-                          />
-                        </a>
-                      </td>
-                      <td className="product-name">
-                        <a href="#" className="text-dark-gray fw-500 d-block">
-                          qrcode1
-                        </a>
-                      </td>
-                      <td className="product-btn text-end">
-                        <div>
-                          <a
-                            href="#"
-                            className="fs-20 fw-500 d-inline lh-initial ps-2"
-                          >
-                            <Button
-                              size="small"
-                              color="white"
-                              className="btn mt-10px d-inline w-30"
-                            >
-                              결제 취소
-                            </Button>
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="p-0">
-                        <Label
-                          text="결제 완료"
-                          className="mb-1 ps-1 w-100 bg-light-medium-gray fw-600 text-black border-radius-10px"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+        <div className="row justify-content-center">
+          <div
+            className="col-12"
+            // data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
+          >
+            <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
+              <div className="col-12 d-flex justify-content-between md-mb-15px">
+                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                  구매완료
+                </span>
+                <Link to="/mypage/order-detail">
+                  <span className="fw-500 text-dark-gray fs-18 ls-minus-05px order-text-icon">
+                    주문상세
+                  </span>
+                </Link>
+              </div>
+              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                  <img src={ShopDetailImage3} className="w-120px" alt="" />
+                </div>
+              </div>
+              <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">
+                <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
+                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                    <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      QR Code
+                    </span>
+                    <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      80,000원
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6 text-center text-md-end">
+                <div>
+                  <Link
+                    to="/mypage/exchage"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="교환">
+                        교환
+                      </span>
+                    </span>
+                  </Link>
+                  <Link
+                    to="/mypage/return"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="환불">
+                        환불
+                      </span>
+                    </span>
+                  </Link>
+                </div>
+
+                <div>
+                  <a
+                    href="#"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="배송조회">
+                        배송조회
+                      </span>
+                    </span>
+                  </a>
+                  <a
+                    href="#"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="구매확정">
+                        구매확정
+                      </span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
+              <div className="col-12 d-flex justify-content-between md-mb-15px">
+                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                  배송완료
+                </span>
+                <Link to="/mypage/order-detail">
+                  <span className="fw-500 text-dark-gray fs-18 ls-minus-05px order-text-icon">
+                    주문상세
+                  </span>
+                </Link>
+              </div>
+              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                  <img src={ShopDetailImage3} className="w-120px" alt="" />
+                </div>
+              </div>
+              <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px ">
+                <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
+                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                    <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      QR Code
+                    </span>
+                    <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      80,000원
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6 text-center text-md-end">
+                <div>
+                  <a
+                    href="#"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="배송조회">
+                        배송조회
+                      </span>
+                    </span>
+                  </a>
+                  <a
+                    href="#"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="리뷰보기">
+                        리뷰보기
+                      </span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
+              <div className="col-12 d-flex justify-content-between md-mb-15px">
+                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                  구매확정
+                </span>
+                <Link to="/mypage/order-detail">
+                  <span className="fw-500 text-dark-gray fs-18 ls-minus-05px order-text-icon">
+                    주문상세
+                  </span>
+                </Link>
+              </div>
+              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                  <img src={ShopDetailImage3} className="w-120px" alt="" />
+                </div>
+              </div>
+              <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px ">
+                <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
+                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                    <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      QR Code
+                    </span>
+                    <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      80,000원
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6 text-center text-md-end">
+                <div>
+                  <a
+                    href="#"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="배송조회">
+                        배송조회
+                      </span>
+                    </span>
+                  </a>
+                  <a
+                    href="#"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="리뷰쓰기">
+                        리뷰보기
+                      </span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="row mx-0 pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
+              <div className="col-12 d-flex justify-content-between md-mb-15px">
+                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                  결제완료
+                </span>
+                <Link to="/mypage/order-detail">
+                  <span className="fw-500 text-dark-gray fs-18 ls-minus-05px order-text-icon">
+                    주문상세
+                  </span>
+                </Link>
+              </div>
+              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                  <img src={ShopDetailImage3} className="w-120px" alt="" />
+                </div>
+              </div>
+              <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px ">
+                <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
+                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                    <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      QR Code
+                    </span>
+                    <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                      80,000원
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6 text-center text-md-end">
+                <div>
+                  <a
+                    href="#"
+                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                  >
+                    <span>
+                      <span className="btn-double-text" data-text="결제 취소">
+                        결제 취소
+                      </span>
+                    </span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -627,95 +354,77 @@ const OrderListPage = () => {
               </ul>
             </div> */}
       </div>
-
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="modal-header bg-base-color p-2">
-          <h5 className="modal-title text-dark fw-bold">리뷰 쓰기</h5>
-          <button
-            type="button"
-            className="btn-close"
-            onClick={() => setIsModalOpen(false)}
-          ></button>
-        </div>
-
-        <div className="">
-          {/* QR 프레임 */}
-          <div className="pt-1 ps-2 border-bottom border-10 border-gray">
-            <section className="p-0">
-              <div className="">
-                <div className="col-12">
-                  <table className="table cart-products">
-                    <tbody>
-                      <tr>
-                        <td className="product-thumbnail border-0">
-                          <img
-                            className="cart-product-image"
-                            src={CartImage1}
-                            alt=""
-                          />
-                        </td>
-                        <td className="product-name border-0 fw-600 text-black ps-2">
-                          <span className="row">Textured sweater</span>
-                          <span className="row">80,000원</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+        <div className="row justify-content-center">
+          <div className="col-12">
+            <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
+              <div className="row justify-content-center mb-30px sm-mb-10px">
+                <div className="col-md-9 text-center">
+                  <h4 className="text-dark-gray fw-500 mb-15px">리뷰 쓰기</h4>
+                  <button
+                    type="button"
+                    className="btn-close position-absolute top-10px right-10px"
+                    onClick={() => setIsModalOpen(false)}
+                  ></button>
                 </div>
               </div>
-            </section>
-          </div>
+              <form
+                action="email-templates/contact-form.php"
+                method="post"
+                className="row contact-form-style-02"
+              >
+                <div className="col-lg-12 mb-20px text-center">
+                  <h6 className="text-dark-gray fw-500 mb-15px">상품 만족도</h6>
 
-          {/* 별점 평가 */}
-          <div className="text-center py-5 border-bottom border-3 border-gray ">
-            <h6 className="text-black fw-600">EverLink QR 만족도</h6>
-            {[...Array(5)].map((_, index) => (
-              <i
-                key={index}
-                className="bi bi-star-fill fs-70 pe-1 text-yellow"
-              ></i>
-            ))}
-          </div>
+                  <div>
+                    <span className="ls-minus-1px icon-large d-block mt-20px md-mt-0">
+                      <i className="feather icon-feather-star text-golden-yellow"></i>
+                      <i className="feather icon-feather-star text-golden-yellow"></i>
+                      <i className="feather icon-feather-star text-golden-yellow"></i>
+                      <i className="feather icon-feather-star text-golden-yellow"></i>
+                      <i className="feather icon-feather-star text-golden-yellow"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-12 mb-20px">
+                  <label className="form-label mb-15px">리뷰 작성</label>
+                  <textarea
+                    className="border-radius-4px form-control"
+                    cols="40"
+                    rows="4"
+                    name="comment"
+                    placeholder="리뷰를 남겨주세요."
+                  ></textarea>
+                </div>
 
-          {/* 리뷰 작성란 */}
-          <form className="mb-1 p-3 text-black">
-            <label className="fs-28 fw-600">리뷰 작성란</label>
+                <div className="col-md-12 mb-20px">
+                  <div className="border-1 border-dashed rounded mt-1 p-1 text-center">
+                    <i className="bi bi-camera fs-5 me-2"></i>
+                    사진/동영상 첨부하기
+                  </div>
+                </div>
 
-            <textarea
-              className="border-radius-10px mt-1 flex-1"
-              rows="5"
-              cols="5"
-              placeholder="최소 10자 이상 입력해주세요."
-            ></textarea>
-
-            {/* 파일 첨부 */}
-            <div className="border-1 border-dashed rounded mt-1 p-1 text-center">
-              <i className="bi bi-camera fs-5 me-2"></i>
-              사진/동영상 첨부하기
+                <div className="col-lg-112 text-center text-lg-center">
+                  <input type="hidden" name="redirect" value="" />
+                  <button
+                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                    type="submit"
+                  >
+                    확인
+                  </button>
+                  <button
+                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    type="submit"
+                  >
+                    취소
+                  </button>
+                </div>
+                <div className="col-12">
+                  <div className="form-results mt-20px d-none"></div>
+                </div>
+              </form>
             </div>
-
-            {/* 이미지 업로드 */}
-            <div className="pt-15"></div>
-          </form>
-        </div>
-
-        <div className="modal-footer justify-content-center ">
-          <Button
-            size="extra-large"
-            radiusOn="radius-on"
-            className="btn w-20 px-5 me-5"
-          >
-            등록
-          </Button>
-          <Button
-            size="extra-large"
-            radiusOn="radius-on"
-            color="profile"
-            className="btn w-20 px-5"
-            onClick={() => setIsModalOpen(false)}
-          >
-            취소
-          </Button>
+          </div>
         </div>
       </Modal>
     </>

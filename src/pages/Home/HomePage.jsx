@@ -63,7 +63,7 @@ const HomeSubPage = () => {
           <div className="container">
             <div className="row align-items-center mb-12 md-mb-17 xs-mb-25">
               <div
-                className="col-lg-5 md-mb-50px p-0"
+                className="col-lg-5 md-mb-50px p-0 xs-p-2"
                 data-anime='{ "el": "childs", "opacity": [0, 1], "rotateY": [-90, 0], "rotateZ": [-10, 0], "translateY": [80, 0], "translateZ": [50, 0], "staggervalue": 200, "duration": 800, "delay": 200, "easing": "easeOutCirc" }'
               >
                 <h2 className="text-dark-gray ls-minus-2px">에버링크 QR</h2>

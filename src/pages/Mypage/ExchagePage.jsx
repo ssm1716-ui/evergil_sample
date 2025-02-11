@@ -7,9 +7,9 @@ const ExchagePage = () => {
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="mb-1 fs-40 fw-400 pb-2 border-bottom border-2 border-black text-start text-black">
-          교환 신청
-        </h6>
+        <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+          <h1 className="fw-600 text-dark-gray mb-10px">교환 신청</h1>
+        </div>
         <section className="p-0">
           <div className="pt-1 border-bottom border-2 border-gray">
             <section className="p-0">
@@ -89,7 +89,7 @@ const ExchagePage = () => {
                 radiusOn="radius-on"
                 className="btn-large submit w-30 mt-60px mb-20px d-block"
               >
-                배송비 결제
+                교환 신청
               </Button>
             </div>
           </div>
