@@ -12,3 +12,14 @@ export const postPasswordRequest = async (param) => {
     }
 };
 
+
+//문의하기 요청
+export const postInquiryRequest = async (param) => {
+    try {
+        const res = await axiosInstance.post('/guest/inquiry', param);
+        return res.status;
+    } catch (err) {
+        console.error(err);
+    }
+};
+

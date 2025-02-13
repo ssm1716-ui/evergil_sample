@@ -143,10 +143,10 @@ const PrivacyPolicyPage = () => {
 
   `;
   return (
-    <section className="bg-base-default-color">
-      <h4 className="mt-2 mb-10px py-3 fw-800 text-black bg-white text-center">
+    <section className="top-space-margin half-section">
+      <h1 className="fw-600 text-dark-gray mb-10px text-center">
         개인정보처리방침
-      </h4>
+      </h1>
       <pre
         className="col-lg-6 bg-white offset-lg-3"
         style={{

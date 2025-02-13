@@ -23,24 +23,72 @@ const MyReviewPage = () => {
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
           <h1 className="fw-600 text-dark-gray mb-10px">내가 쓴 리뷰</h1>
         </div>
-        <AnimatedSection>
-          <div
-            className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row align-items-center w-100 mb-40px md-mb-30px pb-15px"
-            data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
-          >
-            <div className="mx-auto me-md-0">
-              <select
-                className="fs-18 form-select border-1"
-                aria-label="Default sorting"
-              >
-                <option selected>전체 기간</option>
-                <option value="2">1주일</option>
-                <option value="3">1개월</option>
-                <option value="4">3개월</option>
-              </select>
-            </div>
+        <div
+          className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row align-items-center w-100 mb-40px md-mb-30px pb-15px"
+          data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+        >
+          <div className="mx-auto me-md-0 col tab-style-01">
+            <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 fw-600 mb-3">
+              <li className="nav-item mt-10px">
+                <a
+                  className="nav-link active"
+                  data-bs-toggle="tab"
+                  href="#tab_sec1"
+                >
+                  전체기간
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec2">
+                  1주일
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec3">
+                  1개월
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec4">
+                  3개월
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <input
+                  className="border-1 nav-link text-center"
+                  type="date"
+                  name="date"
+                  value="2024-02-06"
+                  min="2024-01-01"
+                  max="2099-12-31"
+                  aria-label="date"
+                />
+              </li>
+              <li className="nav-item mt-10px">
+                <input
+                  className="border-1 nav-link text-center"
+                  type="date"
+                  name="date"
+                  value="2024-02-13"
+                  min="2024-01-01"
+                  max="2099-12-31"
+                  aria-label="date"
+                />
+              </li>
+              <li className="nav-item mt-10px flex-1">
+                <div className="position-relative">
+                  <input
+                    className="border-1 nav-link "
+                    type="text"
+                    name="name"
+                    placeholder="검색어를 입력 해주세요."
+                  />
+                  <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                </div>
+              </li>
+            </ul>
           </div>
-        </AnimatedSection>
+        </div>
 
         <div className="row g-0 mb-4 md-mb-35px">
           <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">

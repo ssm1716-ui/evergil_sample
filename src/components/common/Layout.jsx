@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 
 import Header from '@/components/common/Header/Header';
 import Footer from '@/components/common/Footer/Footer';
+import GlobalAnimeHandler from '@/components/GlobalAnimeHandler';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -12,7 +13,10 @@ const Layout = ({ children }) => {
   return (
     <>
       {!hideLayout && <Header />}
-      <main>{children}</main>
+      <main>
+        <GlobalAnimeHandler />
+        {children}
+      </main>
       {!hideLayout && <Footer />}
     </>
   );

@@ -23,9 +23,9 @@ import ReturnPage from '@/pages/Mypage/ReturnPage';
 import MyContactPage from '@/pages/Mypage/MyContactPage';
 import FaqPage from '@/pages/Mypage/FaqPage';
 import MyInfoPage from '@/pages/Mypage/MyInfoPage';
-import AddressPage from './pages/Mypage/AddressPage';
-import CheckOutPage from './pages/Order/CheckOutPage';
-import CompletePage from './pages/Order/CompletePage';
+import AddressPage from '@/pages/Mypage/AddressPage';
+import CheckOutPage from '@/pages/Order/CheckOutPage';
+import CompletePage from '@/pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
@@ -37,9 +37,6 @@ const App = () => {
   return (
     <ErrorBoundary>
       <Router>
-        <Routes>
-          <Route path="/sub" element={<HomeSubPage />} />
-        </Routes>
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -48,30 +45,38 @@ const App = () => {
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/password-forgot" element={<ForgotPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckOutPage />} />
+            <Route path="/complete" element={<CompletePage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/check-point" element={<CheckPointPage />} />
+            <Route path="/test" element={<TestPage />} />
 
             {/* 프로필 영역 start*/}
             <Route
               path="/profile"
               element={
-                // <ProtectedRoute>
-                <ProfilePage />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/create-profile"
               element={
-                // <ProtectedRoute>
-                <CreateProfilePage />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <CreateProfilePage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/edit-profile"
               element={
-                // <ProtectedRoute>
-                <EditProfilePage />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <EditProfilePage />
+                </ProtectedRoute>
               }
             />
 
@@ -97,15 +102,6 @@ const App = () => {
               <Route path="address" element={<AddressPage />} />
             </Route>
             {/* 마이페이지 영억 end*/}
-
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckOutPage />} />
-            <Route path="/complete" element={<CompletePage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/check-point" element={<CheckPointPage />} />
-            <Route path="/test" element={<TestPage />} />
           </Routes>
         </Layout>
       </Router>

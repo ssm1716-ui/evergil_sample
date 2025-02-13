@@ -9,6 +9,7 @@ import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
 import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 
 const OrderListPage = () => {
+  const [orderProducts, setorderProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -17,57 +18,156 @@ const OrderListPage = () => {
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
           <h1 className="fw-600 text-dark-gray mb-10px">주문/배송내역</h1>
         </div>
-        <AnimatedSection>
-          <div
-            className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row flex-wrap align-items-center w-100 mb-40px md-mb-30px pb-15px"
-            data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
-          >
-            <div className="sm-mb-10px">
-              <a href="#" className="me-10px">
-                전체 4
-              </a>
-              <span className="me-10px">|</span>
-              <a href="#" className="me-10px">
-                입금/결제 0
-              </a>
-              <span className="me-10px">|</span>
-              <a href="#" className="me-10px">
-                배송중 0
-              </a>
-              <span className="me-10px">|</span>
-              <a href="#" className="me-10px">
-                배송 완료 0
-              </a>
-              <span className="me-10px">|</span>
-              <a href="#" className="me-10px">
-                구매 확정 0
-              </a>
-              <span className="me-10px">|</span>
-              <a href="#" className="me-10px">
-                교환 0
-              </a>
-              <span className="me-10px">|</span>
-              <a href="#" className="me-10px">
-                환불 0
-              </a>
-              <span className="me-10px">|</span>
-              <a href="#" className="me-10px">
-                취소 0
-              </a>
-            </div>
-            <div className="mx-auto me-md-0">
-              <select
-                className="fs-18 form-select border-1"
-                aria-label="Default sorting"
-              >
-                <option selected>전체 기간</option>
-                <option value="2">1주일</option>
-                <option value="3">1개월</option>
-                <option value="4">3개월</option>
-              </select>
-            </div>
+        <div
+          className="toolbar-wrapper border-color-extra-medium-gray d-flex flex-column flex-md-row flex-wrap align-items-center w-100 mb-10px"
+          data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+        >
+          <div className="sm-mb-10px fs-18px tab-style-04">
+            <ul className="nav nav-tabs border-0 justify-content-start fw-500 fs-16 md-fs-16">
+              <li className="nav-item">
+                <a
+                  data-bs-toggle="tab"
+                  href="#tab_five1"
+                  className="nav-link active"
+                >
+                  전체 4<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_five2">
+                  입금/결제 0<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_five3">
+                  배송중 0<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
+                  배송완료 0<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
+                  구매확정 0<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
+                  교환 0<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
+                  환불 0<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
+                  취소 0<span className="tab-border bg-dark-gray"></span>
+                </a>
+              </li>
+            </ul>
+            {/* <a href="#" className="me-10px">
+              전체 4
+            </a>
+            <span className="me-10px">|</span>
+            <a href="#" className="me-10px">
+              입금/결제 0
+            </a>
+            <span className="me-10px">|</span>
+            <a href="#" className="me-10px">
+              배송중 0
+            </a>
+            <span className="me-10px">|</span>
+            <a href="#" className="me-10px">
+              배송 완료 0
+            </a>
+            <span className="me-10px">|</span>
+            <a href="#" className="me-10px">
+              구매 확정 0
+            </a>
+            <span className="me-10px">|</span>
+            <a href="#" className="me-10px">
+              교환 0
+            </a>
+            <span className="me-10px">|</span>
+            <a href="#" className="me-10px">
+              환불 0
+            </a>
+            <span className="me-10px">|</span>
+            <a href="#" className="me-10px">
+              취소 0
+            </a> */}
           </div>
-        </AnimatedSection>
+        </div>
+        <div
+          className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row flex-wrap align-items-center w-100 mb-40px md-mb-30px pb-15px"
+          data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+        >
+          <div className="mx-auto me-md-0 col tab-style-01">
+            <ul className="nav nav-tabs justify-content-start border-0 text-center fs-18 fw-600 mb-3">
+              <li className="nav-item mt-10px">
+                <a
+                  className="nav-link active"
+                  data-bs-toggle="tab"
+                  href="#tab_sec1"
+                >
+                  전체기간
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec2">
+                  1주일
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec3">
+                  1개월
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec4">
+                  3개월
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <input
+                  className="border-1 nav-link text-center"
+                  type="date"
+                  name="date"
+                  value="2024-02-06"
+                  min="2024-01-01"
+                  max="2099-12-31"
+                  aria-label="date"
+                />
+              </li>
+              <li className="nav-item mt-10px">
+                <input
+                  className="border-1 nav-link text-center"
+                  type="date"
+                  name="date"
+                  value="2024-02-13"
+                  min="2024-01-01"
+                  max="2099-12-31"
+                  aria-label="date"
+                />
+              </li>
+              <li className="nav-item mt-10px flex-1">
+                <div className="position-relative">
+                  <input
+                    className="border-1 nav-link "
+                    type="text"
+                    name="name"
+                    placeholder="검색어를 입력 해주세요."
+                  />
+                  <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
 
         {/* <div className="row row-cols-1 row-cols-lg-12 row-cols-sm-12 justify-content-center">
               <div className="col-12 text-center">
@@ -265,7 +365,7 @@ const OrderListPage = () => {
                   >
                     <span>
                       <span className="btn-double-text" data-text="리뷰쓰기">
-                        리뷰보기
+                        리뷰쓰기
                       </span>
                     </span>
                   </a>
@@ -357,7 +457,7 @@ const OrderListPage = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="row justify-content-center">
           <div className="col-12">
-            <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
+            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
                   <h4 className="text-dark-gray fw-500 mb-15px">리뷰 쓰기</h4>
@@ -406,18 +506,15 @@ const OrderListPage = () => {
 
                 <div className="col-lg-112 text-center text-lg-center">
                   <input type="hidden" name="redirect" value="" />
-                  <button
-                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
-                    type="submit"
-                  >
+                  <Button className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1">
                     확인
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
-                    type="submit"
+                    onClick={() => setIsModalOpen(false)}
                   >
                     취소
-                  </button>
+                  </Button>
                 </div>
                 <div className="col-12">
                   <div className="form-results mt-20px d-none"></div>

@@ -5,13 +5,13 @@ import FaqComponents from '@/components/Faq/FaqComponents';
 const FaqPage = () => {
   return (
     <>
-      <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
-        <h6 className="fs-40 fw-400  border-bottom border-2 border-black text-start text-black">
-          FAQ
+      <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+        <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+          <h1 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h1>
           <p className="fs-16 fw-400 text-dark-gray">
             공통적인 질문사항에 대한 대답
           </p>
-        </h6>
+        </div>
 
         <section
           className="background-position-center background-repeat p-0"

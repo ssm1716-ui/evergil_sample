@@ -4,6 +4,7 @@ import { loginSuccess } from '@/state/slices/authSlices';
 import {
   postSignUp,
   getVerificationCodeVerify,
+  getVerificationEmailVerify,
   getVerificationEmailResend,
   getAccessToken,
 } from '@/api/memberApi';
@@ -25,9 +26,9 @@ import signup from '@/assets/images/signup.png';
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SignUpPage = () => {
+  const inputRefs = useRef([]);
   const [step, byStep] = useState(0);
   const dispatch = useDispatch();
-
   const [member, setMember] = useState({
     loginEmail: '',
     password: '',
@@ -35,15 +36,8 @@ const SignUpPage = () => {
     displayName: '',
     phoneNumber: '',
   });
-  const [verificationCode, setVerificationCode] = useState({
-    first_code: '',
-    secod_code: '',
-    third_code: '',
-    fourth_code: '',
-    fifth_code: '',
-    verification_code: '',
-  });
-
+  const [errors, setErrors] = useState({});
+  const [otp, setOtp] = useState(['', '', '', '', '']);
   const checkboxGroupRef = useRef([]);
 
   // 약관 전체 동의하기 (전체 선택, 전체 해제)
@@ -75,68 +69,112 @@ const SignUpPage = () => {
 
   //2스텝- 회원가입 정보 검사 및 필수 체크
   const handleMemberInfoChange = (e) => {
-    //핸드폰번호는 하이픈 제거
+    const { name, value } = e.target;
 
+    //핸드폰번호는 하이픈 제거
     let removeHyphensPhoneNumber;
-    if (e.target.name === 'phoneNumber') {
-      removeHyphensPhoneNumber = removeHyphens(e.target.value);
+    if (name === 'phoneNumber') {
+      removeHyphensPhoneNumber = removeHyphens(value);
     }
 
     setMember({
       ...member,
-      [e.target.name]:
-        e.target.name === 'phoneNumber'
-          ? removeHyphensPhoneNumber
-          : e.target.value,
+      [name]: name === 'phoneNumber' ? removeHyphensPhoneNumber : value,
     });
   };
 
-  const secondStep = async () => {
-    if (member.password !== member.passwordConfirm) {
-      alert('비밀번호가 동일하지 않습니다. 다시 입력 해주세요.');
-      return;
-    }
-    if (!isValidEmail(member.loginEmail)) {
-      alert('이메일을 다시 입력 해 주세요.');
-      return;
-    }
-    if (!isValidPassword(member.password)) {
-      alert('패스워드를 다시 입력 해 주세요.');
-      return;
-    }
-    if (!isValidName(member.displayName)) {
-      alert('이름을 다시 입력 해 주세요.');
-      return;
-    }
-    if (!isValidPhoneNumber(member.phoneNumber)) {
-      alert('핸드폰번호를 다시 입력 해 주세요.');
-      return;
+  //이메일 중복체크
+  const handleEmailChecked = async (e) => {
+    const confirmEmail = e.target.value;
+    let newErrors = {};
+
+    if (!isValidEmail(confirmEmail)) {
+      newErrors.loginEmail = '올바른 이메일 형식이 아닙니다.';
     }
 
-    const res = await postSignUp(member);
-    if (res !== 201) {
-      alert('회원가입 시 통신 에러가 발생하였습니다.');
-      return;
+    const res = await getVerificationEmailVerify(confirmEmail);
+
+    if (res.status !== 200) {
+      newErrors.loginEmail = res.data.message;
+    }
+    setErrors(newErrors);
+  };
+
+  // 유효성 검사 함수
+  const validate = () => {
+    let newErrors = {};
+    if (!member.loginEmail) {
+      newErrors.loginEmail = '이메일을 입력 해주세요.';
+    } else if (!isValidEmail(member.loginEmail)) {
+      newErrors.loginEmail = '올바른 이메일 형식이 아닙니다.';
     }
 
-    nextStep(step + 1);
+    if (!member.password) {
+      newErrors.password = '패스워드를 입력 해주세요.';
+    } else if (member.password.length < 8) {
+      newErrors.password = '비밀번호는 8자 이상이어합야 니다.';
+    }
+
+    if (!member.passwordConfirm) {
+      newErrors.passwordConfirm = '패스워드 확인을 입력 해주세요.';
+    } else if (member.password !== member.passwordConfirm) {
+      newErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
+    }
+
+    if (!member.displayName) {
+      newErrors.displayName = '이름을 입력 해주세요.';
+    }
+
+    if (!member.phoneNumber) {
+      newErrors.phoneNumber = '휴대폰 번호를 입력해주세요.';
+    } else if (!/^\d{10,11}$/.test(member.phoneNumber)) {
+      newErrors.phoneNumber = '올바른 휴대폰 번호를 입력해주세요.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const secondStep = async (e) => {
+    e.preventDefault();
+    if (validate()) {
+      const res = await postSignUp(member);
+      if (res !== 201) {
+        alert('회원가입 시 통신 에러가 발생하였습니다.');
+        return;
+      }
+
+      setErrors({});
+      nextStep(step + 1);
+    }
+
+    // const res = await postSignUp(member);
+    // if (res !== 201) {
+    //   alert('회원가입 시 통신 에러가 발생하였습니다.');
+    //   return;
+    // }
+
+    // nextStep(step + 1);
   };
 
   //3스텝- 이메일 검증번호 체크
-  const handleVerificationCodeChange = (e) => {
-    setVerificationCode({
-      ...verificationCode,
-      [e.target.name]: e.target.value,
-    });
+  const handleVerificationCodeChange = (index, e) => {
+    const value = e.target.value;
+
+    if (isInteger(value) || value === '') {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      // 입력 후 다음 input으로 이동
+      if (value !== '' && index < 4) {
+        inputRefs.current[index + 1].focus();
+      }
+    }
   };
 
   const thirdStep = async () => {
-    const concatCode =
-      verificationCode.first_code +
-      verificationCode.secod_code +
-      verificationCode.third_code +
-      verificationCode.fourth_code +
-      verificationCode.fifth_code;
+    const concatCode = otp.join('');
 
     if (!isInteger(concatCode) || concatCode.length !== 5) {
       alert('올바른 인증코드를 입력해주세요.');
@@ -252,65 +290,87 @@ const SignUpPage = () => {
           <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
             <div className="col contact-form-style-04">
               <div className="py-5 text-center">
-                <a className="navbar-brand" href="demo-hotel-and-resort.html">
-                  <img src={signup} alt="" className="default-logo" />
-                </a>
+                <img src={signup} alt="" className="default-logo" />
                 <form className="mt-50px">
                   <label className="text-dark-gray mb-10px fw-500 d-block text-start">
                     이메일<span className="text-red">*</span>
                   </label>
                   <input
-                    className="mb-20px bg-very-light-white form-control required"
-                    type="text"
+                    className="mb-5px bg-very-light-white form-control required"
+                    type="email"
                     name="loginEmail"
                     value={member.loginEmail}
                     onChange={handleMemberInfoChange}
+                    onBlur={handleEmailChecked}
                     placeholder="이메일을 입력해 주세요."
                   />
+                  {errors.loginEmail && (
+                    <p className="text-danger text-start">
+                      {errors.loginEmail}
+                    </p>
+                  )}
                   <label className="text-dark-gray mb-10px fw-500 d-block text-start">
                     비밀번호<span className="text-red">*</span>
                   </label>
                   <input
-                    className="mb-20px bg-very-light-white form-control required"
+                    className="mb-5px bg-very-light-white form-control required"
                     type="password"
                     name="password"
                     value={member.password}
                     onChange={handleMemberInfoChange}
                     placeholder="비밀번호 영문, 숫자, 특수문자 포함 8자 이상 입력해 주세요."
                   />
+                  {errors.password && (
+                    <p className="text-danger text-start">{errors.password}</p>
+                  )}
                   <label className="text-dark-gray mb-10px fw-500 d-block text-start">
                     비밀번호 확인<span className="text-red">*</span>
                   </label>
                   <input
-                    className="mb-20px bg-very-light-white form-control required"
+                    className="mb-5px bg-very-light-white form-control required"
                     type="password"
                     name="passwordConfirm"
                     value={member.passwordConfirm}
                     onChange={handleMemberInfoChange}
                     placeholder="비밀번호 영문, 숫자, 특수문자 포함 8자 이상 입력해 주세요."
                   />
+                  {errors.passwordConfirm && (
+                    <p className="text-danger text-start">
+                      {errors.passwordConfirm}
+                    </p>
+                  )}
                   <label className="text-dark-gray mb-10px fw-500 d-block text-start">
                     이름<span className="text-red">*</span>
                   </label>
                   <input
-                    className="mb-20px bg-very-light-white form-control required"
+                    className="mb-5px bg-very-light-white form-control required"
                     type="text"
                     name="displayName"
                     value={member.displayName}
                     onChange={handleMemberInfoChange}
                     placeholder="이름을 입력해 주세요."
                   />
+                  {errors.displayName && (
+                    <p className="text-danger text-start">
+                      {errors.displayName}
+                    </p>
+                  )}
                   <label className="text-dark-gray mb-10px fw-500 d-block text-start">
-                    휴대폰 번호<span className="text-red">*</span>
+                    핸드폰 번호<span className="text-red">*</span>
                   </label>
                   <input
-                    className="mb-20px bg-very-light-white form-control required"
+                    className="mb-5px bg-very-light-white form-control required"
                     type="text"
                     name="phoneNumber"
                     value={member.phoneNumber}
                     onChange={handleMemberInfoChange}
-                    placeholder="휴대폰 번호를 입력해주세요."
+                    placeholder="핸드폰 번호를 입력해주세요."
                   />
+                  {errors.phoneNumber && (
+                    <p className="text-danger text-start">
+                      {errors.phoneNumber}
+                    </p>
+                  )}
                   <input type="hidden" name="redirect" value="" />
 
                   <Button
@@ -332,9 +392,7 @@ const SignUpPage = () => {
           <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
             <div className="col contact-form-style-04">
               <div className="mt-20 py-5 text-center ">
-                <a className="navbar-brand" href="demo-hotel-and-resort.html">
-                  <img src={signup} alt="" className="default-logo" />
-                </a>
+                <img src={signup} alt="" className="default-logo" />
                 <form method="post" className="mt-20">
                   <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px">
                     이메일 인증하기
@@ -344,7 +402,22 @@ const SignUpPage = () => {
                     인증 코드를 확인하세요
                   </h6>
                   <div className="d-flex justify-content-center gap-3">
-                    <input
+                    {otp.map((value, index) => (
+                      <input
+                        key={index}
+                        className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
+                        type="text"
+                        name="first_code"
+                        maxLength="1"
+                        value={value}
+                        // onChange={handleVerificationCodeChange}
+                        onChange={(e) => handleVerificationCodeChange(index, e)}
+                        // onKeyDown={(e) => handleKeyDown(index, e)}
+                        ref={(el) => (inputRefs.current[index] = el)}
+                      />
+                    ))}
+
+                    {/* <input
                       className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
                       type="text"
                       name="first_code"
@@ -383,7 +456,7 @@ const SignUpPage = () => {
                       value={verificationCode.fifth_code}
                       onChange={handleVerificationCodeChange}
                       maxLength="1"
-                    />
+                    /> */}
                   </div>
                   <Button
                     size="extra-large"

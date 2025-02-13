@@ -62,10 +62,8 @@ const TermsPage = () => {
     "몰"에서 통용되는 통화가치에 상응하는 현물 또는 현금으로 이용자에게 지급합니다.
   `;
   return (
-    <section className="bg-base-default-color">
-      <h4 className="mt-2 mb-10px py-3 fw-800 text-black bg-white text-center">
-        이용약관
-      </h4>
+    <section className="top-space-margin half-section">
+      <h1 className="fw-600 text-dark-gray mb-10px text-center">이용약관</h1>
       <pre
         className="col-lg-6 bg-white offset-lg-3"
         style={{

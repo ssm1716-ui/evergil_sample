@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Modal from '@/components/common/Modal/Modal';
+import { addCart } from '@/api/memberApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Autoplay } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
-
-import FaqComponents from '@/components/Faq/FaqComponents';
-import Button from '@/components/common/Button/Button';
 
 import sampleImage1 from '@/assets/images/sample/demo-fashion-store-product-detail-01.jpg';
 import sampleImage2 from '@/assets/images/sample/demo-fashion-store-product-detail-02.jpg';
@@ -19,11 +18,69 @@ import mainSubImage3 from '@/assets/images/main-sub-image3.png';
 
 const ShopPage = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [qty, setQty] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setProduct] = useState({
+    productImages: sampleImage1,
+    productName: '에버링크 QR',
+    price: 80000,
+    originPrice: 100000,
+    discountedPrice: 20000,
+    deliveryFee: 0,
+    qty: 1,
+  });
+  const navigate = useNavigate();
+
+  const handleMinus = () => {
+    if (qty <= 1) return;
+    setQty((prevQty) => {
+      const newQty = prevQty - 1;
+      setProduct((prevProduct) => ({ ...prevProduct, qty: newQty }));
+      return newQty;
+    });
+  };
+  const handlePlus = () => {
+    setQty((prevQty) => {
+      const newQty = prevQty + 1;
+      setProduct((prevProduct) => ({ ...prevProduct, qty: newQty }));
+      return newQty;
+    });
+  };
+
+  //로컬스토리지에 장바구니 추가
+  const handleCartAdd = () => {
+    addCart(selectedProduct);
+    setIsModalOpen(true);
+  };
+
+  const nextCartPage = () => {
+    navigate('/cart');
+  };
+
+  const handleBuyNow = (e) => {
+    e.preventDefault();
+    navigate('/checkout', {
+      state: { orderType: 'direct', product: selectedProduct },
+    });
+  };
+
   return (
     <>
-      <section className="top-space-margin pt-20px pb-20px ps-45px pe-45px sm-ps-15px sm-pe-15px"></section>
+      <section className="top-space-margin half-section">
+        <div className="container">
+          <div
+            className="row align-items-center justify-content-center"
+            data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+          >
+            <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
+              <h1 className="fw-600 text-dark-gray mb-10px">구매하기</h1>
+            </div>
+            <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
+          </div>
+        </div>
+      </section>
 
-      <section className="pt-60px pb-0 md-pt-30px">
+      <section className="py-0 md-pt-30px">
         <div className="container">
           <div className="row">
             <div className="col-lg-7 pe-50px md-pe-15px md-mb-40px">
@@ -135,9 +192,9 @@ const ShopPage = () => {
                 <div className="me-10px xs-me-0">
                   <a
                     href="#tab"
-                    className="section-link ls-minus-1px icon-small me-25px text-dark-gray fw-500 section-link xs-me-0"
+                    className="d-block section-link icon-small me-25px text-dark-gray fw-500 section-link xs-me-0 w-100"
                   >
-                    <i className="bi bi-star-fill text-golden-yellow pe-5"></i>
+                    <i className="bi bi-star-fill text-golden-yellow pe-1"></i>
                     리뷰 165건
                   </a>
                 </div>
@@ -145,7 +202,7 @@ const ShopPage = () => {
                 <div></div>
               </div>
               <div className="product-price mb-10px">
-                <span className="text-dark-gray fs-28 xs-fs-24 fw-700 ls-minus-1px">
+                <span className="text-dark-gray fs-28 xs-fs-24 fw-700">
                   <del className="text-medium-gray me-10px fw-400">
                     100,000원
                   </del>
@@ -233,23 +290,31 @@ const ShopPage = () => {
               <div className="d-flex align-items-baseline flex-row flex-sm-row mb-20px position-relative">
                 <label className="text-dark-gray me-10px fw-500">수량</label>
                 <div className="quantity me-10px xs-mb-15px order-1">
-                  <button type="button" className="qty-minus">
+                  <button
+                    type="button"
+                    className="qty-minus"
+                    onClick={handleMinus}
+                  >
                     -
                   </button>
                   <input
                     className="qty-text"
                     type="text"
                     id="1"
-                    value="1"
-                    aria-label="submit"
+                    value={qty}
+                    aria-label="qty-text"
                   />
-                  <button type="button" className="qty-plus">
+                  <button
+                    type="button"
+                    className="qty-plus"
+                    onClick={handlePlus}
+                  >
                     +
                   </button>
                 </div>
                 <Link
-                  to="/cart"
                   className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-3 order-sm w-45"
+                  onClick={handleCartAdd}
                 >
                   <span>
                     <span>
@@ -273,8 +338,8 @@ const ShopPage = () => {
 
               <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative">
                 <Link
-                  to="/checkout"
                   className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2 w-100"
+                  onClick={handleBuyNow}
                 >
                   <span>
                     <span></span>
@@ -333,7 +398,8 @@ const ShopPage = () => {
                     href="#tab_five4"
                     data-tab="review-tab"
                   >
-                    리뷰 (165)<span className="tab-border bg-dark-gray"></span>
+                    리뷰 (165)
+                    <span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
               </ul>
@@ -504,6 +570,19 @@ const ShopPage = () => {
 
                 <div className="tab-pane fade in" id="tab_five4">
                   <div className="row g-0 mb-4 md-mb-35px">
+                    <div className="toolbar-wrapper d-flex flex-column flex-md-row align-items-end w-100  md-mb-30px pb-15px">
+                      <div className="mx-auto me-md-0">
+                        <select
+                          className="fs-18 form-select border-1 border-black w-150 text-black"
+                          aria-label="Default sorting"
+                        >
+                          <option selected>베스트순</option>
+                          <option value="2">최근 등록순</option>
+                          <option value="3">평점 높은순</option>
+                          <option value="4">평점 낮은순</option>
+                        </select>
+                      </div>
+                    </div>
                     <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
                       <div className="d-block d-md-flex w-100 align-items-center">
                         <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
@@ -518,7 +597,7 @@ const ShopPage = () => {
                           <div className="fs-14 lh-18">2025.02.01</div>
                         </div>
                         <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                          <span className="text-golden-yellow mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
@@ -552,7 +631,7 @@ const ShopPage = () => {
                           <div className="fs-14 lh-18">2025.02.01</div>
                         </div>
                         <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                          <span className="text-golden-yellow mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
@@ -585,7 +664,7 @@ const ShopPage = () => {
                           <div className="fs-14 lh-18">2025.02.01</div>
                         </div>
                         <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                          <span className="text-golden-yellow mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
                             <i className="bi bi-star-fill"></i>
@@ -663,7 +742,7 @@ const ShopPage = () => {
                           <div className="col-lg-2 mb-20px">
                             <label className="form-label">Your rating*</label>
                             <div>
-                              <span className="ls-minus-1px icon-small d-block mt-20px md-mt-0">
+                              <span className= icon-small d-block mt-20px md-mt-0">
                                 <i className="feather icon-feather-star text-golden-yellow"></i>
                                 <i className="feather icon-feather-star text-golden-yellow"></i>
                                 <i className="feather icon-feather-star text-golden-yellow"></i>
@@ -723,6 +802,41 @@ const ShopPage = () => {
           </div>
         </div>
       </section>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="w-40">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        장바구니에 추가되었습니다.
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => nextCartPage()}
+                      >
+                        장바구니로 넘어가기
+                      </button>
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        닫기
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

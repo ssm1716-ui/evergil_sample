@@ -167,7 +167,7 @@ footer .elements-social li {
     }
     .navbar.center-logo .navbar-left, .navbar.center-logo .navbar-right {
         /* width: 37%; */
-        width: auto;
+        /* width: auto; */
     }
     .tab-style-08 ul .nav-item .nav-link {
         padding: 25px 40px;

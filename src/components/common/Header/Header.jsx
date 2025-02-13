@@ -115,8 +115,9 @@ const Header = () => {
                   </li>
                 )}
                 <li className="nav-item">
-                  <Link to="/cart" className="nav-link">
+                  <Link to="/cart" className="nav-link header-cart-icon">
                     장바구니
+                    {/* <span className="cart-count alt-font">2</span> */}
                   </Link>
                 </li>
               </ul>

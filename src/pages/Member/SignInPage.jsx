@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Modal from '@/components/common/Modal/Modal';
 import { postSignIn, getAccessToken } from '@/api/memberApi';
+import { isValidEmail } from '@/utils/validators';
 import { loginSuccess } from '@/state/slices/authSlices';
 import AnimatedSection from '@/components/AnimatedSection';
 
@@ -9,31 +11,60 @@ import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 
 const SignInPage = () => {
-  const [member, setMember] = useState({
-    loginEmail: '',
-    password: '',
-  });
+  const initialFormState = { loginEmail: '', password: '' };
+  const [member, setMember] = useState(initialFormState);
+  const [errors, setErrors] = useState(initialFormState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleMemberRegisterChange = (e) => {
+    const { name, value } = e.target;
     setMember({
       ...member,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // 실시간 유효성 검사
+    if (value.trim() === '') {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: `${
+          name === 'loginEmail' ? '이메일을' : '패스워드'
+        } 입력해 주세요.`,
+      }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    }
+
+    if (name === 'loginEmail' && value && !isValidEmail(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        loginEmail: '올바른 이메일 주소를 입력해 주세요.',
+      }));
+    }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      let newErrors = {};
+      if (!member.loginEmail.trim())
+        newErrors.loginEmail = '이메일을 입력 해주세요.';
+      if (!member.password.trim())
+        newErrors.password = '패스워드를 입력 해주세요.';
+
+      setErrors(newErrors);
+
+      if (Object.keys(newErrors).length > 0) return;
+
       const resLoginStats = await postSignIn(member);
       if (resLoginStats !== 200) {
-        alert('이메일, 비밀번호를 확인 해주세요.');
+        setIsModalOpen(true);
         return;
       }
 
       const { status, token } = await getAccessToken();
-      console.log(status, token);
       if (status !== 200) {
         alert('토큰 통신에러가 발생하였습니다');
         return;
@@ -70,7 +101,7 @@ const SignInPage = () => {
   };
 
   return (
-    <AnimatedSection>
+    <>
       <section className="top-space-margin half-section bg-gradient-very-light-gray">
         <div className="container">
           <div className="row g-0 justify-content-center">
@@ -146,24 +177,31 @@ const SignInPage = () => {
                   이메일<span className="text-red">*</span>
                 </label>
                 <input
-                  className="mb-20px bg-very-light-white form-control required"
-                  type="text"
+                  className="mb-10px bg-very-light-white form-control required"
+                  type="email"
                   name="loginEmail"
                   value={member.loginEmail}
                   onChange={handleMemberRegisterChange}
                   placeholder="이메일을 입력 하세요"
                 />
+                {errors.loginEmail && (
+                  <p className="text-danger">{errors.loginEmail}</p>
+                )}
+
                 <label className="text-dark-gray mb-10px fw-500">
                   비밀번호<span className="text-red">*</span>
                 </label>
                 <input
-                  className="mb-20px bg-very-light-white form-control required"
+                  className="mb-10px bg-very-light-white form-control required"
                   type="password"
                   name="password"
                   value={member.password}
                   onChange={handleMemberRegisterChange}
                   placeholder="비밀번호를 입력하세요"
                 />
+                {errors.password && (
+                  <p className="text-danger">{errors.password}</p>
+                )}
 
                 <input type="hidden" name="redirect" value="" />
 
@@ -298,7 +336,36 @@ const SignInPage = () => {
           </div>
         </div>
       </section>
-    </AnimatedSection>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="w-40">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        이메일, 비밀번호를 확인 해주세요.
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 };
 

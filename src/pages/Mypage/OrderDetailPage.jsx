@@ -21,11 +21,7 @@ const MyPage = () => {
               <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
                 <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
                   <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
-                    <img
-                      src={ShopDetailImage3}
-                      className="w-120px mb-10px"
-                      alt=""
-                    />
+                    <img src={ShopDetailImage3} className="w-120px" alt="" />
                   </div>
                 </div>
                 <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">

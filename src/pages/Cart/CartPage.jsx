@@ -1,42 +1,114 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { modifyCart, removeCart } from '@/api/memberApi';
 import Button from '@/components/common/Button/Button';
-import PaymentDue from '@/components/Order/PaymentDue';
-import OrderEmptyComponents from '@/components/Order/OrderEmptyComponents';
-import OrderListComponents from '@/components/Order/OrderListComponents';
-import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
-import AnimatedSection from '@/components/AnimatedSection';
-
-import { useState } from 'react';
+import forgotImage from '@/assets/images/forgot-password.png';
 
 const CartPage = () => {
-  const [order, setOrder] = useState(true);
-  const location = useLocation();
+  const [cartProducts, setCartProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const navigate = useNavigate();
 
-  const getMessageByPath = (pathname) => {
-    if (pathname.includes('/checkout')) {
-      return '주문';
+  //로드시 로컬스토리지에 장바구니 가져오기
+  useEffect(() => {
+    const storedCartProduct =
+      JSON.parse(localStorage.getItem('dev_cart')) || [];
+
+    setCartProducts(storedCartProduct);
+  }, []);
+
+  const updateCart = () => {
+    modifyCart(cartProducts);
+  };
+
+  const deleteCart = (updatedCart) => {
+    removeCart(updatedCart);
+  };
+
+  // 전체 선택 / 해제 기능
+  const handleAllChecked = () => {
+    if (selectedProducts.length === cartProducts.length) {
+      setSelectedProducts([]); // 전체 해제
     } else {
-      return '장바구니';
+      setSelectedProducts(cartProducts.map((_, index) => index)); // 전체 선택
     }
+  };
+  // 개별 체크박스 선택
+  const handleCheckboxChange = (index) => {
+    setSelectedProducts(
+      (prevSelected) =>
+        prevSelected.includes(index)
+          ? prevSelected.filter((i) => i !== index) // 이미 선택된 경우 제거
+          : [...prevSelected, index] // 새롭게 추가
+    );
+  };
+
+  const handleSelectRemove = () => {
+    const updatedCart = cartProducts.filter(
+      (_, index) => !selectedProducts.includes(index)
+    );
+
+    setCartProducts([...updatedCart]);
+    deleteCart(updatedCart);
+    setSelectedProducts([]); // 선택 항목 초기화
+  };
+
+  // 장바구니 총계를 계산하는 함수
+  const calculateCartTotal = () => {
+    let totalQty = 0;
+    let totalProductPrice = 0;
+    let totalDiscount = 0;
+    let totalDeliveryFee = 0;
+
+    cartProducts.forEach((product) => {
+      totalQty += product.qty;
+      totalProductPrice += product.originPrice * product.qty;
+      totalDiscount += product.discountedPrice * product.qty;
+      totalDeliveryFee += product.deliveryFee;
+    });
+
+    const totalAmount = totalProductPrice - totalDiscount + totalDeliveryFee;
+
+    return {
+      totalQty,
+      totalProductPrice,
+      totalDiscount,
+      totalDeliveryFee,
+      totalAmount,
+    };
+  };
+
+  // 계산된 값 가져오기
+  const {
+    totalQty,
+    totalProductPrice,
+    totalDiscount,
+    totalDeliveryFee,
+    totalAmount,
+  } = calculateCartTotal();
+
+  const handleCartCheckout = (e) => {
+    e.preventDefault();
+    navigate('/checkout', { state: { orderType: 'cart' } });
   };
 
   return (
     <>
-      <AnimatedSection>
-        <section className="top-space-margin half-section">
-          <div className="container">
-            <div
-              className="row align-items-center justify-content-center"
-              data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
-            >
-              <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
-                <h1 className="fw-600 text-dark-gray mb-10px">장바구니</h1>
-              </div>
-              <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
+      <section className="top-space-margin half-section">
+        <div className="container">
+          <div
+            className="row align-items-center justify-content-center"
+            data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+          >
+            <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
+              <h1 className="fw-600 text-dark-gray mb-10px">장바구니</h1>
             </div>
+            <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
           </div>
-        </section>
+        </div>
+      </section>
 
+      {cartProducts.length > 0 ? (
         <section className="pt-0">
           <div className="container">
             <div className="row align-items-start">
@@ -44,14 +116,16 @@ const CartPage = () => {
                 <div className="row mb-20px">
                   <div className="col-12 text-center text-md-end sm-mt-15px d-flex justify-content-between">
                     <a
-                      href="#"
-                      className="btn btn-small border-1 btn-round-edge btn-transparent-light-gray text-transform-none me-15px lg-me-5px "
+                      className="btn btn-small border-1 btn-round-edge btn-transparent-light-gray text-transform-none me-15px lg-me-5px"
+                      onClick={handleAllChecked}
                     >
-                      전체선택
+                      {selectedProducts.length === cartProducts.length
+                        ? '전체 해제'
+                        : '전체 선택'}
                     </a>
                     <a
-                      href="#"
                       className="btn btn-small border-1 btn-round-edge btn-transparent-light-gray text-transform-none"
+                      onClick={handleSelectRemove}
                     >
                       선택 삭제
                     </a>
@@ -82,114 +156,211 @@ const CartPage = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td className="product-checkbox">
-                            <input
-                              type="checkbox"
-                              name="terms_condition"
-                              id="terms_condition"
-                              className="terms-condition check-box align-middle required"
-                            />
-                          </td>
-                          <td className="product-thumbnail">
-                            <a href="demo-jewellery-store-single-product.html">
-                              <img
-                                className="cart-product-image"
-                                src={CartImage1}
-                                alt=""
-                              />
-                            </a>
-                          </td>
-                          <td className="product-name">
-                            <a
-                              href="demo-jewellery-store-single-product.html"
-                              className="text-dark-gray fw-500 d-block lh-initial"
-                            >
-                              QR Code
-                            </a>
-                          </td>
-                          <td className="product-quantity" data-title="개수">
-                            <div className="quantity">
-                              <button type="button" className="qty-minus">
-                                -
-                              </button>
-                              <input
-                                className="qty-text"
-                                type="text"
-                                id="1"
-                                value="1"
-                                aria-label="qty-text"
-                              />
-                              <button type="button" className="qty-plus">
-                                +
-                              </button>
-                            </div>
-                          </td>
-                          <td className="product-price" data-title="배송비">
-                            0원
-                          </td>
-                          <td className="product-price" data-title="할인금액">
-                            20,000원
-                          </td>
+                        {cartProducts.length > 0 &&
+                          cartProducts.map((product, index) => (
+                            <tr key={index}>
+                              <td className="product-checkbox">
+                                <input
+                                  type="checkbox"
+                                  name="terms_condition"
+                                  id="terms_condition"
+                                  checked={selectedProducts.includes(index)}
+                                  onChange={() => handleCheckboxChange(index)}
+                                  className="terms-condition check-box align-middle required"
+                                />
+                              </td>
+                              <td className="product-thumbnail">
+                                <a href="demo-jewellery-store-single-product.html">
+                                  <img
+                                    className="cart-product-image"
+                                    src={product.productImages}
+                                    alt=""
+                                  />
+                                </a>
+                              </td>
+                              <td className="product-name">
+                                <a
+                                  href="demo-jewellery-store-single-product.html"
+                                  className="text-dark-gray fw-500 d-block lh-initial"
+                                >
+                                  {product.productName}
+                                </a>
+                              </td>
+                              <td
+                                className="product-quantity"
+                                data-title="개수"
+                              >
+                                <div className="quantity">
+                                  <button
+                                    type="button"
+                                    className="qty-minus"
+                                    onClick={() => {
+                                      const updatedProducts = [...cartProducts];
+                                      const indexQty =
+                                        updatedProducts[index].qty;
+                                      if (indexQty <= 1) return;
+                                      updatedProducts[index].qty = indexQty - 1;
+                                      setCartProducts(updatedProducts);
+                                      updateCart();
+                                    }}
+                                  >
+                                    -
+                                  </button>
+                                  <input
+                                    className="qty-text"
+                                    type="text"
+                                    id="1"
+                                    value={product.qty}
+                                    aria-label="qty-text"
+                                  />
+                                  <button
+                                    type="button"
+                                    className="qty-plus"
+                                    onClick={() => {
+                                      const updatedProducts = [...cartProducts];
+                                      const indexQty =
+                                        updatedProducts[index].qty;
+                                      updatedProducts[index].qty = indexQty + 1;
+                                      setCartProducts(updatedProducts);
+                                      updateCart();
+                                    }}
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </td>
+                              <td className="product-price" data-title="배송비">
+                                {product.deliveryFee}원
+                              </td>
+                              <td
+                                className="product-price"
+                                data-title="할인금액"
+                              >
+                                {(
+                                  product.discountedPrice * product.qty
+                                ).toLocaleString()}
+                                원
+                              </td>
 
-                          <td className="product-subtotal" data-title="가격">
-                            100,000원
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="product-checkbox">
-                            <input
-                              type="checkbox"
-                              name="terms_condition"
-                              id="terms_condition"
-                              className="terms-condition check-box align-middle required"
+                              <td
+                                className="product-subtotal"
+                                data-title="가격"
+                              >
+                                {(
+                                  product.originPrice * product.qty
+                                ).toLocaleString()}
+                                원
+                              </td>
+                            </tr>
+                          ))}
+                        {/* <tr>
+                        <td className="product-checkbox">
+                          <input
+                            type="checkbox"
+                            name="terms_condition"
+                            id="terms_condition"
+                            className="terms-condition check-box align-middle required"
+                          />
+                        </td>
+                        <td className="product-thumbnail">
+                          <a href="demo-jewellery-store-single-product.html">
+                            <img
+                              className="cart-product-image"
+                              src={CartImage1}
+                              alt=""
                             />
-                          </td>
-                          <td className="product-thumbnail">
-                            <a href="demo-jewellery-store-single-product.html">
-                              <img
-                                className="cart-product-image"
-                                src={CartImage1}
-                                alt=""
-                              />
-                            </a>
-                          </td>
-                          <td className="product-name">
-                            <a
-                              href="demo-jewellery-store-single-product.html"
-                              className="text-dark-gray fw-500 d-block lh-initial"
-                            >
-                              QR Code
-                            </a>
-                          </td>
-                          <td className="product-quantity" data-title="개수">
-                            <div className="quantity">
-                              <button type="button" className="qty-minus">
-                                -
-                              </button>
-                              <input
-                                className="qty-text"
-                                type="text"
-                                id="1"
-                                value="1"
-                                aria-label="qty-text"
-                              />
-                              <button type="button" className="qty-plus">
-                                +
-                              </button>
-                            </div>
-                          </td>
-                          <td className="product-price" data-title="배송비">
-                            0원
-                          </td>
-                          <td className="product-price" data-title="할인금액">
-                            20,000원
-                          </td>
+                          </a>
+                        </td>
+                        <td className="product-name">
+                          <a
+                            href="demo-jewellery-store-single-product.html"
+                            className="text-dark-gray fw-500 d-block lh-initial"
+                          >
+                            QR Code
+                          </a>
+                        </td>
+                        <td className="product-quantity" data-title="개수">
+                          <div className="quantity">
+                            <button type="button" className="qty-minus">
+                              -
+                            </button>
+                            <input
+                              className="qty-text"
+                              type="text"
+                              id="1"
+                              value="1"
+                              aria-label="qty-text"
+                            />
+                            <button type="button" className="qty-plus">
+                              +
+                            </button>
+                          </div>
+                        </td>
+                        <td className="product-price" data-title="배송비">
+                          0원
+                        </td>
+                        <td className="product-price" data-title="할인금액">
+                          20,000원
+                        </td>
 
-                          <td className="product-subtotal" data-title="가격">
-                            100,000원
-                          </td>
-                        </tr>
+                        <td className="product-subtotal" data-title="가격">
+                          100,000원
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="product-checkbox">
+                          <input
+                            type="checkbox"
+                            name="terms_condition"
+                            id="terms_condition"
+                            className="terms-condition check-box align-middle required"
+                          />
+                        </td>
+                        <td className="product-thumbnail">
+                          <a href="demo-jewellery-store-single-product.html">
+                            <img
+                              className="cart-product-image"
+                              src={CartImage1}
+                              alt=""
+                            />
+                          </a>
+                        </td>
+                        <td className="product-name">
+                          <a
+                            href="demo-jewellery-store-single-product.html"
+                            className="text-dark-gray fw-500 d-block lh-initial"
+                          >
+                            QR Code
+                          </a>
+                        </td>
+                        <td className="product-quantity" data-title="개수">
+                          <div className="quantity">
+                            <button type="button" className="qty-minus">
+                              -
+                            </button>
+                            <input
+                              className="qty-text"
+                              type="text"
+                              id="1"
+                              value="1"
+                              aria-label="qty-text"
+                            />
+                            <button type="button" className="qty-plus">
+                              +
+                            </button>
+                          </div>
+                        </td>
+                        <td className="product-price" data-title="배송비">
+                          0원
+                        </td>
+                        <td className="product-price" data-title="할인금액">
+                          20,000원
+                        </td>
+
+                        <td className="product-subtotal" data-title="가격">
+                          100,000원
+                        </td>
+                      </tr> */}
                       </tbody>
                     </table>
                   </div>
@@ -203,48 +374,88 @@ const CartPage = () => {
                   <table className="w-100 total-price-table">
                     <tbody>
                       <tr>
+                        <th className="w-45 fw-600 text-dark-gray">개수</th>
+                        <td className="text-dark-gray fw-600">
+                          {totalQty.toLocaleString()}개
+                        </td>
+                      </tr>
+                      <tr>
                         <th className="w-45 fw-600 text-dark-gray">
                           상품 금액
                         </th>
-                        <td className="text-dark-gray fw-600">200,000원</td>
+                        <td className="text-dark-gray fw-600">
+                          {totalProductPrice.toLocaleString()}원
+                        </td>
                       </tr>
                       <tr>
                         <th className="w-45 fw-600 text-dark-gray">
                           할인 금액
                         </th>
-                        <td className="text-dark-gray fw-600">40,000원</td>
+                        <td className="text-dark-gray fw-600">
+                          {totalDiscount.toLocaleString()}원
+                        </td>
                       </tr>
                       <tr>
                         <th className="w-45 fw-600 text-dark-gray">배송비</th>
-                        <td className="text-dark-gray fw-600">0원</td>
+                        <td className="text-dark-gray fw-600">
+                          {totalDeliveryFee.toLocaleString()}원
+                        </td>
                       </tr>
 
                       <tr className="total-amount">
                         <th className="fw-600 text-dark-gray pb-0">총 금액</th>
                         <td className="pb-0" data-title="Total">
                           <h6 className="d-block fw-700 mb-0 text-dark-gray">
-                            160,000원
+                            {totalAmount.toLocaleString()}원
                           </h6>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <a
-                    href="/checkout"
-                    className="btn btn-dark-gray btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 mt-25px "
+                  <Link
+                    className="btn btn-dark-gray btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 mt-25px"
+                    onClick={handleCartCheckout}
                   >
                     <span>
                       <span className="btn-double-text" data-text="주문하기">
                         주문하기
                       </span>
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </section>
-      </AnimatedSection>
+      ) : (
+        <section className="bg-base-white-color">
+          <div className="container">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
+              <div className="col">
+                <div className="mt-5 text-center ">
+                  <a className="navbar-brand mb-10">
+                    <i className="feather icon-feather-shopping-cart align-middle text-extra-medium-gray fs-150 mb-10" />
+                  </a>
+
+                  <h6 className="fw-600 text-dark-gray  ls-minus-1px">
+                    장바구니에 담긴 상품이 없습니다.
+                  </h6>
+
+                  <Link to="/shop" className="d-block pt-5 fw-800 fs-18">
+                    <Button
+                      size="extra-large"
+                      radiusOn="radius-on"
+                      className="btn btn-extra-large btn-round-edge btn-base-color btn-box-shadow submit w-100 text-transform-none"
+                    >
+                      구매하기
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 };
