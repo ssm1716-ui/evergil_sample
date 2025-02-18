@@ -1,12 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
 import AddressSearch from '@/components/AddressSearch';
+import { getMembersAddressList } from '@/api/memberApi';
 
 const AddressPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addAddress, setAddAddress] = useState({
+    deliveryName: '',
+    recipientName: '',
+    phoneNumber: '',
+    address1: '',
+    address2: '',
+    zipcode: '',
+  });
+  const [address, setAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
+
+  // 배송지관리 로드시 유저의 배송지 리스트 가져오기
+  useEffect(() => {
+    const loadGetApi = async () => {
+      try {
+        const res = await getMembersAddressList();
+        console.log(res);
+      } catch (error) {
+        console.err(error);
+      }
+    };
+
+    loadGetApi();
+  }, []);
 
   return (
     <>

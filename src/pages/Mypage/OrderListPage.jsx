@@ -23,7 +23,7 @@ const OrderListPage = () => {
           data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
           <div className="sm-mb-10px fs-18px tab-style-04">
-            <ul className="nav nav-tabs border-0 justify-content-start fw-500 fs-16 md-fs-16">
+            <ul className="nav nav-tabs border-0 justify-content-start fw-500 fs-19 md-fs-16">
               <li className="nav-item">
                 <a
                   data-bs-toggle="tab"
@@ -457,7 +457,7 @@ const OrderListPage = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="row justify-content-center">
           <div className="col-12">
-            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+            <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
                   <h4 className="text-dark-gray fw-500 mb-15px">리뷰 쓰기</h4>

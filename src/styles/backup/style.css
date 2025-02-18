@@ -18437,12 +18437,15 @@ canvas {
   border: 3px solid rgba(255, 255, 255, 0.2);
   border-top-color: rgba(255, 255, 255, 0.7);
 }
+
+
 .grid-loading .grid-item {
   visibility: hidden;
 }
 .grid-loading li .grid-item {
   overflow: hidden;
   opacity: 0;
+  
 }
 /* Portfolio minimal */
 .sticky-image-distortion-wrapper {

@@ -20499,7 +20499,8 @@
     width: 50%;
   }
   .grid.xl-grid-3col li {
-    width: 33.33%;
+    /* width: 33.33%; */
+    width: 50%;
   }
   .grid.xl-grid-3col li.grid-item-double {
     width: 66.67%;

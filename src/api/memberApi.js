@@ -18,7 +18,6 @@ export const postSignIn = async (param) => {
         const res = await axiosInstance.post('/authenticate', param);
         return res.status;
     } catch (err) {
-        console.log(err);
         console.error(err);
     }
 };
@@ -143,6 +142,18 @@ export const removeCart = (products) => {
         localStorage.removeItem('dev_cart');
         localStorage.setItem('dev_cart', JSON.stringify(products));
 
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//회원가입 후 이메일 인증코드로 계정 활성화
+export const getMembersAddressList = async () => {
+
+    try {
+        const res = await axiosInstance.get('/members/me/delivery-addresses');
+        return res;
     } catch (err) {
         console.error(err);
     }

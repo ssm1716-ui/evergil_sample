@@ -2145,7 +2145,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 }
 /* Full screen */
 .full-screen {
-  height: 100vh;
+  /* height: 100vh; */
 }
 .full-screen.top-space-margin {
   height: calc(100vh - 96px);
@@ -9121,7 +9121,8 @@ button:focus {
   display: none;
 }
 .top-space-margin {
-  margin-top: 96px;
+  /* margin-top: 96px; */
+  margin-top: 78px;
 }
 .top-space-padding {
   padding-top: 96px;
@@ -9447,7 +9448,7 @@ button:focus {
   width: 100%;
 }
 .grid.grid-4col li {
-  width: 25%;
+  width: 50%;
 }
 .grid.grid-4col li.grid-item-double {
   width: 50%;

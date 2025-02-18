@@ -63,15 +63,10 @@ const Header = () => {
               className="collapse navbar-collapse justify-content-between"
               id="navbarNav"
             >
-              <ul className="navbar-nav navbar-left justify-content-end">
+              <ul className="navbar-nav navbar-left justify-content-start">
                 <li className="nav-item">
                   <Link to="/" className="nav-link">
-                    메인페이지
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/shop" className="nav-link">
-                    구매하기
+                    홈
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -79,6 +74,12 @@ const Header = () => {
                     회사소개
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/store" className="nav-link">
+                    쇼핑
+                  </Link>
+                </li>
+
                 {!isAuthenticated ? (
                   <li className="nav-item">
                     <Link to="/contact" className="nav-link">
@@ -93,31 +94,56 @@ const Header = () => {
                   </li>
                 )}
               </ul>
-              <ul className="navbar-nav navbar-right justify-content-start">
+              <ul className="navbar-nav navbar-right justify-content-end">
                 {!isAuthenticated ? (
                   <li className="nav-item">
-                    <Link to="/signin" className="nav-link">
-                      로그인
+                    <Link to="/signin" className="nav-link feature-box">
+                      <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
+                        <i className="feather icon-feather-log-in align-middle icon-medium"></i>
+                      </div>
+                      <div className="feature-box-content header-box-content">
+                        <span className="d-inline-block">로그인</span>
+                      </div>
                     </Link>
                   </li>
                 ) : (
                   <li className="nav-item">
-                    <Link className="nav-link" onClick={handleLogout}>
-                      로그아웃
+                    <Link
+                      className="nav-link feature-box"
+                      onClick={handleLogout}
+                    >
+                      <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
+                        <i className="feather icon-feather-log-out align-middle icon-medium"></i>
+                      </div>
+                      <div className="feature-box-content header-box-content">
+                        <span className="d-inline-block">로그아웃</span>
+                      </div>
                     </Link>
                   </li>
                 )}
                 {isAuthenticated && (
                   <li className="nav-item">
-                    <Link to="/mypage/order-list" className="nav-link">
-                      마이페이지
+                    <Link
+                      to="/mypage/order-list"
+                      className="nav-link feature-box"
+                    >
+                      <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
+                        <i className="feather icon-feather-user align-middle icon-medium"></i>
+                      </div>
+                      <div className="feature-box-content header-box-content">
+                        <span className="d-inline-block">마이페이지</span>
+                      </div>
                     </Link>
                   </li>
                 )}
                 <li className="nav-item">
-                  <Link to="/cart" className="nav-link header-cart-icon">
-                    장바구니
-                    {/* <span className="cart-count alt-font">2</span> */}
+                  <Link to="/cart" className="nav-link feature-box">
+                    <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
+                      <i className="feather icon-feather-shopping-cart align-middle icon-medium"></i>
+                    </div>
+                    <div className="feature-box-content header-box-content">
+                      <span className="d-inline-block">장바구니</span>
+                    </div>
                   </Link>
                 </li>
               </ul>

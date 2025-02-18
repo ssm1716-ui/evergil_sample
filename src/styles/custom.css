@@ -103,4 +103,12 @@
     .menu-order {
         width:unset;
     }
+    
+    .header-box-icon {
+        display: none;
+    }
+
+    .feature-box-content{
+        text-align: left;
+    }
 }

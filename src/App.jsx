@@ -3,9 +3,9 @@ import ProtectedRoute from './ProtectedRoute';
 import Layout from '@/components/common/Layout';
 
 import HomePage from '@/pages/Home/HomePage';
-import HomeSubPage from '@/pages/Home/HomeSubPage';
 import AboutPage from '@/pages/About/AboutPage';
 import ShopPage from '@/pages/Shop/ShopPage';
+import StorePage from '@/pages/Store/StorePage';
 import ContactPage from '@/pages/Contact/ContactPage';
 import SignInPage from '@/pages/Member/SignInPage';
 import SignUpPage from '@/pages/Member/SignUpPage';
@@ -41,6 +41,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/store" element={<StorePage />} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
