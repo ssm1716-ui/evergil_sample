@@ -1,4 +1,4 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from '@/api/axiosInstance';
 
 //비밀번호 찾기 이메일 요청
 export const postPasswordRequest = async (param) => {
@@ -11,6 +11,18 @@ export const postPasswordRequest = async (param) => {
         console.error(err);
     }
 };
+
+
+//FAQ 가져오기
+export const getFaq = async () => {
+    try {
+        const res = await axiosInstance.get('/faq');
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 
 
 //문의하기 요청

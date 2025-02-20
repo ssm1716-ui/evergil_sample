@@ -441,13 +441,13 @@ const CartPage = () => {
                     장바구니에 담긴 상품이 없습니다.
                   </h6>
 
-                  <Link to="/shop" className="d-block pt-5 fw-800 fs-18">
+                  <Link to="/store" className="d-block pt-5 fw-800 fs-18">
                     <Button
                       size="extra-large"
                       radiusOn="radius-on"
                       className="btn btn-extra-large btn-round-edge btn-base-color btn-box-shadow submit w-100 text-transform-none"
                     >
-                      구매하기
+                      쇼핑하기
                     </Button>
                   </Link>
                 </div>

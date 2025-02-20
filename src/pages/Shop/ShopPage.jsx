@@ -209,7 +209,7 @@ const ShopPage = () => {
                   80,000원
                 </span>
               </div>
-              <p>
+              <p className="mb-30px">
                 Lorem ipsum is simply dummy text of the printing and typesetting
                 industry lorem ipsum standard. Lorem ipsum is simply dummy text
                 of the printing and typesetting industry lorem ipsum standard.
@@ -258,7 +258,7 @@ const ShopPage = () => {
                   </li>
                 </ul>
               </div> */}
-              <div className="d-flex align-items-center mb-25px">
+              {/* <div className="d-flex align-items-center mb-25px">
                 <label className="text-dark-gray me-15px fw-500">
                   선택 사항
                 </label>
@@ -286,7 +286,7 @@ const ShopPage = () => {
                     </label>
                   </li>
                 </ul>
-              </div>
+              </div> */}
               <div className="d-flex align-items-baseline flex-row flex-sm-row mb-20px position-relative">
                 <label className="text-dark-gray me-10px fw-500">수량</label>
                 <div className="quantity me-10px xs-mb-15px order-1">

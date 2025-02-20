@@ -4579,6 +4579,12 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .pe-70px {
   padding-right: 70px !important;
 }
+.pe-100px {
+  padding-right:-100px !important;
+}
+.pe-200px {
+  padding-right: 200px !important;
+}
 .pe-1 {
   padding-right: 1% !important;
 }
@@ -4843,6 +4849,12 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .ps-70px {
   padding-left: 70px !important;
 }
+.ps-100px {
+  padding-left: 100px !important;
+}
+.ps-200px {
+  padding-left: 200px !important;
+}
 .ps-1 {
   padding-left: 1% !important;
 }
@@ -5106,6 +5118,9 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 }
 .mt-70px {
   margin-top: 70px !important;
+}
+.mt-80px {
+  margin-top: 80px !important;
 }
 .mt-1 {
   margin-top: 1% !important;
@@ -10432,6 +10447,19 @@ blockquote footer {
   border-color: var(--base-color);
   color: var(--base-color);
 }
+
+.btn.btn-gray {
+  background-color: var(--medium-gray);
+  color: var(--white);
+  border: 1px solid #BFBFBF;
+}
+.btn.btn-gray:hover, .btn.btn-gray:active {
+  background-color: transparent;
+  background-color: var(--medium-gray);
+  color: var(--white);
+}
+
+
 .btn.btn-navy {
   background-color: var(--navy);
   color: var(--white);

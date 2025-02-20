@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from '@/components/common/Button/Button';
 
 const AddressSearch = ({ onComplete, children }) => {
-  const [address, setAddress] = useState('');
+  const [address1, setAddress] = useState('');
   const [zipcode, setZipcode] = useState(''); // 우편번호 상태 추가
 
   const handleOpenPostcode = () => {
@@ -32,7 +32,7 @@ const AddressSearch = ({ onComplete, children }) => {
         setZipcode(data.zonecode); // 우편번호 저장
 
         if (onComplete)
-          onComplete({ zipcode: data.zonecode, address: fullAddress });
+          onComplete({ zipcode: data.zonecode, address1: fullAddress });
       },
       popupName: 'postcodePopup',
     }).open({

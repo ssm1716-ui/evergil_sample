@@ -146,15 +146,3 @@ export const removeCart = (products) => {
         console.error(err);
     }
 };
-
-
-//회원가입 후 이메일 인증코드로 계정 활성화
-export const getMembersAddressList = async () => {
-
-    try {
-        const res = await axiosInstance.get('/members/me/delivery-addresses');
-        return res;
-    } catch (err) {
-        console.error(err);
-    }
-};

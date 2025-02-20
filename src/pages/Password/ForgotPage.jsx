@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { postPasswordRequest } from '@/api/guestApi';
+import { postPasswordRequest } from '@/api/guest/guestApi';
 import Modal from '@/components/common/Modal/Modal';
 import Button from '@/components/common/Button/Button';
 import { isValidEmail } from '@/utils/validators';

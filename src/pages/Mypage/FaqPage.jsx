@@ -1,5 +1,4 @@
 import VerticalCenterLineBg from '@/assets/images/vertical-center-line-bg.svg';
-import AnimatedSection from '@/components/AnimatedSection';
 import FaqComponents from '@/components/Faq/FaqComponents';
 
 const FaqPage = () => {
@@ -20,7 +19,7 @@ const FaqPage = () => {
           <div className="row mb-5 xs-mb-7">
             <div
               className="col-md-12 text-start"
-              // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 100, "delay": 700, "staggervalue": 300, "easing": "easeOutQuad" }'
+              data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 100, "delay": 700, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
               <FaqComponents />
             </div>

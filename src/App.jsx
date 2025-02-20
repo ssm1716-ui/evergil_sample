@@ -67,17 +67,17 @@ const App = () => {
             <Route
               path="/create-profile"
               element={
-                <ProtectedRoute>
-                  <CreateProfilePage />
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <CreateProfilePage />
+                // </ProtectedRoute>
               }
             />
             <Route
               path="/edit-profile"
               element={
-                <ProtectedRoute>
-                  <EditProfilePage />
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <EditProfilePage />
+                // </ProtectedRoute>
               }
             />
 

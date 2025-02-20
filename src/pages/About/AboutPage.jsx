@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
-import { postPasswordRequest } from '@/api/guestApi';
+import { postPasswordRequest } from '@/api/guest/guestApi';
 import { isValidEmail } from '@/utils/validators';
 import AboutImage1 from '@/assets/images/about-image-1.png';
 import AboutImage2 from '@/assets/images/about-image-2.png';

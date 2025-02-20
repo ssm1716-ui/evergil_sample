@@ -1,10 +1,28 @@
-import { useState } from 'react';
+import { getFaq } from '@/api/guest/guestApi.js';
+import { useEffect, useState } from 'react';
 import faqImage from '@/assets/images/faq-icon.png';
-import AnimatedSection from '@/components/AnimatedSection';
+import { motion } from 'framer-motion';
 
 const FaqComponents = () => {
   // 개별 아코디언 항목의 상태를 관리하는 useState
+  const [faq, setFaq] = useState([]);
   const [openIndex, setOpenIndex] = useState(0); // 기본적으로 첫 번째 항목을 열어둠
+
+  useEffect(() => {
+    const fetchFaq = async () => {
+      try {
+        const res = await getFaq();
+        if (res.status === 200) {
+          const { data } = res.data;
+          setFaq(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFaq();
+  }, []);
 
   // 아코디언 토글 함수
   const toggleAccordion = (index) => {
@@ -30,175 +48,45 @@ const FaqComponents = () => {
             data-active-icon="icon-feather-minus"
             data-inactive-icon="icon-feather-plus"
           >
-            <div
-              className={`accordion-item ${
-                openIndex === 0 ? 'active-accordion' : ''
-              }`}
-            >
-              <div className="accordion-header border-bottom border-color-transparent-dark-very-light">
-                <a
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion-style-02-01"
-                  data-bs-parent="#accordion-style-02"
-                  onClick={() => toggleAccordion(0)}
-                  aria-expanded={openIndex === 0}
+            {faq.map((obj, index) => (
+              <div
+                key={index}
+                className={`accordion-item ${
+                  openIndex === index ? 'active-accordion' : ''
+                }`}
+              >
+                <div
+                  className="accordion-header border-bottom border-color-transparent-dark-very-light"
+                  onClick={() => toggleAccordion(index)}
+                  style={{ cursor: 'pointer' }}
                 >
                   <div className="accordion-title mb-0 position-relative text-dark-gray pe-30px">
                     <i
                       className={`feather ${
-                        openIndex === 0
+                        openIndex === index
                           ? 'icon-feather-minus'
                           : 'icon-feather-plus'
                       } fs-20`}
                     ></i>
-                    <span className="fs-17 fw-600">치수가 어떻게 되나요?</span>
+                    <span className="fs-17 fw-600">{obj.question}</span>
                   </div>
-                </a>
-              </div>
-              <div
-                id="accordion-style-02-01"
-                className="accordion-collapse collapse show"
-                data-bs-parent="#accordion-style-02"
-              >
-                <div className="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-dark-very-light">
-                  <p className="w-90 sm-w-95 xs-w-100">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua
-                    enim ad minim veniam, quis nostrud exercitation.
-                  </p>
                 </div>
-              </div>
-            </div>
-
-            <div
-              className={`accordion-item ${
-                openIndex === 1 ? 'active-accordion' : ''
-              }`}
-            >
-              <div className="accordion-header border-bottom border-color-transparent-dark-very-light">
-                <a
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion-style-02-02"
-                  data-bs-parent="#accordion-style-02"
-                  onClick={() => toggleAccordion(1)}
-                  aria-expanded={openIndex === 1}
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={
+                    openIndex === index
+                      ? { height: 'auto', opacity: 1 }
+                      : { height: 0, opacity: 0 }
+                  }
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  className="accordion-collapse overflow-hidden"
                 >
-                  <div className="accordion-title mb-0 position-relative text-dark-gray pe-30px">
-                    <i
-                      className={`feather ${
-                        openIndex === 1
-                          ? 'icon-feather-minus'
-                          : 'icon-feather-plus'
-                      } fs-20`}
-                    ></i>
-                    <span className="fs-17 fw-600">
-                      구매시 포함되는 내용은 무엇인가요?
-                    </span>
+                  <div className="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-dark-very-light">
+                    <p className="w-90 sm-w-95 xs-w-100">{obj.answer}</p>
                   </div>
-                </a>
+                </motion.div>
               </div>
-              <div
-                id="accordion-style-02-02"
-                className="accordion-collapse collapse"
-                data-bs-parent="#accordion-style-02"
-              >
-                <div className="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-dark-very-light">
-                  <p className="w-90 sm-w-95 xs-w-100">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua
-                    enim ad minim veniam, quis nostrud exercitation.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className={`accordion-item ${
-                openIndex === 2 ? 'active-accordion' : ''
-              }`}
-            >
-              <div className="accordion-header border-bottom border-color-transparent-dark-very-light">
-                <a
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion-style-02-03"
-                  data-bs-parent="#accordion-style-02"
-                  onClick={() => toggleAccordion(2)}
-                  aria-expanded={openIndex === 2}
-                >
-                  <div className="accordion-title mb-0 position-relative text-dark-gray pe-30px">
-                    <i
-                      className={`feather ${
-                        openIndex === 2
-                          ? 'icon-feather-minus'
-                          : 'icon-feather-plus'
-                      } fs-20`}
-                    ></i>
-                    <span className="fs-17 fw-600">
-                      지속적인 수수료가 있나요?
-                    </span>
-                  </div>
-                </a>
-              </div>
-              <div
-                id="accordion-style-02-03"
-                className="accordion-collapse collapse"
-                data-bs-parent="#accordion-style-02"
-              >
-                <div className="accordion-body last-paragraph-no-margin border-bottom border-color-transparent">
-                  <p className="w-90 sm-w-95 xs-w-100">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua
-                    enim ad minim veniam, quis nostrud exercitation.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className={`accordion-item ${
-                openIndex === 3 ? 'active-accordion' : ''
-              }`}
-            >
-              <div className="accordion-header border-bottom border-color-transparent-dark-very-light">
-                <a
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion-style-02-04"
-                  data-bs-parent="#accordion-style-03"
-                  onClick={() => toggleAccordion(3)}
-                  aria-expanded={openIndex === 3}
-                >
-                  <div className="accordion-title mb-0 position-relative text-dark-gray pe-30px">
-                    <i
-                      className={`feather ${
-                        openIndex === 3
-                          ? 'icon-feather-minus'
-                          : 'icon-feather-plus'
-                      } fs-20`}
-                    ></i>
-                    <span className="fs-17 fw-600">
-                      지속적인 수수료가 있나요?
-                    </span>
-                  </div>
-                </a>
-              </div>
-              <div
-                id="accordion-style-02-04"
-                className="accordion-collapse collapse"
-                data-bs-parent="#accordion-style-03"
-              >
-                <div className="accordion-body last-paragraph-no-margin border-bottom border-color-transparent">
-                  <p className="w-90 sm-w-95 xs-w-100">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua
-                    enim ad minim veniam, quis nostrud exercitation.
-                  </p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
