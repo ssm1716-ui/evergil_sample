@@ -10,6 +10,7 @@ import 'lightgallery/css/lg-zoom.css';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import Button from '@/components/common/Button/Button';
 
 import avatarImage from '@/assets/images/sample/3d_avatar_10.png';
 import gallery1 from '@/assets/images/sample/gallery-1.jpg';
@@ -80,16 +81,12 @@ const images = [
   },
 ];
 
-const initialItems = [
-  { id: '1', name: '아버지' },
-  { id: '2', name: '어머니' },
-  { id: '3', name: '아들' },
-  { id: '4', name: '딸' },
-];
-
 const EditProfilePage = () => {
   const [content, setContent] = useState('');
-  const [items, setItems] = useState(initialItems);
+
+  const [items, setItems] = useState([
+    { id: '1', relation: '', name: '', isCustomInput: false },
+  ]);
 
   const lgRef = useRef(null);
 
@@ -112,9 +109,10 @@ const EditProfilePage = () => {
 
   const onInit = () => {
     setTimeout(() => {
-      const lgContainer = document.querySelector('.lg-container');
+      // const lgContainer = document.querySelector('.lg-container');
+      const lgToolbar = document.getElementById('lg-toolbar-1');
 
-      if (lgContainer && !document.getElementById('edit-button')) {
+      if (lgToolbar && !document.getElementById('edit-button')) {
         const editButton = document.createElement('button');
         editButton.innerText = '수정';
         editButton.classList.add('lg-custom-btn');
@@ -135,8 +133,8 @@ const EditProfilePage = () => {
           handleDelete(index);
         };
 
-        lgContainer.appendChild(editButton);
-        lgContainer.appendChild(deleteButton);
+        lgToolbar.appendChild(editButton);
+        lgToolbar.appendChild(deleteButton);
       }
     }, 100);
   };
@@ -157,14 +155,62 @@ const EditProfilePage = () => {
     return -1;
   };
 
-  const onDragEnd = (result) => {
-    if (!result.destination) return; // 드래그를 취소한 경우
+  // 항목 추가 기능
+  const handleAddItem = () => {
+    const newItem = {
+      id: `${items.length + 1}`,
+      relation: '',
+      name: '',
+      isCustomInput: false,
+    };
+    setItems([...items, newItem]);
+  };
 
-    const newItems = [...items];
+  // 드래그 종료 시 순서 업데이트
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const newItems = Array.from(items);
     const [reorderedItem] = newItems.splice(result.source.index, 1);
     newItems.splice(result.destination.index, 0, reorderedItem);
 
     setItems(newItems);
+  };
+
+  // 드롭다운 변경 핸들러
+  const handleSelectChange = (index, value) => {
+    const updatedItems = items.map((item, i) =>
+      i === index
+        ? {
+            ...item,
+            relation: value,
+            isCustomInput: value === '직접 입력',
+          }
+        : item
+    );
+    setItems(updatedItems);
+  };
+
+  // 직접 입력 필드 변경 핸들러
+  const handleCustomInputChange = (index, value) => {
+    const updatedItems = items.map((item, i) =>
+      i === index ? { ...item, relation: value } : item
+    );
+    setItems(updatedItems);
+  };
+
+  // 이름 입력 필드 변경 핸들러
+  const handleNameChange = (index, value) => {
+    const updatedItems = items.map((item, i) =>
+      i === index ? { ...item, name: value } : item
+    );
+    setItems(updatedItems);
+  };
+
+  // 삭제 핸들러
+  const handleNameDelete = (index) => {
+    const updatedItems = items.filter((_, i) => i !== index);
+    setItems(updatedItems);
   };
 
   return (
@@ -183,7 +229,7 @@ const EditProfilePage = () => {
             <div className="col-lg-7 col-md-6 position-relative d-md-block">
               <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-0px bottom-minus-70px mt-10 translate-middle-y">
                 <div
-                  className="video-icon-box video-icon-extra-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px rounded-circle d-flex align-items-center justify-content-center"
+                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px rounded-circle d-flex align-items-center justify-content-center"
                   style={{ backgroundColor: '#CDCDCD' }}
                 >
                   <span>
@@ -191,7 +237,7 @@ const EditProfilePage = () => {
                       {/* <i className="fa-solid fa-house-chimney-medical icon-icon-extra-medium text-white position-relative top-minus-2px m-0"></i> */}
                       <i className="feather icon-feather-edit-1 icon-extra-medium text-white position-relative top-minus-2px m-0"></i>
                       <span className="video-icon-sonar">
-                        <span className="video-icon-sonar-bfr border border-1"></span>
+                        <span className="video-icon-sonar-bfr border border-1 border-red"></span>
                       </span>
                     </span>
                   </span>
@@ -232,7 +278,7 @@ const EditProfilePage = () => {
               </div>
               <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                 {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-                <div className="xs-mt-25px d-flex flex-column">
+                <div className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px">
                   <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
                     <span>
                       <span>
@@ -249,7 +295,7 @@ const EditProfilePage = () => {
                   <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
                     <span>
                       <span>
-                        <i className="feather icon-feather-shopping-bag"></i>
+                        <i className="feather icon-feather-users"></i>
                       </span>
                       <span
                         className="btn-double-text ls-0px"
@@ -266,33 +312,35 @@ const EditProfilePage = () => {
         </div>
       </section>
       <section className="pt-60px md-pt-0 pb-0">
-        <div className="row bottom-minus-60px end-0 z-index-1 pe-1 d-flex flex-column">
-          {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-          <div className="d-block xs-mt-25px d-flex justify-content-center h-150px">
-            <ReactQuill
-              theme="snow"
-              value={content}
-              onChange={setContent}
-              modules={modules}
-              formats={formats}
-              className="w-650px md-w-95 lh-initial"
-            />
-          </div>
-          <div className="d-block mt-80px md-mt-100px sm-mt-90px d-flex justify-content-center">
-            <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-10 md-w-45 mb-5">
-              <span>
-                <span className="btn-double-text ls-0px" data-text="설정">
-                  설정
+        <div className="container">
+          <div className="row bottom-minus-60px end-0 z-index-1 pe-1 d-flex flex-column">
+            {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
+            <div className="xs-mt-25px d-flex justify-content-center h-200px md-h-300px">
+              <ReactQuill
+                theme="snow"
+                value={content}
+                onChange={setContent}
+                modules={modules}
+                formats={formats}
+                className="w-700px md-w-95 lh-initial"
+              />
+            </div>
+            <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
+              <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5">
+                <span>
+                  <span className="btn-double-text ls-0px" data-text="설정">
+                    설정
+                  </span>
                 </span>
-              </span>
-            </Link>
-            <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 ms-1 xs-me-0 w-10 md-w-45 mb-5">
-              <span>
-                <span className="btn-double-text ls-0px" data-text="미리보기">
-                  미리보기
+              </Link>
+              <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5">
+                <span>
+                  <span className="btn-double-text ls-0px" data-text="미리보기">
+                    미리보기
+                  </span>
                 </span>
-              </span>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -477,10 +525,13 @@ const EditProfilePage = () => {
                   <div className="row">
                     <div className="row mb-10px align-items-center">
                       <div className="col-xl-10 col-lg-10 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
-                        <button className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase">
+                        <Button
+                          className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase"
+                          onClick={handleAddItem}
+                        >
                           <i className="feather icon-feather-plus align-bottom text-white icon-extra-medium"></i>
                           가족 추가하기
-                        </button>
+                        </Button>
                       </div>
                       <div className="col-12 form-results d-none mt-20px mb-0"></div>
                     </div>
@@ -505,41 +556,76 @@ const EditProfilePage = () => {
                                     {...provided.dragHandleProps}
                                     className="sortable-item text-center"
                                   >
-                                    <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-30px ps-200px pe-200px md-ps-0 md-pe-0">
+                                    <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 ps-200px pe-200px md-ps-0 md-pe-0">
                                       <div className="col-auto col-md-1 text-md-center align-self-center">
-                                        <i className="bi bi-grip-vertical align-middle icon-extra-medium text-gray"></i>
+                                        <i className="bi bi-grip-vertical align-middle icon-extra-medium text-gray md-fs-18"></i>
                                       </div>
+
+                                      {/* 관계 선택 */}
                                       <div className="col-12 col-md-3 text-md-center align-self-center pt-1">
-                                        <select
-                                          className="form-control border-color-transparent-dark-very-light bg-transparent"
-                                          name="select"
-                                        >
-                                          <option value="">- 선택 -</option>
-                                          <option value="">아버지</option>
-                                          <option value="">어머니</option>
-                                          <option value="">아들</option>
-                                          <option value="">딸</option>
-                                          <option value="">직접 입력</option>
-                                        </select>
-                                        <input
-                                          className="mb-20px border-color-transparent-dark-very-light form-control bg-transparent required d-none"
-                                          type="text"
-                                          name="name"
-                                          placeholder="입력"
-                                        />
+                                        {item.isCustomInput ? (
+                                          <input
+                                            className="border-color-transparent-dark-very-light form-control bg-transparent md-pt-0 md-pb-0"
+                                            type="text"
+                                            value={item.relation}
+                                            onChange={(e) =>
+                                              handleCustomInputChange(
+                                                index,
+                                                e.target.value
+                                              )
+                                            }
+                                          />
+                                        ) : (
+                                          <select
+                                            className="form-control border-color-transparent-dark-very-light bg-transparent md-pt-0 md-pb-0"
+                                            value={item.relation}
+                                            onChange={(e) =>
+                                              handleSelectChange(
+                                                index,
+                                                e.target.value
+                                              )
+                                            }
+                                          >
+                                            <option value="">- 선택 -</option>
+                                            <option value="아버지">
+                                              아버지
+                                            </option>
+                                            <option value="어머니">
+                                              어머니
+                                            </option>
+                                            <option value="아들">아들</option>
+                                            <option value="딸">딸</option>
+                                            <option value="직접 입력">
+                                              직접 입력
+                                            </option>
+                                          </select>
+                                        )}
                                       </div>
+
+                                      {/* 이름 입력 필드 */}
                                       <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px sm-pt-15px sm-pb-15px sm-px-0">
                                         <input
-                                          className="mb-20px border-color-transparent-dark-very-light form-control bg-transparent required"
+                                          className="mb-20px border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
                                           type="text"
-                                          name="name"
                                           placeholder="이름"
+                                          value={item.name}
+                                          onChange={(e) =>
+                                            handleNameChange(
+                                              index,
+                                              e.target.value
+                                            )
+                                          }
                                         />
                                       </div>
+
+                                      {/* 삭제 아이콘 */}
                                       <div className="col-auto col-md-1 align-self-start align-self-md-center text-end text-md-center sm-position-absolute right-5px">
-                                        <a href="#">
-                                          <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                                        </a>
+                                        <button
+                                          onClick={() => handleDelete(index)}
+                                          className="btn btn-link"
+                                        >
+                                          <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium md-fs-18"></i>
+                                        </button>
                                       </div>
                                     </div>
                                   </div>

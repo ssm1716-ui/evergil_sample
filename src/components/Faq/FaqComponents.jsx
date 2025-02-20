@@ -14,7 +14,6 @@ const FaqComponents = () => {
         const res = await getFaq();
         if (res.status === 200) {
           const { data } = res.data;
-          console.log(data);
           setFaq(data);
         }
       } catch (error) {

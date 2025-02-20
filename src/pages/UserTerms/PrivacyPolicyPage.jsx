@@ -143,7 +143,7 @@ const PrivacyPolicyPage = () => {
 
   `;
   return (
-    <section className="top-space-margin half-section">
+    <section className="top-space-margin big-section">
       <h1 className="fw-600 text-dark-gray mb-10px text-center">
         개인정보처리방침
       </h1>

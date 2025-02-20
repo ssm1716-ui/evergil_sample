@@ -8,7 +8,9 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   // 특정 경로에서 Header와 Footer를 숨김
-  const hideLayout = ['/check-point', '/test'].includes(location.pathname);
+  const hideLayout = ['/check-point', '/test', '/qr', '/qr-confirm'].includes(
+    location.pathname
+  );
 
   return (
     <>

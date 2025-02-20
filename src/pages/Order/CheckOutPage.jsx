@@ -154,7 +154,7 @@ const CheckOutPage = () => {
 
   return (
     <>
-      <section className="top-space-margin half-section">
+      <section className="top-space-margin big-section">
         <div className="container">
           <div
             className="row align-items-center justify-content-center"

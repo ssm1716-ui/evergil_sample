@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '@/state/slices/authSlices';
@@ -13,10 +14,20 @@ const Header = () => {
   // Redux 상태에서 로그인 여부와 사용자 정보 가져오기
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  // 메뉴 닫기 버튼 Ref
+  const navbarTogglerRef = useRef(null);
+
   const handleLogout = async () => {
     await signLogout();
     dispatch(logout());
     navigate('/signin'); // 로그아웃 후 로그인 페이지로 이동
+  };
+
+  //메뉴 닫기 함수
+  const closeMenu = () => {
+    if (navbarTogglerRef.current && window.innerWidth < 992) {
+      navbarTogglerRef.current.click();
+    }
   };
 
   return (
@@ -24,7 +35,7 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg header-light bg-white center-logo header-reverse">
         <div className="container-fluid">
           <div className="menu-logo">
-            <Link to="/" className="navbar-brand">
+            <Link to="/" className="navbar-brand" onClick={closeMenu}>
               <img
                 src={defaultLogo}
                 data-at2x="images/demo-hotel-and-resort-logo@2x.png"
@@ -47,6 +58,7 @@ const Header = () => {
           </div>
           <div className="col-auto col-xl-12 col-lg-12 menu-order">
             <button
+              ref={navbarTogglerRef}
               className="navbar-toggler float-end"
               type="button"
               data-bs-toggle="collapse"
@@ -65,30 +77,38 @@ const Header = () => {
             >
               <ul className="navbar-nav navbar-left justify-content-start">
                 <li className="nav-item">
-                  <Link to="/" className="nav-link">
+                  <Link to="/" className="nav-link" onClick={closeMenu}>
                     홈
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/about" className="nav-link">
+                  <Link to="/about" className="nav-link" onClick={closeMenu}>
                     회사소개
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/store" className="nav-link">
+                  <Link to="/store" className="nav-link" onClick={closeMenu}>
                     쇼핑
                   </Link>
                 </li>
 
                 {!isAuthenticated ? (
                   <li className="nav-item">
-                    <Link to="/contact" className="nav-link">
+                    <Link
+                      to="/contact"
+                      className="nav-link"
+                      onClick={closeMenu}
+                    >
                       문의하기
                     </Link>
                   </li>
                 ) : (
                   <li className="nav-item">
-                    <Link to="/profile" className="nav-link">
+                    <Link
+                      to="/profile"
+                      className="nav-link"
+                      onClick={closeMenu}
+                    >
                       My Everlinks
                     </Link>
                   </li>
@@ -97,7 +117,11 @@ const Header = () => {
               <ul className="navbar-nav navbar-right justify-content-end">
                 {!isAuthenticated ? (
                   <li className="nav-item">
-                    <Link to="/signin" className="nav-link feature-box">
+                    <Link
+                      to="/signin"
+                      className="nav-link feature-box"
+                      onClick={closeMenu}
+                    >
                       <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
                         <i className="feather icon-feather-log-in align-middle icon-medium"></i>
                       </div>
@@ -126,6 +150,7 @@ const Header = () => {
                     <Link
                       to="/mypage/order-list"
                       className="nav-link feature-box"
+                      onClick={closeMenu}
                     >
                       <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
                         <i className="feather icon-feather-user align-middle icon-medium"></i>
@@ -137,7 +162,11 @@ const Header = () => {
                   </li>
                 )}
                 <li className="nav-item">
-                  <Link to="/cart" className="nav-link feature-box">
+                  <Link
+                    to="/cart"
+                    className="nav-link feature-box"
+                    onClick={closeMenu}
+                  >
                     <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
                       <i className="feather icon-feather-shopping-cart align-middle icon-medium"></i>
                     </div>

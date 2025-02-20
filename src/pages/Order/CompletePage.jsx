@@ -14,7 +14,7 @@ const CompletePage = () => {
 
   return (
     <>
-      <section className="top-space-margin half-section">
+      <section className="top-space-margin big-section">
         <div
           className="container"
           data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'

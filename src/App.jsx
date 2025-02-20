@@ -29,14 +29,18 @@ import CompletePage from '@/pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
+import ScrollToTop from '@/components/common/ScrollToTop'; // 추가3
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import CheckPointPage from '@/pages/CheckPointPage';
 import TestPage from '@/pages/TestPage';
+import QRScanner from '@/pages/QRScanner';
+import QRCofirm from '@/pages/QRCofirm';
 
 const App = () => {
   return (
     <ErrorBoundary>
       <Router>
+        <ScrollToTop />
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -54,6 +58,29 @@ const App = () => {
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/check-point" element={<CheckPointPage />} />
             <Route path="/test" element={<TestPage />} />
+
+            {/* <Route path="/qr" element={<QRScanner />} />
+            <Route path="/qr-confirm" element={<QRCofirm />} /> */}
+
+            {/* qr 테스트*/}
+            <Route
+              path="/qr"
+              element={
+                <ProtectedRoute>
+                  <QRScanner />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* 프로필 영역 start*/}
+            <Route
+              path="/qr-confirm"
+              element={
+                <ProtectedRoute>
+                  <QRCofirm />
+                </ProtectedRoute>
+              }
+            />
 
             {/* 프로필 영역 start*/}
             <Route

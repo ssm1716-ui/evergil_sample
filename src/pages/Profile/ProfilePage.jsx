@@ -14,7 +14,7 @@ import sampleProfile3 from '@/assets/images/sample/sample_profile3.png';
 const ProfilePage = () => {
   return (
     <>
-      <section className="top-space-margin half-section">
+      <section className="top-space-margin big-section">
         <div className="container">
           <div className="row g-0 justify-content-center">
             <div

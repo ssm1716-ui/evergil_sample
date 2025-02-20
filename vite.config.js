@@ -9,6 +9,9 @@ export default defineConfig({
       '@': resolve(__dirname, './src'), // '@'를 src 폴더로 매핑
     },
   },
+  define: {
+    'process.env': process.env, // 환경 변수 자동 로드 설정
+  },
   // server: {
   //   proxy: {
   //     '/api': {

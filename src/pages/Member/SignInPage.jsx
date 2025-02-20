@@ -102,7 +102,7 @@ const SignInPage = () => {
 
   return (
     <>
-      <section className="top-space-margin half-section bg-gradient-very-light-gray">
+      <section className="top-space-margin big-section bg-gradient-very-light-gray">
         <div className="container">
           <div className="row g-0 justify-content-center">
             {/* <div

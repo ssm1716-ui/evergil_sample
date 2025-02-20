@@ -2292,7 +2292,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   height: 50px;
   font-size: 14px;
 }
-.video-icon-medium .video-icon .video-icon-sonar .video-icon-sonar-bfr {
+.video-icon-medium .video-icon .video-icon-sonar .video-icon-sonar-bfr{
   width: 100px;
   height: 100px;
 }
@@ -9136,8 +9136,8 @@ button:focus {
   display: none;
 }
 .top-space-margin {
-  /* margin-top: 96px; */
-  margin-top: 78px;
+  /* margin-top: 96px !important; */
+  margin-top: 76px !important;;
 }
 .top-space-padding {
   padding-top: 96px;
@@ -9997,7 +9997,7 @@ blockquote footer {
   position: relative;
   text-decoration: none;
   border: 0;
-  border-bottom: 2px solid;
+  /* border-bottom: 2px solid; */
   letter-spacing: 0;
   background-color: transparent;
 }
