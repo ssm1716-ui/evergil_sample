@@ -3,6 +3,8 @@ import { API_BASE_URL } from '@/config';
 
 export const API_SERVER_HOST = API_BASE_URL;
 
+console.log(API_SERVER_HOST);
+
 const prefix = `${API_SERVER_HOST}`;
 
 const axiosInstance = axios.create({

@@ -14,6 +14,7 @@ const FaqComponents = () => {
         const res = await getFaq();
         if (res.status === 200) {
           const { data } = res.data;
+          console.log(data);
           setFaq(data);
         }
       } catch (error) {
@@ -48,7 +49,7 @@ const FaqComponents = () => {
             data-active-icon="icon-feather-minus"
             data-inactive-icon="icon-feather-plus"
           >
-            {faq.map((obj, index) => (
+            {(faq || []).map((f, index) => (
               <div
                 key={index}
                 className={`accordion-item ${
@@ -68,7 +69,7 @@ const FaqComponents = () => {
                           : 'icon-feather-plus'
                       } fs-20`}
                     ></i>
-                    <span className="fs-17 fw-600">{obj.question}</span>
+                    <span className="fs-17 fw-600">{f.question}</span>
                   </div>
                 </div>
                 <motion.div
@@ -82,7 +83,7 @@ const FaqComponents = () => {
                   className="accordion-collapse overflow-hidden"
                 >
                   <div className="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-dark-very-light">
-                    <p className="w-90 sm-w-95 xs-w-100">{obj.answer}</p>
+                    <p className="w-90 sm-w-95 xs-w-100">{f.answer}</p>
                   </div>
                 </motion.div>
               </div>
