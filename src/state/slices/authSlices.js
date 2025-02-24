@@ -1,20 +1,23 @@
-//로그인, 로그아웃 slices
 import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = {
+    isAuthenticated: localStorage.getItem('token') ? true : false, // 초기값 로컬스토리지에서 가져오기
+    token: localStorage.getItem('token') || null,
+};
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        isAuthenticated: false,
-        accessToken: null,
-    },
+    initialState,
     reducers: {
         loginSuccess: (state, action) => {
             state.isAuthenticated = true;
-            state.accessToken = action.payload;
+            state.token = action.payload.token;
+            localStorage.setItem('token', action.payload.token); // 직접 저장
         },
         logout: (state) => {
             state.isAuthenticated = false;
-            state.accessToken = null;
+            state.token = null;
+            localStorage.removeItem('token'); // 로그아웃 시 삭제
         },
     },
 });

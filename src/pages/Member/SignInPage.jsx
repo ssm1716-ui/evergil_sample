@@ -5,10 +5,13 @@ import Modal from '@/components/common/Modal/Modal';
 import { postSignIn, getAccessToken } from '@/api/memberApi';
 import { isValidEmail } from '@/utils/validators';
 import { loginSuccess } from '@/state/slices/authSlices';
-import AnimatedSection from '@/components/AnimatedSection';
 
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
+
+if (localStorage.getItem('persist:root') === null) {
+  console.log('스토리지 초기화 방지');
+}
 
 const SignInPage = () => {
   const initialFormState = { loginEmail: '', password: '' };
@@ -69,8 +72,9 @@ const SignInPage = () => {
         alert('토큰 통신에러가 발생하였습니다');
         return;
       }
-
-      dispatch(loginSuccess('success', token));
+      console.log(token);
+      // dispatch(loginSuccess({ token }));
+      dispatch(loginSuccess({ token }));
 
       navigate('/profile');
     } catch (error) {

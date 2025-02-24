@@ -118,6 +118,38 @@
     background-color: #e64a19;
   } */
 
+  .paper-note-odd {
+    position: relative;
+    background-color: #e0f2f1; /* 연한 민트색 */
+    /* border: 1px solid #ccc; */
+    margin-bottom: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .paper-note-even {
+    position: relative;
+    background-color: #ccc; /* 연한 민트색 */
+    /* border: 1px solid #ccc; */
+    margin-bottom: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .divider-text {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 0 35px;
+    font-size: 14px;
+    color: #333;
+
+  }
+  
+  
+
 @media (max-width: 991px) {
     .menu-order {
         width:unset;
@@ -131,3 +163,14 @@
         text-align: left;
     }
 }
+
+
+/* 모바일 뷰포트 */
+@media (max-width: 600px) {
+    .list-item {
+        padding: 5px;
+        padding-bottom: 0;
+        border-bottom: 1px solid #c8c8c8;
+        background: #f9f9f9;
+      }
+  }

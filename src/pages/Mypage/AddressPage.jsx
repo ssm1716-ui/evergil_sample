@@ -54,7 +54,7 @@ const AddressPage = () => {
         console.log(data.data);
         setAddressList(data.data);
       } catch (error) {
-        console.err(error);
+        console.error(error);
       }
     };
 

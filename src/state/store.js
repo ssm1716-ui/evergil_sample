@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authSlice from '@/state/slices/authSlices';
+import authReducer from '@/state/slices/authSlices';
 
-const store = configureStore({
+export const store = configureStore({
     reducer: {
-        auth: authSlice,
+        auth: authReducer, // persist 제거
     },
+    devTools: process.env.NODE_ENV !== 'production',
 });
-
-
-export default store;

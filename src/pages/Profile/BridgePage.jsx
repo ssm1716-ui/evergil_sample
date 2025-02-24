@@ -1,0 +1,150 @@
+import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Button from '@/components/common/Button/Button';
+import Modal from '@/components/common/Modal/Modal';
+import PaymentDue from '@/components/Order/PaymentDue';
+import OrderEmptyComponents from '@/components/Order/OrderEmptyComponents';
+import OrderListComponents from '@/components/Order/OrderListComponents';
+import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
+import AnimatedSection from '@/components/AnimatedSection';
+import AddressSearch from '@/components/AddressSearch';
+
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidName,
+  isValidPhoneNumber,
+  isInteger,
+} from '@/utils/validators';
+import { removeHyphens } from '@/utils/utils';
+
+const paymentMethods = [
+  { id: 'credit', label: '신용카드', icon: 'line-icon-Credit-Card2' },
+  { id: 'bank', label: '계좌이체', icon: 'line-icon-Bank' },
+  { id: 'deposit', label: '무통장입금', icon: 'line-icon-Money-2' },
+  { id: 'mobile', label: '휴대폰결제', icon: 'line-icon-Smartphone-3' },
+];
+
+const BridgePage = () => {
+  const location = useLocation();
+  const [isAddresOpen, SetIsAddresOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  return (
+    <>
+      <section className="top-space-margin big-section">
+        <div className="container text-decoration-line-bottom position-relative">
+          <span className="divider-text">Or</span>
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center overflow-hidden pb-100px">
+            <div
+              className="col"
+              data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
+            >
+              <div className="mt-20 py-5 text-center ">
+                <h4 className="fs- fw-600 text-dark-gray mb-5 ls-minus-1px">
+                  에버링크가 아직 연결되지 않았습니다.
+                </h4>
+                <h6 className="fw-600 text-dark-gray mb-15 ls-minus-1px">
+                  QR코드를 스캔하여 추모페이지 계정을 생성하세요.
+                </h6>
+                <form>
+                  <Button
+                    type="submit"
+                    size="extra-large"
+                    radiusOn="radius-on"
+                    className="btn btn-extra-large btn-round-edge btn-black btn-box-shadow submit w-40 md-w-70 text-transform-none me-10px md-mb-10px"
+                  >
+                    <i className="feather icon-feather-camera icon-small text-white pe-3"></i>
+                    스캔하기
+                    <br />
+                    (모바일 전용)
+                  </Button>
+                  <Button
+                    type="submit"
+                    size="extra-large"
+                    radiusOn="radius-on"
+                    className="btn btn-extra-large btn-round-edge btn-black btn-box-shadow submit w-40 md-w-70 text-transform-none me-10px md-mb-10px"
+                  >
+                    <i className="feather icon-feather-camera icon-small text-white pe-3"></i>
+                    코드 입력 <br /> (PC 전용)
+                  </Button>
+
+                  <div className="form-results mt-20px d-none"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="pt-0">
+        <div className="container">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden ">
+            <div
+              className="col"
+              data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
+            >
+              <div className="py-5 text-center ">
+                <h4 className="fw-600 text-dark-gray mb-5 ls-minus-1px">
+                  아직 에버링크QR 구매 전이신가요?
+                </h4>
+                <h6 className="fw-600 text-dark-gray mb-15 ls-minus-1px">
+                  지금 구매하고 추모페이지 계정을 생성하세요.
+                </h6>
+                <form>
+                  <Link to="/store">
+                    <Button
+                      type="submit"
+                      size="extra-large"
+                      radiusOn="radius-on"
+                      className="btn btn-extra-large btn-round-edge btn-white btn-box-shadow submit w-40 md-w-70 text-transform-none"
+                    >
+                      <i className="feather icon-feather-shopping-cart icon-small text-black pe-3"></i>
+                      구매하기
+                    </Button>
+                  </Link>
+
+                  <div className="form-results mt-20px d-none"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="w-40">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        결제를 진행 하겠습니다.
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1">
+                        결제 진행
+                      </button>
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        취소
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
+  );
+};
+
+export default BridgePage;

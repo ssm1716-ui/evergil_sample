@@ -10,9 +10,12 @@ import ContactPage from '@/pages/Contact/ContactPage';
 import SignInPage from '@/pages/Member/SignInPage';
 import SignUpPage from '@/pages/Member/SignUpPage';
 import ForgotPage from '@/pages/Password/ForgotPage';
+import BridgePage from '@/pages/Profile/BridgePage';
+
 import ProfilePage from '@/pages/Profile/ProfilePage';
 import CreateProfilePage from '@/pages/Profile/CreateProfilePage';
 import EditProfilePage from '@/pages/Profile/EditProfilePage';
+import ViewProfilePage from '@/pages/Profile/ViewProfilePage';
 import CartPage from '@/pages/Cart/CartPage';
 import MyPage from '@/pages/Mypage/MyPage';
 import OrderListPage from '@/pages/Mypage/OrderListPage';
@@ -83,6 +86,8 @@ const App = () => {
             />
 
             {/* 프로필 영역 start*/}
+            <Route path="/bridge-profile" element={<BridgePage />} />
+
             <Route
               path="/profile"
               element={
@@ -104,6 +109,15 @@ const App = () => {
               element={
                 // <ProtectedRoute>
                 <EditProfilePage />
+                // </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/view-profile"
+              element={
+                // <ProtectedRoute>
+                <ViewProfilePage />
                 // </ProtectedRoute>
               }
             />

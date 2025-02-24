@@ -21109,7 +21109,7 @@
 }
 @media (max-width: 767px) {
   .process-step-style-02 .progress-step-separator, .process-step-style-03 .progress-step-separator, .process-step-style-04 .progress-step-separator {
-    display: none;
+    /* display: none; */
   }
   .process-step-style-01 .progress-step-separator {
     position: absolute;
@@ -21310,7 +21310,7 @@
   }
   .tab-style-08 ul .nav-item {
     border-right: 0;
-    border-bottom: 1px solid var(--light-medium-gray);
+    /* border-bottom: 1px solid var(--light-medium-gray); */
     flex-grow: inherit;
     flex-basis: auto;
     width: 100%;

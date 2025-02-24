@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import Modal from '@/components/common/Modal/Modal';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
@@ -83,7 +84,8 @@ const images = [
   },
 ];
 
-const EditProfilePage = () => {
+const ViewProfilePage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState('');
 
   const [items, setItems] = useState([
@@ -126,23 +128,6 @@ const EditProfilePage = () => {
   ]);
 
   const lgRef = useRef(null);
-  const fileInputRef = useRef(null);
-
-  // 업로드 버튼 클릭 시 파일 업로드 창 열기
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
-
-  // 파일 업로드 핸들러
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      const updatedImages = [...images];
-      updatedImages[0] = { src: imageUrl, thumb: imageUrl }; // 첫 번째 이미지 변경
-      setImages(updatedImages);
-    }
-  };
 
   useEffect(() => {
     // 스타일 추가
@@ -161,37 +146,37 @@ const EditProfilePage = () => {
     }
   };
 
-  const onInit = () => {
-    setTimeout(() => {
-      // const lgContainer = document.querySelector('.lg-container');
-      const lgToolbar = document.getElementById('lg-toolbar-1');
+  // const onInit = () => {
+  //   setTimeout(() => {
+  //     // const lgContainer = document.querySelector('.lg-container');
+  //     const lgToolbar = document.getElementById('lg-toolbar-1');
 
-      if (lgToolbar && !document.getElementById('edit-button')) {
-        const editButton = document.createElement('button');
-        editButton.innerText = '수정';
-        editButton.classList.add('lg-custom-btn');
-        editButton.classList.add('lg-custom-modify');
-        editButton.id = 'edit-button';
-        editButton.onclick = () => {
-          const index = getCurrentImageIndex();
-          handleEdit(index);
-        };
+  //     if (lgToolbar && !document.getElementById('edit-button')) {
+  //       const editButton = document.createElement('button');
+  //       editButton.innerText = '수정';
+  //       editButton.classList.add('lg-custom-btn');
+  //       editButton.classList.add('lg-custom-modify');
+  //       editButton.id = 'edit-button';
+  //       editButton.onclick = () => {
+  //         const index = getCurrentImageIndex();
+  //         handleEdit(index);
+  //       };
 
-        const deleteButton = document.createElement('button');
-        deleteButton.innerText = '삭제';
-        deleteButton.classList.add('lg-custom-btn');
-        deleteButton.classList.add('lg-custom-remove');
-        deleteButton.id = 'delete-button';
-        deleteButton.onclick = () => {
-          const index = getCurrentImageIndex();
-          handleDelete(index);
-        };
+  //       const deleteButton = document.createElement('button');
+  //       deleteButton.innerText = '삭제';
+  //       deleteButton.classList.add('lg-custom-btn');
+  //       deleteButton.classList.add('lg-custom-remove');
+  //       deleteButton.id = 'delete-button';
+  //       deleteButton.onclick = () => {
+  //         const index = getCurrentImageIndex();
+  //         handleDelete(index);
+  //       };
 
-        lgToolbar.appendChild(editButton);
-        lgToolbar.appendChild(deleteButton);
-      }
-    }, 100);
-  };
+  //       lgToolbar.appendChild(editButton);
+  //       lgToolbar.appendChild(deleteButton);
+  //     }
+  //   }, 100);
+  // };
 
   // 현재 선택된 이미지의 index 찾기
   const getCurrentImageIndex = () => {
@@ -280,7 +265,7 @@ const EditProfilePage = () => {
               className="col-lg-5 col-md-6 position-relative page-title-extra-large align-self-center"
               data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
             ></div>
-            <div className="col-lg-7 col-md-6 position-relative d-md-block">
+            {/* <div className="col-lg-7 col-md-6 position-relative d-md-block">
               <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-0px bottom-minus-70px mt-10 translate-middle-y">
                 <div
                   className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px rounded-circle d-flex align-items-center justify-content-center"
@@ -288,7 +273,6 @@ const EditProfilePage = () => {
                 >
                   <span>
                     <span className="video-icon">
-                      {/* <i className="fa-solid fa-house-chimney-medical icon-icon-extra-medium text-white position-relative top-minus-2px m-0"></i> */}
                       <i className="feather icon-feather-edit-1 icon-extra-medium text-white position-relative top-minus-2px m-0"></i>
                       <span className="video-icon-sonar">
                         <span className="video-icon-sonar-bfr border border-1 border-red"></span>
@@ -297,7 +281,7 @@ const EditProfilePage = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -316,13 +300,13 @@ const EditProfilePage = () => {
                 <div className="process-step-icon-box position-relative mb-20px">
                   <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px md-start-0">
                     <img src={avatarImage} alt="" />
-                    <div
+                    {/* <div
                       className="box-overlay"
                       style={{ backgroundColor: '#CDCDCD' }}
                     ></div>
                     <span className="number icon-extra-large text-text absolute-middle-center">
                       <i className="feather icon-feather-edit-1 icon-icon-extra-medium text-white"></i>
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </div>
@@ -330,7 +314,7 @@ const EditProfilePage = () => {
                 <h5 className="text-dark-gray mb-5px fw-600">김코코</h5>
                 <h6 className="mb-0">2015/04/16 ~ 2024/06/17</h6>
               </div>
-              <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
+              <div className="row position-absolute md-position-initial top-50px end-0 z-index-1 pe-1">
                 {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                 <div className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px">
                   <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
@@ -346,7 +330,7 @@ const EditProfilePage = () => {
                       </span>
                     </span>
                   </Link>
-                  <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
+                  {/* <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
                     <span>
                       <span>
                         <i className="feather icon-feather-users"></i>
@@ -358,28 +342,28 @@ const EditProfilePage = () => {
                         초대하기
                       </span>
                     </span>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section className="pt-60px md-pt-0 pb-0">
+      <section className="pt-50px md-pt-0 pb-0">
         <div className="container">
-          <div className="row bottom-minus-60px end-0 z-index-1 pe-1 d-flex flex-column">
-            {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-            <div className="xs-mt-25px d-flex justify-content-center h-200px md-h-300px">
-              <ReactQuill
-                theme="snow"
-                value={content}
-                onChange={setContent}
-                modules={modules}
-                formats={formats}
-                className="w-700px md-w-95 lh-initial"
-              />
+          <div className="row bottom-minus-60px end-0 z-index-1 pe-1 ">
+            {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
+            <div className="col-xl-7 col-lg-9 offset-0 offset-md-3  xs-mt-25px text-start">
+              <p>
+                Lorem ipsum dolor amet mustache knausgaard +1, blue bottle
+                waistcoat tbh semiotics artisan synth stumptown gastropub
+                cornhole celiac swag. Brunch raclette vexillologist post-ironic
+                glossier ennui XOXO mlkshk godard pour-over blog tumblr
+                humblebrag. Blue bottle put a bird on it twee prism biodiesel
+                brooklyn. Blue bottle ennui tbh succulents.
+              </p>
             </div>
-            <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
+            {/* <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5">
                 <span>
                   <span className="btn-double-text ls-0px" data-text="설정">
@@ -394,12 +378,12 @@ const EditProfilePage = () => {
                   </span>
                 </span>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
 
-      <section id="tab" className="pt-0 sm-pt-40px">
+      <section id="tab" className="pt-5">
         <div className="container">
           <div className="row">
             <div className="col-12 tab-style-04">
@@ -443,33 +427,10 @@ const EditProfilePage = () => {
                     thumbnail={true}
                     plugins={[lgThumbnail]}
                     selector=".gallery-item"
-                    onInit={onInit}
-                    ref={lgRef}
+                    // onInit={onInit}
+                    // ref={lgRef}
                   >
                     <div style={galleryStyle}>
-                      {/* 첫 번째 업로드 영역 */}
-                      <div
-                        onClick={handleUploadClick}
-                        style={{
-                          ...imageStyle,
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backgroundColor: '#f0f0f0',
-                          cursor: 'pointer',
-                          border: '2px dashed #ccc',
-                        }}
-                      >
-                        <MdAddPhotoAlternate size={200} color="#888" />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          ref={fileInputRef}
-                          style={{ display: 'none' }}
-                          onChange={handleFileUpload}
-                        />
-                      </div>
-
                       {images.map((image, index) => (
                         <a
                           href={image.src}
@@ -491,50 +452,41 @@ const EditProfilePage = () => {
                 <div className="tab-pane fade in" id="tab_five2">
                   <div className="row m-0">
                     <div
-                      className="col-12"
+                      className="col-12 md-p-0"
                       data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
                     >
-                      <div className="row border-bottom border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-30px">
-                        <div className="col-12 col-md-1 text-md-center align-self-center">
-                          <span className="text-dark-gray fs-14 fw-600">
-                            김사랑
-                          </span>
-                        </div>
-                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                          <p className="sm-w-85">
-                            하늘나라에서도 행복해야해~ 사랑해
-                          </p>
-                        </div>
-                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                          <span>{'2024/02/15 15:12'}</span>
-                        </div>
-                        <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
-                        </div>
-                      </div>
-                      <div className="row border-bottom border-color-dark-gray position-relative g-0 sm-pb-30px sm-pt-30px">
-                        <div className="col-12 col-md-1 text-md-center align-self-center">
-                          <span className="text-dark-gray fs-14 fw-600">
-                            김사랑
-                          </span>
-                        </div>
-                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                          <p className="sm-w-85">
-                            하늘나라에서도 행복해야해~ 사랑해
-                          </p>
-                        </div>
-                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                          <span>{'2024/02/15 15:12'}</span>
-                        </div>
-                        <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
+                      <div
+                        className="toolbar-wrapper w-100 mb-40px md-mb-30px"
+                        data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+                      >
+                        <div className="mx-auto me-md-0 col tab-style-08">
+                          <ul className="nav nav-tabs d-flex justify-content-between border-0 fs-18 fw-600">
+                            <li className="nav-item">
+                              <div className="position-relative">
+                                <input
+                                  className="border-1 nav-link w-400px md-w-100"
+                                  type="text"
+                                  name="name"
+                                  placeholder="검색어를 입력 해주세요."
+                                />
+                                <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                              </div>
+                            </li>
+                            <li className="nav-item">
+                              <a
+                                className="nav-link"
+                                data-bs-toggle="tab"
+                                href="#tab_sec2"
+                                onClick={() => setIsModalOpen(true)}
+                              >
+                                <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
+                                add comment
+                              </a>
+                            </li>
+                          </ul>
                         </div>
                       </div>
-                      <div className="row border-bottom border-color-dark-gray position-relative g-0 sm-pb-30px sm-pt-30px">
+                      <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-20px paper-note-odd md-ps-3">
                         <div className="col-12 col-md-1 text-md-center align-self-center">
                           <span className="text-dark-gray fs-14 fw-600">
                             김사랑
@@ -548,13 +500,13 @@ const EditProfilePage = () => {
                         <div className="col-lg-2 col-md-3 align-self-center text-md-end">
                           <span>{'2024/02/15 15:12'}</span>
                         </div>
-                        <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
                           <a href="#">
                             <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
                           </a>
-                        </div>
+                        </div> */}
                       </div>
-                      <div className="row border-bottom border-color-dark-gray position-relative g-0 sm-pb-30px sm-pt-30px">
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
                         <div className="col-12 col-md-1 text-md-center align-self-center">
                           <span className="text-dark-gray fs-14 fw-600">
                             김사랑
@@ -568,13 +520,13 @@ const EditProfilePage = () => {
                         <div className="col-lg-2 col-md-3 align-self-center text-md-end">
                           <span>{'2024/02/15 15:12'}</span>
                         </div>
-                        <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
                           <a href="#">
                             <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
                           </a>
-                        </div>
+                        </div> */}
                       </div>
-                      <div className="row border-bottom border-color-dark-gray position-relative g-0 sm-pb-30px sm-pt-30px">
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-odd md-ps-3">
                         <div className="col-12 col-md-1 text-md-center align-self-center">
                           <span className="text-dark-gray fs-14 fw-600">
                             김사랑
@@ -588,138 +540,115 @@ const EditProfilePage = () => {
                         <div className="col-lg-2 col-md-3 align-self-center text-md-end">
                           <span>{'2024/02/15 15:12'}</span>
                         </div>
-                        <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
                           <a href="#">
                             <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
                           </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
                         </div>
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해
+                          </p>
+                        </div>
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-odd md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
+                        </div>
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해
+                          </p>
+                        </div>
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
+                        </div>
+
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해1
+                          </p>
+                        </div>
+
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="tab-pane fade in" id="tab_five3">
-                  <div className="row">
-                    <div className="row align-items-center">
-                      <div className="col-xl-12 col-lg-10 col-sm-5 form-results d-block mt-20px mb-0 text-center">
-                        <p className="text-black fs-22">
-                          아래 가족을 추가하고 드래그하세요.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="row  align-items-center">
-                      <div className="col-xl-10 col-lg-10 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
-                        <Button
-                          className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase"
-                          onClick={handleAddItem}
-                        >
-                          <i className="feather icon-feather-plus align-bottom text-white icon-extra-medium"></i>
-                          가족 추가하기
-                        </Button>
-                      </div>
-                    </div>
+                  <div
+                    className="container"
+                    data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'
+                  >
+                    <div className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-6 md-mt-50px text-center">
+                      <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
+                        <div className="process-step-icon-box position-relative mt-30px">
+                          <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                    <DragDropContext onDragEnd={onDragEnd}>
-                      <Droppable droppableId="list">
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                          >
-                            {items.map((item, index) => (
-                              <Draggable
-                                key={item.id}
-                                draggableId={item.id}
-                                index={index}
-                              >
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className="sortable-item text-center list-item"
-                                  >
-                                    <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-5px ps-200px pe-200px md-ps-0 md-pe-0">
-                                      <div className="col-auto col-md-1 text-md-center align-self-center">
-                                        <i className="bi bi-grip-vertical align-middle icon-extra-medium text-gray md-fs-18"></i>
-                                      </div>
-
-                                      {/* 관계 선택 */}
-                                      <div className="col-12 col-md-3 text-md-center align-self-center pt-1">
-                                        {item.isCustomInput ? (
-                                          <input
-                                            className="border-color-transparent-dark-very-light form-control bg-transparent required"
-                                            type="text"
-                                            value={item.relation}
-                                            onChange={(e) =>
-                                              handleCustomInputChange(
-                                                index,
-                                                e.target.value
-                                              )
-                                            }
-                                          />
-                                        ) : (
-                                          <select
-                                            className="form-control border-color-transparent-dark-very-light bg-transparent md-pt-0 md-pb-0"
-                                            value={item.relation}
-                                            onChange={(e) =>
-                                              handleSelectChange(
-                                                index,
-                                                e.target.value
-                                              )
-                                            }
-                                          >
-                                            <option value="">- 선택 -</option>
-                                            <option value="아버지">
-                                              아버지
-                                            </option>
-                                            <option value="어머니">
-                                              어머니
-                                            </option>
-                                            <option value="아들">아들</option>
-                                            <option value="딸">딸</option>
-                                            <option value="직접 입력">
-                                              직접 입력
-                                            </option>
-                                          </select>
-                                        )}
-                                      </div>
-
-                                      {/* 이름 입력 필드 */}
-                                      <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px sm-pt-15px sm-pb-15px sm-px-0">
-                                        <input
-                                          className="mb-20px md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
-                                          type="text"
-                                          placeholder="이름"
-                                          value={item.name}
-                                          onChange={(e) =>
-                                            handleNameChange(
-                                              index,
-                                              e.target.value
-                                            )
-                                          }
-                                        />
-                                      </div>
-
-                                      {/* 삭제 아이콘 */}
-                                      <div className="col-auto col-md-1 align-self-start align-self-md-center text-end text-md-center sm-position-absolute right-5px">
-                                        <button
-                                          onClick={() => handleDelete(index)}
-                                          className="btn btn-link"
-                                        >
-                                          <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium md-fs-18"></i>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              </Draggable>
-                            ))}
-                            {provided.placeholder}
+                          <div className="process-step-icon d-flex justify-content-end align-items-center mx-auto h-80px w-60 md-w-80 fs-18 rounded-circle text-dark-gray fw-500">
+                            <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
+                              <span className="number position-relative z-index-1 fw-600">
+                                <i className="feather icon-feather-user align-middle icon-large text-white"></i>
+                              </span>
+                              <div className="box-overlay bg-black rounded-circle"></div>
+                            </div>
+                            <span className="number position-relative z-index-1 fw-600">
+                              아버지
+                            </span>
+                            <div className="box-overlay rounded-circle"></div>
                           </div>
-                        )}
-                      </Droppable>
-                    </DragDropContext>
+                        </div>
+                      </div>
+
+                      <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
+                        <div className="process-step-icon-box position-relative mt-30px">
+                          <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 fs-18 rounded-circle text-dark-gray fw-500">
+                            <span className="number position-relative z-index-1 fw-600">
+                              고길동
+                            </span>
+                            <div className="box-overlay rounded-circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -727,6 +656,69 @@ const EditProfilePage = () => {
           </div>
         </div>
       </section>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="row justify-content-center">
+          <div className="col-12">
+            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+              <div className="row justify-content-center mb-30px sm-mb-10px">
+                <div className="col-md-9 text-center">
+                  <h4 className="text-dark-gray fw-500 mb-15px">
+                    하늘편지 남기기
+                  </h4>
+                </div>
+              </div>
+              <form className="row">
+                <div className="col-12 mb-20px ">
+                  <label className="mb-10px">이름</label>
+                  <input
+                    className="border-radius-4px input-large mb-5px"
+                    type="text"
+                    name="deliveryName"
+                    required
+                  />
+                  {/* {errors.deliveryName && (
+                    <p className="text-danger text-start">
+                      배송지 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                </div>
+                <div className="col-12 mb-20px ">
+                  <label className="mb-10px">내용</label>
+                  <textarea
+                    className="border-radius-4px textarea-small"
+                    rows="5"
+                    cols="5"
+                    placeholder=""
+                  ></textarea>
+                  {/* {errors.recipientName && (
+                    <p className="text-danger text-start">
+                      받는분 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                </div>
+
+                <div className="col-lg-112 text-center text-lg-center">
+                  <input type="hidden" name="redirect" value="" />
+
+                  <Button className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1">
+                    남기기
+                  </Button>
+
+                  <Button
+                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    닫기
+                  </Button>
+                </div>
+
+                {/* <AddressSearch onComplete={setSelectedAddress} />
+                          <p>선택된 주소: {selectedAddress}</p> */}
+              </form>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
@@ -769,4 +761,4 @@ const customButtonStyle = `
   }
 `;
 
-export default EditProfilePage;
+export default ViewProfilePage;
