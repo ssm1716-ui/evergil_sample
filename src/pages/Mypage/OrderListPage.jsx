@@ -3,14 +3,62 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import Modal from '@/components/common/Modal/Modal';
-import AnimatedSection from '@/components/AnimatedSection';
+import { FaStar } from 'react-icons/fa'; // FontAwesome 별 아이콘 사용
 
 import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
 import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 
+const initialForm = {
+  rate: 0,
+  content: '',
+  images: [],
+};
+
 const OrderListPage = () => {
   const [orderProducts, setorderProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState({
+    rate: 0,
+    content: '',
+    images: [],
+  });
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  // 별점 클릭 핸들러
+  const handleStarClick = (index) => {
+    setReviews((prevReviews) => ({
+      ...prevReviews,
+      rate: index + 1, // 클릭한 별까지 점수 설정
+    }));
+  };
+
+  // 리뷰 내용 입력 핸들러
+  const handleContentChange = (e) => {
+    const { value } = e.target;
+    setReviews((prevReviews) => ({
+      ...prevReviews,
+      content: value,
+    }));
+  };
+
+  // 파일 업로드 핸들러
+  const handleFileUpload = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+
+    // 최대 5개로 제한
+    if (uploadedFiles.length + selectedFiles.length > 5) {
+      alert('최대 5개의 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
+    // 파일 추가
+    setUploadedFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+  };
+
+  // 파일 삭제 기능
+  const handleRemoveFile = (index) => {
+    setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
 
   return (
     <>
@@ -107,7 +155,7 @@ const OrderListPage = () => {
           data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
           <div className="mx-auto me-md-0 col tab-style-01">
-            <ul className="nav nav-tabs justify-content-start border-0 text-center fs-18 fw-600 mb-3">
+            <ul className="nav nav-tabs justify-content-start border-0 text-center fs-18 md-fs-14 fw-600 mb-3">
               <li className="nav-item mt-10px">
                 <a
                   className="nav-link active"
@@ -478,40 +526,94 @@ const OrderListPage = () => {
 
                   <div>
                     <span className="ls-minus-1px icon-large d-block mt-20px md-mt-0">
-                      <i className="feather icon-feather-star text-golden-yellow"></i>
-                      <i className="feather icon-feather-star text-golden-yellow"></i>
-                      <i className="feather icon-feather-star text-golden-yellow"></i>
-                      <i className="feather icon-feather-star text-golden-yellow"></i>
-                      <i className="feather icon-feather-star text-golden-yellow"></i>
+                      {[...Array(5)].map((_, index) => (
+                        <FaStar
+                          key={index}
+                          size={50}
+                          style={{ cursor: 'pointer', marginRight: '5px' }}
+                          color={index < reviews.rate ? '#FFD700' : '#E0E0E0'} // 채워진 별은 노란색, 비어있는 별은 회색
+                          onClick={() => handleStarClick(index)}
+                        />
+                      ))}
                     </span>
                   </div>
                 </div>
                 <div className="col-md-12 mb-20px">
-                  <label className="form-label mb-15px">리뷰 작성</label>
+                  <label className="form-label mb-5px fw-700 text-black">
+                    리뷰 작성
+                  </label>
                   <textarea
                     className="border-radius-4px form-control"
                     cols="40"
                     rows="4"
-                    name="comment"
+                    name="content"
+                    value={reviews.content}
+                    onChange={handleContentChange}
                     placeholder="리뷰를 남겨주세요."
                   ></textarea>
                 </div>
 
                 <div className="col-md-12 mb-20px">
-                  <div className="border-1 border-dashed rounded mt-1 p-1 text-center">
-                    <i className="bi bi-camera fs-5 me-2"></i>
-                    사진/동영상 첨부하기
+                  {/* 파일 업로드 버튼 스타일링 */}
+                  <div
+                    className="border-1 border-dashed rounded mt-1 p-1 position-relative text-center "
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {/* 클릭 가능한 영역 */}
+                    <label
+                      htmlFor="file-upload"
+                      style={{ cursor: 'pointer' }}
+                      className="w-50"
+                    >
+                      <i className="bi bi-camera fs-5 me-2"></i>
+                      사진 첨부하기
+                    </label>
+
+                    {/* 숨겨진 파일 업로드 input */}
+                    <input
+                      id="file-upload"
+                      type="file"
+                      multiple
+                      accept="image/*,"
+                      onChange={handleFileUpload}
+                      className="input-file-upload"
+                    />
                   </div>
+                  {/* 업로드된 파일 미리보기 */}
+                  <div className="uploaded-files mt-3">
+                    {uploadedFiles.map((file, index) => (
+                      <div key={index} style={{ marginBottom: '10px' }}>
+                        <span>{file.name}</span>
+                        <button
+                          onClick={() => handleRemoveFile(index)}
+                          style={{ marginLeft: '10px', color: 'red' }}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* 업로드된 파일 수 표시 */}
+                  <p className="text-center mt-2">
+                    {uploadedFiles.length} / 5 파일 업로드됨
+                  </p>
                 </div>
 
                 <div className="col-lg-112 text-center text-lg-center">
                   <input type="hidden" name="redirect" value="" />
-                  <Button className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1">
+                  <Button
+                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                    onClick={() => console.log('리뷰 데이터 전송:', reviews)}
+                  >
                     확인
                   </Button>
                   <Button
                     className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      setReviews(initialForm);
+                    }}
                   >
                     취소
                   </Button>

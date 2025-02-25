@@ -7071,8 +7071,11 @@ header .navbar-brand .alt-logo, header .navbar-brand .mobile-logo {
   opacity: 0;
   width: 0;
 }
-header .navbar-brand img {
-  max-height: 46px;
+header .navbar-brand img,
+footer img
+{
+  /* max-height: 46px; */
+  max-height: 30px;
 }
 header .header-top-bar {
   position: fixed;
@@ -16357,7 +16360,8 @@ canvas {
   -webkit-border-radius: 50px;
   border-radius: 50px;
   /* padding: 10px 40px; */
-  padding: 5px 15px;
+  /* padding: 5px 15px; */
+  padding: 5px 10px;
   color: var(--medium-gray);
   -webkit-transition: all 0.3s linear;
   transition: all 0.3s linear;
@@ -16587,6 +16591,36 @@ canvas {
 .tab-style-08 .nav-tabs > li.nav-item {
   padding: 0 4px;
   width: inherit;
+}
+
+/* Tab style 04 */
+.tab-style-09 .nav-tabs .nav-item {
+  padding: 0 20px;
+}
+.tab-style-09 .nav-tabs .nav-item .nav-link {
+  padding: 0;
+  border: none;
+  background: transparent;
+  position: relative;
+  color: var(--medium-gray);
+}
+.tab-style-09 .nav-tabs .nav-item .nav-link .tab-border {
+  width: 100%;
+  height: 2px;
+  display: block;
+  -wekit-transform: scaleX(0);
+  -moz-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: transform 0.5s ease;
+  transition: transform 0.5s ease;
+}
+.tab-style-09 .nav-tabs .nav-item .nav-link.active, .tab-style-09 .nav-tabs .nav-item .nav-link.show, .tab-style-09 .nav-tabs .nav-item .nav-link:hover {
+  color: var(--dark-gray);
+}
+.tab-style-09 .nav-tabs .nav-item .nav-link.active .tab-border, .tab-style-09 .nav-tabs .nav-item .nav-link.show .tab-border, .tab-style-09 .nav-tabs .nav-item .nav-link:hover .tab-border {
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
 }
 
 /* Team style 01 */

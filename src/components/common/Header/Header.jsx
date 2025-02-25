@@ -35,7 +35,11 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg header-light bg-white center-logo header-reverse">
         <div className="container-fluid">
           <div className="menu-logo">
-            <Link to="/" className="navbar-brand" onClick={closeMenu}>
+            <Link
+              to="/"
+              className="navbar-brand ps-0 md-ps-15px"
+              onClick={closeMenu}
+            >
               <img
                 src={defaultLogo}
                 data-at2x="images/demo-hotel-and-resort-logo@2x.png"

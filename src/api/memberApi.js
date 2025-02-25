@@ -75,7 +75,7 @@ export const getVerificationEmailResend = async (param) => {
                 { 'X-Email-Verification-Code': emailVerificationCode }
         });
 
-        return res.data;
+        return res.status;
     } catch (err) {
         console.error(err);
     }

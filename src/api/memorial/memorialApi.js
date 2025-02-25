@@ -46,9 +46,11 @@ export const putUpateDescription = async (id, param) => {
 export const postRegisterProfile = async (param) => {
     try {
         const res = await axiosInstance.post('/memorial-profiles', param);
+        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
+        return err.response ? err.response : { status: 500, data: 'Unknown error' };
     }
 };
 
@@ -62,3 +64,18 @@ export const getSelectProfile = async (id) => {
         console.error(err);
     }
 };
+
+// [
+//     "oUrRhj5GdtMwWCn6",
+//     "JLw54fbZvkakI6o5",
+//     "UefCyiXDKfnrjShi",
+//     "FU34EeajlZ1Zgtf0",
+//     "y54GgUxyV9qWYAph",
+//     "imB5vJ2myRwlscSU",
+//     "fFvUuZTQQbm8siiU",
+//     "E0qTNW8j8Zi7jMp2",
+//     "n1zEIFgDN2tR6atc",
+//     "LGdK5m8tQssaVn3R"
+//   ]
+
+// "8697b430-b852-4760-b92e-936bdc06864f"

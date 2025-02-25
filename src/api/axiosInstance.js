@@ -50,8 +50,7 @@ axiosInstance.interceptors.response.use(
 
 // 새로고침 후 Access Token 복원
 export const restoreAuthorizationHeader = () => {
-    const accessToken = localStorage.getItem('dev_accessToken');
-    // console.log(accessToken);
+    const accessToken = localStorage.getItem('token');
 
     if (accessToken) {
         axiosInstance.defaults.headers.common['Authorization'] = `${accessToken}`;

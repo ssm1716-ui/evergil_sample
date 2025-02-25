@@ -51,7 +51,6 @@ const AddressPage = () => {
     const loadGetApi = async () => {
       try {
         const { data } = await getMembersAddressList();
-        console.log(data.data);
         setAddressList(data.data);
       } catch (error) {
         console.error(error);
@@ -114,14 +113,14 @@ const AddressPage = () => {
       const { data } = res;
       setAddress(data.data);
       setSelectedAddress(data.data);
-      setIsModalOpen(true);
       setUpdateFlag(true);
+      setIsModalOpen(true);
+      // setUpdateFlag(true);
     }
   };
 
   const handleUpdateAddress = async () => {
     const res = await putUpdateAddress(focusAddress, address);
-    console.log(res);
     if (res.status === 200) {
       setIsModalOpen(false);
       setAddress(initialForm);
@@ -135,7 +134,6 @@ const AddressPage = () => {
 
   const handleDeleteAddress = async (id) => {
     const res = await deleteAddress(id);
-    console.log(res);
     if (res.status === 200) {
       setRefreshKey((prevKey) => prevKey + 1);
     } else {
@@ -365,7 +363,7 @@ const AddressPage = () => {
                     onClick={() => {
                       setAddress(initialForm);
                       setSelectedAddress('');
-                      setUpdateFlag(true);
+                      setUpdateFlag(false);
                       setIsModalOpen(true);
                     }}
                   >
@@ -397,7 +395,7 @@ const AddressPage = () => {
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
                   <h4 className="text-dark-gray fw-500 mb-15px">
-                    {updateFlag ? '배송지 수정' : '배송지 추가'}
+                    {!updateFlag ? '배송지 추가' : '배송지 수정'}
                   </h4>
                   <button
                     type="button"

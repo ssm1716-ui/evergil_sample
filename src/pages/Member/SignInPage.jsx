@@ -72,8 +72,6 @@ const SignInPage = () => {
         alert('토큰 통신에러가 발생하였습니다');
         return;
       }
-      console.log(token);
-      // dispatch(loginSuccess({ token }));
       dispatch(loginSuccess({ token }));
 
       navigate('/profile');

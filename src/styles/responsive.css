@@ -21282,13 +21282,13 @@
     /* margin-bottom: 15px; */
   }
   .tab-style-04 .nav-tabs {
-    display: inline-block;
+    /* display: inline-block; */
     width: 100%;
   }
   .tab-style-04 .nav-tabs .nav-item {
-    width: auto;
+    width: 33%;
     display: table;
-    margin: 0 auto 10px;
+    /* margin: 0 auto 10px; */
   }
   .tab-style-05 .nav-tabs {
     display: inline-block;
@@ -21317,6 +21317,16 @@
   }
   .tab-style-08 ul .nav-item .nav-link {
     padding: 18px 25px;
+  }
+
+  .tab-style-09 .nav-tabs {
+    /* display: inline-block; */
+    width: 100%;
+  }
+  .tab-style-09 .nav-tabs .nav-item {
+    width: 50%;
+    display: table;
+    margin: 0 auto 10px;
   }
 }
 @media (max-width: 767px) {
@@ -21502,7 +21512,8 @@
     padding: 0;
     display: block;
     margin-bottom: 5px;
-    width: 100%;
+    /* width: 100%; */
+    width: 33%;
   }
   .sticky-image-distortion-wrapper .menu {
     padding: 130px 30px 30px 30px;

@@ -360,7 +360,7 @@ const ShopPage = () => {
       <section id="tab" className="pt-4 sm-pt-40px">
         <div className="container">
           <div className="row">
-            <div className="col-12 tab-style-04">
+            <div className="col-12 tab-style-09">
               <ul className="nav nav-tabs border-0 justify-content-center fs-19">
                 <li className="nav-item">
                   <a

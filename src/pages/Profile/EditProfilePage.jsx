@@ -404,7 +404,7 @@ const EditProfilePage = () => {
           <div className="row">
             <div className="col-12 tab-style-04">
               <ul className="nav nav-tabs border-0 justify-content-center fs-19">
-                <li className="nav-item px-5">
+                <li className="nav-item">
                   <a
                     data-bs-toggle="tab"
                     href="#tab_five1"
@@ -413,7 +413,7 @@ const EditProfilePage = () => {
                     이미지<span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
-                <li className="nav-item px-5">
+                <li className="nav-item">
                   <a
                     className="nav-link"
                     data-bs-toggle="tab"
@@ -423,7 +423,7 @@ const EditProfilePage = () => {
                     <span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
-                <li className="nav-item px-5">
+                <li className="nav-item">
                   <a
                     className="nav-link"
                     data-bs-toggle="tab"
