@@ -81,14 +81,17 @@
 }
 
 
-.swiper-slide {
-    opacity: 0.5; /* 기본적으로 흐릿하게 설정 */
-    transition: opacity 0.3s ease-in-out;
-  }
-  
-  .swiper-slide-active {
-    opacity: 1 !important; /* 가운데 슬라이드는 선명하게 */
-  }
+/* 활성화된 썸네일 스타일 */
+.swiper-slide-thumb-active {
+  opacity: 1 !important;
+  filter: brightness(100%);
+}
+
+/* 비활성화된 썸네일 스타일 */
+.product-image-thumb .swiper-slide {
+  opacity: 0.5; /* 흐려지는 문제 해결 */
+  transition: opacity 0.3s ease-in-out;
+}
 
 
 .flex-0 {
@@ -157,8 +160,60 @@
     opacity: 0; 
     cursor: pointer;
   }
-  
-  
+
+   .cart-products {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+.cart-products th,
+.cart-products td {
+  text-align: center;
+  padding: 10px;
+}
+
+
+
+.cart-products th:nth-child(1),
+.cart-products td:nth-child(1) {
+  width: 10%;
+}
+
+/* .cart-products th:nth-child(2),
+.cart-products td:nth-child(2) {
+  width: 10%;
+} */
+/*
+.cart-products th:nth-child(3),
+.cart-products td:nth-child(3) {
+  width: 12%;
+}
+
+.cart-products th:nth-child(4),
+.cart-products td:nth-child(4) {
+  width: 10%;
+}
+
+.cart-products th:nth-child(5),
+.cart-products td:nth-child(5) {
+  width: 10%;
+}
+
+.cart-products th:nth-child(6),
+.cart-products td:nth-child(6) {
+  width: 12%;
+}
+
+.cart-products th:nth-child(7),
+.cart-products td:nth-child(7) {
+  width: 12%;
+} */
+
+  /* .qty-text {
+    width: 50px;
+    text-align: center;
+  } */
+      
 
 @media (max-width: 991px) {
     .menu-order {

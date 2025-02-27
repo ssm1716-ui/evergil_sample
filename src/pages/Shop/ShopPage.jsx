@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import { addCart } from '@/api/memberApi';
@@ -18,6 +18,7 @@ import mainSubImage3 from '@/assets/images/main-sub-image3.png';
 
 const ShopPage = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [mainSwiper, setMainSwiper] = useState(null);
   const [qty, setQty] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setProduct] = useState({
@@ -30,6 +31,15 @@ const ShopPage = () => {
     qty: 1,
   });
   const navigate = useNavigate();
+
+  // `thumbsSwiper`가 설정될 때까지 `undefined`를 유지
+  useEffect(() => {
+    if (thumbsSwiper && mainSwiper) {
+      mainSwiper.thumbs.swiper = thumbsSwiper;
+      mainSwiper.thumbs.init();
+      mainSwiper.thumbs.update();
+    }
+  }, [thumbsSwiper, mainSwiper]);
 
   const handleMinus = () => {
     if (qty <= 1) return;
@@ -88,18 +98,21 @@ const ShopPage = () => {
                 {/* Main Swiper for product images */}
                 <div className="col-12 col-lg-10 position-relative order-lg-2 product-image ps-30px md-ps-15px">
                   <Swiper
+                    onSwiper={setMainSwiper}
                     spaceBetween={10}
-                    loop={true}
+                    loop={false} // ✅ 루프 설정
+                    loopedSlides={6} // ✅ 루프된 슬라이드 갯수 설정
                     autoplay={{
                       delay: 2000,
                       disableOnInteraction: false,
                     }}
-                    watchOverflow={true}
                     navigation={{
                       nextEl: '.slider-product-next',
                       prevEl: '.slider-product-prev',
                     }}
-                    thumbs={{ swiper: thumbsSwiper }}
+                    watchSlidesProgress={true}
+                    watchSlidesVisibility={true}
+                    thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
                     modules={[Navigation, Thumbs, Autoplay]}
                     className="product-image-slider"
                   >
@@ -153,8 +166,12 @@ const ShopPage = () => {
                   <Swiper
                     onSwiper={setThumbsSwiper}
                     spaceBetween={15}
-                    slidesPerView={'auto'}
+                    slidesPerView={4} // ✅ 4개씩 표시
                     direction="vertical"
+                    loop={true} // ✅ 루프 추가
+                    loopedSlides={6} // ✅ 메인 Swiper와 맞추기
+                    watchSlidesProgress={true} // ✅ 활성 썸네일 트래킹
+                    watchSlidesVisibility={true} // ✅ 비활성 썸네일도 감지
                     navigation={{
                       nextEl: '.swiper-thumb-next',
                       prevEl: '.swiper-thumb-prev',

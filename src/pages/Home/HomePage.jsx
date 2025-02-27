@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AnimatedSection from '@/components/AnimatedSection';
+import Modal from 'react-modal';
+import ReactPlayer from 'react-player/youtube';
 
 import FaqComponents from '@/components/Faq/FaqComponents';
 import mainBannerImage from '@/assets/images/main-banner.png';
@@ -10,7 +12,21 @@ import mainSubImage4 from '@/assets/images/demo-travel-agency-about-03.jpg';
 import mainSubImage5 from '@/assets/images/demo-travel-agency-about-04.jpg';
 import mainSubBgImage from '@/assets/images/demo-branding-agency-pattern.svg';
 
+// Modal.setAppElement('#root');
+
 const HomeSubPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 모달 열기
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <section
@@ -360,9 +376,9 @@ const HomeSubPage = () => {
                       에버링크 영상
                     </span>
                     <a
-                      href="https://www.youtube.com/watch?v=cfXHhfNy7tU"
+                      href="#"
                       className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
-                      target="_blank"
+                      onClick={handleOpenModal}
                     >
                       <span>
                         <span className="btn-text">Open YouTube video</span>
@@ -376,6 +392,68 @@ const HomeSubPage = () => {
                     </a>
                   </div>
                 </div>
+                {/* React Modal로 모달 구현 */}
+                <Modal
+                  isOpen={isModalOpen}
+                  onRequestClose={handleCloseModal}
+                  contentLabel="YouTube Video Modal"
+                  ariaHideApp={false} // 이 옵션은 기본적으로 true이며, 배경 컨텐츠 접근을 막습니다
+                  shouldCloseOnOverlayClick={true} // 오버레이 클릭 시 닫기
+                  onAfterOpen={() => {
+                    document.body.style.overflow = 'auto'; // 모달이 열릴 때 스크롤 허용
+                  }}
+                  onAfterClose={() => {
+                    document.body.style.overflow = ''; // 모달 닫힐 때 원상 복구
+                  }}
+                  style={{
+                    overlay: {
+                      backgroundColor: 'rgba(0, 0, 0, 1)',
+                      zIndex: 9999,
+                    },
+                    content: {
+                      position: 'relative',
+                      top: '50%',
+                      left: '50%',
+                      right: 'auto',
+                      bottom: 'auto',
+                      transform: 'translate(-50%, -50%)',
+                      background: '#000',
+                      padding: '0',
+                      border: 'none',
+                      borderRadius: '10px',
+                      width: '60%',
+                      maxWidth: '800px',
+                      height: 'auto',
+                      overflow: 'hidden',
+                    },
+                  }}
+                >
+                  {/* 닫기 버튼 */}
+                  {/* <button
+                    onClick={handleCloseModal}
+                    style={{
+                      position: 'absolute',
+                      top: '5px',
+                      right: '0px',
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#fff',
+                      fontSize: '56px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    &times;
+                  </button> */}
+
+                  {/* React Player로 유튜브 영상 삽입 */}
+                  <ReactPlayer
+                    url="https://www.youtube.com/watch?v=cfXHhfNy7tU"
+                    controls
+                    playing={isModalOpen}
+                    width="100%"
+                    height="450px"
+                  />
+                </Modal>
               </div>
             </section>
           </div>

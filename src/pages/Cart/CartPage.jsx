@@ -112,7 +112,7 @@ const CartPage = () => {
         <section className="pt-0">
           <div className="container">
             <div className="row align-items-start">
-              <div className="col-lg-8 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
+              <div className="col-lg-8 pe-15px md-pe-15px md-mb-50px xs-mb-35px">
                 <div className="row mb-20px">
                   <div className="col-12 text-center text-md-end sm-mt-15px d-flex justify-content-between">
                     <a
@@ -137,22 +137,12 @@ const CartPage = () => {
                       <thead>
                         <tr>
                           <th scope="col"></th>
-                          <th scope="col" className="fw-600">
-                            상품명
-                          </th>
+                          <th scope="col">상품명</th>
                           <th scope="col"></th>
-                          <th scope="col" className="fw-600">
-                            개수
-                          </th>
-                          <th scope="col" className="fw-600">
-                            배송비
-                          </th>
-                          <th scope="col" className="fw-600">
-                            할인 금액
-                          </th>
-                          <th scope="col" className="fw-600">
-                            금액
-                          </th>
+                          <th scope="col">개수</th>
+                          <th scope="col">배송비</th>
+                          <th scope="col">할인 금액</th>
+                          <th scope="col">금액</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -253,114 +243,6 @@ const CartPage = () => {
                               </td>
                             </tr>
                           ))}
-                        {/* <tr>
-                        <td className="product-checkbox">
-                          <input
-                            type="checkbox"
-                            name="terms_condition"
-                            id="terms_condition"
-                            className="terms-condition check-box align-middle required"
-                          />
-                        </td>
-                        <td className="product-thumbnail">
-                          <a href="demo-jewellery-store-single-product.html">
-                            <img
-                              className="cart-product-image"
-                              src={CartImage1}
-                              alt=""
-                            />
-                          </a>
-                        </td>
-                        <td className="product-name">
-                          <a
-                            href="demo-jewellery-store-single-product.html"
-                            className="text-dark-gray fw-500 d-block lh-initial"
-                          >
-                            QR Code
-                          </a>
-                        </td>
-                        <td className="product-quantity" data-title="개수">
-                          <div className="quantity">
-                            <button type="button" className="qty-minus">
-                              -
-                            </button>
-                            <input
-                              className="qty-text"
-                              type="text"
-                              id="1"
-                              value="1"
-                              aria-label="qty-text"
-                            />
-                            <button type="button" className="qty-plus">
-                              +
-                            </button>
-                          </div>
-                        </td>
-                        <td className="product-price" data-title="배송비">
-                          0원
-                        </td>
-                        <td className="product-price" data-title="할인금액">
-                          20,000원
-                        </td>
-
-                        <td className="product-subtotal" data-title="가격">
-                          100,000원
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="product-checkbox">
-                          <input
-                            type="checkbox"
-                            name="terms_condition"
-                            id="terms_condition"
-                            className="terms-condition check-box align-middle required"
-                          />
-                        </td>
-                        <td className="product-thumbnail">
-                          <a href="demo-jewellery-store-single-product.html">
-                            <img
-                              className="cart-product-image"
-                              src={CartImage1}
-                              alt=""
-                            />
-                          </a>
-                        </td>
-                        <td className="product-name">
-                          <a
-                            href="demo-jewellery-store-single-product.html"
-                            className="text-dark-gray fw-500 d-block lh-initial"
-                          >
-                            QR Code
-                          </a>
-                        </td>
-                        <td className="product-quantity" data-title="개수">
-                          <div className="quantity">
-                            <button type="button" className="qty-minus">
-                              -
-                            </button>
-                            <input
-                              className="qty-text"
-                              type="text"
-                              id="1"
-                              value="1"
-                              aria-label="qty-text"
-                            />
-                            <button type="button" className="qty-plus">
-                              +
-                            </button>
-                          </div>
-                        </td>
-                        <td className="product-price" data-title="배송비">
-                          0원
-                        </td>
-                        <td className="product-price" data-title="할인금액">
-                          20,000원
-                        </td>
-
-                        <td className="product-subtotal" data-title="가격">
-                          100,000원
-                        </td>
-                      </tr> */}
                       </tbody>
                     </table>
                   </div>

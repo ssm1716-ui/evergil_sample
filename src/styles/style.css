@@ -6826,7 +6826,9 @@ header .navbar {
   right: 0;
   left: 0;
   z-index: 99;
-  background-color: rgb(239, 239, 231) !important;
+  /* background-color: rgb(239, 239, 231) !important; */
+  background-color: var(--very-light-gray) !important;
+  
 }
 header .navbar [class*=col-] {
   padding: 0 15px;
@@ -7071,11 +7073,14 @@ header .navbar-brand .alt-logo, header .navbar-brand .mobile-logo {
   opacity: 0;
   width: 0;
 }
-header .navbar-brand img,
-footer img
+header .navbar-brand img
 {
   /* max-height: 46px; */
   max-height: 30px;
+}
+footer img
+{
+  max-height: 46px;
 }
 header .header-top-bar {
   position: fixed;
@@ -19334,7 +19339,7 @@ canvas {
    17. Footer
 ====================================== */
 footer {
-  padding-top: 110px;
+  padding-top: 40px;
   padding-bottom: 110px;
 }
 footer.half-footer {

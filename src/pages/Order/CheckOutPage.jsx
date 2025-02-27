@@ -240,50 +240,6 @@ const CheckOutPage = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-12">
-              <div className="bg-very-light-gray border-radius-6px p-50px xl-p-30px lg-p-25px">
-                <span className="fs-26 fw-600 text-dark-gray mb-5px d-block">
-                  주문 총계
-                </span>
-                <table className="w-100 total-price-table">
-                  <tbody>
-                    <tr>
-                      <th className="w-45 fw-600 text-dark-gray">개수</th>
-                      <td className="text-dark-gray fw-600">
-                        {totalQty.toLocaleString()}개
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="w-45 fw-600 text-dark-gray">상품 금액</th>
-                      <td className="text-dark-gray fw-600">
-                        {totalProductPrice.toLocaleString()}원
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="w-45 fw-600 text-dark-gray">할인 금액</th>
-                      <td className="text-dark-gray fw-600">
-                        {totalDiscount.toLocaleString()}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="w-45 fw-600 text-dark-gray">배송비</th>
-                      <td className="text-dark-gray fw-600">
-                        {totalDeliveryFee.toLocaleString()}
-                      </td>
-                    </tr>
-
-                    <tr className="total-amount">
-                      <th className="fw-600 text-dark-gray pb-0">총 금액</th>
-                      <td className="pb-0" data-title="Total">
-                        <h6 className="d-block fw-700 mb-0 text-dark-gray">
-                          {totalAmount.toLocaleString()}원
-                        </h6>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -472,27 +428,77 @@ const CheckOutPage = () => {
                 className="col icon-with-text-style-07 transition-inner-all md-mb-30px"
               >
                 <div
-                  className={`bg-white feature-box h-100 justify-content-start text-center p-17 sm-p-14 border border-2 border-radius-10px ${
+                  className={`feature-box h-100 justify-content-start text-center p-17 sm-p-14 border border-1 border-radius-10px  ${
                     selectedMethod === method.id
-                      ? 'border-5 border-danger'
-                      : 'border-dark-gray bg-light-gray'
+                      ? 'bg-black'
+                      : 'border-dark-gray bg-light-gray bg-white'
                   }`}
                   role="button"
                   onClick={() => setSelectedMethod(method.id)}
                 >
                   <div className="feature-box-icon mb-30px">
                     <i
-                      className={`${method.icon} icon-large text-dark-gray`}
+                      className={`${method.icon} icon-large text-dark-gray ${
+                        selectedMethod === method.id ? 'text-white' : ''
+                      }`}
                     ></i>
                   </div>
                   <div className="feature-box-content">
-                    <span className="d-inline-block fw-600 text-dark-gray fs-18">
+                    <span
+                      className={`d-inline-block fw-600 text-dark-gray fs-18  ${
+                        selectedMethod === method.id ? 'text-white' : ''
+                      }`}
+                    >
                       {method.label}
                     </span>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+          <div className="col-lg-12 pb-40px">
+            <div className="bg-very-light-gray border-radius-6px p-50px xl-p-30px lg-p-25px">
+              <span className="fs-26 fw-600 text-dark-gray mb-5px d-block">
+                주문 총계
+              </span>
+              <table className="w-100 total-price-table">
+                <tbody>
+                  <tr>
+                    <th className="w-45 fw-600 text-dark-gray">개수</th>
+                    <td className="text-dark-gray fw-600">
+                      {totalQty.toLocaleString()}개
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="w-45 fw-600 text-dark-gray">상품 금액</th>
+                    <td className="text-dark-gray fw-600">
+                      {totalProductPrice.toLocaleString()}원
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="w-45 fw-600 text-dark-gray">할인 금액</th>
+                    <td className="text-dark-gray fw-600">
+                      {totalDiscount.toLocaleString()}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="w-45 fw-600 text-dark-gray">배송비</th>
+                    <td className="text-dark-gray fw-600">
+                      {totalDeliveryFee.toLocaleString()}
+                    </td>
+                  </tr>
+
+                  <tr className="total-amount">
+                    <th className="fw-600 text-dark-gray pb-0">총 금액</th>
+                    <td className="pb-0" data-title="Total">
+                      <h6 className="d-block fw-700 mb-0 text-dark-gray">
+                        {totalAmount.toLocaleString()}원
+                      </h6>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div className="col-lg-12">
             <Link

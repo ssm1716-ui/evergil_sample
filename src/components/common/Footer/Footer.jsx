@@ -11,11 +11,11 @@ const Footer = () => {
   return (
     <>
       <footer
-        className="bg-very-light-gray pb-50px sm-pt-20px xs-pb-30px background-repeat background-position-center sm-background-image-none"
+        className="bg-very-light-gray pt-50px pb-50px sm-pt-20px xs-pb-30px background-repeat background-position-center sm-background-image-none"
         // style="background-image: url('images/vertical-center-line-bg-dark.svg')"
       >
         <div className="container">
-          <div className="row justify-content-center mb-4">
+          {/* <div className="row justify-content-center mb-4">
             <div className="col-xl-6 col-lg-8 col-md-10 text-center">
               <img
                 src={defaultLogo}
@@ -24,10 +24,19 @@ const Footer = () => {
                 className="default-logo"
               />
             </div>
-          </div>
+          </div> */}
 
-          <div className="row row-cols-3 row-cols-lg-5 row-cols-sm-3 align-items-start justify-content-evenly mb-4 md-mb-25px xs-mb-25px instagram-follow-api position-relative pt-25px">
-            <div className="w-auto">
+          <div className="row align-items-start justify-content-evenly mb-4 md-mb-25px xs-mb-25px instagram-follow-api position-relative">
+            <div className="col-xl-4 col-sm-12 text-center text-md-center last-paragraph-no-margin fs-15 order-3 order-md-1 mb-25px">
+              <img
+                src={defaultLogo}
+                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                alt=""
+                className="default-logo"
+              />
+            </div>
+
+            <div className="col-xl-4 col-sm-12 text-center text-md-center text-sm-center last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-16">
                 (우)14441
                 <br />
@@ -35,14 +44,14 @@ const Footer = () => {
                 대표: 전경아 <br />
                 사업자 등록번호: 136-04-69494 <br />
                 통신판매업신고: 12345-000 <br />
-                <p className="xl-w-hidden sm-w-block fs-16">
+                {/* <p className="xl-w-hidden sm-w-block fs-16">
                   고객센터: 010-5922-1221
                   <br />
                   이메일: everlink@everlink.com
-                </p>
+                </p> */}
               </p>
             </div>
-            <div className="sm-w-hidden w-auto">
+            <div className="col-xl-4 col-sm-12 text-center text-md-center text-sm-center last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-16">
                 고객센터: 010-5922-1221
                 <br />
@@ -51,13 +60,10 @@ const Footer = () => {
             </div>
           </div>
           <div className="row align-items-center">
-            <div className="col-xl-3 col-sm-6 text-center text-sm-start last-paragraph-no-margin fs-15 order-3 order-md-1">
+            <div className="col-xl-3 col-sm-6 text-center text-md-center text-sm-center last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p>
                 © Copyright 2025
-                <Link
-                  to="/"
-                  className="text-decoration-line-bottom text-dark-gray fw-500"
-                >
+                <Link to="/" className="fw-500 ps-2">
                   EverLink
                 </Link>
               </p>
