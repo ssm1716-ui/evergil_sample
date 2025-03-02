@@ -1,4 +1,4 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 export const postRequestPresignedUrl = async () => {
     try {
@@ -10,4 +10,18 @@ export const postRequestPresignedUrl = async () => {
         console.error(err);
     }
 };
+
+
+
+export const putFileUpload = async (s3Url, files) => {
+    try {
+        const res = await axiosInstance.put(s3Url, files);
+        console.log('s3 - ', res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 

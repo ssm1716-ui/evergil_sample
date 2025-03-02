@@ -36,7 +36,7 @@ const Footer = () => {
               />
             </div>
 
-            <div className="col-xl-4 col-sm-12 text-center text-md-center text-sm-center last-paragraph-no-margin fs-15 order-3 order-md-1">
+            <div className="col-xl-4 col-sm-12 text-center text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-16">
                 (우)14441
                 <br />
@@ -51,7 +51,7 @@ const Footer = () => {
                 </p> */}
               </p>
             </div>
-            <div className="col-xl-4 col-sm-12 text-center text-md-center text-sm-center last-paragraph-no-margin fs-15 order-3 order-md-1">
+            <div className="col-xl-4 col-sm-12 text-center text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-16">
                 고객센터: 010-5922-1221
                 <br />
@@ -60,7 +60,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="row align-items-center">
-            <div className="col-xl-3 col-sm-6 text-center text-md-center text-sm-center last-paragraph-no-margin fs-15 order-3 order-md-1">
+            <div className="col-xl-3 col-sm-6 text-center text-md-center last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p>
                 © Copyright 2025
                 <Link to="/" className="fw-500 ps-2">

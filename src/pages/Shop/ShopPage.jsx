@@ -548,38 +548,51 @@ const ShopPage = () => {
                   <div className="row">
                     <div className="col-12 col-md-6 last-paragraph-no-margin sm-mb-30px">
                       <div className="fs-22 text-dark-gray mb-15px fw-500">
-                        Shipping information
+                        배송 기간 안내
                       </div>
-                      <p className="mb-0">
-                        <span className="fw-500 text-dark-gray">Standard:</span>{' '}
-                        Arrives in 5-8 business days
-                      </p>
-                      <p>
-                        <span className="fw-500 text-dark-gray">Express:</span>{' '}
-                        Arrives in 2-3 business days
-                      </p>
+
                       <p className="w-80 md-w-100">
-                        These shipping rates are not applicable for orders
-                        shipped outside of the US. Some oversized items may
-                        require an additional shipping charge. Free Shipping
-                        applies only to merchandise taxes and gift cards do not
-                        count toward the free shipping total.
+                        에버링크 쇼핑몰의 배송기간은 주문 결제 완료 후
+                        평균적으로 2~5일 이내에 이루어집니다. (공휴일 및 주말
+                        제외) <br /> 기본적으로 국내 배송은 평균 3일 이내
+                        소요되며, 도서산간 지역 및 특정 지역의 경우 최대 7일까지
+                        소요될 수 있습니다. 주문량 증가, 택배사 사정, 천재지변
+                        등으로 인해 배송이 지연될 수 있으며, 이러한 경우
+                        고객센터에서 별도로 안내드립니다.
+                        <br /> 주문하신 상품은 실시간으로 배송 조회가 가능하며,
+                        배송 출발 후에는 주문 변경 및 취소가 불가능하므로 신중한
+                        구매를 부탁드립니다. 빠르고 안전한 배송을 위해 최선을
+                        다하겠습니다.
                       </p>
                     </div>
                     <div className="col-12 col-md-6 last-paragraph-no-margin">
                       <div className="fs-22 text-dark-gray mb-15px fw-500">
-                        Return information
+                        교환 및 환불 정책
                       </div>
                       <p className="w-80 md-w-100">
-                        Orders placed between 10/1/2023 and 12/23/2023 can be
-                        returned by 2/27/2023.
+                        상품 수령 후 7일 이내에 교환 신청이 가능합니다. 단,
+                        제품의 훼손, 사용 흔적, 라벨 제거 등의 경우 교환이
+                        제한될 수 있습니다.
+                        <br /> 제품 불량, 오배송 등의 사유로 인한 교환은
+                        배송비가 무료이며, 단순 변심에 의한 교환은 왕복 배송비가
+                        부과됩니다. 교환을 원하시는 경우, 고객센터 또는
+                        마이페이지에서 교환 신청 후 안내에 따라 상품을 포장하여
+                        반송해 주시면 됩니다. <br />
+                        빠른 처리를 위해 교환 신청 시 제품 상태를 촬영하여
+                        첨부해 주시면 더욱 원활한 처리가 가능합니다.
                       </p>
                       <p className="w-80 md-w-100">
-                        Return or exchange any unused or defective merchandise
-                        by mail or at one of our US or Canada store locations.
-                        Returns made within 30 days of the order delivery date
-                        will be issued a full refund to the original form of
-                        payment.
+                        구매하신 상품은 수령 후 7일 이내에 환불 신청이
+                        가능합니다.
+                        <br /> 단순 변심으로 인한 환불 요청 시 왕복 배송비가
+                        부과될 수 있으며, 제품이 사용되지 않은 상태여야 합니다.
+                        불량 및 오배송의 경우 전액 환불이 가능하며, 추가 비용
+                        없이 반품 처리가 진행됩니다. <br />
+                        환불 신청 후 제품이 정상적으로 반송되면 검수 과정을 거쳐
+                        영업일 기준 3~5일 이내 환불 처리가 완료됩니다. 결제
+                        수단에 따라 환불 기간이 다를 수 있으며, 신용카드 결제의
+                        경우 카드사 정책에 따라 최대 7~10일이 소요될 수
+                        있습니다.
                       </p>
                     </div>
                   </div>

@@ -1,9 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import Modal from '@/components/common/Modal/Modal';
 import AnimatedSection from '@/components/AnimatedSection';
+
+import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
+import { postMeReviews } from '@/api/member/personalApi';
+import {
+  getReviewSelected,
+  postReviewModify,
+  postReviewRemove,
+} from '@/api/products/reviewsApi';
+import { formatDate } from '@/utils/utils';
+import { FaStar } from 'react-icons/fa'; // FontAwesome 별 아이콘 사용
 
 import ShopDetailImage1 from '@/assets/images/shop-detail-image1.png';
 import ShopDetailImage2 from '@/assets/images/shop-detail-image2.png';
@@ -11,10 +21,151 @@ import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 import mainSubImage3 from '@/assets/images/main-sub-image3.png';
 
 const MyReviewPage = () => {
+  const initData = { from: '2025-01-01', to: '2025-03-31', keyword: '' };
   const [selectedId, setSelectedId] = useState(0);
+  const [viewSelect, setViewSelect] = useState({
+    from: '2025-01-01',
+    to: '2025-03-31',
+    keyword: '',
+  });
+  const [meReviews, setMeReviews] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState({
+    rate: 0,
+    content: '',
+    images: [],
+  });
+  const [files, setFiles] = useState([]);
+
+  // 리뷰 조회
+  useEffect(() => {
+    const getMeReviews = async () => {
+      try {
+        const { status, data } = await postMeReviews(viewSelect);
+        if (status !== 200) {
+          alert('통신 에러가 발생했습니다.');
+          return;
+        }
+        const arr = data.data;
+        console.log(arr);
+        // review만 추출하여 상태 업데이트
+        const extractedReviews = arr.map((item) => item.review);
+        setMeReviews(extractedReviews);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getMeReviews();
+  }, [viewSelect]);
 
   const handleDrodownOpen = (id) => {
     setSelectedId(id); // 클릭한 요소의 ID 저장
+  };
+
+  //리뷰 조회
+  const handleReviewsModify = async (id) => {
+    const res = await getReviewSelected(id);
+    const { status, data } = res;
+    if (status !== 200) {
+      alert('통신 에러가 발생했습니다.');
+      return;
+    }
+    const dt = data.data;
+    setFiles([dt.image1, dt.image2, dt.image3, dt.image4, dt.image5]);
+    setReviews(data.data);
+    setIsModalOpen(true);
+  };
+
+  //리뷰 삭제
+  const handleReviewsRemove = async (id) => {
+    const res = await postReviewRemove(id);
+    const { status } = res;
+    if (status !== 200) {
+      alert('통신 에러가 발생했습니다.');
+      return;
+    }
+    setViewSelect(initData);
+  };
+
+  // 별점 클릭 핸들러
+  const handleStarClick = (index) => {
+    setReviews((prevReviews) => ({
+      ...prevReviews,
+      rate: index + 1, // 클릭한 별까지 점수 설정
+    }));
+  };
+
+  // 리뷰 내용 입력 핸들러
+  const handleContentChange = (e) => {
+    const { value } = e.target;
+    setReviews((prevReviews) => ({
+      ...prevReviews,
+      content: value,
+    }));
+  };
+
+  // 파일 선택 핸들러
+  const handleFileChange = (event) => {
+    const selectedFiles = Array.from(event.target.files)
+      .filter((file) => file.type.startsWith('image')) // 이미지 파일만 허용
+      .slice(0, 5 - files.length); // 최대 5개까지만 추가 가능
+
+    const previewFiles = selectedFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file), // 미리보기 URL 생성
+    }));
+
+    setFiles((prevFiles) => [...prevFiles, ...previewFiles]); // 기존 파일 유지
+  };
+
+  // 파일 삭제 핸들러
+  const handleRemoveFile = (index) => {
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    console.log(files);
+  };
+
+  // 백엔드 요청하기 전 S3 파일 업로드 (순차 업로드)
+  const handleGetFileUploadPath = async () => {
+    let completedUrls = [];
+
+    if (files.length > 0) {
+      for (const file of files) {
+        try {
+          // 1️⃣ Presigned URL 요청
+          const presignedResponse = await postRequestPresignedUrl();
+          const { data } = presignedResponse.data;
+          const url = data.completedUrl; // 업로드 완료 후 접근할 URL
+
+          console.log(data);
+          console.log(`Uploading: ${file.name} -> ${url}`);
+
+          // 2️⃣ S3에 파일 업로드 (순차적 실행)
+          const response = await fetch(data.url, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': file.type },
+          });
+
+          if (!response.ok) throw new Error(`업로드 실패: ${file.name}`);
+
+          // 3️⃣ 업로드 성공한 파일 URL 저장
+          completedUrls.push(url);
+        } catch (error) {
+          console.error(`파일 업로드 중 오류 발생: ${file.name}`, error);
+          return; // 에러 발생 시 중단
+        }
+      }
+    }
+
+    // 이후 로직 (예: 업로드된 파일 URL을 백엔드에 전송)
+    const res = await postReviewModify('99999999-9999-9999-9999-999999999999', {
+      ...reviews,
+      images: completedUrls,
+    });
+    if (res.status === 200) {
+      setIsModalOpen(false);
+    }
   };
 
   return (
@@ -23,256 +174,340 @@ const MyReviewPage = () => {
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
           <h1 className="fw-600 text-dark-gray mb-10px">내가 쓴 리뷰</h1>
         </div>
-        <div
-          className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row align-items-center w-100 mb-40px md-mb-30px pb-15px"
-          data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
-        >
-          <div className="mx-auto me-md-0 col tab-style-01">
-            <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-14 fw-600 mb-3">
-              <li className="nav-item mt-10px">
-                <a
-                  className="nav-link active"
-                  data-bs-toggle="tab"
-                  href="#tab_sec1"
-                >
-                  전체기간
-                </a>
-              </li>
-              <li className="nav-item mt-10px">
-                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec2">
-                  1주일
-                </a>
-              </li>
-              <li className="nav-item mt-10px">
-                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec3">
-                  1개월
-                </a>
-              </li>
-              <li className="nav-item mt-10px">
-                <a className="nav-link" data-bs-toggle="tab" href="#tab_sec4">
-                  3개월
-                </a>
-              </li>
-              <li className="nav-item mt-10px">
-                <input
-                  className="border-1 nav-link text-center"
-                  type="date"
-                  name="date"
-                  value="2024-02-06"
-                  min="2024-01-01"
-                  max="2099-12-31"
-                  aria-label="date"
-                />
-              </li>
-              <li className="nav-item mt-10px">
-                <input
-                  className="border-1 nav-link text-center"
-                  type="date"
-                  name="date"
-                  value="2024-02-13"
-                  min="2024-01-01"
-                  max="2099-12-31"
-                  aria-label="date"
-                />
-              </li>
-              <li className="nav-item mt-10px flex-1">
-                <div className="position-relative">
+        {meReviews.length > 0 && (
+          <div
+            className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row align-items-center w-100 mb-40px md-mb-30px pb-15px"
+            // data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+          >
+            <div className="mx-auto me-md-0 col tab-style-01">
+              <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-14 fw-600 mb-3">
+                <li className="nav-item mt-10px">
+                  <a
+                    className="nav-link active"
+                    data-bs-toggle="tab"
+                    href="#tab_sec1"
+                  >
+                    전체기간
+                  </a>
+                </li>
+                <li className="nav-item mt-10px">
+                  <a className="nav-link" data-bs-toggle="tab" href="#tab_sec2">
+                    1주일
+                  </a>
+                </li>
+                <li className="nav-item mt-10px">
+                  <a className="nav-link" data-bs-toggle="tab" href="#tab_sec3">
+                    1개월
+                  </a>
+                </li>
+                <li className="nav-item mt-10px">
+                  <a className="nav-link" data-bs-toggle="tab" href="#tab_sec4">
+                    3개월
+                  </a>
+                </li>
+                <li className="nav-item mt-10px">
                   <input
-                    className="border-1 nav-link "
-                    type="text"
-                    name="name"
-                    placeholder="검색어를 입력 해주세요."
+                    className="border-1 nav-link text-center"
+                    type="date"
+                    name="date"
+                    value="2024-02-06"
+                    min="2024-01-01"
+                    max="2099-12-31"
+                    aria-label="date"
                   />
-                  <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
-                </div>
-              </li>
-            </ul>
+                </li>
+                <li className="nav-item mt-10px">
+                  <input
+                    className="border-1 nav-link text-center"
+                    type="date"
+                    name="date"
+                    value="2024-02-13"
+                    min="2024-01-01"
+                    max="2099-12-31"
+                    aria-label="date"
+                  />
+                </li>
+                <li className="nav-item mt-10px flex-1">
+                  <div className="position-relative">
+                    <input
+                      className="border-1 nav-link "
+                      type="text"
+                      name="name"
+                      placeholder="검색어를 입력 해주세요."
+                    />
+                    <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="row g-0 mb-4 md-mb-35px">
-          <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-            <div className="d-block d-md-flex w-100 align-items-center position-relative">
-              <div className="position-absolute top-0 end-0 z-index-1">
-                <div className="header-language-icon widget fs-13 fw-600">
-                  <div
-                    className={`header-language dropdown ${
-                      selectedId === 1 ? 'open' : ''
-                    }`}
-                    onClick={() => handleDrodownOpen(1)}
-                    onMouseLeave={() => setSelectedId(0)}
-                  >
-                    <a href="#" className="text-dark-gray">
-                      <i className="feather icon-feather-more-vertical- align-middle icon-small text-black ps-20px"></i>
-                    </a>
+          {meReviews.length > 0 ? (
+            meReviews.map((review, index) => (
+              <div
+                key={review.id || index}
+                className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px"
+              >
+                <div className="d-block d-md-flex w-100 align-items-center position-relative">
+                  {/* 드롭다운 메뉴 */}
+                  <div className="position-absolute top-0 end-0 z-index-1">
+                    <div className="header-language-icon widget fs-13 fw-600">
+                      <div
+                        className={`header-language dropdown ${
+                          selectedId === review.id ? 'open' : ''
+                        }`}
+                        onClick={() => handleDrodownOpen(review.id)}
+                        onMouseLeave={() => setSelectedId(0)}
+                      >
+                        <a href="#" className="text-dark-gray">
+                          <i className="feather icon-feather-more-vertical- align-middle icon-small text-black ps-20px"></i>
+                        </a>
+                        <ul className="language-dropdown text-center">
+                          <li>
+                            <a
+                              href="#"
+                              className="fs-18"
+                              onClick={() => handleReviewsModify(review.id)}
+                            >
+                              수정
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              className="fs-18"
+                              onClick={() => handleReviewsRemove(review.id)}
+                            >
+                              삭제
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
 
-                    <ul className="language-dropdown">
-                      <li>
-                        <a href="#" className="fs-18">
-                          <span className="icon-country"></span>수정
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="fs-18">
-                          <span className="icon-country"></span>삭제
-                        </a>
-                      </li>
-                    </ul>
+                  {/* 리뷰 이미지 */}
+                  <div className="w-250px md-w-250px sm-w-100 sm-mb-10px text-center">
+                    {review.image1 && (
+                      <img
+                        src={review.image1}
+                        className="w-120px mb-10px"
+                        alt="리뷰 이미지"
+                      />
+                    )}
+                    <span className="text-dark-gray fw-600 d-block">
+                      {formatDate(review.createdAt)}
+                    </span>
+                  </div>
+
+                  {/* 리뷰 내용 */}
+                  <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
+                    {/* ⭐ 별점 표시 */}
+                    <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <i
+                          key={i}
+                          className={`bi ${
+                            i < review.rate ? 'bi-star-fill' : 'bi-star'
+                          }`}
+                        ></i>
+                      ))}
+                    </span>
+                    {review.image2 && (
+                      <span className="w-80px md-w-80px pe-1">
+                        <img
+                          src={review.image2}
+                          className="w-80px mb-10px"
+                          alt="리뷰 이미지"
+                        />
+                      </span>
+                    )}
+                    {review.image3 && (
+                      <span className="w-80px md-w-80px pe-1">
+                        <img
+                          src={review.image3}
+                          className="w-80px mb-10px"
+                          alt="리뷰 이미지"
+                        />
+                      </span>
+                    )}
+                    {review.image4 && (
+                      <span className="w-80px md-w-80px pe-1">
+                        <img
+                          src={review.image4}
+                          className="w-80px mb-10px"
+                          alt="리뷰 이미지"
+                        />
+                      </span>
+                    )}
+                    {review.image5 && (
+                      <span className="w-80px md-w-80px pe-1">
+                        <img
+                          src={review.image5}
+                          className="w-80px mb-10px"
+                          alt="리뷰 이미지"
+                        />
+                      </span>
+                    )}
+
+                    <p className="w-85 sm-w-100 sm-mt-15px">{review.content}</p>
                   </div>
                 </div>
               </div>
-              <div className="w-250px md-w-250px sm-w-100 sm-mb-10px text-center">
-                <img
-                  src={ShopDetailImage3}
-                  className="w-120px mb-10px"
-                  alt=""
-                />
-                <span className="text-dark-gray fw-600 d-block">
-                  2025.02.01
-                </span>
-              </div>
-              <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                </span>
-
-                <p className="w-85 sm-w-100 sm-mt-15px">
-                  Lorem ipsum dolor sit sed do eiusmod tempor incididunt labore
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-            <div className="d-block d-md-flex w-100 align-items-center position-relative">
-              <div className="position-absolute top-0 end-0 z-index-1">
-                <div className="header-language-icon widget fs-13 fw-600">
-                  <div
-                    className={`header-language dropdown ${
-                      selectedId === 2 ? 'open' : ''
-                    }`}
-                    onClick={() => handleDrodownOpen(2)}
-                    onMouseLeave={() => setSelectedId(0)}
-                  >
-                    <a href="#" className="text-dark-gray">
-                      <i className="feather icon-feather-more-vertical- align-middle icon-small text-black ps-20px"></i>
-                    </a>
-
-                    <ul className="language-dropdown">
-                      <li>
-                        <a href="#" className="fs-18">
-                          <span className="icon-country"></span>수정
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="fs-18">
-                          <span className="icon-country"></span>삭제
-                        </a>
-                      </li>
-                    </ul>
+            ))
+          ) : (
+            <p className="text-center w-100 fs-22">
+              <i className="fa-regular fa-pen-to-square align-middle icon-large text-light-black pe-1"></i>
+              작성된 리뷰가 없습니다.
+            </p>
+          )}
+        </div>
+      </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8">
+              <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
+                <div className="row justify-content-center mb-30px sm-mb-10px">
+                  <div className="col-md-9 text-center">
+                    <h4 className="text-dark-gray fw-500 mb-15px">리뷰 수정</h4>
+                    <button
+                      type="button"
+                      className="btn-close position-absolute top-10px right-10px"
+                      onClick={() => setIsModalOpen(false)}
+                    ></button>
                   </div>
                 </div>
-              </div>
-              <div className="w-250px md-w-250px sm-w-100 sm-mb-10px text-center">
-                <img
-                  src={ShopDetailImage3}
-                  className="w-120px mb-10px"
-                  alt=""
-                />
-                <span className="text-dark-gray fw-600 d-block">
-                  2025.02.01
-                </span>
-              </div>
-              <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                </span>
+                <form className="row contact-form-style-02">
+                  <div className="col-lg-12 mb-20px text-center">
+                    <h6 className="text-dark-gray fw-500 mb-15px">
+                      상품 만족도
+                    </h6>
 
-                <p className="w-85 sm-w-100 sm-mt-15px">
-                  Lorem ipsum dolor sit sed do eiusmod tempor incididunt labore
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-            <div className="d-block d-md-flex w-100 align-items-center position-relative">
-              <div className="position-absolute top-0 end-0 z-index-1">
-                <div className="header-language-icon widget fs-13 fw-600">
-                  <div
-                    className={`header-language dropdown ${
-                      selectedId === 3 ? 'open' : ''
-                    }`}
-                    onClick={() => handleDrodownOpen(3)}
-                    onMouseLeave={() => setSelectedId(0)}
-                  >
-                    <a href="#" className="text-dark-gray">
-                      <i className="feather icon-feather-more-vertical- align-middle icon-small text-black ps-20px"></i>
-                    </a>
-
-                    <ul className="language-dropdown">
-                      <li>
-                        <a href="#" className="fs-18">
-                          <span className="icon-country"></span>수정
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="fs-18">
-                          <span className="icon-country"></span>삭제
-                        </a>
-                      </li>
-                    </ul>
+                    <div>
+                      <span className="ls-minus-1px icon-large d-block mt-20px md-mt-0">
+                        {[...Array(5)].map((_, index) => (
+                          <FaStar
+                            key={index}
+                            size={50}
+                            style={{ cursor: 'pointer', marginRight: '5px' }}
+                            color={index < reviews.rate ? '#FFD700' : '#E0E0E0'} // 채워진 별은 노란색, 비어있는 별은 회색
+                            onClick={() => handleStarClick(index)}
+                          />
+                        ))}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="w-250px md-w-250px sm-w-100 sm-mb-10px text-center">
-                <img
-                  src={ShopDetailImage3}
-                  className="w-120px mb-10px"
-                  alt=""
-                />
-                <span className="text-dark-gray fw-600 d-block">
-                  2025.02.01
-                </span>
-              </div>
-              <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                  <i className="bi bi-star-fill"></i>
-                </span>
+                  <div className="col-md-12 mb-20px">
+                    <label className="form-label mb-5px fw-700 text-black">
+                      리뷰 작성
+                    </label>
+                    <textarea
+                      className="border-radius-4px form-control"
+                      cols="40"
+                      rows="4"
+                      name="content"
+                      value={reviews.content}
+                      onChange={handleContentChange}
+                      placeholder="리뷰를 남겨주세요."
+                    ></textarea>
+                  </div>
 
-                <p className="w-85 sm-w-100 sm-mt-15px">
-                  Lorem ipsum dolor sit sed do eiusmod tempor incididunt labore
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident.
-                </p>
+                  <div className="col-md-12 mb-20px">
+                    {/* 파일 업로드 버튼 스타일링 */}
+                    <div
+                      className="border-1 border-dashed rounded mt-1 mb-3 p-1 position-relative text-center "
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {/* 클릭 가능한 영역 */}
+                      <label
+                        htmlFor="file-upload"
+                        style={{ cursor: 'pointer' }}
+                        className="w-50"
+                      >
+                        <i className="bi bi-camera fs-5 me-2"></i>
+                        사진 첨부하기
+                      </label>
+
+                      {/* 숨겨진 파일 업로드 input */}
+                      <input
+                        id="file-upload"
+                        type="file"
+                        multiple
+                        accept="image/*,"
+                        onChange={handleFileChange}
+                        className="input-file-upload"
+                      />
+                    </div>
+                    {/* 업로드 제한 메시지 */}
+                    {files.length >= 5 && (
+                      <p className="text-red text-sm mt-1 text-center mb-1">
+                        최대 5개의 이미지만 업로드 가능합니다.
+                      </p>
+                    )}
+                    {/* 미리보기 리스트 (가로형) */}
+                    <div className="d-flex justify-conten-start mt-4 gap-2">
+                      {files.map((fileObj, index) => (
+                        <div
+                          key={index}
+                          className="position-relative w-20 h-20"
+                        >
+                          {/* 삭제 버튼 */}
+                          <Button
+                            onClick={() => handleRemoveFile(index)}
+                            size="extra-small"
+                            className="position-absolute top-0 end-0 bg-black text-white text-sm border-0 md-p-5"
+                          >
+                            ✕
+                          </Button>
+
+                          {/* 이미지 미리보기 */}
+                          <img
+                            src={fileObj}
+                            alt="미리보기"
+                            className="w-100 h-100"
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* 업로드된 파일 수 표시 */}
+                    {files.length > 0 && (
+                      <p className="text-center mt-2">
+                        {files.length} / 5 파일 업로드됨
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="col-lg-112 text-center text-lg-center">
+                    <input type="hidden" name="redirect" value="" />
+                    <Button
+                      className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                      onClick={handleGetFileUploadPath}
+                    >
+                      리뷰쓰기
+                    </Button>
+                    <Button
+                      className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                      onClick={() => {
+                        setIsModalOpen(false);
+                        // setReviews(initialForm);
+                      }}
+                    >
+                      취소
+                    </Button>
+                  </div>
+                  <div className="col-12">
+                    <div className="form-results mt-20px d-none"></div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Modal>
     </>
   );
 };

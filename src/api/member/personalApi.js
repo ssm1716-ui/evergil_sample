@@ -86,3 +86,16 @@ export const putEmailAuthCodeConfirm = async (param) => {
     }
 };
 
+
+
+//패스워드 확인 후 정보 변경 권한 획득
+export const postMeReviews = async (param) => {
+    try {
+        const res = await axiosInstance.post('/members/me/reviews', param);
+        return res;
+    } catch (err) {
+        console.error(err);
+
+    }
+};
+
