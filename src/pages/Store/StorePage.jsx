@@ -3,48 +3,76 @@ import { Link } from 'react-router-dom';
 import Isotope from 'isotope-layout';
 import imagesLoaded from 'imagesloaded';
 
-import sampleImage1 from '@/assets/images/sample/demo-fashion-store-product-01.jpg';
-import sampleImage2 from '@/assets/images/sample/demo-fashion-store-product-02.jpg';
-import sampleImage3 from '@/assets/images/sample/demo-fashion-store-product-03.jpg';
+import { getProductsSelected } from '@/api/products/productsApi';
+
+import sampleImage1 from '@/assets/images/sample/cef8956d119735502d0dcd07875c9c06d33ecb6220a4321b01b0fbe5163e.jpg';
+import sampleImage2 from '@/assets/images/sample/7c44ec69af309222e12eff2678dde729535eeb6f025b3e3cd60c339c6852.jpg';
+import sampleImage3 from '@/assets/images/sample/81eced237f6438f7abf32ff519203b74ab90be66ef083262fb9812815e00.jpg';
+
+const sampleImages = [sampleImage1, sampleImage2, sampleImage3];
 
 const StorePage = () => {
   const gridRef = useRef(null);
   const [filterKey, setFilterKey] = useState('*'); // 기본 필터 값
   const [isotope, setIsotope] = useState(null);
+  const [products, setProducts] = useState([]);
 
+  /** 🛍️ 제품 리스트 가져오기 */
   useEffect(() => {
-    if (!gridRef.current) {
-      console.error('gridRef.current가 존재하지 않습니다.');
-      return;
-    }
+    const fetchProducts = async () => {
+      try {
+        const { status, data } = await getProductsSelected();
+        if (status !== 200)
+          throw new Error('데이터를 불러오는데 실패했습니다.');
+        console.log(data);
 
-    imagesLoaded(gridRef.current, () => {
-      const iso = new Isotope(gridRef.current, {
+        setProducts(data.data || []); // 리스트 없을 경우 빈 배열 처리
+      } catch (error) {
+        alert('제품을 불러오는데 실패했습니다.');
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  /** Isotope 초기화 및 레이아웃 적용 */
+  useEffect(() => {
+    if (!gridRef.current) return;
+
+    imagesLoaded(gridRef.current, { background: true }, () => {
+      const isoInstance = new Isotope(gridRef.current, {
         itemSelector: '.grid-item',
-        layoutMode: 'masonry',
+        layoutMode: 'masonry', // ✅ masonry 사용
         percentPosition: true,
         masonry: {
-          columnWidth: '.grid-sizer', // 기준이 될 크기
+          columnWidth: '.grid-sizer',
         },
       });
 
-      setIsotope(iso);
+      setIsotope(isoInstance);
+      isoInstance.layout(); // ✅ 레이아웃 강제 적용
     });
 
-    return () => {
-      if (isotope) {
-        isotope.destroy();
-      }
-    };
+    return () => isotope?.destroy();
   }, []);
 
-  // 필터 변경
+  /** 데이터 변경 시 Isotope 재정렬 */
+  useEffect(() => {
+    if (isotope && products.length > 0) {
+      imagesLoaded(gridRef.current, () => {
+        isotope.reloadItems();
+        isotope.arrange();
+        isotope.layout(); // ✅ 강제 레이아웃 적용
+      });
+    }
+  }, [products, isotope]);
+
+  /** 필터 변경 시 적용 */
   useEffect(() => {
     if (isotope) {
       isotope.arrange({ filter: filterKey });
     }
-  }, [filterKey, isotope]);
-
+  }, [filterKey]);
   return (
     <>
       <section className="top-space-margin big-section">
@@ -66,84 +94,36 @@ const StorePage = () => {
           <div className="row flex-row-reverse">
             <div className="col-xxl-12 col-lg-12 md-ps-15px md-mb-60px">
               <ul
-                className="shop-modern shop-wrapper grid grid-4col xl-grid-3col sm-grid-2col xs-grid-1col gutter-extra-large text-center"
+                className="shop-modern shop-wrapper grid grid-3col xl-grid-3col sm-grid-2col xs-grid-1col gutter-extra-large text-center"
                 ref={gridRef}
               >
                 <li className="grid-sizer"></li>
-
-                <li className="grid-item new">
-                  <div className="shop-box mb-10px">
-                    <div className="shop-image mb-20px">
-                      <Link to="/shop">
-                        <img src={sampleImage1} alt="Product" />
-                        <span className="lable new">New</span>
-                        <div className="shop-overlay"></div>
-                      </Link>
-                    </div>
-                    <div className="shop-footer text-center">
-                      <a href="#" className="text-dark-gray fs-19 fw-500">
-                        QR Code(부착용)
-                      </a>
-                      <div className="price lh-22 fs-16">
-                        <del>100,000원</del> 80,000원
+                {products.map((product, index) => (
+                  <li className="grid-item new" key={index}>
+                    <div className="shop-box mb-10px">
+                      <div className="shop-image mb-20px">
+                        <Link to={`/shop/${product.productId}`}>
+                          <img src={product.productImage} alt="Product" />
+                          <span className="lable new">New</span>
+                          <div className="shop-overlay"></div>
+                        </Link>
+                      </div>
+                      <div className="shop-footer text-center">
+                        <a href="#" className="text-dark-gray fs-19 fw-500">
+                          {product.productName}
+                        </a>
+                        <div className="price lh-22 fs-16">
+                          <del>
+                            {product.discountedPrice.toLocaleString()}원
+                          </del>
+                          {product.price.toLocaleString()}원
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-                <li className="grid-item new">
-                  <div className="shop-box mb-10px">
-                    <div className="shop-image mb-20px">
-                      <Link to="/shop">
-                        <img src={sampleImage2} alt="Product" />
-                        <span className="lable new">New</span>
-                        <div className="shop-overlay"></div>
-                      </Link>
-                    </div>
-                    <div className="shop-footer text-center">
-                      <a href="#" className="text-dark-gray fs-19 fw-500">
-                        QR Code(거치용)
-                      </a>
-                      <div className="price lh-22 fs-16">
-                        <del>100,000원</del> 80,000원
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                  </li>
+                ))}
+                ;
               </ul>
-              {/* <div className="w-100 d-flex mt-4 justify-content-center md-mt-30px">
-                <ul className="pagination pagination-style-01 fs-13 fw-500 mb-0">
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      <i className="feather icon-feather-arrow-left fs-18 d-xs-none"></i>
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      01
-                    </a>
-                  </li>
-                  <li className="page-item active">
-                    <a className="page-link" href="#">
-                      02
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      03
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      04
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      <i className="feather icon-feather-arrow-right fs-18 d-xs-none"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div> */}
             </div>
           </div>
         </div>

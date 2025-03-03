@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import { addCart } from '@/api/memberApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Autoplay } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
+
+import { getProductDetailSelected } from '@/api/products/productsApi';
 
 import sampleImage1 from '@/assets/images/sample/demo-fashion-store-product-detail-01.jpg';
 import sampleImage2 from '@/assets/images/sample/demo-fashion-store-product-detail-02.jpg';
@@ -17,20 +19,30 @@ import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 import mainSubImage3 from '@/assets/images/main-sub-image3.png';
 
 const ShopPage = () => {
+  const { id } = useParams(); //URL에서 :id 값 가져오기
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [mainSwiper, setMainSwiper] = useState(null);
   const [qty, setQty] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProduct, setProduct] = useState({
-    productImages: sampleImage1,
-    productName: '에버링크 QR',
-    price: 80000,
-    originPrice: 100000,
-    discountedPrice: 20000,
-    deliveryFee: 0,
-    qty: 1,
-  });
+  const [product, setProduct] = useState({ productImages: [] });
   const navigate = useNavigate();
+
+  // 제품 정보 불러오기
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { status, data } = await getProductDetailSelected(id); // API 호출
+        if (status !== 200) throw new Error('제품 정보를 불러올 수 없습니다.');
+
+        setProduct(data.data);
+        console.log(data.data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   // `thumbsSwiper`가 설정될 때까지 `undefined`를 유지
   useEffect(() => {
@@ -59,7 +71,7 @@ const ShopPage = () => {
 
   //로컬스토리지에 장바구니 추가
   const handleCartAdd = () => {
-    addCart(selectedProduct);
+    addCart(product);
     setIsModalOpen(true);
   };
 
@@ -70,7 +82,7 @@ const ShopPage = () => {
   const handleBuyNow = (e) => {
     e.preventDefault();
     navigate('/checkout', {
-      state: { orderType: 'direct', product: selectedProduct },
+      state: { orderType: 'direct', product: product },
     });
   };
 
@@ -116,14 +128,16 @@ const ShopPage = () => {
                     modules={[Navigation, Thumbs, Autoplay]}
                     className="product-image-slider"
                   >
-                    <SwiperSlide>
-                      <img
-                        className="w-100"
-                        src={sampleImage1}
-                        alt="Product 1"
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
+                    {(product.productImages || []).map((image, index) => (
+                      <SwiperSlide key={index}>
+                        <img
+                          className="w-100"
+                          src={image}
+                          alt={`Product ${index + 1}`}
+                        />
+                      </SwiperSlide>
+                    ))}
+                    {/* <SwiperSlide>
                       <img
                         className="w-100"
                         src={sampleImage2}
@@ -157,7 +171,7 @@ const ShopPage = () => {
                         src={sampleImage2}
                         alt="Product 6"
                       />
-                    </SwiperSlide>
+                    </SwiperSlide> */}
                   </Swiper>
                 </div>
 
@@ -179,7 +193,16 @@ const ShopPage = () => {
                     modules={[Navigation, Thumbs]}
                     className="product-image-thumb slider-vertical"
                   >
-                    <SwiperSlide>
+                    {(product.productImages || []).map((image, index) => (
+                      <SwiperSlide key={index}>
+                        <img
+                          className="w-100"
+                          src={image}
+                          alt={`Thumb ${index + 1}`}
+                        />
+                      </SwiperSlide>
+                    ))}
+                    {/* <SwiperSlide>
                       <img className="w-100" src={sampleImage1} alt="Thumb 1" />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -196,7 +219,7 @@ const ShopPage = () => {
                     </SwiperSlide>
                     <SwiperSlide>
                       <img className="w-100" src={sampleImage2} alt="Thumb 6" />
-                    </SwiperSlide>
+                    </SwiperSlide> */}
                   </Swiper>
                 </div>
               </div>
@@ -204,7 +227,9 @@ const ShopPage = () => {
 
             <div className="col-12 col-lg-5 product-info">
               <span className="fw-500 text-dark-gray d-block">배송비 무료</span>
-              <h4 className="text-dark-gray fw-500 mb-5px">에버링크 QR</h4>
+              <h4 className="text-dark-gray fw-500 mb-5px">
+                {product.productName}
+              </h4>
               <div className="d-block d-sm-flex align-items-center mb-15px">
                 <div className="me-10px xs-me-0">
                   <a
@@ -212,7 +237,7 @@ const ShopPage = () => {
                     className="d-block section-link icon-small me-25px text-dark-gray fw-500 section-link xs-me-0 w-100"
                   >
                     <i className="bi bi-star-fill text-golden-yellow pe-1"></i>
-                    리뷰 165건
+                    리뷰 {product.totalReviewCount}건
                   </a>
                 </div>
 
@@ -221,19 +246,12 @@ const ShopPage = () => {
               <div className="product-price mb-10px">
                 <span className="text-dark-gray fs-28 xs-fs-24 fw-700">
                   <del className="text-medium-gray me-10px fw-400">
-                    100,000원
+                    {product.discountedPrice}원
                   </del>
-                  80,000원
+                  {product.price}원
                 </span>
               </div>
-              <p className="mb-30px">
-                Lorem ipsum is simply dummy text of the printing and typesetting
-                industry lorem ipsum standard. Lorem ipsum is simply dummy text
-                of the printing and typesetting industry lorem ipsum standard.
-                Lorem ipsum is simply dummy text of the printing and typesetting
-                industry lorem ipsum standard. Lorem ipsum is simply dummy text
-                of the printing and typesetting industry lorem ipsum standard.
-              </p>
+              <p className="mb-30px">{product.description}</p>
               {/* <div className="d-flex align-items-center mb-20px">
                 <label className="text-dark-gray me-15px fw-500">Color</label>
                 <ul className="shop-color mb-0">
@@ -388,7 +406,7 @@ const ShopPage = () => {
                     상품 설명<span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <a
                     className="nav-link"
                     data-bs-toggle="tab"
@@ -397,7 +415,7 @@ const ShopPage = () => {
                     추가 정보
                     <span className="tab-border bg-dark-gray"></span>
                   </a>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <a
                     className="nav-link"
@@ -415,7 +433,7 @@ const ShopPage = () => {
                     href="#tab_five4"
                     data-tab="review-tab"
                   >
-                    리뷰 (165)
+                    리뷰 ({product.totalReviewCount})
                     <span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
@@ -424,75 +442,12 @@ const ShopPage = () => {
               <div className="tab-content">
                 <div className="tab-pane fade in active show" id="tab_five1">
                   <div className="row align-items-center justify-content-center">
-                    <div className="col-lg-6 md-mb-40px">
-                      <div className="d-flex align-items-center mb-5px">
-                        <div className="col-auto pe-5px">
-                          <i className="bi bi-heart-fill text-red fs-16"></i>
-                        </div>
-                        <div className="col fw-500 text-dark-gray">
-                          We make you feel special
+                    <div className="col-lg-12 md-mb-40px">
+                      <div className="d-flex align-items-center justify-content-center mb-5px">
+                        <div className="col fw-500 text-dark-gray w-100 text-center">
+                          <img src={product.productDetails} alt="detail" />
                         </div>
                       </div>
-                      <h4 className="text-dark-gray fw-500 mb-20px w-90 lg-w-100">
-                        Unique and quirky designs for the latest trends product.
-                      </h4>
-                      <p className="w-90">
-                        Lorem ipsum is simply dummy text of the printing and
-                        typesetting industry lorem ipsum has been the standard
-                        dummy text.
-                      </p>
-                      <div>
-                        <div className="feature-box feature-box-left-icon-middle mb-10px">
-                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
-                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
-                          </div>
-                          <div className="feature-box-content">
-                            <span className="d-block text-dark-gray fw-500">
-                              Made from soft yet durable 100% organic cotton
-                              twill.
-                            </span>
-                          </div>
-                        </div>
-                        <div className="feature-box feature-box-left-icon-middle mb-10px">
-                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
-                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
-                          </div>
-                          <div className="feature-box-content">
-                            <span className="d-block text-dark-gray fw-500">
-                              Front and back yoke seams allow a full range of
-                              shoulder.
-                            </span>
-                          </div>
-                        </div>
-                        <div className="feature-box feature-box-left-icon-middle mb-10px">
-                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
-                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
-                          </div>
-                          <div className="feature-box-content">
-                            <span className="d-block text-dark-gray fw-500">
-                              Interior storm flap and zipper garage at chin for
-                              comfort.
-                            </span>
-                          </div>
-                        </div>
-                        <div className="feature-box feature-box-left-icon-middle">
-                          <div className="feature-box-icon feature-box-icon-rounded w-30px h-30px rounded-circle bg-very-light-gray me-10px">
-                            <i className="fa-solid fa-check fs-12 text-dark-gray"></i>
-                          </div>
-                          <div className="feature-box-content">
-                            <span className="d-block text-dark-gray fw-500">
-                              Color may slightly vary depending on your screen.
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8">
-                      <img
-                        src="https://via.placeholder.com/580x555"
-                        alt=""
-                        className="w-100"
-                      />
                     </div>
                   </div>
                 </div>

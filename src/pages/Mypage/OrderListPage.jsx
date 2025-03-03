@@ -50,13 +50,14 @@ const OrderListPage = () => {
 
   // 파일 선택 핸들러
   const handleFileChange = (event) => {
-    const selectedFiles = Array.from(event.target.files)
+    // const selectedFiles = Array.from(event.target.files)
+    const selectedFiles = [...event.target.files]
       .filter((file) => file.type.startsWith('image')) // 이미지 파일만 허용
       .slice(0, 5 - files.length); // 최대 5개까지만 추가 가능
 
     const previewFiles = selectedFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file), // 미리보기 URL 생성
+      originalFile: file, // 원본 File 객체 저장
+      preview: URL.createObjectURL(file),
     }));
 
     setFiles((prevFiles) => [...prevFiles, ...previewFiles]); // 기존 파일 유지
@@ -73,14 +74,19 @@ const OrderListPage = () => {
     let completedUrls = [];
 
     if (files.length > 0) {
-      for (const file of files) {
+      for (const fileObj of files) {
         try {
+          const file = fileObj.originalFile; // 원본 File 객체 참조
+          if (!(file instanceof File)) {
+            console.error('🚨 잘못된 파일 형식:', file);
+            continue;
+          }
+          console.log(`📂 파일 업로드 시작: ${file.name} (${file.type})`);
+
           // 1️⃣ Presigned URL 요청
           const presignedResponse = await postRequestPresignedUrl();
           const { data } = presignedResponse.data;
           const url = data.completedUrl; // 업로드 완료 후 접근할 URL
-
-          console.log(data);
           console.log(`Uploading: ${file.name} -> ${url}`);
 
           // 2️⃣ S3에 파일 업로드 (순차적 실행)
@@ -95,8 +101,7 @@ const OrderListPage = () => {
           // 3️⃣ 업로드 성공한 파일 URL 저장
           completedUrls.push(url);
         } catch (error) {
-          console.error(`파일 업로드 중 오류 발생: ${file.name}`, error);
-          return; // 에러 발생 시 중단
+          console.error(error);
         }
       }
     }
@@ -109,6 +114,7 @@ const OrderListPage = () => {
     if (res.status === 200) {
       setIsModalOpen(false);
       setReviews(initialForm);
+      // }
     }
   };
 
