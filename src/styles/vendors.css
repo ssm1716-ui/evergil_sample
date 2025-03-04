@@ -8009,6 +8009,10 @@ textarea.form-control-lg {
   min-width: 100vw !important;
 }
 
+.h-20 {
+  height: 20% !important;
+}
+
 .h-25 {
   height: 25% !important;
 }

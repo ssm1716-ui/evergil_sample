@@ -105,13 +105,29 @@ export const getAccessToken = async () => {
 
 
 //장바구니 추가시 로컬스토리지 저장
-export const addCart = (product) => {
+export const addCart = (newProduct) => {
     try {
 
-        const cartData = JSON.parse(localStorage.getItem('dev_cart')) || [];
-        cartData.push(product);
+        // const cartData = JSON.parse(localStorage.getItem('dev_cart')) || [];
+        // cartData.push(product);
 
-        localStorage.setItem('dev_cart', JSON.stringify(cartData));
+
+        const storedCart = JSON.parse(localStorage.getItem('dev_cart')) || []; // 기존 장바구니 불러오기
+
+        const existingIndex = storedCart.findIndex(
+            (item) => item.productId === newProduct.productId
+        ); // 2같은 productId가 있는지 확인
+
+        if (existingIndex !== -1) {
+            // 같은 상품이 존재하면 수량 합산
+            storedCart[existingIndex].qty += newProduct.qty;
+        } else {
+            // 새로운 상품이면 추가
+            storedCart.push(newProduct);
+        }
+
+        localStorage.setItem('dev_cart', JSON.stringify(storedCart));
+
 
     } catch (err) {
         console.error(err);

@@ -6,7 +6,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Autoplay } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
 
-import { getProductDetailSelected } from '@/api/products/productsApi';
+import {
+  getProductDetailSelected,
+  getProductReviewsSelected,
+} from '@/api/products/productsApi';
+
+import { formatDate } from '@/utils/utils';
 
 import sampleImage1 from '@/assets/images/sample/demo-fashion-store-product-detail-01.jpg';
 import sampleImage2 from '@/assets/images/sample/demo-fashion-store-product-detail-02.jpg';
@@ -25,13 +30,18 @@ const ShopPage = () => {
   const [qty, setQty] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [product, setProduct] = useState({ productImages: [] });
+  const [reviews, setReviews] = useState([]);
+  const [sortType, setSortType] = useState('BEST');
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [more, setMore] = useState(false);
   const navigate = useNavigate();
 
   // 제품 정보 불러오기
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { status, data } = await getProductDetailSelected(id); // API 호출
+        let { status, data } = await getProductDetailSelected(id); // API 호출
         if (status !== 200) throw new Error('제품 정보를 불러올 수 없습니다.');
 
         setProduct(data.data);
@@ -43,6 +53,51 @@ const ShopPage = () => {
 
     fetchProduct();
   }, [id]);
+
+  // 페이지 번호 변경 시 기존 리뷰에 추가
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const { status, data } = await getProductReviewsSelected(
+          id,
+          sortType,
+          pageNumber,
+          pageSize
+        );
+        if (status !== 200) throw new Error('리뷰 정보를 불러올 수 없습니다.');
+        console.log(data.data.length);
+        data.data.length > 0 ? setMore(true) : setMore(false);
+
+        setReviews((prevReviews) => [...prevReviews, ...data.data]);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    fetchReviews();
+  }, [pageNumber]);
+
+  // 정렬 방식 변경 시 새로운 리뷰 목록 불러오기
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const { status, data } = await getProductReviewsSelected(
+          id,
+          sortType,
+          1,
+          10
+        );
+
+        console.log(data.data.length);
+        if (status !== 200) throw new Error('리뷰 정보를 불러올 수 없습니다.');
+        setReviews(data.data); // 기존 리뷰 초기화하고 새 리뷰 가져옴
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    fetchReviews();
+  }, [sortType]); // 🔥 정렬 방식이 바뀔 때만 실행
 
   // `thumbsSwiper`가 설정될 때까지 `undefined`를 유지
   useEffect(() => {
@@ -71,7 +126,9 @@ const ShopPage = () => {
 
   //로컬스토리지에 장바구니 추가
   const handleCartAdd = () => {
-    addCart(product);
+    const updatedProduct = { ...product, qty }; // 🔥 새 객체 생성하여 qty 추가
+    setProduct(updatedProduct); // 상태 업데이트
+    addCart(updatedProduct);
     setIsModalOpen(true);
   };
 
@@ -81,9 +138,23 @@ const ShopPage = () => {
 
   const handleBuyNow = (e) => {
     e.preventDefault();
+    const updatedProduct = { ...product, qty };
     navigate('/checkout', {
-      state: { orderType: 'direct', product: product },
+      state: { orderType: 'direct', product: updatedProduct },
     });
+  };
+
+  const handleChangeSort = async (e) => {
+    const type = e.target.value;
+    console.log(type);
+    setSortType(type);
+    setPageSize(10);
+    setPageNumber(1);
+  };
+
+  const handleChangePageNumber = async () => {
+    setPageNumber((prevPageNumber) => prevPageNumber + 1);
+    setPageSize((prevPageSize) => pageNumber * prevPageSize);
   };
 
   return (
@@ -144,34 +215,7 @@ const ShopPage = () => {
                         alt="Product 2"
                       />
                     </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        className="w-100"
-                        src={sampleImage3}
-                        alt="Product 3"
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        className="w-100"
-                        src={sampleImage4}
-                        alt="Product 4"
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        className="w-100"
-                        src={sampleImage1}
-                        alt="Product 5"
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img
-                        className="w-100"
-                        src={sampleImage2}
-                        alt="Product 6"
-                      />
-                    </SwiperSlide> */}
+                    */}
                   </Swiper>
                 </div>
 
@@ -205,21 +249,7 @@ const ShopPage = () => {
                     {/* <SwiperSlide>
                       <img className="w-100" src={sampleImage1} alt="Thumb 1" />
                     </SwiperSlide>
-                    <SwiperSlide>
-                      <img className="w-100" src={sampleImage2} alt="Thumb 2" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img className="w-100" src={sampleImage3} alt="Thumb 3" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img className="w-100" src={sampleImage4} alt="Thumb 4" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img className="w-100" src={sampleImage1} alt="Thumb 5" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <img className="w-100" src={sampleImage2} alt="Thumb 6" />
-                    </SwiperSlide> */}
+                    */}
                   </Swiper>
                 </div>
               </div>
@@ -246,9 +276,9 @@ const ShopPage = () => {
               <div className="product-price mb-10px">
                 <span className="text-dark-gray fs-28 xs-fs-24 fw-700">
                   <del className="text-medium-gray me-10px fw-400">
-                    {product.discountedPrice}원
+                    {Number(product.discountedPrice).toLocaleString()}원
                   </del>
-                  {product.price}원
+                  {Number(product.price).toLocaleString()}원
                 </span>
               </div>
               <p className="mb-30px">{product.description}</p>
@@ -406,7 +436,7 @@ const ShopPage = () => {
                     상품 설명<span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
-                {/* <li className="nav-item">
+                <li className="nav-item">
                   <a
                     className="nav-link"
                     data-bs-toggle="tab"
@@ -415,7 +445,7 @@ const ShopPage = () => {
                     추가 정보
                     <span className="tab-border bg-dark-gray"></span>
                   </a>
-                </li> */}
+                </li>
                 <li className="nav-item">
                   <a
                     className="nav-link"
@@ -555,19 +585,105 @@ const ShopPage = () => {
 
                 <div className="tab-pane fade in" id="tab_five4">
                   <div className="row g-0 mb-4 md-mb-35px">
-                    <div className="toolbar-wrapper d-flex flex-column flex-md-row align-items-end w-100  md-mb-30px pb-15px">
-                      <div className="mx-auto me-md-0">
-                        <select
-                          className="fs-18 form-select border-1 border-black w-150 text-black"
-                          aria-label="Default sorting"
-                        >
-                          <option selected>베스트순</option>
-                          <option value="2">최근 등록순</option>
-                          <option value="3">평점 높은순</option>
-                          <option value="4">평점 낮은순</option>
-                        </select>
+                    {reviews.length > 0 && (
+                      <div className="toolbar-wrapper d-flex flex-column flex-md-row align-items-end w-100  md-mb-30px pb-15px">
+                        <div className="mx-auto me-md-0">
+                          <select
+                            className="fs-18 form-select border-1 border-black w-150 text-black"
+                            aria-label="Default sorting"
+                            onChange={handleChangeSort}
+                          >
+                            <option value="BEST" selected>
+                              베스트순
+                            </option>
+                            <option value="NEWEST">최근 등록순</option>
+                            <option value="HIGH_RATING">평점 높은순</option>
+                            <option value="LOW_RATING">평점 낮은순</option>
+                          </select>
+                        </div>
                       </div>
-                    </div>
+                    )}
+
+                    {reviews.length > 0
+                      ? reviews.map((review, index) => (
+                          <div
+                            className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px"
+                            key={index}
+                          >
+                            <div className="d-block d-md-flex w-100 align-items-center">
+                              <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
+                                {review.image1 && (
+                                  <img
+                                    src={review.image1}
+                                    className="w-90px mb-10px"
+                                    alt="리뷰 이미지"
+                                  />
+                                )}
+                                <span className="text-dark-gray fw-600 d-block">
+                                  {review.email}
+                                </span>
+                                <div className="fs-14 lh-18">
+                                  {formatDate(review.createdAt)}
+                                </div>
+                              </div>
+                              <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
+                                <span className="text-golden-yellow mb-5px sm-me-10px sm-mb-0 d-block">
+                                  {Array.from({ length: 5 }, (_, i) => (
+                                    <i
+                                      key={i}
+                                      className={`bi ${
+                                        i < review.rate ? 'bi-star-fill' : ''
+                                      }`}
+                                    ></i>
+                                  ))}
+                                </span>
+                                {review.image2 && (
+                                  <span className="w-80px md-w-80px pe-1">
+                                    <img
+                                      src={review.image2}
+                                      className="w-80px mb-10px"
+                                      alt="리뷰 이미지"
+                                    />
+                                  </span>
+                                )}
+                                {review.image3 && (
+                                  <span className="w-80px md-w-80px pe-1">
+                                    <img
+                                      src={review.image3}
+                                      className="w-80px mb-10px"
+                                      alt="리뷰 이미지"
+                                    />
+                                  </span>
+                                )}
+                                {review.image4 && (
+                                  <span className="w-80px md-w-80px pe-1">
+                                    <img
+                                      src={review.image4}
+                                      className="w-80px mb-10px"
+                                      alt="리뷰 이미지"
+                                    />
+                                  </span>
+                                )}
+                                {review.image5 && (
+                                  <span className="w-80px md-w-80px pe-1">
+                                    <img
+                                      src={review.image5}
+                                      className="w-80px mb-10px"
+                                      alt="리뷰 이미지"
+                                    />
+                                  </span>
+                                )}
+
+                                <p className="w-85 sm-w-100 sm-mt-15px">
+                                  {review.content}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      : 'test'}
+
+                    {/* 
                     <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
                       <div className="d-block d-md-flex w-100 align-items-center">
                         <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
@@ -668,23 +784,25 @@ const ShopPage = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-12 last-paragraph-no-margin text-center">
-                      <a
-                        href="#"
-                        className="btn btn-link btn-hover-animation-switch btn-extra-large text-dark-gray"
-                      >
-                        <span>
-                          <span className="btn-text">더보기</span>
-                          <span className="btn-icon">
-                            <i className="fa-solid fa-chevron-down"></i>
+                    </div> */}
+                    {more && (
+                      <div className="col-12 last-paragraph-no-margin text-center">
+                        <a
+                          className="btn btn-link btn-hover-animation-switch btn-extra-large text-dark-gray"
+                          onClick={handleChangePageNumber}
+                        >
+                          <span>
+                            <span className="btn-text">더보기</span>
+                            <span className="btn-icon">
+                              <i className="fa-solid fa-chevron-down"></i>
+                            </span>
+                            <span className="btn-icon">
+                              <i className="fa-solid fa-chevron-down"></i>
+                            </span>
                           </span>
-                          <span className="btn-icon">
-                            <i className="fa-solid fa-chevron-down"></i>
-                          </span>
-                        </span>
-                      </a>
-                    </div>
+                        </a>
+                      </div>
+                    )}
                   </div>
 
                   {/* <div className="row justify-content-center">

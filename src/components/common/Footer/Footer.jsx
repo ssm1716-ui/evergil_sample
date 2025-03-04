@@ -95,47 +95,27 @@ const Footer = () => {
             <div className="col-xl-3 col-sm-6 position-relative text-center text-sm-end elements-social social-text-style-01 order-2 order-xl-3 xs-mb-10px ">
               <ul className="fs-16 dark fw-600 d-flex justify-content-center align-items-center">
                 <li>
-                  <Link
-                    className="facebook"
-                    href="https://www.facebook.com/"
-                    target="_blank"
-                  >
+                  <Link className="facebook">
                     <img src={footerIconYoutube} alt="" />
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    className="dribbble"
-                    href="http://www.dribbble.com"
-                    target="_blank"
-                  >
+                  <Link className="dribbble">
                     <img src={footerIconInstagram} alt="" />
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    className="twitter"
-                    href="http://www.twitter.com"
-                    target="_blank"
-                  >
+                  <Link className="twitter">
                     <img src={footerIconNaver} alt="" />
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    className="behance"
-                    href="http://www.behance.com/"
-                    target="_blank"
-                  >
+                  <Link className="behance">
                     <img src={footerIconKakao} alt="" />
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    className="behance"
-                    href="http://www.behance.com/"
-                    target="_blank"
-                  >
+                  <Link className="behance">
                     <img src={footerIconShare} alt="" />
                   </Link>
                 </li>

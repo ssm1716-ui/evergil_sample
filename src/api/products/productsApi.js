@@ -28,6 +28,23 @@ export const getProductDetailSelected = async (id) => {
     }
 };
 
+
+//상품 리뷰 리스트 조회
+export const getProductReviewsSelected = async (id, sortType, page = 1, pageSize = 10) => {
+    console.log(sortType, page, pageSize);
+    try {
+        const res = await axiosInstance.get(`/products/${id}/reviews`, {
+            params: {
+                sortType, page, pageSize
+            },
+        });
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 //상품 리뷰 작성
 export const postReviewRegister = async (id, param) => {
     try {

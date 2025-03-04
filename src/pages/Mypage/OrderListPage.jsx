@@ -5,23 +5,21 @@ import Label from '@/components/common/Label/Label';
 import Modal from '@/components/common/Modal/Modal';
 import { FaStar } from 'react-icons/fa'; // FontAwesome 별 아이콘 사용
 
-import {
-  postRequestPresignedUrl,
-  putFileUpload,
-} from '@/api/fileupload/uploadApi';
+import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 
 import { postReviewRegister } from '@/api/products/reviewsApi';
+
+import { getFileType } from '@/utils/utils';
 
 import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
 import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 
-const initialForm = {
-  rate: 0,
-  content: '',
-  images: [],
-};
-
 const OrderListPage = () => {
+  const initialForm = {
+    rate: 0,
+    content: '',
+    images: [],
+  };
   const [orderProducts, setorderProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState({
@@ -84,7 +82,8 @@ const OrderListPage = () => {
           console.log(`📂 파일 업로드 시작: ${file.name} (${file.type})`);
 
           // 1️⃣ Presigned URL 요청
-          const presignedResponse = await postRequestPresignedUrl();
+          const type = getFileType(file.type);
+          const presignedResponse = await postRequestPresignedUrl(type);
           const { data } = presignedResponse.data;
           const url = data.completedUrl; // 업로드 완료 후 접근할 URL
           console.log(`Uploading: ${file.name} -> ${url}`);
@@ -114,7 +113,6 @@ const OrderListPage = () => {
     if (res.status === 200) {
       setIsModalOpen(false);
       setReviews(initialForm);
-      // }
     }
   };
 
@@ -243,7 +241,7 @@ const OrderListPage = () => {
                   className="border-1 nav-link text-center"
                   type="date"
                   name="date"
-                  value="2024-02-06"
+                  // value="2024-02-06"
                   min="2024-01-01"
                   max="2099-12-31"
                   aria-label="date"
@@ -254,7 +252,7 @@ const OrderListPage = () => {
                   className="border-1 nav-link text-center"
                   type="date"
                   name="date"
-                  value="2024-02-13"
+                  // value="2024-02-13"
                   min="2024-01-01"
                   max="2099-12-31"
                   aria-label="date"
@@ -637,7 +635,7 @@ const OrderListPage = () => {
                       />
                     </div>
                     {/* 업로드 제한 메시지 */}
-                    {files.length >= 5 && (
+                    {files.length > 5 && (
                       <p className="text-red text-sm mt-1 text-center mb-1">
                         최대 5개의 이미지만 업로드 가능합니다.
                       </p>
@@ -689,9 +687,10 @@ const OrderListPage = () => {
                       onClick={() => {
                         setIsModalOpen(false);
                         setReviews(initialForm);
+                        setFiles([]);
                       }}
                     >
-                      취소
+                      닫기
                     </Button>
                   </div>
                   <div className="col-12">

@@ -1,9 +1,10 @@
 import axiosInstance from '../axiosInstance';
 
-export const postRequestPresignedUrl = async () => {
+export const postRequestPresignedUrl = async (type) => {
+    console.log(type);
     try {
         const res = await axiosInstance.post('/request-presigned-url', {
-            mediaType: 'png'
+            mediaType: type
         });
         return res;
     } catch (err) {

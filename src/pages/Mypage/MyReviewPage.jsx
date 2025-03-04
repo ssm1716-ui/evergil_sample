@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
-import Label from '@/components/common/Label/Label';
 import Modal from '@/components/common/Modal/Modal';
-import AnimatedSection from '@/components/AnimatedSection';
 
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import { postMeReviews } from '@/api/member/personalApi';
@@ -12,24 +9,29 @@ import {
   postReviewModify,
   postReviewRemove,
 } from '@/api/products/reviewsApi';
-import { formatDate } from '@/utils/utils';
+import { formatDate, getFileType } from '@/utils/utils';
 import { FaStar } from 'react-icons/fa'; // FontAwesome 별 아이콘 사용
 
-import ShopDetailImage1 from '@/assets/images/shop-detail-image1.png';
-import ShopDetailImage2 from '@/assets/images/shop-detail-image2.png';
-import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
-import mainSubImage3 from '@/assets/images/main-sub-image3.png';
-
 const MyReviewPage = () => {
-  const initData = { from: '2025-01-01', to: '2025-03-31', keyword: '' };
-  const [selectedId, setSelectedId] = useState(0);
-  const [viewSelect, setViewSelect] = useState({
-    from: '2025-01-01',
-    to: '2025-03-31',
+  // 올해 1월 1일 반환
+  const getFirstDayOfYear = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-01-01`;
+  };
+
+  // 오늘 날짜 반환 (YYYY-MM-DD 형식)
+  const getTodayDate = () => new Date().toISOString().split('T')[0];
+
+  const initData = {
+    from: getFirstDayOfYear(), // 기본값: to 기준 90일 전
+    to: getTodayDate(), // 기본값: 오늘 날짜
     keyword: '',
-  });
+  };
+  const [selectedId, setSelectedId] = useState(0);
+  const [viewSelect, setViewSelect] = useState(initData);
   const [meReviews, setMeReviews] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [focusReviewid, setFocusReviewid] = useState('');
   const [reviews, setReviews] = useState({
     rate: 0,
     content: '',
@@ -41,13 +43,13 @@ const MyReviewPage = () => {
   useEffect(() => {
     const getMeReviews = async () => {
       try {
+        console.log(viewSelect);
         const { status, data } = await postMeReviews(viewSelect);
         if (status !== 200) {
           alert('통신 에러가 발생했습니다.');
           return;
         }
         const arr = data.data;
-        console.log(arr);
         // review만 추출하여 상태 업데이트
         const extractedReviews = arr.map((item) => item.review);
         setMeReviews(extractedReviews);
@@ -59,11 +61,26 @@ const MyReviewPage = () => {
     getMeReviews();
   }, [viewSelect]);
 
+  // 특정 일 전의 날짜를 반환하는 함수 (to 기준)
+  const getPastDate = (baseDate, days) => {
+    const date = new Date(baseDate);
+    date.setDate(date.getDate() - days); // to 날짜 기준 days 전 날짜 계산
+    return date.toISOString().split('T')[0];
+  };
+
+  // from 값 변경 함수 (to 값 기준)
+  const handleUpdateFromDate = (daysAgo) => {
+    setViewSelect((prev) => ({
+      ...prev,
+      from: getPastDate(prev.to, daysAgo), // to 기준 daysAgo 전 날짜로 변경
+    }));
+  };
+
   const handleDrodownOpen = (id) => {
     setSelectedId(id); // 클릭한 요소의 ID 저장
   };
 
-  //리뷰 조회
+  //리뷰 수정
   const handleReviewsModify = async (id) => {
     const res = await getReviewSelected(id);
     const { status, data } = res;
@@ -71,9 +88,13 @@ const MyReviewPage = () => {
       alert('통신 에러가 발생했습니다.');
       return;
     }
+
     const dt = data.data;
-    setFiles([dt.image1, dt.image2, dt.image3, dt.image4, dt.image5]);
+    const images = [dt.image1, dt.image2, dt.image3, dt.image4, dt.image5];
+
+    setFiles(images.filter((image) => image));
     setReviews(data.data);
+    setFocusReviewid(id);
     setIsModalOpen(true);
   };
 
@@ -112,7 +133,7 @@ const MyReviewPage = () => {
       .slice(0, 5 - files.length); // 최대 5개까지만 추가 가능
 
     const previewFiles = selectedFiles.map((file) => ({
-      file,
+      originalFile: file,
       preview: URL.createObjectURL(file), // 미리보기 URL 생성
     }));
 
@@ -128,44 +149,65 @@ const MyReviewPage = () => {
   // 백엔드 요청하기 전 S3 파일 업로드 (순차 업로드)
   const handleGetFileUploadPath = async () => {
     let completedUrls = [];
+    console.log(files);
+    for (const fileObj of files) {
+      const file = fileObj.originalFile; // 원본 File 객체 참조
+      //기존 파일은 url정보만 있으므로 파일타입 검사
+      if (!(file instanceof File)) {
+        completedUrls.push(fileObj);
+        continue;
+      }
 
-    if (files.length > 0) {
-      for (const file of files) {
-        try {
-          // 1️⃣ Presigned URL 요청
-          const presignedResponse = await postRequestPresignedUrl();
-          const { data } = presignedResponse.data;
-          const url = data.completedUrl; // 업로드 완료 후 접근할 URL
+      try {
+        // 1️⃣ Presigned URL 요청
+        const type = getFileType(file.type);
+        const presignedResponse = await postRequestPresignedUrl(type);
+        const { data } = presignedResponse.data;
+        const url = data.completedUrl; // 업로드 완료 후 접근할 URL
 
-          console.log(data);
-          console.log(`Uploading: ${file.name} -> ${url}`);
+        // 2️⃣ S3에 파일 업로드 (순차적 실행)
+        const response = await fetch(data.url, {
+          method: 'PUT',
+          body: file,
+          headers: { 'Content-Type': file.type },
+        });
 
-          // 2️⃣ S3에 파일 업로드 (순차적 실행)
-          const response = await fetch(data.url, {
-            method: 'PUT',
-            body: file,
-            headers: { 'Content-Type': file.type },
-          });
+        if (!response.ok) throw new Error(`업로드 실패: ${file.name}`);
 
-          if (!response.ok) throw new Error(`업로드 실패: ${file.name}`);
-
-          // 3️⃣ 업로드 성공한 파일 URL 저장
-          completedUrls.push(url);
-        } catch (error) {
-          console.error(`파일 업로드 중 오류 발생: ${file.name}`, error);
-          return; // 에러 발생 시 중단
-        }
+        // 3️⃣ 업로드 성공한 파일 URL 저장
+        completedUrls.push(url);
+      } catch (error) {
+        console.error(`파일 업로드 중 오류 발생: ${file.name}`, error);
       }
     }
 
-    // 이후 로직 (예: 업로드된 파일 URL을 백엔드에 전송)
-    const res = await postReviewModify('99999999-9999-9999-9999-999999999999', {
-      ...reviews,
-      images: completedUrls,
-    });
+    console.log(completedUrls);
+
+    // 이후 로직 업로드된 파일 URL을 백엔드에 전송
+    const res = await postReviewModify(
+      '99999999-9999-9999-9999-999999999999',
+      focusReviewid,
+      {
+        ...reviews,
+        images: completedUrls,
+      }
+    );
     if (res.status === 200) {
       setIsModalOpen(false);
+      setViewSelect(initData);
     }
+  };
+
+  const handleInputChangeDate = (e) => {
+    const { name, value } = e.target;
+
+    // name이 "keyword"일 때, 길이가 2 이하이면 실행 안 하지만, 0이면 실행됨
+    if (name === 'keyword' && value.length > 0 && value.length <= 2) return;
+
+    setViewSelect((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -174,74 +216,97 @@ const MyReviewPage = () => {
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
           <h1 className="fw-600 text-dark-gray mb-10px">내가 쓴 리뷰</h1>
         </div>
-        {meReviews.length > 0 && (
-          <div
-            className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row align-items-center w-100 mb-40px md-mb-30px pb-15px"
-            // data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
-          >
-            <div className="mx-auto me-md-0 col tab-style-01">
-              <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-14 fw-600 mb-3">
-                <li className="nav-item mt-10px">
-                  <a
-                    className="nav-link active"
-                    data-bs-toggle="tab"
-                    href="#tab_sec1"
-                  >
-                    전체기간
-                  </a>
-                </li>
-                <li className="nav-item mt-10px">
-                  <a className="nav-link" data-bs-toggle="tab" href="#tab_sec2">
-                    1주일
-                  </a>
-                </li>
-                <li className="nav-item mt-10px">
-                  <a className="nav-link" data-bs-toggle="tab" href="#tab_sec3">
-                    1개월
-                  </a>
-                </li>
-                <li className="nav-item mt-10px">
-                  <a className="nav-link" data-bs-toggle="tab" href="#tab_sec4">
-                    3개월
-                  </a>
-                </li>
-                <li className="nav-item mt-10px">
+
+        <div
+          className="toolbar-wrapper border-bottom border-color-extra-medium-gray d-flex flex-column flex-md-row align-items-center w-100 mb-40px md-mb-30px pb-15px"
+          // data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+        >
+          <div className="mx-auto me-md-0 col tab-style-01">
+            <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-14 fw-600 mb-3">
+              <li className="nav-item mt-10px">
+                <a
+                  className="nav-link active"
+                  data-bs-toggle="tab"
+                  href="#tab_sec1"
+                  onClick={() => {
+                    setViewSelect((prev) => ({
+                      ...prev,
+                      from: getFirstDayOfYear(), // to 기준 daysAgo 전 날짜로 변경
+                    }));
+                  }}
+                >
+                  전체기간
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  href="#tab_sec2"
+                  onClick={() => handleUpdateFromDate(7)}
+                >
+                  1주일
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  href="#tab_sec3"
+                  onClick={() => handleUpdateFromDate(30)}
+                >
+                  1개월
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <a
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  href="#tab_sec4"
+                  onClick={() => handleUpdateFromDate(90)}
+                >
+                  3개월
+                </a>
+              </li>
+              <li className="nav-item mt-10px">
+                <input
+                  className="border-1 nav-link text-center"
+                  type="date"
+                  name="from"
+                  value={viewSelect.from}
+                  min="2024-01-01"
+                  max="2099-12-31"
+                  aria-label="date"
+                  onChange={handleInputChangeDate}
+                />
+              </li>
+              <li className="nav-item mt-10px">
+                <input
+                  className="border-1 nav-link text-center"
+                  type="date"
+                  name="to"
+                  value={viewSelect.to}
+                  min="2024-01-01"
+                  max="2099-12-31"
+                  aria-label="date"
+                  onChange={handleInputChangeDate}
+                />
+              </li>
+              <li className="nav-item mt-10px flex-1">
+                <div className="position-relative">
                   <input
-                    className="border-1 nav-link text-center"
-                    type="date"
-                    name="date"
-                    value="2024-02-06"
-                    min="2024-01-01"
-                    max="2099-12-31"
-                    aria-label="date"
+                    className="border-1 nav-link "
+                    type="text"
+                    name="keyword"
+                    placeholder="검색어를 입력 해주세요."
+                    onChange={handleInputChangeDate}
                   />
-                </li>
-                <li className="nav-item mt-10px">
-                  <input
-                    className="border-1 nav-link text-center"
-                    type="date"
-                    name="date"
-                    value="2024-02-13"
-                    min="2024-01-01"
-                    max="2099-12-31"
-                    aria-label="date"
-                  />
-                </li>
-                <li className="nav-item mt-10px flex-1">
-                  <div className="position-relative">
-                    <input
-                      className="border-1 nav-link "
-                      type="text"
-                      name="name"
-                      placeholder="검색어를 입력 해주세요."
-                    />
-                    <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
-                  </div>
-                </li>
-              </ul>
-            </div>
+                  <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                </div>
+              </li>
+            </ul>
           </div>
-        )}
+        </div>
 
         <div className="row g-0 mb-4 md-mb-35px">
           {meReviews.length > 0 ? (
@@ -305,12 +370,12 @@ const MyReviewPage = () => {
                   {/* 리뷰 내용 */}
                   <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
                     {/* ⭐ 별점 표시 */}
-                    <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
+                    <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-block">
                       {Array.from({ length: 5 }, (_, i) => (
                         <i
                           key={i}
                           className={`bi ${
-                            i < review.rate ? 'bi-star-fill' : 'bi-star'
+                            i < review.rate ? 'bi-star-fill' : ''
                           }`}
                         ></i>
                       ))}
@@ -442,7 +507,7 @@ const MyReviewPage = () => {
                       />
                     </div>
                     {/* 업로드 제한 메시지 */}
-                    {files.length >= 5 && (
+                    {files.length > 5 && (
                       <p className="text-red text-sm mt-1 text-center mb-1">
                         최대 5개의 이미지만 업로드 가능합니다.
                       </p>
@@ -465,7 +530,7 @@ const MyReviewPage = () => {
 
                           {/* 이미지 미리보기 */}
                           <img
-                            src={fileObj}
+                            src={fileObj.preview || fileObj}
                             alt="미리보기"
                             className="w-100 h-100"
                           />
@@ -487,7 +552,7 @@ const MyReviewPage = () => {
                       className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
                       onClick={handleGetFileUploadPath}
                     >
-                      리뷰쓰기
+                      리뷰수정
                     </Button>
                     <Button
                       className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
@@ -496,7 +561,7 @@ const MyReviewPage = () => {
                         // setReviews(initialForm);
                       }}
                     >
-                      취소
+                      닫기
                     </Button>
                   </div>
                   <div className="col-12">

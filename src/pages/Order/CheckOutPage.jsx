@@ -114,12 +114,12 @@ const CheckOutPage = () => {
 
     orderProductData.forEach((product) => {
       totalQty += product.qty;
-      totalProductPrice += product.originPrice * product.qty;
+      totalProductPrice += product.price * product.qty;
       totalDiscount += product.discountedPrice * product.qty;
       totalDeliveryFee += product.deliveryFee;
     });
 
-    const totalAmount = totalProductPrice - totalDiscount + totalDeliveryFee;
+    const totalAmount = totalProductPrice + totalDeliveryFee;
 
     return {
       totalQty,
@@ -202,7 +202,7 @@ const CheckOutPage = () => {
                               <a href="demo-jewellery-store-single-product.html">
                                 <img
                                   className="cart-product-image"
-                                  src={order.productImages}
+                                  src={order.productImages[0]}
                                   alt=""
                                 />
                               </a>
@@ -230,8 +230,7 @@ const CheckOutPage = () => {
                             </td>
 
                             <td className="product-subtotal" data-title="가격">
-                              {(order.originPrice * order.qty).toLocaleString()}
-                              원
+                              {(order.price * order.qty).toLocaleString()}원
                             </td>
                           </tr>
                         ))}
