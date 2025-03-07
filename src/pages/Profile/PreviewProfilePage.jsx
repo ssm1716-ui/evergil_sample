@@ -32,14 +32,12 @@ const ViewProfilePage = () => {
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [content, setContent] = useState('');
   const [profile, setProfile] = useState({});
 
   const [items, setItems] = useState([
     { id: '1', relation: '', name: '', isCustomInput: false },
   ]);
-
-  const [tabList, setTabList] = useState([]);
-  // const [tabList, setTabList] = useState(['이미지', '하늘편지', '가족관계도']);
   const [activeTab, setActiveTab] = useState('이미지');
 
   const [images, setImages] = useState([
@@ -86,23 +84,6 @@ const ViewProfilePage = () => {
     const styleElement = document.createElement('style');
     styleElement.innerHTML = customButtonStyle;
     document.head.appendChild(styleElement);
-  }, []);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        let res = await getSelectProfile(profileId);
-        if (res.status === 200) {
-          const { profile } = res.data.data;
-          console.log(profile);
-          setProfile(profile);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchProfile();
   }, []);
 
   // 📌 탭 변경 시 데이터 로드 및 레이아웃 조정
@@ -328,8 +309,8 @@ const ViewProfilePage = () => {
         <div className="container">
           <div className="row bottom-minus-60px end-0 z-index-1 pe-1 ">
             {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-            <div className="col-xl-7 col-lg-9 offset-0 offset-md-3  xs-mt-25px text-start fs-20">
-              <p dangerouslySetInnerHTML={{ __html: profile.description }}></p>
+            <div className="col-xl-7 col-lg-9 offset-0 offset-md-3  xs-mt-25px text-start">
+              <p>{profile.description}</p>
             </div>
             {/* <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5">
@@ -355,7 +336,7 @@ const ViewProfilePage = () => {
         <div className="container">
           <div className="row">
             <div className="col-12 tab-style-04">
-              {/* <ul className="nav nav-tabs border-0 justify-content-center fs-19">
+              <ul className="nav nav-tabs border-0 justify-content-center fs-19">
                 <li className="nav-item px-5">
                   <a
                     data-bs-toggle="tab"
@@ -385,275 +366,240 @@ const ViewProfilePage = () => {
                     <span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
-              </ul> */}
-
-              <ul className="nav nav-tabs border-0 justify-content-center fs-19">
-                {['이미지', '하늘편지', '가족관계도'].map((tab) => (
-                  <li key={tab} className="nav-item">
-                    <button
-                      className={`nav-link ${
-                        activeTab === tab ? 'active' : ''
-                      }`}
-                      onClick={() => setActiveTab(tab)}
-                    >
-                      {tab}
-                      <span className="tab-border bg-dark-gray"></span>
-                    </button>
-                  </li>
-                ))}
               </ul>
               <div className="mb-5 h-1px w-100 bg-extra-medium-gray sm-mt-10px xs-mb-8"></div>
               <div className="tab-content">
-                {activeTab === '이미지' && (
-                  <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                    <LightGallery
-                      speed={500}
-                      download={false}
-                      thumbnail={true}
-                      plugins={[lgThumbnail]}
-                      selector=".gallery-item"
-                      // onInit={onInit}
-                      // ref={lgRef}
-                    >
-                      <div style={galleryStyle}>
-                        {images.map((image, index) => (
-                          <a
-                            href={image.src}
-                            key={index}
-                            className="gallery-item"
-                            data-src={image.src}
-                          >
-                            <img
-                              src={image.thumb}
-                              // alt={`Gallery Image ${index}`}
-                              style={imageStyle}
-                            />
-                          </a>
-                        ))}
-                      </div>
-                    </LightGallery>
-                    {images.length <= 0 && (
-                      <div className="col-12 text-center mt-100px pb-2 fs-24">
-                        <i className="feather icon-feather-camera align-middle icon-extra-large text-dark fs-50 md-fs-70 p-30px border border-4 border-dark border-radius-100px mb-1"></i>
-                        <p className="fs-30 fw-800">No Posts Yet</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {activeTab === '하늘편지' && (
-                  <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                    <div className="row m-0">
-                      {letters.length > 0 ? (
-                        <div
-                          className="col-12 md-p-0"
-                          // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
+                <div className="tab-pane fade in active show" id="tab_five1">
+                  <LightGallery
+                    speed={500}
+                    download={false}
+                    thumbnail={true}
+                    plugins={[lgThumbnail]}
+                    selector=".gallery-item"
+                    // onInit={onInit}
+                    // ref={lgRef}
+                  >
+                    <div style={galleryStyle}>
+                      {images.map((image, index) => (
+                        <a
+                          href={image.src}
+                          key={index}
+                          className="gallery-item"
+                          data-src={image.src}
                         >
-                          <div
-                            className="toolbar-wrapper w-100 mb-40px md-mb-30px"
-                            // data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
-                          >
-                            <div className="mx-auto me-md-0 col tab-style-08">
-                              <ul className="nav nav-tabs d-flex justify-content-between border-0 fs-18 fw-600">
-                                <li className="nav-item">
-                                  <div className="position-relative">
-                                    <input
-                                      className="border-1 nav-link w-400px md-w-100"
-                                      type="text"
-                                      name="name"
-                                      placeholder="검색어를 입력 해주세요."
-                                    />
-                                    <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
-                                  </div>
-                                </li>
-                                <li className="nav-item">
-                                  <a
-                                    className="nav-link"
-                                    data-bs-toggle="tab"
-                                    href="#tab_sec2"
-                                    onClick={() => setIsModalOpen(true)}
-                                  >
-                                    <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
-                                    add comment
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-20px paper-note-odd md-ps-3">
-                            <div className="col-12 col-md-1 text-md-center align-self-center">
-                              <span className="text-dark-gray fs-14 fw-600">
-                                김사랑
-                              </span>
-                            </div>
-                            <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                              <p className="sm-w-85">
-                                하늘나라에서도 행복해야해~ 사랑해
-                              </p>
-                            </div>
-                            <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                              <span>{'2024/02/15 15:12'}</span>
-                            </div>
-                            {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
-                        </div> */}
-                          </div>
-                          <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
-                            <div className="col-12 col-md-1 text-md-center align-self-center">
-                              <span className="text-dark-gray fs-14 fw-600">
-                                김사랑
-                              </span>
-                            </div>
-                            <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                              <p className="sm-w-85">
-                                하늘나라에서도 행복해야해~ 사랑해
-                              </p>
-                            </div>
-                            <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                              <span>{'2024/02/15 15:12'}</span>
-                            </div>
-                            {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
-                        </div> */}
-                          </div>
-                          <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-odd md-ps-3">
-                            <div className="col-12 col-md-1 text-md-center align-self-center">
-                              <span className="text-dark-gray fs-14 fw-600">
-                                김사랑
-                              </span>
-                            </div>
-                            <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                              <p className="sm-w-85">
-                                하늘나라에서도 행복해야해~ 사랑해
-                              </p>
-                            </div>
-                            <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                              <span>{'2024/02/15 15:12'}</span>
-                            </div>
-                            {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
-                        </div> */}
-                          </div>
-                          <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
-                            <div className="col-12 col-md-1 text-md-center align-self-center">
-                              <span className="text-dark-gray fs-14 fw-600">
-                                김사랑
-                              </span>
-                            </div>
-                            <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                              <p className="sm-w-85">
-                                하늘나라에서도 행복해야해~ 사랑해
-                              </p>
-                            </div>
-                            <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                              <span>{'2024/02/15 15:12'}</span>
-                            </div>
-                            {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
-                        </div> */}
-                          </div>
-                          <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-odd md-ps-3">
-                            <div className="col-12 col-md-1 text-md-center align-self-center">
-                              <span className="text-dark-gray fs-14 fw-600">
-                                김사랑
-                              </span>
-                            </div>
-                            <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                              <p className="sm-w-85">
-                                하늘나라에서도 행복해야해~ 사랑해
-                              </p>
-                            </div>
-                            <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                              <span>{'2024/02/15 15:12'}</span>
-                            </div>
-                            {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
-                        </div> */}
-                          </div>
-                          <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
-                            <div className="col-12 col-md-1 text-md-center align-self-center">
-                              <span className="text-dark-gray fs-14 fw-600">
-                                김사랑
-                              </span>
-                            </div>
+                          <img
+                            src={image.thumb}
+                            // alt={`Gallery Image ${index}`}
+                            style={imageStyle}
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  </LightGallery>
+                </div>
 
-                            <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                              <p className="sm-w-85">
-                                하늘나라에서도 행복해야해~ 사랑해1
-                              </p>
-                            </div>
-
-                            <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                              <span>{'2024/02/15 15:12'}</span>
-                            </div>
-
-                            {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                          <a href="#">
-                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                          </a>
-                        </div> */}
-                          </div>
+                <div className="tab-pane fade in" id="tab_five2">
+                  <div className="row m-0">
+                    <div
+                      className="col-12 md-p-0"
+                      data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
+                    >
+                      <div
+                        className="toolbar-wrapper w-100 mb-40px md-mb-30px"
+                        data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
+                      >
+                        <div className="mx-auto me-md-0 col tab-style-08">
+                          <ul className="nav nav-tabs d-flex justify-content-between border-0 fs-18 fw-600">
+                            <li className="nav-item">
+                              <div className="position-relative">
+                                <input
+                                  className="border-1 nav-link w-400px md-w-100"
+                                  type="text"
+                                  name="name"
+                                  placeholder="검색어를 입력 해주세요."
+                                />
+                                <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                              </div>
+                            </li>
+                            <li className="nav-item">
+                              <a
+                                className="nav-link"
+                                data-bs-toggle="tab"
+                                href="#tab_sec2"
+                                onClick={() => setIsModalOpen(true)}
+                              >
+                                <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
+                                add comment
+                              </a>
+                            </li>
+                          </ul>
                         </div>
-                      ) : (
-                        <div className="col-12 text-center mt-100px pb-2 fs-24">
-                          <i className="line-icon-Letter-Open align-middle icon-extra-large text-light-gray pb-1"></i>
-                          <p>등록된 하늘편지가 없습니다.</p>
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-20px paper-note-odd md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
                         </div>
-                      )}
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해
+                          </p>
+                        </div>
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
+                        </div>
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해
+                          </p>
+                        </div>
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-odd md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
+                        </div>
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해
+                          </p>
+                        </div>
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
+                        </div>
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해
+                          </p>
+                        </div>
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-odd md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
+                        </div>
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해
+                          </p>
+                        </div>
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
+                      <div className="row border-color-dark-gray position-relative g-0 sm-pb-20px sm-pt-30px paper-note-even md-ps-3">
+                        <div className="col-12 col-md-1 text-md-center align-self-center">
+                          <span className="text-dark-gray fs-14 fw-600">
+                            김사랑
+                          </span>
+                        </div>
+
+                        <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                          <p className="sm-w-85">
+                            하늘나라에서도 행복해야해~ 사랑해1
+                          </p>
+                        </div>
+
+                        <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                          <span>{'2024/02/15 15:12'}</span>
+                        </div>
+
+                        {/* <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                          <a href="#">
+                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                          </a>
+                        </div> */}
+                      </div>
                     </div>
                   </div>
-                )}
+                </div>
 
-                {activeTab === '가족관계도' && (
-                  <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                    <div
-                      className="container"
-                      // data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'
-                    >
-                      <div className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-6 md-mt-50px text-center">
-                        <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
-                          <div className="process-step-icon-box position-relative mt-30px">
-                            <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
+                <div className="tab-pane fade in" id="tab_five3">
+                  <div
+                    className="container"
+                    data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'
+                  >
+                    <div className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-6 md-mt-50px text-center">
+                      <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
+                        <div className="process-step-icon-box position-relative mt-30px">
+                          <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                            <div className="process-step-icon d-flex justify-content-end align-items-center mx-auto h-80px w-60 md-w-80 fs-18 rounded-circle text-dark-gray fw-500">
-                              <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
-                                <span className="number position-relative z-index-1 fw-600">
-                                  <i className="feather icon-feather-user align-middle icon-large text-white"></i>
-                                </span>
-                                <div className="box-overlay bg-black rounded-circle"></div>
-                              </div>
+                          <div className="process-step-icon d-flex justify-content-end align-items-center mx-auto h-80px w-60 md-w-80 fs-18 rounded-circle text-dark-gray fw-500">
+                            <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                               <span className="number position-relative z-index-1 fw-600">
-                                아버지
+                                <i className="feather icon-feather-user align-middle icon-large text-white"></i>
                               </span>
-                              <div className="box-overlay rounded-circle"></div>
+                              <div className="box-overlay bg-black rounded-circle"></div>
                             </div>
+                            <span className="number position-relative z-index-1 fw-600">
+                              아버지
+                            </span>
+                            <div className="box-overlay rounded-circle"></div>
                           </div>
                         </div>
+                      </div>
 
-                        <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
-                          <div className="process-step-icon-box position-relative mt-30px">
-                            <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 fs-18 rounded-circle text-dark-gray fw-500">
-                              <span className="number position-relative z-index-1 fw-600">
-                                고길동
-                              </span>
-                              <div className="box-overlay rounded-circle"></div>
-                            </div>
+                      <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
+                        <div className="process-step-icon-box position-relative mt-30px">
+                          <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 fs-18 rounded-circle text-dark-gray fw-500">
+                            <span className="number position-relative z-index-1 fw-600">
+                              고길동
+                            </span>
+                            <div className="box-overlay rounded-circle"></div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>

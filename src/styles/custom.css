@@ -96,6 +96,9 @@
   transition: opacity 0.3s ease-in-out;
 }
 
+.ql-editor {
+  font-size : 20px !important;
+}
 
 
 .flex-0 {

@@ -3733,6 +3733,9 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .border-radius-50px {
   border-radius: 50px !important;
 }
+.border-radius-60px {
+  border-radius: 60px !important;
+}
 .border-radius-100px {
   border-radius: 100px !important;
 }
@@ -5127,6 +5130,12 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 }
 .mt-80px {
   margin-top: 80px !important;
+}
+.mt-90px {
+  margin-top: 90px !important;
+}
+.mt-100px {
+  margin-top: 100px !important;
 }
 .mt-1 {
   margin-top: 1% !important;

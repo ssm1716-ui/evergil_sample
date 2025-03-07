@@ -113,13 +113,10 @@ const App = () => {
               }
             />
 
+            {/* <Route path="/view-profile" element={<ViewProfilePage />} /> */}
             <Route
-              path="/view-profile"
-              element={
-                // <ProtectedRoute>
-                <ViewProfilePage />
-                // </ProtectedRoute>
-              }
+              path="/view-profile/:profileId"
+              element={<ViewProfilePage />}
             />
 
             {/* 프로필 영역 end*/}

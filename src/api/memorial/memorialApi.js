@@ -26,8 +26,6 @@ export const putUpateBackgroundImage = async (id, param) => {
     }
 };
 
-
-
 //추모 프로필 설명 문구 수정 
 export const putUpateDescription = async (id, param) => {
 
@@ -163,6 +161,100 @@ export const postRemoveProfileBookmarks = async (id) => {
 export const postAddProfileBookmark = async (id) => {
     try {
         const res = await axiosInstance.delete(`/bookmarks/memorial-profiles/${id}`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//추모 프로필 배경 이미지 수정
+export const putProfileBackgroundImage = async (id, param) => {
+
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${id}/background-image`, param);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//추모 프로필 프로필 이미지 수정
+export const putProfileImage = async (id, param) => {
+
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${id}/profile-image`, param);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//추모 프로필 설명 문구 수정
+export const putProfileDescription = async (id, param) => {
+
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${id}/description`, param);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//추모 이미지 리스트 조회
+export const getPhotoProfile = async (id, page = 1, pageSize = 10) => {
+
+    try {
+        const res = await axiosInstance.get(`/memorial-profiles/${id}/photos`, {
+            params: {
+                page, pageSize
+            },
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//추모 하늘편지 리스트 조회 및 검색
+export const getLettersProfile = async (id, keyword = '', page = 1, pageSize = 10) => {
+
+    try {
+        const res = await axiosInstance.get(`/memorial-profiles/${id}/letters`, {
+            params: {
+                keyword, page, pageSize
+            },
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//추모 가족관계도 조회
+export const getFamilyProfile = async (id,) => {
+
+    try {
+        const res = await axiosInstance.get(`/memorial-profiles/${id}/family`);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//하늘편지 삭제
+export const deleteLetters = async (profileId, lettersId) => {
+
+    try {
+        const res = await axiosInstance.delete(`/memorial-profiles/${profileId}/letters/${lettersId}`);
+        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
