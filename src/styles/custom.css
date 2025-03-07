@@ -1,7 +1,6 @@
 .menu-order {
     width: 100%;
 }
-
 .footer {
     background-color: #EFEFE7 !important;
 }
@@ -13,7 +12,11 @@
     padding:5px;
     vertical-align: bottom;
     
-  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
 
 .login-text-icon::before {
     content: "\e843";
@@ -94,6 +97,7 @@
 }
 
 
+
 .flex-0 {
     flex: 0;
 }
@@ -105,7 +109,9 @@
 .grid-item {
   width: calc(25% - 10px); /* 4열 레이아웃 설정 */
   margin-bottom: 20px; /* 아래 간격 */
+  
 }
+
 @media (max-width: 1024px) {
   .grid-item {
     width: calc(33.333% - 10px); /* 태블릿에서는 3열 */

@@ -65,17 +65,106 @@ export const getSelectProfile = async (id) => {
     }
 };
 
-// [
-//     "oUrRhj5GdtMwWCn6",
-//     "JLw54fbZvkakI6o5",
-//     "UefCyiXDKfnrjShi",
-//     "FU34EeajlZ1Zgtf0",
-//     "y54GgUxyV9qWYAph",
-//     "imB5vJ2myRwlscSU",
-//     "fFvUuZTQQbm8siiU",
-//     "E0qTNW8j8Zi7jMp2",
-//     "n1zEIFgDN2tR6atc",
-//     "LGdK5m8tQssaVn3R"
-//   ]
+//추모 프로필 설정 수정
+export const putModifyProfile = async (id, param) => {
 
-// "8697b430-b852-4760-b92e-936bdc06864f"
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${id}`, param);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+
+//추모 프로필 조회
+export const getSelectProfileList = async (page = 1, pageSize = 20, mockResult = 0) => {
+
+    try {
+        const res = await axiosInstance.get('/members/me/memorial-profiles/my-everlinks', {
+            params: {
+                page, pageSize, mockResult
+            },
+        });
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//추모 view 조회
+export const getSelectProfileViewList = async (page = 1, pageSize = 20, mockResult = 5) => {
+
+    try {
+        const res = await axiosInstance.get('/members/me/memorial-profiles/view', {
+            params: {
+                page, pageSize, mockResult
+            },
+        });
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//추모 bookmarks 조회
+export const getSelectProfileBookmarksList = async (page = 1, pageSize = 20, mockResult = 5) => {
+
+    try {
+        const res = await axiosInstance.get('/members/me/memorial-profiles/bookmarks', {
+            params: {
+                page, pageSize, mockResult
+            },
+        });
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//추모 프로필 edit 권한 삭제
+export const postRemoveProfileEditPermission = async (id) => {
+    try {
+        const res = await axiosInstance.delete(`/members/me/memorial-profiles/${id}/permissions/editor`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+
+//추모 프로필 view 권한 삭제
+export const postRemoveProfileViewPermission = async (id) => {
+    try {
+        const res = await axiosInstance.delete(`/members/me/memorial-profiles/${id}/permissions/viewer`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//북마크 삭제
+export const postRemoveProfileBookmarks = async (id) => {
+    try {
+        const res = await axiosInstance.delete(`/bookmarks/memorial-profiles/${id}`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//북마크 지정
+export const postAddProfileBookmark = async (id) => {
+    try {
+        const res = await axiosInstance.delete(`/bookmarks/memorial-profiles/${id}`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};

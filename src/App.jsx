@@ -13,7 +13,8 @@ import ForgotPage from '@/pages/Password/ForgotPage';
 import BridgePage from '@/pages/Profile/BridgePage';
 
 import ProfilePage from '@/pages/Profile/ProfilePage';
-import CreateProfilePage from '@/pages/Profile/CreateProfilePage';
+// import ProfileSubPage from '@/pages/Profile/ProfileSubPage';
+import SettingProfilePage from '@/pages/Profile/SettingProfilePage';
 import EditProfilePage from '@/pages/Profile/EditProfilePage';
 import ViewProfilePage from '@/pages/Profile/ViewProfilePage';
 import CartPage from '@/pages/Cart/CartPage';
@@ -88,6 +89,8 @@ const App = () => {
             {/* 프로필 영역 start*/}
             <Route path="/bridge-profile" element={<BridgePage />} />
 
+            {/* <Route path="/profile-sub" element={<ProfileSubPage />} /> */}
+
             <Route
               path="/profile"
               element={
@@ -96,16 +99,13 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/setting-profile" element={<SettingProfilePage />} />
             <Route
-              path="/create-profile"
-              element={
-                // <ProtectedRoute>
-                <CreateProfilePage />
-                // </ProtectedRoute>
-              }
+              path="/setting-profile/:profileId"
+              element={<SettingProfilePage />}
             />
             <Route
-              path="/edit-profile"
+              path="/edit-profile/:profileId"
               element={
                 // <ProtectedRoute>
                 <EditProfilePage />

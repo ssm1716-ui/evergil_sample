@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postSignIn, getAccessToken } from '@/api/memberApi';
 import { loginSuccess } from '@/state/slices/authSlices.js';
@@ -10,14 +10,16 @@ import { isValidEmail } from '@/utils/validators';
 import {
   postRegisterProfile,
   getSelectProfile,
-} from '@/api/memorial/memorialApi.js';
+  putModifyProfile,
+} from '@/api/memorial/memorialApi';
 
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
-const CreateProfilePage = () => {
+const SettingProfilePage = () => {
+  const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formProfile, setFormProfile] = useState({
-    qrKey: 'oUrRhj5GdtMwWCn6',
+    qrKey: 'i1BwPqy5OUXozQKq',
     memorialType: '', // 사람 or 동물
     displayName: '',
     birthday: '',
@@ -36,22 +38,20 @@ const CreateProfilePage = () => {
   });
 
   useEffect(() => {
-    const fetchFaq = async () => {
+    const fetchProfile = async () => {
       try {
-        const res = await getSelectProfile(
-          '8697b430-b852-4760-b92e-936bdc06864f'
-        );
+        console.log(profileId);
+        const res = await getSelectProfile(profileId);
         console.log(res);
         if (res.status === 200) {
           const { data } = res.data;
-          setFormProfile(data);
+          setFormProfile(data.profile);
         }
       } catch (error) {
         console.error(error);
       }
     };
-
-    fetchFaq();
+    if (profileId) fetchProfile();
   }, []);
 
   // memorialType 버튼 선택 핸들러
@@ -107,7 +107,14 @@ const CreateProfilePage = () => {
     }
 
     console.log(formProfile);
-    const res = await postRegisterProfile(formProfile);
+    let res;
+    if (profileId) {
+      //추모 프로필 수정
+      res = await putModifyProfile(profileId, formProfile);
+    } else {
+      //추모 프로필 생성
+      res = await postRegisterProfile(formProfile);
+    }
 
     if (res.status === 200) {
       setIsModalOpen(true);
@@ -266,7 +273,7 @@ const CreateProfilePage = () => {
                     className="btn-large submit w-40 mt-60px mb-5px"
                     onClick={handleSubmit}
                   >
-                    저장하기
+                    {profileId ? '수정하기' : '저장하기'}
                   </Button>
                 </form>
               </div>
@@ -285,9 +292,9 @@ const CreateProfilePage = () => {
             <div className="py-5 text-center">
               <img src={checkCircle} alt="" />
               <h4 className="fw-800 text-dark-gray mt-2 mb-2 ls-minus-1px">
-                추모페이지 생성 완료
+                추모페이지 {profileId ? '변경 완료' : '생성 완료'}
               </h4>
-              <Link to="/edit-profile">
+              <Link to={`/edit-profile/${profileId}`}>
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
@@ -296,7 +303,9 @@ const CreateProfilePage = () => {
                   계속하기
                 </Button>
               </Link>
-              <h6 className="mt-2 ls-minus-1px">추모페이지를 꾸며보세요.</h6>
+              {!profileId && (
+                <h6 className="mt-2 ls-minus-1px">추모페이지를 꾸며보세요.</h6>
+              )}
             </div>
           </div>
         </div>
@@ -305,4 +314,4 @@ const CreateProfilePage = () => {
   );
 };
 
-export default CreateProfilePage;
+export default SettingProfilePage;

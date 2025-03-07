@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
@@ -14,7 +14,12 @@ import Button from '@/components/common/Button/Button';
 import { FiUpload, FiImage } from 'react-icons/fi'; // 업로드 아이콘 사용
 import { MdAddPhotoAlternate } from 'react-icons/md';
 
-import avatarImage from '@/assets/images/sample/3d_avatar_10.png';
+import {
+  postRegisterProfile,
+  getSelectProfile,
+} from '@/api/memorial/memorialApi';
+
+import avatarImage from '@/assets/images/base-profile-image.png';
 import gallery1 from '@/assets/images/sample/gallery-1.jpg';
 import gallery2 from '@/assets/images/sample/gallery-2.jpg';
 import gallery3 from '@/assets/images/sample/gallery-3.jpg';
@@ -84,7 +89,10 @@ const images = [
 ];
 
 const EditProfilePage = () => {
-  const [content, setContent] = useState('');
+  const navigate = useNavigate();
+  const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const [content, setContent] = useState('test');
+  const [profile, setProfile] = useState({});
 
   const [items, setItems] = useState([
     { id: '1', relation: '', name: '', isCustomInput: false },
@@ -149,6 +157,25 @@ const EditProfilePage = () => {
     const styleElement = document.createElement('style');
     styleElement.innerHTML = customButtonStyle;
     document.head.appendChild(styleElement);
+  }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await getSelectProfile(profileId);
+        console.log(res);
+        if (res.status === 200) {
+          const { profile } = res.data.data;
+          setProfile(profile);
+          console.log(profile.description);
+          setContent(profile.description);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProfile();
   }, []);
 
   const handleEdit = (index) => {
@@ -267,15 +294,30 @@ const EditProfilePage = () => {
     setItems(updatedItems);
   };
 
+  const handleNavigate = (e) => {
+    e.preventDefault();
+
+    navigate(`/setting-profile/${profileId}`);
+  };
+
   return (
     <>
       <section
         className="top-space-margin page-title-big-typography cover-background position-relative p-0 border-radius-10px lg-no-border-radius"
-        style={{ overflow: 'unset' }}
-        // style="background-image: url(https://via.placeholder.com/1920x600)"
+        style={{
+          overflow: 'unset',
+        }}
       >
         <div className="container">
-          <div className="row small-screen bg-light-gray">
+          <div
+            className="row small-screen bg-light-gray"
+            style={{
+              backgroundSize: 'cover',
+              backgroundImage: `url(
+            ${profile.profileImageUrl}
+          )`,
+            }}
+          >
             <div
               className="col-lg-5 col-md-6 position-relative page-title-extra-large align-self-center"
               data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
@@ -283,7 +325,7 @@ const EditProfilePage = () => {
             <div className="col-lg-7 col-md-6 position-relative d-md-block">
               <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-0px bottom-minus-70px mt-10 translate-middle-y">
                 <div
-                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px rounded-circle d-flex align-items-center justify-content-center"
+                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
                   style={{ backgroundColor: '#CDCDCD' }}
                 >
                   <span>
@@ -314,8 +356,16 @@ const EditProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px md-start-0">
-                    <img src={avatarImage} alt="" />
+                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px md-start-0 cursor-pointer">
+                    <img
+                      src={
+                        profile.profileImageUrl
+                          ? profile.profileImageUrl
+                          : avatarImage
+                      }
+                      alt=""
+                    />
+
                     <div
                       className="box-overlay"
                       style={{ backgroundColor: '#CDCDCD' }}
@@ -327,8 +377,12 @@ const EditProfilePage = () => {
                 </div>
               </div>
               <div className="col-9 offset-3 ps-2 md-ps-30px">
-                <h5 className="text-dark-gray mb-5px fw-600">김코코</h5>
-                <h6 className="mb-0">2015/04/16 ~ 2024/06/17</h6>
+                <h5 className="text-dark-gray mb-5px fw-600">
+                  {profile.displayName}
+                </h5>
+                <h6 className="mb-0">
+                  {profile.birthday}~{profile.deathDate}
+                </h6>
               </div>
               <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                 {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
@@ -380,7 +434,10 @@ const EditProfilePage = () => {
               />
             </div>
             <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
-              <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5">
+              <Link
+                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5"
+                onClick={handleNavigate}
+              >
                 <span>
                   <span className="btn-double-text ls-0px" data-text="설정">
                     설정
