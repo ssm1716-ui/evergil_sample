@@ -13,7 +13,6 @@ import ForgotPage from '@/pages/Password/ForgotPage';
 import BridgePage from '@/pages/Profile/BridgePage';
 
 import ProfilePage from '@/pages/Profile/ProfilePage';
-// import ProfileSubPage from '@/pages/Profile/ProfileSubPage';
 import SettingProfilePage from '@/pages/Profile/SettingProfilePage';
 import EditProfilePage from '@/pages/Profile/EditProfilePage';
 import ViewProfilePage from '@/pages/Profile/ViewProfilePage';
@@ -88,8 +87,6 @@ const App = () => {
 
             {/* 프로필 영역 start*/}
             <Route path="/bridge-profile" element={<BridgePage />} />
-
-            {/* <Route path="/profile-sub" element={<ProfileSubPage />} /> */}
 
             <Route
               path="/profile"

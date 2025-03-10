@@ -92,7 +92,7 @@ export const getSelectProfileList = async (page = 1, pageSize = 20, mockResult =
 };
 
 //추모 view 조회
-export const getSelectProfileViewList = async (page = 1, pageSize = 20, mockResult = 5) => {
+export const getSelectProfileViewList = async (page = 1, pageSize = 20, mockResult = 0) => {
 
     try {
         const res = await axiosInstance.get('/members/me/memorial-profiles/view', {
@@ -108,7 +108,7 @@ export const getSelectProfileViewList = async (page = 1, pageSize = 20, mockResu
 
 
 //추모 bookmarks 조회
-export const getSelectProfileBookmarksList = async (page = 1, pageSize = 20, mockResult = 5) => {
+export const getSelectProfileBookmarksList = async (page = 1, pageSize = 20, mockResult = 0) => {
 
     try {
         const res = await axiosInstance.get('/members/me/memorial-profiles/bookmarks', {
@@ -122,9 +122,8 @@ export const getSelectProfileBookmarksList = async (page = 1, pageSize = 20, moc
     }
 };
 
-
-//추모 프로필 edit 권한 삭제
-export const postRemoveProfileEditPermission = async (id) => {
+//추모프로필 자신의 editor 권한 삭제
+export const deleteEditorProfile = async (id) => {
     try {
         const res = await axiosInstance.delete(`/members/me/memorial-profiles/${id}/permissions/editor`);
         return res;
@@ -133,10 +132,8 @@ export const postRemoveProfileEditPermission = async (id) => {
     }
 };
 
-
-
-//추모 프로필 view 권한 삭제
-export const postRemoveProfileViewPermission = async (id) => {
+//추모프로필 자신의 viewer 권한 삭제
+export const deleteViwerProfile = async (id) => {
     try {
         const res = await axiosInstance.delete(`/members/me/memorial-profiles/${id}/permissions/viewer`);
         return res;
@@ -145,9 +142,8 @@ export const postRemoveProfileViewPermission = async (id) => {
     }
 };
 
-
-//북마크 삭제
-export const postRemoveProfileBookmarks = async (id) => {
+//추모프로필 북마크 삭제
+export const deleteBookmarksProfile = async (id) => {
     try {
         const res = await axiosInstance.delete(`/bookmarks/memorial-profiles/${id}`);
         return res;
@@ -155,7 +151,6 @@ export const postRemoveProfileBookmarks = async (id) => {
         console.error(err);
     }
 };
-
 
 //북마크 지정
 export const postAddProfileBookmark = async (id) => {
@@ -238,10 +233,25 @@ export const getLettersProfile = async (id, keyword = '', page = 1, pageSize = 1
 };
 
 //추모 가족관계도 조회
-export const getFamilyProfile = async (id,) => {
+export const getFamilyProfile = async (id) => {
 
     try {
+        console.log(id);
         const res = await axiosInstance.get(`/memorial-profiles/${id}/family`);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//추모 가족관계도 업데이트
+export const putFamilyProfile = async (id, params) => {
+
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${id}/family`, {
+            items: params
+        });
         console.log(res);
         return res;
     } catch (err) {

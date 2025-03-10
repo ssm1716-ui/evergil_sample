@@ -25,6 +25,7 @@ import {
   getPhotoProfile,
   getLettersProfile,
   getFamilyProfile,
+  putFamilyProfile,
   deleteLetters,
 } from '@/api/memorial/memorialApi';
 
@@ -66,7 +67,7 @@ const EditProfilePage = () => {
   const [profile, setProfile] = useState({});
 
   const [items, setItems] = useState([
-    { id: '1', relation: '', name: '', isCustomInput: false },
+    { displayName: '', familyTitle: '', isCustomInput: false },
   ]);
 
   //탭 - 이미지
@@ -171,7 +172,6 @@ const EditProfilePage = () => {
     const fetchTabDate = async () => {
       try {
         let res;
-        console.log(activeTab);
         if (!activeTab) return;
         if (activeTab === '이미지') {
           res = await getPhotoProfile(profileId);
@@ -210,6 +210,20 @@ const EditProfilePage = () => {
 
     fetchTabDate();
   }, [activeTab]);
+
+  useEffect(() => {
+    const fetchFamily = async () => {
+      try {
+        const res = await putFamilyProfile(profileId, family);
+        if (res.status !== 200) {
+          alert('가족관계 업데이트 시 에러 발생');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchFamily();
+  }, [family]);
 
   const handleEdit = (index) => {
     alert(`이미지 ${index + 1} 수정하기`);
@@ -269,62 +283,61 @@ const EditProfilePage = () => {
     return -1;
   };
 
-  // 항목 추가 기능
+  // 가족관계도 항목 추가 기능
   const handleAddItem = () => {
     const newItem = {
-      id: `${items.length + 1}`,
-      relation: '',
-      name: '',
+      displayName: '',
+      familyTitle: '',
       isCustomInput: false,
     };
-    setItems([...items, newItem]);
+    setFamily([...family, newItem]);
   };
 
-  // 드래그 종료 시 순서 업데이트
+  // 가족관계도 드래그 종료 시 순서 업데이트
   const onDragEnd = (result) => {
     if (!result.destination) return;
 
-    const newItems = Array.from(items);
+    const newItems = Array.from(family);
     const [reorderedItem] = newItems.splice(result.source.index, 1);
     newItems.splice(result.destination.index, 0, reorderedItem);
 
-    setItems(newItems);
+    setFamily(newItems);
   };
 
-  // 드롭다운 변경 핸들러
+  // 가족관계도 드롭다운 변경 핸들러
   const handleSelectChange = (index, value) => {
-    const updatedItems = items.map((item, i) =>
+    const updatedItems = family.map((item, i) =>
       i === index
         ? {
             ...item,
-            relation: value,
+            familyTitle: value,
             isCustomInput: value === '직접 입력',
           }
         : item
     );
-    setItems(updatedItems);
+    setFamily(updatedItems);
   };
 
-  // 직접 입력 필드 변경 핸들러
+  // 가족관계도 직접 입력 필드 변경 핸들러
   const handleCustomInputChange = (index, value) => {
-    const updatedItems = items.map((item, i) =>
-      i === index ? { ...item, relation: value } : item
+    const updatedItems = family.map((item, i) =>
+      i === index ? { ...item, familyTitle: value } : item
     );
-    setItems(updatedItems);
+    setFamily(updatedItems);
   };
 
-  // 이름 입력 필드 변경 핸들러
+  // 가족관계도 이름 입력 필드 변경 핸들러
   const handleNameChange = (index, value) => {
-    const updatedItems = items.map((item, i) =>
-      i === index ? { ...item, name: value } : item
+    const updatedItems = family.map((item, i) =>
+      i === index ? { ...item, displayName: value } : item
     );
-    setItems(updatedItems);
+    setFamily(updatedItems);
   };
 
-  // 삭제 핸들러
-  const handleNameDelete = (index) => {
-    const updatedItems = items.filter((_, i) => i !== index);
-    setItems(updatedItems);
+  // 가족관계도 삭제 핸들러
+  const handleFailyDelete = (index) => {
+    const updatedItems = family.filter((_, i) => i !== index);
+    setFamily(updatedItems);
   };
 
   //설정 페이지
@@ -828,7 +841,7 @@ const EditProfilePage = () => {
                               {family.map((f, index) => (
                                 <Draggable
                                   key={index}
-                                  draggableId={index}
+                                  draggableId={`draggable-${index}`} // 숫자가 아닌 문자열로 변환
                                   index={index}
                                 >
                                   {(provided) => (
@@ -890,7 +903,7 @@ const EditProfilePage = () => {
                                             className="mb-20px md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
                                             type="text"
                                             placeholder="이름"
-                                            value={f.nadisplayNameme}
+                                            value={f.displayName}
                                             onChange={(e) =>
                                               handleNameChange(
                                                 index,
@@ -903,7 +916,9 @@ const EditProfilePage = () => {
                                         {/* 삭제 아이콘 */}
                                         <div className="col-auto col-md-1 align-self-start align-self-md-center text-end text-md-center sm-position-absolute right-5px">
                                           <button
-                                            onClick={() => handleDelete(index)}
+                                            onClick={() =>
+                                              handleFailyDelete(index)
+                                            }
                                             className="btn btn-link"
                                           >
                                             <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium md-fs-18"></i>

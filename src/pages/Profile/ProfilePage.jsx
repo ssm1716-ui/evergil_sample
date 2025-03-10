@@ -9,9 +9,9 @@ import {
   getSelectProfileList,
   getSelectProfileViewList,
   getSelectProfileBookmarksList,
-  postRemoveProfileEditPermission,
-  postRemoveProfileViewPermission,
-  postRemoveProfileBookmarks,
+  deleteEditorProfile,
+  deleteViwerProfile,
+  deleteBookmarksProfile,
 } from '@/api/memorial/memorialApi';
 
 import avatarImage from '@/assets/images/base-profile-image.png';
@@ -96,6 +96,7 @@ const ProfilePage = () => {
 
         if (res.status === 200) {
           const { data } = res.data;
+          console.log(data);
           setProfiles(data);
         }
       } catch (error) {
@@ -155,21 +156,33 @@ const ProfilePage = () => {
   const handleRemoveProfile = async () => {
     let res;
     if (activeTab === 'My Everlinks') {
-      res = await postRemoveProfileEditPermission(profileId);
+      res = await deleteEditorProfile(profileId);
     }
     if (activeTab === 'View') {
-      res = await postRemoveProfileViewPermission(profileId);
+      res = await deleteViwerProfile(profileId);
     }
     if (activeTab === 'Bookmark') {
-      res = await postRemoveProfileBookmarks(profileId);
+      res = await deleteBookmarksProfile(profileId);
     }
 
     if (res.status === 200) {
-      console.log(res);
-      console.log(activeTab);
-      setActiveTab('');
       setIsModalOpen(false);
       setActiveTab(activeTab);
+
+      if (activeTab === 'My Everlinks') {
+        res = await getSelectProfileList();
+      }
+      if (activeTab === 'View') {
+        res = await getSelectProfileViewList();
+      }
+      if (activeTab === 'Bookmark') {
+        res = await getSelectProfileBookmarksList();
+      }
+
+      if (res.status === 200) {
+        const { data } = res.data;
+        setProfiles(data);
+      }
     }
   };
 
@@ -304,7 +317,7 @@ const ProfilePage = () => {
                 {profiles.length === 0 && (
                   <div className="text-center pt-12">
                     {activeTab === 'My Everlinks' && (
-                      <Link to="/create-profile">
+                      <Link to="/setting-profile">
                         <div className="pb-2">
                           <i className="fa-solid fa-circle-plus align-middle text-extra-medium-gray fs-250"></i>
                         </div>
