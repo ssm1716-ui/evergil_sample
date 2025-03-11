@@ -217,7 +217,7 @@ export const getPhotoProfile = async (id, page = 1, pageSize = 10) => {
 };
 
 //추모 하늘편지 리스트 조회 및 검색
-export const getLettersProfile = async (id, keyword = '', page = 1, pageSize = 10) => {
+export const getLetters = async (id, keyword = '', page = 1, pageSize = 10) => {
 
     try {
         const res = await axiosInstance.get(`/memorial-profiles/${id}/letters`, {
@@ -231,6 +231,33 @@ export const getLettersProfile = async (id, keyword = '', page = 1, pageSize = 1
         console.error(err);
     }
 };
+
+//추모 하늘편지 등록
+export const postLetters = async (profileId, params) => {
+
+    try {
+        const res = await axiosInstance.post(`/memorial-profiles/${profileId}/letters`, params);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//추모 하늘편지 수정
+export const putLetters = async (profileId, letterId, params) => {
+
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${profileId}/letters/${letterId}`, params);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+
 
 //추모 가족관계도 조회
 export const getFamilyProfile = async (id) => {

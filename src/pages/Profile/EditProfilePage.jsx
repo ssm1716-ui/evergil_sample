@@ -15,6 +15,7 @@ import { FiUpload, FiImage } from 'react-icons/fi'; // 업로드 아이콘 사�
 import { MdAddPhotoAlternate } from 'react-icons/md';
 import { getFileType } from '@/utils/utils';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
+import Modal from '@/components/common/Modal/Modal';
 
 import {
   postRegisterProfile,
@@ -23,7 +24,7 @@ import {
   putProfileImage,
   putProfileDescription,
   getPhotoProfile,
-  getLettersProfile,
+  getLetters,
   getFamilyProfile,
   putFamilyProfile,
   deleteLetters,
@@ -105,11 +106,13 @@ const EditProfilePage = () => {
       thumb: 'https://craftohtml.themezaa.com/images/gallery-05.jpg',
     },
   ]);
+  const [letterId, setLetterId] = useState('');
   const [letters, setLetters] = useState([]);
   const [family, setFamily] = useState([]);
   const [profileImage, setProfileImage] = useState({});
   const [backgroundImage, setBackgroundImage] = useState({});
   const [activeTab, setActiveTab] = useState('이미지');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const lgRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -182,7 +185,7 @@ const EditProfilePage = () => {
           }
         }
         if (activeTab === '하늘편지') {
-          res = await getLettersProfile(profileId);
+          res = await getLetters(profileId);
           console.log('하늘편지 : ', res);
           if (res.status === 200) {
             const { data } = res.data;
@@ -214,6 +217,7 @@ const EditProfilePage = () => {
   useEffect(() => {
     const fetchFamily = async () => {
       try {
+        if (family.length <= 0) return;
         const res = await putFamilyProfile(profileId, family);
         if (res.status !== 200) {
           alert('가족관계 업데이트 시 에러 발생');
@@ -465,14 +469,20 @@ const EditProfilePage = () => {
     }
   };
 
+  //하늘편지 개별 삭제 확인
+  const handleRemoveLetterConfirm = async (letterId) => {
+    setLetterId(letterId);
+    setIsModalOpen(true);
+  };
+
   //하늘편지 개별 삭제
-  const handleRemoveLetters = async (letterId) => {
-    console.log(letterId);
+  const handleLetterRemove = async () => {
     let res;
     res = await deleteLetters(profileId, letterId);
     if (res.status === 200) {
-      res = await getLettersProfile(profileId);
+      res = await getLetters(profileId);
       const { data } = res.data;
+      setIsModalOpen(false);
       setLetters(data);
     }
   };
@@ -790,7 +800,7 @@ const EditProfilePage = () => {
                                 <Link
                                   onClick={(e) => {
                                     e.preventDefault();
-                                    handleRemoveLetters(letter.letterId);
+                                    handleRemoveLetterConfirm(letter.letterId);
                                   }}
                                 >
                                   <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
@@ -942,6 +952,41 @@ const EditProfilePage = () => {
           </div>
         </div>
       </section>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="w-40">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        삭제 하시겠습니까?
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+
+                      <Button
+                        className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                        onClick={handleLetterRemove}
+                      >
+                        삭제
+                      </Button>
+                      <Button
+                        className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        닫기
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

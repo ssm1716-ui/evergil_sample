@@ -146,7 +146,11 @@ const ProfilePage = () => {
   }, [filterKey]);
 
   const handleMovePageProfile = (profileId) => {
-    navigate(`/edit-profile/${profileId}`);
+    if (activeTab === 'My Everlinks') {
+      navigate(`/edit-profile/${profileId}`);
+      return;
+    }
+    navigate(`/view-profile/${profileId}`);
   };
   const handleRemoveConfirm = (id) => {
     setProfileId(id);

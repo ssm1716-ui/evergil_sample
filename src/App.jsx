@@ -10,6 +10,9 @@ import ContactPage from '@/pages/Contact/ContactPage';
 import SignInPage from '@/pages/Member/SignInPage';
 import SignUpPage from '@/pages/Member/SignUpPage';
 import ForgotPage from '@/pages/Password/ForgotPage';
+import ValidationPage from '@/pages/Password/ValidationPage';
+import ResetPasswordPage from '@/pages/Password/ResetPasswordPage';
+
 import BridgePage from '@/pages/Profile/BridgePage';
 
 import ProfilePage from '@/pages/Profile/ProfilePage';
@@ -34,6 +37,7 @@ import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
 import ScrollToTop from '@/components/common/ScrollToTop'; // 추가3
 import ErrorBoundary from '@/components/common/ErrorBoundary';
+import ErrorPage from '@/pages/ErrorPage';
 import CheckPointPage from '@/pages/CheckPointPage';
 import TestPage from '@/pages/TestPage';
 import QRScanner from '@/pages/QRScanner';
@@ -53,6 +57,8 @@ const App = () => {
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/password-forgot" element={<ForgotPage />} />
+            <Route path="/auth/token-validation" element={<ValidationPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckOutPage />} />
@@ -60,6 +66,7 @@ const App = () => {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/check-point" element={<CheckPointPage />} />
+            <Route path="/error" element={<ErrorPage />} />
             <Route path="/test" element={<TestPage />} />
 
             {/* <Route path="/qr" element={<QRScanner />} />

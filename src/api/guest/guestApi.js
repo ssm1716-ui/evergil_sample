@@ -1,5 +1,7 @@
 import axiosInstance from '@/api/axiosInstance';
 
+//guest API
+
 //비밀번호 찾기 이메일 요청
 export const postPasswordRequest = async (param) => {
     try {
@@ -11,6 +13,29 @@ export const postPasswordRequest = async (param) => {
         console.error(err);
     }
 };
+
+//비밀번호 토큰 검증
+export const postTokenValidation = async (param) => {
+    try {
+        const res = await axiosInstance.post('/guest/password-reset/validate', {
+            token: param
+        });
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//비밀번호 재설정 
+export const postResetPassword = async (param) => {
+    try {
+        const res = await axiosInstance.post('/guest/password-reset/confirm', param);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 
 
 //FAQ 가져오기
