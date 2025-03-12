@@ -13,6 +13,8 @@ import {
   putEmailAuthCodeConfirm,
 } from '@/api/member/personalApi.js';
 
+import { getMemberSettingSelect } from '@/api/member/settingApi.js';
+
 import {
   isValidEmail,
   isValidPassword,
@@ -46,6 +48,7 @@ const MyInfoPage = () => {
   const [phoneAuthCode, setPhoneAuthCode] = useState('');
   const [email, setEmail] = useState('');
   const [emailAuthCode, setEmailAuthCode] = useState('');
+  const [isPlatform, setIsPlatform] = useState(false);
 
   // 사용자 정보 상태
   const [userInfo, setUserInfo] = useState({
@@ -55,14 +58,33 @@ const MyInfoPage = () => {
     nonce: '',
   });
 
-  // 비밀번호 상태
-
   // 상태 업데이트 확인
   useEffect(() => {
+    console.log(currentView);
     if (currentView === 'infoList') {
       handlePasswordConfirm();
     }
   }, [currentView]);
+
+  //유저 플랫폼(SNS) 여부 확인
+  useEffect(() => {
+    const fetchSetting = async () => {
+      try {
+        const res = await getMemberSettingSelect();
+
+        if (res || res.status === 200) {
+          const { platform } = res.data;
+          setIsPlatform(platform !== 'LOCAL' ? true : false);
+          if (platform !== 'LOCAL') {
+            setCurrentView('infoList');
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSetting();
+  }, []);
 
   const getUserNonce = () => {
     return userInfo.nonce;
@@ -70,12 +92,14 @@ const MyInfoPage = () => {
 
   // 비밀번호 확인 후 리스트 화면으로 이동
   const handlePasswordConfirm = async () => {
+    console.log(fristPassword);
     if (fristPassword.trim() === '') {
       setErrors((prev) => ({ ...prev, fristPassword: true }));
       return;
     }
     try {
       const res = await postPasswordConfirm(fristPassword);
+      console.log(res);
 
       if (res.status === 200) {
         const { data } = res.data;

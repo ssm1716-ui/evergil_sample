@@ -29,7 +29,6 @@ const ResetPasswordPage = () => {
   const token = searchParams.get('key'); // ✅ URL에서 key 값 가져오기
 
   useEffect(() => {
-    // 스타일 추가
     if (!token) {
       navigate(
         `/error?desc=${'접근 할 수 없는 페이지 입니다.'}&pageUrl=${'/signin'}`

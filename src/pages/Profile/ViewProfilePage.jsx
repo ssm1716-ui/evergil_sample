@@ -20,7 +20,7 @@ import {
   putProfileBackgroundImage,
   putProfileImage,
   putProfileDescription,
-  getPhotoProfile,
+  getPhotoSeletct,
   getFamilyProfile,
   deleteLetters,
   getLetters,
@@ -126,7 +126,7 @@ const ViewProfilePage = () => {
         console.log(activeTab);
         if (!activeTab) return;
         if (activeTab === '이미지') {
-          res = await getPhotoProfile(profileId);
+          res = await getPhotoSeletct(profileId);
           console.log('이미지 : ', res);
           if (res.status === 200) {
             const { data } = res.data;

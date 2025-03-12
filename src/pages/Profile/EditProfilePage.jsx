@@ -23,7 +23,10 @@ import {
   putProfileBackgroundImage,
   putProfileImage,
   putProfileDescription,
-  getPhotoProfile,
+  getPhotoSeletct,
+  postPhotoRegister,
+  putPhotoModify,
+  deletePhotoRemove,
   getLetters,
   getFamilyProfile,
   putFamilyProfile,
@@ -64,6 +67,7 @@ const formats = [
 const EditProfilePage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const lgRef = useRef(null);
   const [content, setContent] = useState('');
   const [profile, setProfile] = useState({});
 
@@ -72,49 +76,22 @@ const EditProfilePage = () => {
   ]);
 
   //탭 - 이미지
-  const [images, setImages] = useState([
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-14.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-14.jpg',
-    },
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-08.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-08.jpg',
-    },
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-07.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-07.jpg',
-    },
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-01.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-01.jpg',
-    },
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-02.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-02.jpg',
-    },
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-03.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-03.jpg',
-    },
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-04.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-04.jpg',
-    },
-    {
-      src: 'https://craftohtml.themezaa.com/images/gallery-05.jpg',
-      thumb: 'https://craftohtml.themezaa.com/images/gallery-05.jpg',
-    },
-  ]);
+  const [images, setImages] = useState([]);
   const [letterId, setLetterId] = useState('');
   const [letters, setLetters] = useState([]);
   const [family, setFamily] = useState([]);
   const [profileImage, setProfileImage] = useState({});
   const [backgroundImage, setBackgroundImage] = useState({});
+  const [photo, setPhoto] = useState({});
+  const [updatePhotoId, setUpdatePhotoId] = useState('');
+  const [updatePhoto, setUpdatePhoto] = useState({});
+  const [imagesId, setImagesId] = useState('');
   const [activeTab, setActiveTab] = useState('이미지');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [galleryKey, setGalleryKey] = useState(0);
 
-  const lgRef = useRef(null);
+  // const lgRef = useRef(null);
+  const imagesRef = useRef(images);
   const fileInputRef = useRef(null);
 
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
@@ -123,15 +100,23 @@ const EditProfilePage = () => {
   };
 
   // 파일 업로드 핸들러
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      const updatedImages = [...images];
-      updatedImages[0] = { src: imageUrl, thumb: imageUrl }; // 첫 번째 이미지 변경
-      setImages(updatedImages);
-    }
-  };
+  // const handleFileUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setPhoto(file);
+  //     const imageUrl = URL.createObjectURL(file);
+
+  //     // 기존 이미지 배열에 새 이미지 추가
+  //     setImages((prevImages) => [
+  //       ...prevImages,
+  //       { src: imageUrl, thumb: imageUrl },
+  //     ]);
+  //   }
+  // };
+  // images 값이 변경될 때마다 ref도 최신 값으로 업데이트
+  useEffect(() => {
+    imagesRef.current = images;
+  }, [images]);
 
   useEffect(() => {
     // 스타일 추가
@@ -170,6 +155,18 @@ const EditProfilePage = () => {
     }
   }, [profileImage]); // profileImage 값이 변경될 때 실행
 
+  useEffect(() => {
+    if (photo) {
+      handleGetFileUploadPath('photo', photo);
+    }
+  }, [photo]); // 컨텐츠 이미지 업로드 photo 값이 변경될 때 실행
+
+  useEffect(() => {
+    if (updatePhoto) {
+      handleGetFileUploadPath('updatePhoto', updatePhoto);
+    }
+  }, [updatePhoto]); // 컨텐츠 이미지 업로드 수정시 updatePhoto 값이 변경될 때 실행
+
   // 📌 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {
     const fetchTabDate = async () => {
@@ -177,10 +174,11 @@ const EditProfilePage = () => {
         let res;
         if (!activeTab) return;
         if (activeTab === '이미지') {
-          res = await getPhotoProfile(profileId);
+          res = await getPhotoSeletct(profileId);
           console.log('이미지 : ', res);
           if (res.status === 200) {
             const { data } = res.data;
+            console.log(data);
             setImages(data);
           }
         }
@@ -229,62 +227,201 @@ const EditProfilePage = () => {
     fetchFamily();
   }, [family]);
 
-  const handleEdit = (index) => {
-    alert(`이미지 ${index + 1} 수정하기`);
-  };
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        if (!imagesId) return;
+        const res = await getPhotoSeletct(profileId);
+        console.log('이미지 : ', res);
+        if (res.status === 200) {
+          const { data } = res.data;
+          console.log(data);
+          setImages(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchPhotos();
+  }, [imagesId]);
 
-  const handleDelete = (index) => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      alert(`이미지 ${index + 1} 삭제됨`);
+  useEffect(() => {
+    if (lgRef.current) {
+      lgRef.current.addEventListener('lgAfterOpen', addCustomButtons);
+    }
+
+    return () => {
+      if (lgRef.current) {
+        lgRef.current.removeEventListener('lgAfterOpen', addCustomButtons);
+      }
+    };
+  }, [galleryKey]);
+
+  const closeLightGallery = () => {
+    const closeBtn = document.querySelector("[id^='lg-close']"); // ✅ ID가 'lg-close-'로 시작하는 버튼 찾기
+    if (closeBtn) {
+      closeBtn.click(); // ✅ LightGallery 닫기 버튼 강제 클릭
+    } else {
+      console.error('닫기 버튼을 찾을 수 없습니다.');
     }
   };
 
-  const onInit = () => {
+  const handleEdit = (id) => {
+    // ✅ 현재 이미지의 index 찾기
+    if (!id) return;
+    setUpdatePhotoId(id);
+    // ✅ 파일 업로드 input 트리거
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.style.display = 'none';
+
+    fileInput.onchange = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const imageUrl = URL.createObjectURL(file);
+      // ✅ 선택한 파일을 미리보기 URL로 변환
+
+      // ✅ 이미지 교체 (S3 업로드 전 미리보기)
+      const imageFile = {
+        originalFile: file, // 원본 File 객체 저장
+        preview: imageUrl,
+      };
+      setUpdatePhoto(imageFile);
+
+      // ✅ LightGallery 리렌더링 (이미지 업데이트 반영)
+      setGalleryKey((prev) => prev + 1);
+    };
+
+    fileInput.click(); // ✅ 파일 선택 창 열기
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const res = await deletePhotoRemove(id);
+
+      if (res.status === 200) {
+        closeLightGallery();
+        setImagesId(id);
+
+        // // ✅ 갤러리 리렌더링 + 버튼 재생성
+        setGalleryKey((prev) => prev + 1);
+      }
+    }
+  };
+  // ✅ LightGallery가 열린 후 실행되는 이벤트 핸들러
+  const handleGalleryOpen = () => {
+    console.log('📸 LightGallery가 열렸습니다.');
+    addCustomButtons();
+  };
+
+  const addCustomButtons = () => {
     setTimeout(() => {
-      // const lgContainer = document.querySelector('.lg-container');
-      const lgToolbar = document.getElementById('lg-toolbar-1');
+      const lgToolbar = document.querySelector('.lg-toolbar');
 
       if (lgToolbar && !document.getElementById('edit-button')) {
+        console.log('🔄 수정/삭제 버튼 추가!');
+
         const editButton = document.createElement('button');
         editButton.innerText = '수정';
-        editButton.classList.add('lg-custom-btn');
-        editButton.classList.add('lg-custom-modify');
+        editButton.classList.add('lg-custom-btn', 'lg-custom-modify');
         editButton.id = 'edit-button';
         editButton.onclick = () => {
           const index = getCurrentImageIndex();
-          handleEdit(index);
+          console.log(index);
+          if (index !== -1) {
+            const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
+            handleEdit(imageId);
+          }
         };
 
         const deleteButton = document.createElement('button');
         deleteButton.innerText = '삭제';
-        deleteButton.classList.add('lg-custom-btn');
-        deleteButton.classList.add('lg-custom-remove');
+        deleteButton.classList.add('lg-custom-btn', 'lg-custom-remove');
         deleteButton.id = 'delete-button';
         deleteButton.onclick = () => {
           const index = getCurrentImageIndex();
-          handleDelete(index);
+          console.log(index);
+          if (index !== -1) {
+            const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
+            handleDelete(imageId);
+          }
         };
 
         lgToolbar.appendChild(editButton);
         lgToolbar.appendChild(deleteButton);
       }
-    }, 100);
+    }, 500);
   };
 
-  // 현재 선택된 이미지의 index 찾기
+  const onInit = () => {
+    addCustomButtons();
+    // setTimeout(() => {
+    //   // const lgContainer = document.querySelector('.lg-container');
+    //   const lgToolbar = document.getElementById('lg-toolbar-3');
+
+    //   if (lgToolbar && !document.getElementById('edit-button')) {
+    //     const editButton = document.createElement('button');
+    //     editButton.innerText = '수정';
+    //     editButton.classList.add('lg-custom-btn');
+    //     editButton.classList.add('lg-custom-modify');
+    //     editButton.id = 'edit-button';
+    //     editButton.onclick = () => {
+    //       const index = getCurrentImageIndex();
+    //       console.log(index);
+    //       if (index !== -1) {
+    //         const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
+    //         handleEdit(imageId);
+    //       }
+    //     };
+
+    //     const deleteButton = document.createElement('button');
+    //     deleteButton.innerText = '삭제';
+    //     deleteButton.classList.add('lg-custom-btn');
+    //     deleteButton.classList.add('lg-custom-remove');
+    //     deleteButton.id = 'delete-button';
+    //     deleteButton.onclick = () => {
+    //       const index = getCurrentImageIndex();
+    //       console.log(index);
+    //       if (index !== -1) {
+    //         const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
+    //         handleDelete(imageId);
+    //       }
+    //     };
+
+    //     lgToolbar.appendChild(editButton);
+    //     lgToolbar.appendChild(deleteButton);
+    //   }
+    // }, 2000);
+  };
+
+  // // 현재 선택된 이미지의 index 찾기
+  // const getCurrentImageIndex = () => {
+  //   const gallery = lgRef.current?.instance;
+  //   if (gallery) {
+  //     return gallery.index;
+  //   }
+  //   // fallback: 현재 활성화된 `.lg-current` 클래스의 index 찾기
+  //   const currentSlide = document.querySelector('.lg-container .lg-current');
+  //   if (currentSlide) {
+  //     return [...document.querySelectorAll('.lg-container .lg-item')].indexOf(
+  //       currentSlide
+  //     );
+  //   }
+  //   return -1;
+  // };
+
   const getCurrentImageIndex = () => {
-    const gallery = lgRef.current?.instance;
-    if (gallery) {
-      return gallery.index;
-    }
-    // fallback: 현재 활성화된 `.lg-current` 클래스의 index 찾기
-    const currentSlide = document.querySelector('.lg-container .lg-current');
+    // 현재 활성화된 이미지 찾기
+    const currentSlide = document.querySelector('.lg-item.lg-current img');
+
     if (currentSlide) {
-      return [...document.querySelectorAll('.lg-container .lg-item')].indexOf(
-        currentSlide
-      );
+      const index = currentSlide.getAttribute('data-index'); // ✅ data-index 속성 가져오기
+      return index !== null ? parseInt(index, 10) : -1; // 정수 변환 후 반환
     }
-    return -1;
+
+    return -1; // 활성화된 이미지가 없을 경우 -1 반환
   };
 
   // 가족관계도 항목 추가 기능
@@ -364,28 +501,37 @@ const EditProfilePage = () => {
     console.log(files, name);
     let imageFile;
 
+    if (!files[0]) return;
+
+    const file = files[0];
+    const imageUrl = URL.createObjectURL(file);
     if (name === 'backgroundImageUrl') {
       //배경 이미지
       imageFile = {
-        originalFile: files[0], // 원본 File 객체 저장
-        preview: URL.createObjectURL(files[0]),
+        originalFile: file, // 원본 File 객체 저장
+        preview: imageUrl,
       };
 
       setBackgroundImage(imageFile);
-    } else {
+    } else if (name === 'profileImageUrl') {
       //프로필 이미지
       imageFile = {
-        originalFile: files[0], // 원본 File 객체 저장
-        preview: URL.createObjectURL(files[0]),
+        originalFile: file, // 원본 File 객체 저장
+        preview: imageUrl,
       };
       setProfileImage(imageFile);
+    } else {
+      imageFile = {
+        originalFile: file, // 원본 File 객체 저장
+        preview: imageUrl,
+      };
+      setPhoto(imageFile);
     }
   };
 
   // ✅ S3 파일 업로드 함수 (State 변경 감지하여 자동 실행)
   const handleGetFileUploadPath = async (imageType, file) => {
-    let res, url;
-    console.log(imageType, file);
+    let res, url, imageId;
     try {
       if (!file || !(file.originalFile instanceof File)) {
         console.error('🚨 유효한 파일이 없습니다.', file);
@@ -397,10 +543,11 @@ const EditProfilePage = () => {
 
       // 1️⃣ Presigned URL 요청
       const type = getFileType(file.originalFile.type);
-      console.log(type);
       const presignedResponse = await postRequestPresignedUrl(type);
       const { data } = presignedResponse.data;
       url = data.completedUrl; // 업로드 완료 후 접근할 URL
+      imageId = updatePhotoId || '';
+      console.log(imageId);
 
       console.log(`Uploading: ${file.originalFile.name} -> ${url}`);
 
@@ -419,17 +566,18 @@ const EditProfilePage = () => {
       console.log('✅ 업로드 성공:', url);
 
       // ✅ State 업데이트 전, 최신 profile 가져오기
-      setProfile((prevProfile) => {
-        const updatedProfile = { ...prevProfile }; // 새로운 객체 생성
+      if (imageType !== 'photo' || imageType !== 'updatePhoto') {
+        setProfile((prevProfile) => {
+          const updatedProfile = { ...prevProfile }; // 새로운 객체 생성
 
-        if (imageType === 'backgroundImageUrl') {
-          updatedProfile.backgroundImageUrl = url;
-        } else if (imageType === 'profileImageUrl') {
-          updatedProfile.profileImageUrl = url;
-        }
-
-        return updatedProfile; // 변경된 객체 반환
-      });
+          if (imageType === 'backgroundImageUrl') {
+            updatedProfile.backgroundImageUrl = url;
+          } else if (imageType === 'profileImageUrl') {
+            updatedProfile.profileImageUrl = url;
+          }
+          return updatedProfile; // 변경된 객체 반환
+        });
+      }
 
       if (imageType === 'backgroundImageUrl') {
         res = await putProfileBackgroundImage(profileId, {
@@ -439,6 +587,29 @@ const EditProfilePage = () => {
         res = await putProfileImage(profileId, {
           profileImageUrl: url,
         });
+      } else if (imageType === 'photo') {
+        res = await postPhotoRegister(profileId, {
+          imageUrl: url,
+        });
+
+        if (res.status === 200) {
+          res = await getPhotoSeletct(profileId);
+          const { data } = res.data;
+          console.log(data);
+          setImages(data);
+        }
+      } else if (imageType === 'updatePhoto') {
+        res = await putPhotoModify(imageId, {
+          imageUrl: url,
+        });
+        console.log('updatePhoto -', res);
+        if (res.status === 200) {
+          res = await getPhotoSeletct(profileId);
+          const { data } = res.data;
+          console.log(data);
+          setImages(data);
+          setUpdatePhotoId('');
+        }
       }
       console.log(res);
     } catch (error) {
@@ -670,37 +841,6 @@ const EditProfilePage = () => {
         <div className="container">
           <div className="row">
             <div className="col-12 tab-style-04">
-              {/* <ul className="nav nav-tabs border-0 justify-content-center fs-19">
-                <li className="nav-item">
-                  <a
-                    data-bs-toggle="tab"
-                    href="#tab_five1"
-                    className="nav-link active"
-                  >
-                    이미지<span className="tab-border bg-dark-gray"></span>
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    data-bs-toggle="tab"
-                    href="#tab_five2"
-                  >
-                    하늘편지
-                    <span className="tab-border bg-dark-gray"></span>
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    data-bs-toggle="tab"
-                    href="#tab_five3"
-                  >
-                    가족관계도
-                    <span className="tab-border bg-dark-gray"></span>
-                  </a>
-                </li>
-              </ul> */}
               <ul className="nav nav-tabs border-0 justify-content-center fs-19">
                 {['이미지', '하늘편지', '가족관계도'].map((tab) => (
                   <li key={tab} className="nav-item">
@@ -722,12 +862,14 @@ const EditProfilePage = () => {
                 {activeTab === '이미지' && (
                   <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                     <LightGallery
+                      key={galleryKey} // ✅ 리렌더링을 위한 key
                       speed={500}
                       download={false}
                       thumbnail={true}
                       plugins={[lgThumbnail]}
                       selector=".gallery-item"
-                      onInit={onInit}
+                      onAfterOpen={handleGalleryOpen} // ✅ LightGallery가 열린 후 실행
+                      onInit={onInit} // ✅ 인스턴스 저장
                       ref={lgRef}
                     >
                       <div style={galleryStyle}>
@@ -750,19 +892,19 @@ const EditProfilePage = () => {
                             accept="image/*"
                             ref={fileInputRef}
                             style={{ display: 'none' }}
-                            onChange={handleFileUpload}
+                            onChange={handleFileChange}
                           />
                         </div>
 
                         {images.map((image, index) => (
                           <a
-                            href={image.src}
+                            href={image.url}
                             key={index}
                             className="gallery-item"
-                            data-src={image.src}
+                            data-src={image.url}
                           >
                             <img
-                              src={image.thumb}
+                              src={image.url}
                               // alt={`Gallery Image ${index}`}
                               style={imageStyle}
                             />
