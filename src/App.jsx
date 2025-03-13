@@ -19,6 +19,9 @@ import ProfilePage from '@/pages/Profile/ProfilePage';
 import SettingProfilePage from '@/pages/Profile/SettingProfilePage';
 import EditProfilePage from '@/pages/Profile/EditProfilePage';
 import ViewProfilePage from '@/pages/Profile/ViewProfilePage';
+import PreviewProfilePage from '@/pages/Profile/PreviewProfilePage';
+import ManagePage from '@/pages/Profile/ManagePage';
+
 import CartPage from '@/pages/Cart/CartPage';
 import MyPage from '@/pages/Mypage/MyPage';
 import OrderListPage from '@/pages/Mypage/OrderListPage';
@@ -122,6 +125,11 @@ const App = () => {
               path="/view-profile/:profileId"
               element={<ViewProfilePage />}
             />
+            <Route
+              path="/preview-profile/:profileId"
+              element={<PreviewProfilePage />}
+            />
+            <Route path="/manage-profile" element={<ManagePage />} />
 
             {/* 프로필 영역 end*/}
 

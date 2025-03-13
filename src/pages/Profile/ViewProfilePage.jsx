@@ -24,12 +24,12 @@ import {
   getFamilyProfile,
   deleteLetters,
   getLetters,
+  getLetter,
   postLetters,
   putLetters,
 } from '@/api/memorial/memorialApi';
 
 import avatarImage from '@/assets/images/sample/3d_avatar_10.png';
-import { post } from 'jquery';
 
 const ViewProfilePage = () => {
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
@@ -105,8 +105,6 @@ const ViewProfilePage = () => {
         let res = await getSelectProfile(profileId);
         if (res.status === 200) {
           const { profile, extension } = res.data.data;
-          console.log(profile);
-          console.log(extension);
           setProfile(profile);
           setHasFamilyTree(extension.hasFamilyTree);
         }
@@ -130,6 +128,7 @@ const ViewProfilePage = () => {
           console.log('이미지 : ', res);
           if (res.status === 200) {
             const { data } = res.data;
+            console.log(data);
             setImages(data);
           }
         }
@@ -235,6 +234,7 @@ const ViewProfilePage = () => {
         const { data } = res.data;
         setLetters(data);
       }
+      letterInit();
     }
   };
 
@@ -251,7 +251,32 @@ const ViewProfilePage = () => {
     }
   };
 
-  //하늘편지 개별 삭제 확인
+  //하늘편지 수정 모달창
+  const handleModifyLetterConfirm = async (letterId) => {
+    setLetterId(letterId);
+
+    let res;
+    res = await getLetter(profileId, letterId);
+    if (res.status === 200) {
+      const { data } = res.data;
+      setPostLetter(data);
+    }
+
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateAndSendLetter = async () => {
+    let res = await putLetters(profileId, letterId, postLetter);
+    if (res.status === 200) {
+      res = await getLetters(profileId);
+      const { data } = res.data;
+      setIsEditModalOpen(false);
+      setLetters(data);
+    }
+    letterInit();
+  };
+
+  //하늘편지 삭제 모달창
   const handleRemoveLetterConfirm = async (letterId) => {
     setLetterId(letterId);
     setIsDeleteModalOpen(true);
@@ -267,6 +292,11 @@ const ViewProfilePage = () => {
       setIsDeleteModalOpen(false);
       setLetters(data);
     }
+    letterInit;
+  };
+
+  const letterInit = () => {
+    setPostLetter(initLetter);
   };
 
   return (
@@ -461,13 +491,13 @@ const ViewProfilePage = () => {
                       <div style={galleryStyle}>
                         {images.map((image, index) => (
                           <a
-                            href={image.src}
+                            href={image.url}
                             key={index}
                             className="gallery-item"
-                            data-src={image.src}
+                            data-src={image.url}
                           >
                             <img
-                              src={image.thumb}
+                              src={image.url}
                               // alt={`Gallery Image ${index}`}
                               style={imageStyle}
                             />
@@ -555,7 +585,11 @@ const ViewProfilePage = () => {
                                     </span>
                                     <span
                                       className="cursor-pointer"
-                                      // onClick={handleModifyLetter}
+                                      onClick={() =>
+                                        handleModifyLetterConfirm(
+                                          letter.letterId
+                                        )
+                                      }
                                     >
                                       <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
                                     </span>
@@ -685,7 +719,85 @@ const ViewProfilePage = () => {
 
                   <Button
                     className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
-                    onClick={() => setIsRegisterModalOpen(false)}
+                    onClick={() => {
+                      setIsRegisterModalOpen(false);
+                      letterInit();
+                    }}
+                  >
+                    닫기
+                  </Button>
+                </div>
+
+                {/* <AddressSearch onComplete={setSelectedAddress} />
+                          <p>선택된 주소: {selectedAddress}</p> */}
+              </form>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
+        <div className="row justify-content-center">
+          <div className="col-12">
+            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+              <div className="row justify-content-center mb-30px sm-mb-10px">
+                <div className="col-md-9 text-center">
+                  <h4 className="text-dark-gray fw-500 mb-15px">
+                    하늘편지 수정하기
+                  </h4>
+                </div>
+              </div>
+              <form className="row">
+                <div className="col-12 mb-20px ">
+                  <label className="mb-10px">이름</label>
+                  <input
+                    className="border-radius-4px input-large mb-5px"
+                    type="text"
+                    name="displayName"
+                    value={postLetter.displayName}
+                    onChange={handleLettersChange}
+                    required
+                  />
+                  {/* {errors.deliveryName && (
+                    <p className="text-danger text-start">
+                      배송지 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                </div>
+                <div className="col-12 mb-20px ">
+                  <label className="mb-10px">내용</label>
+                  <textarea
+                    className="border-radius-4px textarea-small"
+                    name="content"
+                    rows="5"
+                    cols="5"
+                    value={postLetter.content}
+                    onChange={handleLettersChange}
+                    placeholder=""
+                  ></textarea>
+                  {/* {errors.recipientName && (
+                    <p className="text-danger text-start">
+                      받는분 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                </div>
+
+                <div className="col-lg-112 text-center text-lg-center">
+                  <input type="hidden" name="redirect" value="" />
+
+                  <Button
+                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                    onClick={handleUpdateAndSendLetter}
+                  >
+                    수정하기
+                  </Button>
+
+                  <Button
+                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    onClick={() => {
+                      setIsEditModalOpen(false);
+                      letterInit();
+                    }}
                   >
                     닫기
                   </Button>

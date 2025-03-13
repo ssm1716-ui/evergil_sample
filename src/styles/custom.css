@@ -243,6 +243,38 @@
     width: 50px;
     text-align: center;
   } */
+
+
+.invite-table, .nondisclosure-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.select-container {
+  width: 30%;
+}
+
+  /* Input */
+.select-invite{
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  resize: none;
+  outline: none;
+  font-size: 16px;
+  border: 0 !important;
+  /* color: var(--medium-gray); */
+  line-height: inherit;
+  word-break: normal;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.btn.btn-very-small {
+  font-size: 11px;
+  padding: 0px 10px;
+  margin-bottom: 5px;
+}
       
 
 @media (max-width: 991px) {
@@ -256,6 +288,10 @@
 
     .feature-box-content{
         text-align: left;
+    }
+
+    .select-container {
+      width: 100%;
     }
 }
 

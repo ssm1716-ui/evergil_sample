@@ -265,6 +265,18 @@ export const getLetters = async (id, keyword = '', page = 1, pageSize = 10) => {
     }
 };
 
+//추모 하늘편지 조회
+export const getLetter = async (profileId, letterId) => {
+
+    try {
+        const res = await axiosInstance.get(`/memorial-profiles/${profileId}/letters/${letterId}`);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 //추모 하늘편지 등록
 export const postLetters = async (profileId, params) => {
 

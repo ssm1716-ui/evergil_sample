@@ -492,7 +492,7 @@ const EditProfilePage = () => {
   const handlePreview = (e) => {
     e.preventDefault();
 
-    navigate(`/view-profile/${profileId}`);
+    navigate(`/preview-profile/${profileId}`);
   };
 
   // 파일 선택 핸들러
@@ -777,7 +777,10 @@ const EditProfilePage = () => {
                       </span>
                     </span>
                   </Link>
-                  <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
+                  <Link
+                    className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
+                    to="/manage-profile"
+                  >
                     <span>
                       <span>
                         <i className="feather icon-feather-users"></i>
