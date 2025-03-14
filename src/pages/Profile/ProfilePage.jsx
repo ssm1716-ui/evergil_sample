@@ -14,6 +14,8 @@ import {
   deleteBookmarksProfile,
 } from '@/api/memorial/memorialApi';
 
+import useSnsAccountValidation from '@/hooks/useSnsAccountValidation';
+
 import avatarImage from '@/assets/images/base-profile-image.png';
 
 const ProfilePage = () => {
@@ -28,6 +30,11 @@ const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('My Everlinks');
   const [profileId, setProfileId] = useState('');
+
+  // SNS 계정 여부와 이메일 존재 여부를 확인합니다.
+  // SNS 계정이면 passwordInput에는 보통 빈 문자열을 전달하거나 API 사양에 맞게 값을 전달합니다.
+  const { isSnsAccount, hasEmail, loading, error } =
+    useSnsAccountValidation('');
 
   // useEffect(() => {
   //   const fetchProfiles = async () => {
@@ -392,6 +399,36 @@ const ProfilePage = () => {
                         onClick={() => setIsModalOpen(false)}
                       >
                         취소
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={!hasEmail} onClose={() => setIsModalOpen(false)}>
+        <div className="w-40">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        (필수) 이메일 정보를 입력해 주세요.
+                        <br />
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => navigate('/mypage/myinfo')}
+                      >
+                        확인
                       </button>
                     </div>
                   </div>

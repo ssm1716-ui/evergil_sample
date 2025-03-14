@@ -275,6 +275,20 @@
   padding: 0px 10px;
   margin-bottom: 5px;
 }
+
+.terms-view {}
+
+
+.terms-view::after {
+  content: "\e844";
+  color: var(--base-color);
+  font-family: "feather";
+  font-size: 20px;
+  font-weight: 900;
+  display: inline-block;
+  padding: 0 5px 0 0px;
+}
+
       
 
 @media (max-width: 991px) {

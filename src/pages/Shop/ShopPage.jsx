@@ -139,6 +139,7 @@ const ShopPage = () => {
   const handleBuyNow = (e) => {
     e.preventDefault();
     const updatedProduct = { ...product, qty };
+    sessionStorage.setItem('order_product', JSON.stringify(updatedProduct));
     navigate('/checkout', {
       state: { orderType: 'direct', product: updatedProduct },
     });

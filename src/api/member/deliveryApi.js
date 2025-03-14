@@ -21,6 +21,18 @@ export const getMembersAddressList = async () => {
     }
 };
 
+//기본 배송지 조회
+export const getMembersAddressDefault = async () => {
+
+    try {
+        const res = await axiosInstance.get('/members/me/delivery-addresses/default');
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 //배송지주소 업데이트
 export const putUpdateAddress = async (id, param) => {
 

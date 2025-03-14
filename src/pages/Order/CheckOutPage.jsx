@@ -10,6 +10,12 @@ import AnimatedSection from '@/components/AnimatedSection';
 import AddressSearch from '@/components/AddressSearch';
 
 import {
+  getMembersAddressDefault,
+  getMembersAddressList,
+  putDefaultAddress,
+} from '@/api/member/deliveryApi';
+
+import {
   isValidEmail,
   isValidPassword,
   isValidName,
@@ -28,27 +34,36 @@ const paymentMethods = [
 const CheckOutPage = () => {
   const location = useLocation();
   const [isAddresOpen, SetIsAddresOpen] = useState(false);
+  const [focusAddress, setFocusAddress] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDeliveryOpen, setIsModalDeliveryOpen] = useState(false);
   const [orderProductData, setOrderProductData] = useState([]);
   const [orderAddressData, seOrderAddressData] = useState({
+    id: '',
     deliveryName: '',
     recipientName: '',
     phoneNumber: '',
     address1: '',
     address2: '',
     zipcode: '',
+    isDefault: '',
   });
   const [errors, setErrors] = useState({});
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [selectedAddress, setSelectedAddress] = useState({});
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [addressList, setAddressList] = useState([]);
   const navigate = useNavigate();
 
   //바로 주문, 장바구니 경로로 분기 처리
   useEffect(() => {
-    if (location.state.orderType === 'direct') {
+    let storedOrder = sessionStorage.getItem('order_product');
+
+    if (storedOrder) {
+      // ✅ 로컬스토리지에서 데이터 복구
+      setOrderProductData([JSON.parse(storedOrder)]);
+    } else if (location.state?.orderType === 'direct') {
       console.log(location.state);
-      // 직접 구매의 경우 location.state에 있는 상품 데이터 사용
-      setOrderProductData([location.state.product]);
+      setOrderProductData([location.state.product]); // 직접 구매
     } else {
       // 장바구니에서 온 경우 localStorage에서 데이터 가져오기
       const storedCart = JSON.parse(localStorage.getItem('dev_cart')) || [];
@@ -59,6 +74,22 @@ const CheckOutPage = () => {
   useEffect(() => {
     SetIsAddresOpen(false);
   }, [selectedAddress]);
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const res = await getMembersAddressDefault();
+        if (res.status === 200) {
+          const { data } = res.data;
+          seOrderAddressData(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchAddress();
+  }, []);
 
   // 유효성 검사 함수
   const validate = () => {
@@ -150,6 +181,19 @@ const CheckOutPage = () => {
   const nextPage = (e) => {
     e.preventDefault();
     navigate('/complete');
+  };
+
+  const handleDeliveryModalOpen = async () => {
+    const { data } = await getMembersAddressList();
+    console.log(data);
+    setAddressList(data.data);
+    setIsModalDeliveryOpen(true);
+  };
+  const handleDeliveryAddressChage = () => {
+    if (!focusAddress) return;
+    const address = addressList.find((item) => item.id === focusAddress);
+    seOrderAddressData(address);
+    setIsModalDeliveryOpen(false);
   };
 
   return (
@@ -265,6 +309,7 @@ const CheckOutPage = () => {
                         radiusOn="radius-on"
                         color="black"
                         className="col-3 btn w-20 sm-w-50 btn-round-edge"
+                        onClick={handleDeliveryModalOpen}
                       >
                         배송지 변경
                       </Button>
@@ -326,18 +371,17 @@ const CheckOutPage = () => {
                   <div className="col-12 mb-20px">
                     <label className="col-12">배송주소</label>
                     <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0 mt-10px">
-                      {Object.keys(selectedAddress).length > 0 && (
-                        <input
-                          className="col-9 border-radius-4px input-large"
-                          type="text"
-                          aria-label="first-name"
-                          name="zipcode"
-                          value={
-                            (orderAddressData.zipcode = selectedAddress.zipcode)
-                          }
-                          required
-                        />
-                      )}
+                      <input
+                        className="col-9 border-radius-4px input-large"
+                        type="text"
+                        aria-label="first-name"
+                        name="zipcode"
+                        value={
+                          (orderAddressData.zipcode =
+                            selectedAddress.zipcode || orderAddressData.zipcode)
+                        }
+                        required
+                      />
                       {isAddresOpen && errors.zipcode && (
                         <p className="text-danger text-start p-0">
                           {errors.zipcode}
@@ -348,35 +392,31 @@ const CheckOutPage = () => {
                         주소 찾기
                       </AddressSearch>
                     </div>
-                    {Object.keys(selectedAddress).length > 0 && (
-                      <>
-                        <input
-                          className="col-12 border-radius-4px input-large mt-1"
-                          type="text"
-                          aria-label="first-name"
-                          name="address1"
-                          value={
-                            (orderAddressData.address1 =
-                              selectedAddress.address)
-                          }
-                          required
-                        />
-                        {isAddresOpen && errors.address1 && (
-                          <p className="text-danger text-start p-0">
-                            {errors.address1}
-                          </p>
-                        )}
-                        <input
-                          className="col-12 border-radius-4px input-large mt-1"
-                          type="text"
-                          aria-label="first-name"
-                          name="address2"
-                          value={orderAddressData.address2}
-                          onChange={handleAddressChange}
-                          required
-                        />
-                      </>
+                    <input
+                      className="col-12 border-radius-4px input-large mt-1"
+                      type="text"
+                      aria-label="first-name"
+                      name="address1"
+                      value={
+                        (orderAddressData.address1 =
+                          selectedAddress.address1 || orderAddressData.address1)
+                      }
+                      required
+                    />
+                    {isAddresOpen && errors.address1 && (
+                      <p className="text-danger text-start p-0">
+                        {errors.address1}
+                      </p>
                     )}
+                    <input
+                      className="col-12 border-radius-4px input-large mt-1"
+                      type="text"
+                      aria-label="first-name"
+                      name="address2"
+                      value={orderAddressData.address2}
+                      onChange={handleAddressChange}
+                      required
+                    />
                   </div>
 
                   <div className="col-md-12 mb-2 checkout-accordion">
@@ -513,6 +553,92 @@ const CheckOutPage = () => {
           </div>
         </div>
       </section>
+      {/* 배송지 변경 컴포넌트 */}
+      <Modal
+        isOpen={isModalDeliveryOpen}
+        onClose={() => setIsModalDeliveryOpen(false)}
+        title="Slide up animation"
+      >
+        <div className="row align-items-center justify-content-center pricing-table-style-07 bg-gradient-very-light-gray">
+          <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+            <div className="col-lg-12 col-md-12 md-mb-30px p-0">
+              <ul
+                className="nav nav-tabs justify-content-center border-0 text-left"
+                // data-anime='{ "el": "childs", "translateY": [-30, 0], "perspective": [1200,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
+              >
+                {addressList.length > 0 &&
+                  addressList.map((address, index) => (
+                    <>
+                      <li className="nav-item mb-30px p-0" key={index}>
+                        <a
+                          data-bs-toggle="tab"
+                          href="#tab_four1"
+                          className="nav-link box-shadow-extra-large ps-45px pe-45px pt-35px pb-35px lg-p-5 xs-p-8 border-radius-8px"
+                          onClick={() => setFocusAddress(address.id)}
+                        >
+                          <div className="flex-column flex-sm-row d-flex align-items-center">
+                            <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
+                              <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
+                                <i className="fa-solid fa-check"></i>
+                              </div>
+                            </div>
+                            <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
+                              <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
+                                <div className="feature-box-content">
+                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px">
+                                    {address.deliveryName}
+                                  </span>
+                                  {address.isDefault && (
+                                    <span className="py-1 ps-15px pe-15px md-mt-10px md-mb-10px border-radius-100px text-uppercase bg-yellow text-black fs-12 lh-28 fw-700">
+                                      기본배송지
+                                    </span>
+                                  )}
+                                  <p className="w-100 m-0">
+                                    받는분 이름 - {address.recipientName}
+                                  </p>
+                                  <p className="w-100 m-0">
+                                    핸드폰번호 - {address.phoneNumber}
+                                  </p>
+                                  <p className="w-100">
+                                    우편번호 - [{address.zipcode}] <br />
+                                    주소 - {address.address1} {address.address2}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </>
+                  ))}
+              </ul>
+              <div className="text-center">
+                <Link to="#" className="fw-500 d-inline lh-initial ps-2">
+                  <Button
+                    size="small"
+                    className="btn w-10 mt-10px d-inline w-40 "
+                    onClick={handleDeliveryAddressChage}
+                  >
+                    배송지 변경
+                  </Button>
+                </Link>
+                <Link to="#" className="fw-500 d-inline lh-initial ps-2">
+                  <Button
+                    size="small"
+                    color="black"
+                    className="btn w-10 mt-10px d-inline w-40"
+                    onClick={() => setIsModalDeliveryOpen(false)}
+                  >
+                    닫기
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 결제하기 모달 */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="w-40">
           <div className="modal-content p-0 rounded shadow-lg">

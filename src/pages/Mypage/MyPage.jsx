@@ -4,7 +4,7 @@ import { useNavigate, Link, Outlet } from 'react-router-dom';
 const MyPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/mypage/order-list'); //mypage` 접근 시 자동 리다이렉트
+    // navigate('/mypage/order-list'); //mypage` 접근 시 자동 리다이렉트
   }, []);
   return (
     <>

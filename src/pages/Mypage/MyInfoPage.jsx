@@ -72,12 +72,10 @@ const MyInfoPage = () => {
       try {
         const res = await getMemberSettingSelect();
 
-        if (res || res.status === 200) {
-          const { platform } = res.data;
-          setIsPlatform(platform !== 'LOCAL' ? true : false);
-          if (platform !== 'LOCAL') {
-            setCurrentView('infoList');
-          }
+        if (res && res.status === 200) {
+          console.log(res);
+          const { data } = res.data;
+          setIsPlatform(data.platform !== 'LOCAL');
         }
       } catch (error) {
         console.error(error);
@@ -86,14 +84,20 @@ const MyInfoPage = () => {
     fetchSetting();
   }, []);
 
+  // ✅ isPlatform 값이 변경되었을 때 실행
+  useEffect(() => {
+    if (isPlatform) {
+      handlePasswordConfirm();
+    }
+  }, [isPlatform]); // ✅ isPlatform이 변경될 때 실행
+
   const getUserNonce = () => {
     return userInfo.nonce;
   };
 
   // 비밀번호 확인 후 리스트 화면으로 이동
   const handlePasswordConfirm = async () => {
-    console.log(fristPassword);
-    if (fristPassword.trim() === '') {
+    if (fristPassword.trim() === '' && !isPlatform) {
       setErrors((prev) => ({ ...prev, fristPassword: true }));
       return;
     }
@@ -167,8 +171,8 @@ const MyInfoPage = () => {
     }
   };
 
-  // 핸드폰 번호 변경
-  const handlePhoneChange = async () => {
+  // 핸드폰 인증 하기 요청
+  const handlePhoneAuthRequest = async () => {
     if (!phoneNumber.trim() || !isValidPhoneNumber(phoneNumber)) {
       setErrors((prev) => ({ ...prev, phoneNumber: true }));
       return;
@@ -184,8 +188,8 @@ const MyInfoPage = () => {
     }
   };
 
-  // 핸드폰번호 인증 확인
-  const handlePhoneAuthConfirm = async () => {
+  // 핸드폰번호 변경 확인
+  const handlePhoneNumberChangeConfirm = async () => {
     if (!phoneAuthCode.trim()) {
       setErrors((prev) => ({ ...prev, phoneAuthCode: true }));
       return;
@@ -291,29 +295,31 @@ const MyInfoPage = () => {
                   <div className="col-12">
                     <table className="table cart-products">
                       <tbody>
-                        <tr className="pb-2">
-                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20">
-                            <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
-                              비밀번호
-                            </h6>
-                          </td>
-                          <td></td>
-                          <td className="product-name border-bottom-2 border-gray pe-2 text-end">
-                            <Button
-                              name="passwordSection"
-                              variant="primary"
-                              color="profile"
-                              size="xs-small"
-                              className="fw-700"
-                              onClick={() => setCurrentView('passwordChange')}
-                            >
-                              변경
-                            </Button>
-                          </td>
-                        </tr>
+                        {!isPlatform && (
+                          <tr className="pb-2">
+                            <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20">
+                              <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
+                                비밀번호
+                              </h6>
+                            </td>
+                            <td></td>
+                            <td className="product-name border-bottom-2 border-gray pe-2 text-end">
+                              <Button
+                                name="passwordSection"
+                                variant="primary"
+                                color="profile"
+                                size="xs-small"
+                                className="fw-700"
+                                onClick={() => setCurrentView('passwordChange')}
+                              >
+                                변경
+                              </Button>
+                            </td>
+                          </tr>
+                        )}
 
                         <tr>
-                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
+                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-15">
                             <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
                               이름
                             </h6>
@@ -537,7 +543,7 @@ const MyInfoPage = () => {
                   size="large"
                   radiusOn="radius-on"
                   className="btn btn-large w-20 d-block"
-                  onClick={handlePhoneChange}
+                  onClick={handlePhoneAuthRequest}
                 >
                   인증 하기
                 </Button>
@@ -566,7 +572,7 @@ const MyInfoPage = () => {
                   size="extra-large"
                   radiusOn="radius-on"
                   className="btn-large submit w-50 mt-60px mb-5px d-block"
-                  onClick={handlePhoneAuthConfirm}
+                  onClick={handlePhoneNumberChangeConfirm}
                 >
                   확인
                 </Button>

@@ -39,6 +39,7 @@ const SignUpPage = () => {
   });
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+  const [isModalTermsOpen, setIsModalTermsOpen] = useState(false);
   const [errors, setErrors] = useState({});
   const [otp, setOtp] = useState(['', '', '', '', '']);
   const checkboxGroupRef = useRef([]);
@@ -239,6 +240,10 @@ const SignUpPage = () => {
     setIsFirstModalOpen(true);
   };
 
+  const handleTermsView = async () => {
+    setIsModalTermsOpen(true);
+  };
+
   return (
     <>
       <section className="top-space-margin big-section bg-gradient-very-light-gray">
@@ -273,38 +278,70 @@ const SignUpPage = () => {
                     />
                     <span className="box fs-25">만 14세 이상입니다.(필수)</span>
                   </label>
-                  <label className="ps-5 pb-2">
-                    <input
-                      ref={(el) => (checkboxGroupRef.current[2] = el)}
-                      type="checkbox"
-                      name="terms_condition"
-                      id="terms_of_service"
-                      className="terms-condition check-box align-middle required"
-                    />
-                    <span className="box fs-25">Everlink 이용 약관(필수)</span>
-                  </label>
-                  <label className="ps-5 pb-2">
-                    <input
-                      ref={(el) => (checkboxGroupRef.current[3] = el)}
-                      type="checkbox"
-                      name="terms_condition"
-                      id="marketing_consent"
-                      className="terms-condition check-box align-middle"
-                    />
-                    <span className="box fs-25">
-                      마케팅 목적의 개인정보 수집 및 이용 동의(선택)
+                  <label className="ps-5 pb-2 d-flex justify-content-between align-items-center">
+                    <div>
+                      <input
+                        ref={(el) => (checkboxGroupRef.current[2] = el)}
+                        type="checkbox"
+                        name="terms_condition"
+                        id="terms_of_service"
+                        className="terms-condition check-box align-middle required"
+                      />
+                      <span className="box fs-25">
+                        Everlink 이용 약관(필수)
+                      </span>
+                    </div>
+                    <span className="fs-25 terms-view">
+                      <Link
+                        className="text-base-color"
+                        onClick={handleTermsView}
+                      >
+                        약관보기
+                      </Link>
                     </span>
                   </label>
-                  <label className="ps-5 pb-2">
-                    <input
-                      ref={(el) => (checkboxGroupRef.current[4] = el)}
-                      type="checkbox"
-                      name="terms_condition"
-                      id="ad_info_consent"
-                      className="terms-condition check-box align-middle"
-                    />
-                    <span className="box fs-25">
-                      광고성 정보 수신 동의(선택)
+                  <label className="ps-5 pb-2 d-flex justify-content-between align-items-center">
+                    <div>
+                      <input
+                        ref={(el) => (checkboxGroupRef.current[3] = el)}
+                        type="checkbox"
+                        name="terms_condition"
+                        id="marketing_consent"
+                        className="terms-condition check-box align-middle"
+                      />
+                      <span className="box fs-25">
+                        마케팅 목적의 개인정보 수집 및 이용 동의(선택)
+                      </span>
+                    </div>
+                    <span className="fs-25 terms-view">
+                      <Link
+                        className="text-base-color"
+                        onClick={handleTermsView}
+                      >
+                        약관보기
+                      </Link>
+                    </span>
+                  </label>
+                  <label className="ps-5 pb-2 d-flex justify-content-between align-items-center">
+                    <div>
+                      <input
+                        ref={(el) => (checkboxGroupRef.current[4] = el)}
+                        type="checkbox"
+                        name="terms_condition"
+                        id="ad_info_consent"
+                        className="terms-condition check-box align-middle"
+                      />
+                      <span className="box fs-25">
+                        광고성 정보 수신 동의(선택)
+                      </span>
+                    </div>
+                    <span className="fs-25 terms-view">
+                      <Link
+                        className="text-base-color"
+                        onClick={handleTermsView}
+                      >
+                        약관보기
+                      </Link>
                     </span>
                   </label>
                 </div>
@@ -576,6 +613,36 @@ const SignUpPage = () => {
                         }}
                       >
                         확인
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isModalTermsOpen}
+        onClose={() => setIsModalTermsOpen(false)}
+      >
+        <div className="w-30">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        약관 동의서
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => setIsModalTermsOpen(false)}
+                      >
+                        닫기
                       </button>
                     </div>
                   </div>
