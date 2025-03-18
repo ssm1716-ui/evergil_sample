@@ -16,6 +16,7 @@ import { MdAddPhotoAlternate } from 'react-icons/md';
 import { getFileType } from '@/utils/utils';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
+import WebShareButton from '@/components/Share/WebShareButton';
 
 import {
   postRegisterProfile,
@@ -88,32 +89,32 @@ const EditProfilePage = () => {
   const [imagesId, setImagesId] = useState('');
   const [activeTab, setActiveTab] = useState('이미지');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalShareOpen, setIsModalShareOpen] = useState(false);
   const [galleryKey, setGalleryKey] = useState(0);
 
   // const lgRef = useRef(null);
   const imagesRef = useRef(images);
   const fileInputRef = useRef(null);
 
+  const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    // 현재 페이지의 URL을 가져와 상태 업데이트
+    setUrl(window.location.href);
+  }, []);
+
+  //  URL 복사 기능 추가
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(url)
+      .then(() => alert('URL이 복사되었습니다!'));
+  };
+
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
 
-  // 파일 업로드 핸들러
-  // const handleFileUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setPhoto(file);
-  //     const imageUrl = URL.createObjectURL(file);
-
-  //     // 기존 이미지 배열에 새 이미지 추가
-  //     setImages((prevImages) => [
-  //       ...prevImages,
-  //       { src: imageUrl, thumb: imageUrl },
-  //     ]);
-  //   }
-  // };
-  // images 값이 변경될 때마다 ref도 최신 값으로 업데이트
   useEffect(() => {
     imagesRef.current = images;
   }, [images]);
@@ -357,60 +358,7 @@ const EditProfilePage = () => {
 
   const onInit = () => {
     addCustomButtons();
-    // setTimeout(() => {
-    //   // const lgContainer = document.querySelector('.lg-container');
-    //   const lgToolbar = document.getElementById('lg-toolbar-3');
-
-    //   if (lgToolbar && !document.getElementById('edit-button')) {
-    //     const editButton = document.createElement('button');
-    //     editButton.innerText = '수정';
-    //     editButton.classList.add('lg-custom-btn');
-    //     editButton.classList.add('lg-custom-modify');
-    //     editButton.id = 'edit-button';
-    //     editButton.onclick = () => {
-    //       const index = getCurrentImageIndex();
-    //       console.log(index);
-    //       if (index !== -1) {
-    //         const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
-    //         handleEdit(imageId);
-    //       }
-    //     };
-
-    //     const deleteButton = document.createElement('button');
-    //     deleteButton.innerText = '삭제';
-    //     deleteButton.classList.add('lg-custom-btn');
-    //     deleteButton.classList.add('lg-custom-remove');
-    //     deleteButton.id = 'delete-button';
-    //     deleteButton.onclick = () => {
-    //       const index = getCurrentImageIndex();
-    //       console.log(index);
-    //       if (index !== -1) {
-    //         const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
-    //         handleDelete(imageId);
-    //       }
-    //     };
-
-    //     lgToolbar.appendChild(editButton);
-    //     lgToolbar.appendChild(deleteButton);
-    //   }
-    // }, 2000);
   };
-
-  // // 현재 선택된 이미지의 index 찾기
-  // const getCurrentImageIndex = () => {
-  //   const gallery = lgRef.current?.instance;
-  //   if (gallery) {
-  //     return gallery.index;
-  //   }
-  //   // fallback: 현재 활성화된 `.lg-current` 클래스의 index 찾기
-  //   const currentSlide = document.querySelector('.lg-container .lg-current');
-  //   if (currentSlide) {
-  //     return [...document.querySelectorAll('.lg-container .lg-item')].indexOf(
-  //       currentSlide
-  //     );
-  //   }
-  //   return -1;
-  // };
 
   const getCurrentImageIndex = () => {
     // 현재 활성화된 이미지 찾기
@@ -658,6 +606,11 @@ const EditProfilePage = () => {
     }
   };
 
+  const handleShareConfirm = (e) => {
+    e.preventDefault();
+    setIsModalShareOpen(true);
+  };
+
   return (
     <>
       <section
@@ -764,7 +717,11 @@ const EditProfilePage = () => {
               <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                 {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                 <div className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px">
-                  <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
+                  <WebShareButton />
+                  {/* <Link
+                    className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
+                    onClick={handleShareConfirm}
+                  >
                     <span>
                       <span>
                         <i className="feather icon-feather-share-2"></i>
@@ -776,10 +733,10 @@ const EditProfilePage = () => {
                         공유하기
                       </span>
                     </span>
-                  </Link>
+                  </Link> */}
                   <Link
                     className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
-                    to="/manage-profile"
+                    to={`/manage-profile/${profileId}`}
                   >
                     <span>
                       <span>
@@ -1125,6 +1082,71 @@ const EditProfilePage = () => {
                         닫기
                       </Button>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isModalShareOpen}
+        onClose={() => setIsModalShareOpen(false)}
+      >
+        <div className="w-40">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="row mb-2">
+                      <div className="col-10">
+                        <h2 className="text-dark-gray ls-minus-2px">
+                          공유하기
+                          <i className="bi bi-send icon-large text-dark-gray animation-float ps-2"></i>
+                        </h2>
+                      </div>
+                    </div>
+                    {/* <div className="col-8 d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-4">
+                      <form>
+                        <input
+                          className="input-large border-1 bg-light-gray border-color-gray text-black"
+                          type="text"
+                          name="email"
+                          placeholder="Invite Email"
+                          value={url}
+                          readOnly
+                        />
+                        <input type="hidden" name="redirect" value="" />
+                        <Button onClick={copyToClipboard}>URL 복사</Button>
+                      </form>
+                    </div> */}
+                    <div className="col-md-9 d-inline-block position-relative box-shadow mb-4  p-0">
+                      <input
+                        className="input-large border-1 bg-light-gray border-color-gray text-black"
+                        type="text"
+                        name="email"
+                        placeholder="Invite Email"
+                        value={url}
+                        readOnly
+                      />
+                    </div>
+                    <div className="col-md-3 d-inline-block mb-4  p-0">
+                      <Button className="h-100" onClick={copyToClipboard}>
+                        URL 복사
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 text-center text-lg-center pt-3">
+                    <input type="hidden" name="redirect" value="" />
+
+                    <Button
+                      className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                      onClick={() => setIsModalShareOpen(false)}
+                    >
+                      닫기
+                    </Button>
                   </div>
                 </div>
               </div>

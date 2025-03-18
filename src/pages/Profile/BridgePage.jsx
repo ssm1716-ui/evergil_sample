@@ -56,17 +56,6 @@ const BridgePage = () => {
                   >
                     <i className="feather icon-feather-camera icon-small text-white pe-3"></i>
                     스캔하기
-                    <br />
-                    (모바일 전용)
-                  </Button>
-                  <Button
-                    type="submit"
-                    size="extra-large"
-                    radiusOn="radius-on"
-                    className="btn btn-extra-large btn-round-edge btn-black btn-box-shadow submit w-40 md-w-70 text-transform-none me-10px md-mb-10px"
-                  >
-                    <i className="feather icon-feather-camera icon-small text-white pe-3"></i>
-                    코드 입력 <br /> (PC 전용)
                   </Button>
 
                   <div className="form-results mt-20px d-none"></div>

@@ -7,6 +7,18 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'; // 아이콘 가져오기
 
 import everlinkTop from '@/assets/images/everlink-top.png';
 
+import {
+  postEmailInvitations,
+  getInvitationsList,
+  putInvitationPermissions,
+  putProfileScope,
+  getPrivateProfileAccessRequests,
+  putPrivateAccessRequests,
+  getSelectProfile,
+} from '@/api/memorial/memorialApi';
+
+import { isValidEmail } from '@/utils/validators';
+
 const options = [
   {
     value: 'PUBLIC',
@@ -30,35 +42,138 @@ const options = [
 
 const ManagePage = () => {
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
-  const initLetter = {
-    displayName: '',
-    content: '',
-  };
+  const [receiverEmail, setReceiverEmail] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [scope, setScope] = useState('PUBLIC');
+  const [invitations, setInvitations] = useState([]);
+  const [privateRequests, setPrivateRequests] = useState([]);
 
   //Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const lgRef = useRef(null);
 
-  //   useEffect(() => {
-  //     const fetchProfile = async () => {
-  //       try {
-  //         let res = await getSelectProfile(profileId);
-  //         if (res.status === 200) {
-  //           const { profile, extension } = res.data.data;
-  //           setProfile(profile);
-  //           setHasFamilyTree(extension.hasFamilyTree);
-  //         }
-  //       } catch (error) {
-  //         console.error(error);
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     let res;
+  //     try {
+  //       res = await getSelectProfile(profileId);
+  //       if (res.status === 200) {
+  //         const { data } = res.data;
+  //         setScope(data.profile.scope);
+  //         //초대된 계정 리스트
+  //         res = await getInvitationsList(profileId);
+
+  //         //비공개 계정 요청 리스트
+  //         res = await getPrivateProfileAccessRequests(profileId);
   //       }
-  //     };
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   if (profileId) fetchProfile();
+  // }, [profileId]);
 
-  //     fetchProfile();
-  //   }, []);
+  // 프로필 데이터 가져오기
+  const fetchProfile = async (id) => {
+    try {
+      const res = await getSelectProfile(id);
+      if (res.status === 200) {
+        setScope(res.data.profile.scope);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const handleChange = (selectedOption) => {
+  // 초대된 계정 리스트 가져오기
+  const fetchInvitations = async (id) => {
+    try {
+      const res = await getInvitationsList(id);
+      if (res.status === 200) {
+        setInvitations(res.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 비공개 프로필 접근 요청 리스트 가져오기
+  const fetchPrivateAccessRequests = async (id) => {
+    try {
+      const res = await getPrivateProfileAccessRequests(id);
+      if (res.status === 200) {
+        setPrivateRequests(res.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // ✅ `Promise.all()`로 병렬 API 호출 최적화
+  const fetchAllData = async (id) => {
+    try {
+      const [profileRes, invitationsRes, privateAccessRes] = await Promise.all([
+        getSelectProfile(id),
+        getInvitationsList(id),
+        getPrivateProfileAccessRequests(id),
+      ]);
+
+      console.log(invitationsRes);
+      console.log(privateAccessRes);
+
+      if (profileRes.status === 200) {
+        const { profile } = profileRes.data.data;
+        setScope(profile.scope);
+      }
+
+      if (invitationsRes.status === 200) {
+        const { items } = invitationsRes.data.data;
+        setInvitations(items);
+      }
+      if (privateAccessRes.status === 200) {
+        const { items } = privateAccessRes.data.data;
+        setPrivateRequests(items);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //초기 데이터 가져오기
+  useEffect(() => {
+    if (profileId) {
+      4;
+      fetchAllData(profileId); // ✅ 병렬 호출로 성능 최적화
+    }
+  }, [profileId]);
+
+  const handleOptionChange = async (selectedOption) => {
     console.log('선택한 값:', selectedOption.value);
+    const optionVal = selectedOption.value;
+    setScope(optionVal);
+
+    const res = await putProfileScope(profileId, optionVal);
+    if (res.status !== 200) {
+      alert('일반 액세스 변경하는데 에러가 발생했습니다.');
+    }
+  };
+
+  //초대하기 발송
+  const handleInvitation = async (e) => {
+    e.preventDefault();
+
+    if (!profileId || !isValidEmail(receiverEmail)) {
+      setIsError(true);
+      setIsModalOpen(true);
+      return;
+    }
+
+    const res = await postEmailInvitations(profileId, receiverEmail);
+    if (res.status === 201) {
+      setIsModalOpen(true);
+      setReceiverEmail('');
+    }
   };
 
   return (
@@ -89,15 +204,17 @@ const ManagePage = () => {
                     className="input-large border-1 bg-white border-color-gray form-control"
                     type="email"
                     name="email"
+                    value={receiverEmail}
                     placeholder="Invite Email"
+                    onChange={(e) => setReceiverEmail(e.target.value)}
                   />
                   <input type="hidden" name="redirect" value="" />
-                  <button
-                    className="btn btn-large btn-base-color submit"
-                    aria-label="submit"
+                  <Button
+                    className="btn btn-large btn-base-color"
+                    onClick={handleInvitation}
                   >
                     초대하기
-                  </button>
+                  </Button>
                   <div className="form-results border-radius-4px mt-15px pt-10px pb-10px ps-15px pe-15px fs-15 w-100 text-center position-absolute d-none"></div>
                 </form>
               </div>
@@ -114,46 +231,51 @@ const ManagePage = () => {
                   <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
                     초대된 계정
                   </h6>
-                  <table className="table invite-table">
-                    <thead>
-                      <tr>
-                        <th scope="col" className="fw-600">
-                          이메일
-                        </th>
-                        <th scope="col" className="fw-600">
-                          이름
-                        </th>
-                        <th scope="col" className="fw-600">
-                          권한
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="product-name">
-                          <a
-                            href="demo-jewellery-store-single-product.html"
-                            className="text-dark-gray fw-500 d-block lh-initial"
-                          >
-                            DavidKim@gmai.com
-                          </a>
-                        </td>
-                        <td>David Kim</td>
-                        <td>
-                          <div className="select select-container">
-                            <select
-                              className="form-control select-invite"
-                              name="scope"
-                            >
-                              <option value="EDIT">Edit</option>
-                              <option value="VIEW">View</option>
-                              <option value="DELETE">Delete</option>
-                            </select>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+
+                  {invitations.length > 0 ? (
+                    <table className="table invite-table">
+                      <thead>
+                        <tr>
+                          <th scope="col" className="fw-600">
+                            이메일
+                          </th>
+                          <th scope="col" className="fw-600">
+                            이름
+                          </th>
+                          <th scope="col" className="fw-600">
+                            권한
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {invitations.map((invitation, index) => (
+                          <tr key={index}>
+                            <td className="product-name">
+                              <a className="text-dark-gray fw-500 d-block">
+                                {invitation.email}
+                              </a>
+                            </td>
+                            <td>{invitation.name || ''}</td>{' '}
+                            {/* 🔹 이름이 없을 경우 기본값 처리 */}
+                            <td>
+                              <div className="select select-container">
+                                <select
+                                  className="form-control select-invite"
+                                  name="scope"
+                                >
+                                  <option value="EDIT">Edit</option>
+                                  <option value="VIEW">View</option>
+                                  <option value="DELETE">Delete</option>
+                                </select>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p>초대하신 사용자가 없습니다.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -173,9 +295,9 @@ const ManagePage = () => {
                   <div className="w-30 md-w-50">
                     <Select
                       options={options}
-                      onChange={handleChange}
+                      onChange={handleOptionChange}
                       placeholder="선택하세요"
-                      defaultValue={options[0]} // 기본값 설정
+                      value={options.find((option) => option.value === scope)}
                     />
                   </div>
                 </form>
@@ -194,48 +316,53 @@ const ManagePage = () => {
                   <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
                     비공개 계정 보기 요청
                   </h6>
-                  <table className="table nondisclosure-table">
-                    <thead>
-                      <tr>
-                        <th scope="col" className="fw-600">
-                          이메일
-                        </th>
-                        <th scope="col" className="fw-600">
-                          이름
-                        </th>
-                        <th scope="col" className="fw-600">
-                          메모
-                        </th>
-                        <th scope="col" className="fw-600">
-                          허용 여부
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>DavidKim@gmai.com</td>
 
-                        <td>David Kim</td>
-                        <td>데이비드입니다.</td>
-                        <td>
-                          <div className="d-flex">
-                            <a
-                              href="#"
-                              className="btn btn-black btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
-                            >
-                              허용
-                            </a>
-                            <a
-                              href="#"
-                              className="btn btn-white btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
-                            >
-                              거부
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  {privateRequests.length > 0 ? (
+                    <table className="table nondisclosure-table">
+                      <thead>
+                        <tr>
+                          <th scope="col" className="fw-600">
+                            이메일
+                          </th>
+                          <th scope="col" className="fw-600">
+                            이름
+                          </th>
+                          <th scope="col" className="fw-600">
+                            메모
+                          </th>
+                          <th scope="col" className="fw-600">
+                            허용 여부
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>DavidKim@gmai.com</td>
+
+                          <td>David Kim</td>
+                          <td>데이비드입니다.</td>
+                          <td>
+                            <div className="d-flex">
+                              <a
+                                href="#"
+                                className="btn btn-black btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                              >
+                                허용
+                              </a>
+                              <a
+                                href="#"
+                                className="btn btn-white btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                              >
+                                거부
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p>비공개로 요청한 사용자가 없습니다.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -244,62 +371,34 @@ const ManagePage = () => {
       </section>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="row justify-content-center">
-          <div className="col-12">
-            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
-              <div className="row justify-content-center mb-30px sm-mb-10px">
-                <div className="col-md-9 text-center">
-                  <h4 className="text-dark-gray fw-500 mb-15px">
-                    하늘편지 남기기
-                  </h4>
+        <div className="w-40">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        {!isError
+                          ? '초대 메일 발송 하였습니다.'
+                          : '이메일 형식으로 다시 작성 해주세요.'}
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => {
+                          setIsModalOpen(false);
+                          setIsError(false);
+                        }}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <form className="row">
-                <div className="col-12 mb-20px ">
-                  <label className="mb-10px">이름</label>
-                  <input
-                    className="border-radius-4px input-large mb-5px"
-                    type="text"
-                    name="displayName"
-                    required
-                  />
-                  {/* {errors.deliveryName && (
-                    <p className="text-danger text-start">
-                      배송지 이름을 추가 해주세요.
-                    </p>
-                  )} */}
-                </div>
-                <div className="col-12 mb-20px ">
-                  <label className="mb-10px">내용</label>
-                  <textarea
-                    className="border-radius-4px textarea-small"
-                    name="content"
-                    rows="5"
-                    cols="5"
-                    placeholder=""
-                  ></textarea>
-                  {/* {errors.recipientName && (
-                    <p className="text-danger text-start">
-                      받는분 이름을 추가 해주세요.
-                    </p>
-                  )} */}
-                </div>
-
-                <div className="col-lg-112 text-center text-lg-center">
-                  <input type="hidden" name="redirect" value="" />
-
-                  <Button className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1">
-                    남기기
-                  </Button>
-
-                  <Button className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1">
-                    닫기
-                  </Button>
-                </div>
-
-                {/* <AddressSearch onComplete={setSelectedAddress} />
-                          <p>선택된 주소: {selectedAddress}</p> */}
-              </form>
             </div>
           </div>
         </div>

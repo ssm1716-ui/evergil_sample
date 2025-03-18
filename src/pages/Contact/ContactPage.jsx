@@ -6,6 +6,8 @@ import { postInquiryRequest } from '@/api/guest/guestApi';
 import { isValidEmail } from '@/utils/validators';
 import VerticalCenterLineBg from '@/assets/images/vertical-center-line-bg.svg';
 
+import everlinkTop from '@/assets/images/everlink-top.png';
+
 const ContactPage = () => {
   const initialFormState = { writerName: '', writerEmail: '', message: '' };
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -97,30 +99,24 @@ const ContactPage = () => {
         </section> */}
 
       <section
-        className="page-title-separate-breadcrumbs cover-background border-top border-4 border-color-base-color top-space-margin magic-cursor round-cursor"
+        className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor text-center"
         // style="background-image: url(https://via.placeholder.com/1920x525)"
       >
-        <div className="opacity-full-dark bg-gradient-dark-transparent"></div>
+        {/* <div className="opacity-full-dark bg-gradient-dark-transparent"></div> */}
         <div className="container position-relative">
           <div
-            className="row align-items-start align-items-lg-end justify-content-end flex-column flex-lg-row extra-small-screen"
+            className="row align-items-start align-items-lg-end justify-content-end flex-column flex-lg-row"
             data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <div className="col-xxl-7 col-lg-6 col-md-10 position-relative page-title-large md-mb-15px xs-mb-5px">
-              <h1 className="text-white fw-500 ls-minus-2px mb-0">Contact</h1>
-            </div>
-            <div className="col-xxl-5 col-lg-6 col-md-10 last-paragraph-no-margin">
-              {/* <p className="fs-20 text-white opacity-7 md-w-80 sm-w-100">
-                  We are happy to offer our guests a truly fabulous experience
-                  of a relaxing and memorable.
-                </p> */}
+            <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
+              <img src={everlinkTop} alt="everlinkTop" />
             </div>
           </div>
         </div>
       </section>
 
       <section
-        className="background-position-center background-repeat position-relative"
+        className="background-position-center background-repeat position-relative pt-0"
         style={{ backgroundImage: `url(${VerticalCenterLineBg})` }}
       >
         <div className="container position-relative">

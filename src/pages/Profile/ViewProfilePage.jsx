@@ -20,6 +20,8 @@ import {
   putProfileBackgroundImage,
   putProfileImage,
   putProfileDescription,
+  postAddProfileBookmark,
+  deleteBookmarksProfile,
   getPhotoSeletct,
   getFamilyProfile,
   deleteLetters,
@@ -44,6 +46,9 @@ const ViewProfilePage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   //하늘편지 삭제시 모달 useState
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  //북마크 지정
+  const [isBookmarks, setIsBookmarks] = useState(false);
+
   const [profile, setProfile] = useState({});
 
   const [tabList, setTabList] = useState(['이미지', '하늘편지']);
@@ -103,9 +108,11 @@ const ViewProfilePage = () => {
     const fetchProfile = async () => {
       try {
         let res = await getSelectProfile(profileId);
+        console.log(res);
         if (res.status === 200) {
           const { profile, extension } = res.data.data;
           setProfile(profile);
+          setIsBookmarks(extension.isBookmarked);
           setHasFamilyTree(extension.hasFamilyTree);
         }
       } catch (error) {
@@ -299,6 +306,22 @@ const ViewProfilePage = () => {
     setPostLetter(initLetter);
   };
 
+  const handleBookmarkToggle = async (e) => {
+    e.preventDefault();
+
+    if (!profileId) return;
+    let res;
+    if (!isBookmarks) {
+      res = await postAddProfileBookmark(profileId);
+    } else {
+      res = await deleteBookmarksProfile(profileId);
+    }
+
+    if (res.status === 200) {
+      setIsBookmarks((prevIsBookmark) => !prevIsBookmark);
+    }
+  };
+
   return (
     <>
       <section
@@ -378,19 +401,27 @@ const ViewProfilePage = () => {
                       </span>
                     </span>
                   </Link>
-                  {/* <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
+                  <Link
+                    className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
+                    onClick={handleBookmarkToggle}
+                  >
                     <span>
                       <span>
-                        <i className="feather icon-feather-users"></i>
+                        {/* <i className="feather icon-feather-users"></i> */}
+                        {!isBookmarks ? (
+                          <i className="fa-regular fa-bookmark align-middle text-base-color"></i>
+                        ) : (
+                          <i className="fa-solid fa-bookmark align-middle text-base-color"></i>
+                        )}
                       </span>
                       <span
                         className="btn-double-text ls-0px"
-                        data-text="초대하기"
+                        data-text="북마크"
                       >
-                        초대하기
+                        북마크
                       </span>
                     </span>
-                  </Link> */}
+                  </Link>
                 </div>
               </div>
             </div>

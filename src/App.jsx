@@ -129,7 +129,7 @@ const App = () => {
               path="/preview-profile/:profileId"
               element={<PreviewProfilePage />}
             />
-            <Route path="/manage-profile" element={<ManagePage />} />
+            <Route path="/manage-profile/:profileId" element={<ManagePage />} />
 
             {/* 프로필 영역 end*/}
 

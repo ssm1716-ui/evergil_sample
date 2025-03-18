@@ -160,14 +160,14 @@ const ShopPage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section">
+      <section>
         <div className="container">
           <div
             className="row align-items-center justify-content-center"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
             <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
-              <h1 className="fw-600 text-dark-gray mb-10px">구매하기</h1>
+              {/* <h1 className="fw-600 text-dark-gray mb-10px">구매하기</h1> */}
             </div>
             <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
           </div>
@@ -258,9 +258,9 @@ const ShopPage = () => {
 
             <div className="col-12 col-lg-5 product-info">
               <span className="fw-500 text-dark-gray d-block">배송비 무료</span>
-              <h4 className="text-dark-gray fw-500 mb-5px">
+              <h5 className="text-dark-gray fw-500 mb-5px">
                 {product.productName}
-              </h4>
+              </h5>
               <div className="d-block d-sm-flex align-items-center mb-15px">
                 <div className="me-10px xs-me-0">
                   <a

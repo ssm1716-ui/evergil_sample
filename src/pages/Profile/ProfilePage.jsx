@@ -258,7 +258,8 @@ const ProfilePage = () => {
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       {activeTab === 'My Everlinks' && (
                         <div className="col col-lg-11 col-sm-5 text-end text-sm-end text-lg-end text-xl-end xs-mt-25px">
-                          <Link to="/setting-profile">
+                          {/* <Link to="/setting-profile"> */}
+                          <Link to="/bridge-profile">
                             <Button
                               variant="primary"
                               color="base-color"

@@ -296,7 +296,7 @@ const SignUpPage = () => {
                         className="text-base-color"
                         onClick={handleTermsView}
                       >
-                        약관보기
+                        자세히
                       </Link>
                     </span>
                   </label>
@@ -318,7 +318,7 @@ const SignUpPage = () => {
                         className="text-base-color"
                         onClick={handleTermsView}
                       >
-                        약관보기
+                        자세히
                       </Link>
                     </span>
                   </label>
@@ -340,7 +340,7 @@ const SignUpPage = () => {
                         className="text-base-color"
                         onClick={handleTermsView}
                       >
-                        약관보기
+                        자세히
                       </Link>
                     </span>
                   </label>

@@ -10,6 +10,7 @@ import AboutImage3 from '@/assets/images/about-image-3.png';
 import AnimatedSection from '@/components/AnimatedSection';
 
 import VerticalCenterLineBg from '@/assets/images/vertical-center-line-bg.svg';
+import aboutUsImage from '@/assets/images/about_us.png';
 
 const AboutPage = () => {
   const [email, setEmail] = useState('');
@@ -36,23 +37,17 @@ const AboutPage = () => {
   return (
     <>
       <section
-        className="page-title-separate-breadcrumbs cover-background border-top border-4 border-color-base-color top-space-margin magic-cursor round-cursor"
+        className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center"
         // style="background-image: url(https://via.placeholder.com/1920x526)"
       >
-        <div className="opacity-full-dark bg-gradient-dark-transparent"></div>
+        {/* <div className="opacity-full-dark bg-gradient-dark-transparent"></div> */}
         <div className="container position-relative">
           <div
-            className="row align-items-start align-items-lg-end justify-content-end flex-column flex-lg-row extra-small-screen"
+            className="row align-items-start align-items-lg-end justify-content-end flex-column flex-lg-row"
             data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <div className="col-xxl-7 col-lg-6 col-md-10 position-relative page-title-large md-mb-15px xs-mb-5px">
-              <h1 className="text-white fw-500 ls-minus-2px mb-0">About us</h1>
-            </div>
-            <div className="col-xxl-5 col-lg-6 col-md-10 last-paragraph-no-margin">
-              {/* <p className="fs-20 text-white opacity-7 md-w-80 sm-w-100">
-                  We are happy to offer our guests a truly fabulous experience
-                  of a relaxing and memorable.
-                </p> */}
+            <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
+              <img src={aboutUsImage} alt="about_us" />
             </div>
           </div>
         </div>
@@ -81,7 +76,7 @@ const AboutPage = () => {
               data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <h6 className="text-dark-gray mb-10px">Our Story</h6>
-              <p className="w-100 lg-w-100">
+              <p className="w-100 lg-w-100 fs-14">
                 Everlink(에버링크)는 2024년도에 시작하였습니다.
                 <br /> 지난 겨울 사랑하는 사람을 떠나보내면서 힘들 때 마다
                 <br />
@@ -110,7 +105,7 @@ const AboutPage = () => {
       </section>
 
       <section
-        className="cover-background position-relative overflow-visible"
+        className="cover-background position-relative overflow-visible pb-150px"
         // style="background-image: url('https://via.placeholder.com/1920x796')"
       >
         <div className="container">
@@ -122,7 +117,7 @@ const AboutPage = () => {
               <h6 className="text-dark-gray mb-10px">Our Mission</h6>
               <img src={AboutImage3} alt="" className="w-100" />
               <h5 className="alt-font text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
-              <p className="lg-w-100 mt-8 lh-24">
+              <p className="lg-w-100 mt-8 lh-24 fs-14">
                 우리의 사명은 사랑하는 사람들이 영원히 기억되는 것입니다.
                 <br />
                 대부분 2-3세대가 지나면 사람들은 우리가 존재했다는 사실조차

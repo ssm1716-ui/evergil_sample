@@ -19,7 +19,7 @@ const SettingProfilePage = () => {
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formProfile, setFormProfile] = useState({
-    qrKey: '4nIUMfGOZSW0QgIq',
+    qrKey: 'ZBwljGfHmgRGx7n0',
     memorialType: '', // 사람 or 동물
     displayName: '',
     birthday: '',

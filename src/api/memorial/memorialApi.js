@@ -155,7 +155,7 @@ export const deleteBookmarksProfile = async (id) => {
 //북마크 지정
 export const postAddProfileBookmark = async (id) => {
     try {
-        const res = await axiosInstance.delete(`/bookmarks/memorial-profiles/${id}`);
+        const res = await axiosInstance.post(`/bookmarks/memorial-profiles/${id}`);
         return res;
     } catch (err) {
         console.error(err);
@@ -340,4 +340,106 @@ export const deleteLetters = async (profileId, lettersId) => {
     }
 };
 
+//추모 프로필 초대하기(이메일 초대 발송)
+export const postEmailInvitations = async (profileId, params) => {
+
+    try {
+        console.log(params);
+        const res = await axiosInstance.post(`/memorial-profiles/${profileId}/invitations`, {
+            receiverEmail: params
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//OWNER 권한으로 발송한 초대장 리스트
+export const getInvitationsList = async (profileId, page = 1, pageSize = 10) => {
+
+    try {
+        const res = await axiosInstance.get(`/memorial-profiles/${profileId}/invitations`, {
+            params: {
+                profileId, page, pageSize
+            },
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//초대받은 계정의 권한 변경
+export const putInvitationPermissions = async (profileId, invitationId, params) => {
+
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${profileId}/invitations/${invitationId}/permissions`, {
+            permission: params
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//프로필 설정(공개/비공개) 변경
+export const putProfileScope = async (profileId, params) => {
+
+    try {
+        console.log(params);
+        const res = await axiosInstance.put(`/memorial-profiles/${profileId}/scope`, {
+            scope: params
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//비공개 프로필 접근 권한 요청 리스트
+export const getPrivateProfileAccessRequests = async (profileId, page = 1, pageSize = 10) => {
+
+    try {
+        const res = await axiosInstance.get(`/memorial-profiles/${profileId}/requests`, {
+            params: {
+                profileId, page, pageSize
+            },
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//비공개 프로필 접근 권한 허용/거부 변경
+export const putPrivateAccessRequests = async (profileId, requestId, params) => {
+
+    try {
+        const res = await axiosInstance.put(`/memorial-profiles/${profileId}/requests/${requestId}`, {
+            status: params
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//비공개 프로필의 소유자에게 초대하기 
+export const postPrivateProfileAccessRequest = async (profileId, params) => {
+
+    try {
+        const res = await axiosInstance.post(`/memorial-profiles/${profileId}/requests`, params);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
 

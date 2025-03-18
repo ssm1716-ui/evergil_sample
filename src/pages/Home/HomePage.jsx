@@ -54,7 +54,7 @@ const HomeSubPage = () => {
               <div className="mb-30px">
                 <a
                   href="#"
-                  className="btn btn-extra-large btn-switch-text bg-base-color text-white fw-700 btn-round-edge btn-box-shadow"
+                  className="btn btn-extra-large btn-switch-text bg-base-color text-white fw-700 btn-round-edge btn-box-shadow border-radius-30px"
                 >
                   <span>
                     <span className="btn-double-text" data-text="시작">
@@ -72,7 +72,7 @@ const HomeSubPage = () => {
       </section>
 
       <section
-        className="background-position-center background-repeat"
+        className="background-position-center background-repeat pb-0"
         // style="background-image: url('images/vertical-center-line-bg.svg')"
       >
         <div className="container">
@@ -81,11 +81,15 @@ const HomeSubPage = () => {
               className="col-lg-5 md-mb-50px p-0 xs-p-2"
               data-anime='{ "el": "childs", "opacity": [0, 1], "rotateY": [-90, 0], "rotateZ": [-10, 0], "translateY": [80, 0], "translateZ": [50, 0], "staggervalue": 200, "duration": 800, "delay": 200, "easing": "easeOutCirc" }'
             >
-              <h2 className="text-dark-gray ls-minus-2px">에버링크 QR</h2>
               <span className="mb-10px text-base-color fw-500 d-block">
-                납골당과 묘지 둘 다 사용이 가능합니다.
+                소중한 사람들이 항상 기억될 수 있도록
               </span>
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px">
+              <h2 className="text-dark-gray lh-60">
+                에버링크 <br />
+                추모페이지
+              </h2>
+
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14px">
                 추모 페이지에 사랑하는 사람의 사진과 영상을 업로드 할 수
                 있습니다.
                 <br />
@@ -94,7 +98,7 @@ const HomeSubPage = () => {
                 <br /> 평생동안 사랑하는 사람의 기억을 보관할 수 있는
                 추모페이지를 사용해보세요.
               </p>
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px">
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14px">
                 우리의 사명은 사랑하는 사람들이 영원히 기억되는 것 입니다.
                 <br />
                 대부분 2-3세대가 지나면 사람들은 우리가 존재했다는 사실조차
@@ -104,10 +108,10 @@ const HomeSubPage = () => {
                 <br />
                 그들을 평생 기억할 수 있는 플랫폼을 제공할 것입니다.
               </p>
-              <div className="d-inline-block w-100">
+              <div className="d-inline-block w-100 text-center">
                 <Link
                   to="/shop"
-                  className="btn btn-extra-large btn-switch-text btn-dark-gray btn-box-shadow btn-round-edge d-inline-block align-middle me-30px xs-me-10px xs-mt-20px"
+                  className="btn btn-extra-large btn-switch-text btn-dark-gray btn-box-shadow btn-round-edge d-inline-block align-middle me-30px xs-me-10px xs-mt-20px border-radius-30px"
                 >
                   <span>
                     <span className="btn-double-text" data-text="구매하러 가기">
@@ -115,45 +119,17 @@ const HomeSubPage = () => {
                     </span>
                   </span>
                 </Link>
-                <div className="fs-20 fw-600 d-inline-block align-middle text-dark-gray xs-mt-20px">
+                {/* <div className="fs-20 fw-600 d-inline-block align-middle text-dark-gray xs-mt-20px">
                   <a href="tel:010-5922-1221">
                     <i className="bi bi-telephone-outbound text-medium-gray icon-small me-10px"></i>
                     010-5922-1221
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
-            <div className="col-lg-6 position-relative offset-lg-1">
-              {/* <span
-                  className="fs-90 position-absolute left-60px md-left-100px sm-left-70px xs-left-10px top-90px xs-top-50px text-dark-gray fw-700 z-index-1"
-                  data-bottom-top="transform: translateY(50px) scale(1,1)"
-                  data-top-bottom="transform: translateY(-50px) scale(1,1)"
-                  data-anime='{ "opacity": [0,1], "duration": 600, "delay": 1500, "staggervalue": 300, "easing": "easeOutQuad" }'
-                >
-                  <span className="fs-15 fw-600 d-table lh-16 text-uppercase text-medium-gray">
-                    Started in
-                  </span>
-                  1995
-                </span> */}
-              <div
-                className="w-75 position-relative xs-w-80 border-radius-4px float-end"
-                // data-anime='{ "effect": "slide", "color": "#A0875B", "direction":"rl", "easing": "easeOutQuad", "duration": 600, "delay":400}'
-                data-anime='{ "opacity": [0,1], "duration": 600, "delay": 1500, "staggervalue": 300, "easing": "easeOutQuad" }'
-              >
+            <div className="col-lg-7 position-relative ">
+              <div className="w-75 position-relative xs-w-80 border-radius-4px float-end">
                 <img className="w-100" src={mainSubImage1} alt="" />
-              </div>
-              <div
-                className="position-absolute left-minus-70px md-left-15px bottom-minus-50px w-55"
-                data-bottom-top="transform: translateY(50px)"
-                data-top-bottom="transform: translateY(-50px)"
-                // data-anime='{ "effect": "slide", "color": "#ffffff", "direction":"lr", "easing": "easeOutQuad", "duration": 600, "delay":500}'
-                data-anime='{ "opacity": [0,1], "duration": 600, "delay": 1500, "staggervalue": 300, "easing": "easeOutQuad" }'
-              >
-                <img
-                  className="w-100 border-radius-4px"
-                  src={mainSubImage1}
-                  alt=""
-                />
               </div>
             </div>
           </div>
@@ -175,7 +151,9 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     무제한 저장 공간
                   </span>
-                  <p>사랑하는 사람들의 소중한 기억을 모두 보관하세요.</p>
+                  <p className="fs-12">
+                    사랑하는 사람들의 소중한 기억을 모두 보관하세요.
+                  </p>
                 </div>
               </div>
             </div>
@@ -189,7 +167,9 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     데이터 보호
                   </span>
-                  <p>에버링크를 볼 수 있는 사용자를 결정할 수 있습니다.</p>
+                  <p className="fs-12">
+                    에버링크를 볼 수 있는 사용자를 결정할 수 있습니다.
+                  </p>
                 </div>
               </div>
             </div>
@@ -203,8 +183,8 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     분실 시 보안
                   </span>
-                  <p>
-                    에버링크를 도난당하거나 분실하면 즉시 교체할 수 있습니다.
+                  <p className="fs-12">
+                    에버링크를 도난당해도 즉시 교체할 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -219,7 +199,9 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     일회성 결제
                   </span>
-                  <p>숨겨진 비용이나 구독이 없는 평생 서비스</p>
+                  <p className="fs-12">
+                    숨겨진 비용이나 구독이 없는 평생 서비스
+                  </p>
                 </div>
               </div>
             </div>
@@ -260,8 +242,8 @@ const HomeSubPage = () => {
         </section> */}
 
       <section
-        className="big-section bg-dark-gray"
-        style={{ backgroundImage: `url(${mainSubBgImage})` }}
+        className="big-section bg-dark-gray p-3"
+        // style={{ backgroundImage: `url(${mainSubBgImage})` }}
       >
         <div className="container">
           <div
@@ -348,7 +330,7 @@ const HomeSubPage = () => {
       </section>
 
       <section
-        className="background-position-center background-repeat overlap-height position-relative bg-very-light-gray pb-0"
+        className="background-position-center background-repeat overlap-height position-relative bg-very-light-gray py-5 pb-0"
         // style="background-image: url('images/vertical-center-line-bg.svg')"
       >
         <div className="container">
@@ -357,12 +339,21 @@ const HomeSubPage = () => {
             data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1000, "delay": 1000, "staggervalue": 300, "easing": "easeOutQuad" }'
           >
             <div className="col-md-8 text-center">
-              <h2 className="mb-5px text-dark-gray ls-minus-2px">
-                에버링크 이용가이드
-              </h2>
-              <span className="d-inline-block">
-                프로필 설정부터 추모페이지 수정 등 단계별 영상으로 설명
-              </span>
+              <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
+                가상 추모 페이지 <br />
+                구매하기 전 미리 보기
+              </h6>
+              <a className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube">
+                <span>
+                  <span className="btn-text">추모 페이지 미리보기 </span>
+                  <span className="btn-icon">
+                    <i className="feather icon-feather-arrow-right"></i>
+                  </span>
+                  <span className="btn-icon">
+                    <i className="feather icon-feather-arrow-right"></i>
+                  </span>
+                </span>
+              </a>
             </div>
             <section
               className="big-section cover-background pt-5"
@@ -461,7 +452,7 @@ const HomeSubPage = () => {
       </section>
 
       <section
-        className="background-position-center background-repeat"
+        className="background-position-center background-repeat p-3"
         // style=background-image: url('images/vertical-center-line-bg.svg')"
       >
         <div className="container">

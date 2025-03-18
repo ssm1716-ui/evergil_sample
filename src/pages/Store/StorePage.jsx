@@ -75,15 +75,15 @@ const StorePage = () => {
   }, [filterKey]);
   return (
     <>
-      <section className="top-space-margin big-section">
+      <section>
         <div className="container">
           <div
             className="row align-items-center justify-content-center"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
+            {/* <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
               <h1 className="fw-600 text-dark-gray mb-10px">쇼핑</h1>
-            </div>
+            </div> */}
             <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
           </div>
         </div>
