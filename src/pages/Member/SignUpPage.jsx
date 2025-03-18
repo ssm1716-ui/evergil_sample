@@ -246,11 +246,11 @@ const SignUpPage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section bg-gradient-very-light-gray">
+      <section className="top-space-margin big-section bg-very-light-gray">
         <div className="container">
           {step === 0 && (
-            <div className="col contact-form-style-04 ">
-              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden pt-10 md-p-10 bg-white text-center">
+            <div className="col contact-form-style-04 text-center bg-white">
+              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden pt-10 md-p-10 text-center">
                 <div className="position-relative terms-condition-box text-start d-inline-block mb-20px">
                   <label className="pb-3">
                     <input
@@ -345,20 +345,19 @@ const SignUpPage = () => {
                     </span>
                   </label>
                 </div>
-                <Button
-                  size="extra-large"
-                  radiusOn="radius-on"
-                  className="btn-large submit w-80 mt-60px mb-20px d-block"
-                  onClick={firstStep}
-                >
-                  동의하고 다음으로
-                </Button>
-                <div className="form-results mt-20px d-none"></div>
               </div>
+              <Button
+                size="extra-large"
+                radiusOn="radius-on"
+                className="btn-large w-30 mt-60px mb-20px d-block"
+                onClick={firstStep}
+              >
+                동의하고 다음으로
+              </Button>
             </div>
           )}
           {step === 1 && (
-            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white">
               <div className="col contact-form-style-04">
                 <div className="py-5 text-center">
                   <img src={signup} alt="" className="default-logo" />
@@ -450,7 +449,7 @@ const SignUpPage = () => {
                       type="button"
                       size="extra-large"
                       radiusOn="radius-on"
-                      className="btn-large submit w-80 mt-60px mb-20px d-block"
+                      className="btn-large w-50 mt-60px mb-20px d-block"
                       onClick={secondStep}
                     >
                       회원가입 완료
@@ -462,7 +461,7 @@ const SignUpPage = () => {
             </div>
           )}
           {step === 2 && (
-            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white">
               <div className="col contact-form-style-04">
                 <div className="mt-10 py-5 text-center ">
                   <img src={signup} alt="" className="default-logo" />
@@ -491,47 +490,6 @@ const SignUpPage = () => {
                           ref={(el) => (inputRefs.current[index] = el)}
                         />
                       ))}
-
-                      {/* <input
-                      className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
-                      type="text"
-                      name="first_code"
-                      value={verificationCode.first_code}
-                      onChange={handleVerificationCodeChange}
-                      maxLength="1"
-                    />
-                    <input
-                      className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
-                      type="text"
-                      name="secod_code"
-                      value={verificationCode.secod_code}
-                      onChange={handleVerificationCodeChange}
-                      maxLength="1"
-                    />
-                    <input
-                      className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
-                      type="text"
-                      name="third_code"
-                      value={verificationCode.third_code}
-                      onChange={handleVerificationCodeChange}
-                      maxLength="1"
-                    />
-                    <input
-                      className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
-                      type="text"
-                      name="fourth_code"
-                      value={verificationCode.fourth_code}
-                      onChange={handleVerificationCodeChange}
-                      maxLength="1"
-                    />
-                    <input
-                      className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
-                      type="text"
-                      name="fifth_code"
-                      value={verificationCode.fifth_code}
-                      onChange={handleVerificationCodeChange}
-                      maxLength="1"
-                    /> */}
                     </div>
                     <Button
                       size="extra-large"

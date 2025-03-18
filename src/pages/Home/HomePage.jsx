@@ -89,7 +89,7 @@ const HomeSubPage = () => {
                 추모페이지
               </h2>
 
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14px">
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14">
                 추모 페이지에 사랑하는 사람의 사진과 영상을 업로드 할 수
                 있습니다.
                 <br />
@@ -98,7 +98,7 @@ const HomeSubPage = () => {
                 <br /> 평생동안 사랑하는 사람의 기억을 보관할 수 있는
                 추모페이지를 사용해보세요.
               </p>
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14px">
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14">
                 우리의 사명은 사랑하는 사람들이 영원히 기억되는 것 입니다.
                 <br />
                 대부분 2-3세대가 지나면 사람들은 우리가 존재했다는 사실조차
@@ -343,9 +343,12 @@ const HomeSubPage = () => {
                 가상 추모 페이지 <br />
                 구매하기 전 미리 보기
               </h6>
-              <a className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube">
+              <Link
+                className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                onClick={() => alert('준비중')}
+              >
                 <span>
-                  <span className="btn-text">추모 페이지 미리보기 </span>
+                  <span className="btn-text">추모 페이지 미리보기</span>
                   <span className="btn-icon">
                     <i className="feather icon-feather-arrow-right"></i>
                   </span>
@@ -353,20 +356,20 @@ const HomeSubPage = () => {
                     <i className="feather icon-feather-arrow-right"></i>
                   </span>
                 </span>
-              </a>
+              </Link>
             </div>
             <section
-              className="big-section cover-background pt-5"
+              className="cover-background pt-5 pb-3"
               // style="background-image: url(https://via.placeholder.com/1920x1080)"
             >
               <div className="opacity-extra-medium"></div>
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-12 col-xl-10 text-center z-index-1">
-                    <span className="text-black fs-20 mb-15px d-inline-block w-100">
+                    <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
                       에버링크 영상
-                    </span>
-                    <a
+                    </h6>
+                    {/* <a
                       href="#"
                       className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
                       onClick={handleOpenModal}
@@ -380,7 +383,15 @@ const HomeSubPage = () => {
                           <i className="feather icon-feather-arrow-right"></i>
                         </span>
                       </span>
-                    </a>
+                    </a> */}
+                    <div className="col text-center fit-videos md-mb-50px sm-mb-30px">
+                      <iframe
+                        width="560"
+                        height="315"
+                        src="https://www.youtube.com/embed/sU3FkzUKHXU?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
+                        allowfullscreen
+                      ></iframe>
+                    </div>
                   </div>
                 </div>
                 {/* React Modal로 모달 구현 */}

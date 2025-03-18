@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
 import Select from 'react-select';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // 아이콘 가져오기
+import { FaEye, FaEyeSlash, FaLink, FaShareAlt } from 'react-icons/fa'; // 아이콘 가져오기
 
 import everlinkTop from '@/assets/images/everlink-top.png';
 
@@ -11,6 +11,7 @@ import {
   postEmailInvitations,
   getInvitationsList,
   putInvitationPermissions,
+  deleteInvitationPermissions,
   putProfileScope,
   getPrivateProfileAccessRequests,
   putPrivateAccessRequests,
@@ -50,6 +51,7 @@ const ManagePage = () => {
 
   //Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalCopyLinkOpen, setIsModalCopyLinkOpen] = useState(false);
 
   const lgRef = useRef(null);
 
@@ -176,6 +178,43 @@ const ManagePage = () => {
     }
   };
 
+  const handleCopylink = () => {
+    navigator.clipboard.writeText(
+      window.location.origin + '/view-profile/' + profileId
+    );
+    setIsModalCopyLinkOpen(true);
+  };
+
+  // 초대한 사용자 권한 변경 핸들러
+  const handleInvitationsPermissionChange = async (invitationId, value) => {
+    let updatedItems;
+    let res;
+
+    if (!value) return;
+
+    if (value === 'DELETE') {
+      updatedItems = invitations.filter((item) => item.id === invitationId);
+      res = await deleteInvitationPermissions(profileId, invitationId);
+    } else if (value && (value === 'EDITOR' || value === 'VIEWER')) {
+      updatedItems = invitations.map((item, i) =>
+        item.id === invitationId
+          ? {
+              ...item,
+              permission: value,
+            }
+          : item
+      );
+
+      res = await putInvitationPermissions(profileId, invitationId, value);
+    }
+    console.log(updatedItems);
+    setInvitations(updatedItems);
+
+    // const res = await putInvitationPermissions(profileId, invitationId, value);
+
+    console.log(res);
+  };
+
   return (
     <>
       <section className="top-space-margin big-section pb-0 pt-5 md-pt-10px">
@@ -195,9 +234,15 @@ const ManagePage = () => {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-12 col-xl-7 col-lg-8 col-md-10 text-center">
-              <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-7">
+              <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-2  md-mb-5">
                 초대 및 사용자 관리 페이지
               </h5>
+              <Link onClick={handleCopylink}>
+                <h6 className="text-base-color fs-20 fw-800 w-100 text-end pb-0">
+                  <FaLink className="me-1" />
+                  Copy link
+                </h6>
+              </Link>
               <div className="d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-4">
                 <form>
                   <input
@@ -249,7 +294,7 @@ const ManagePage = () => {
                       </thead>
                       <tbody>
                         {invitations.map((invitation, index) => (
-                          <tr key={index}>
+                          <tr key={invitation.invitationId}>
                             <td className="product-name">
                               <a className="text-dark-gray fw-500 d-block">
                                 {invitation.email}
@@ -262,9 +307,17 @@ const ManagePage = () => {
                                 <select
                                   className="form-control select-invite"
                                   name="scope"
+                                  value={invitation.permission}
+                                  onChange={(e) =>
+                                    handleInvitationsPermissionChange(
+                                      invitation.invitationId,
+                                      e.target.value
+                                    )
+                                  }
                                 >
-                                  <option value="EDIT">Edit</option>
-                                  <option value="VIEW">View</option>
+                                  <option value="">선택하기</option>
+                                  <option value="EDITOR">Edit</option>
+                                  <option value="VIEWER">View</option>
                                   <option value="DELETE">Delete</option>
                                 </select>
                               </div>
@@ -391,6 +444,40 @@ const ManagePage = () => {
                         onClick={() => {
                           setIsModalOpen(false);
                           setIsError(false);
+                        }}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isModalCopyLinkOpen}
+        onClose={() => setIsModalCopyLinkOpen(false)}
+      >
+        <div className="w-35">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        프로필 링크가 복사 되었습니다.
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => {
+                          setIsModalCopyLinkOpen(false);
                         }}
                       >
                         확인

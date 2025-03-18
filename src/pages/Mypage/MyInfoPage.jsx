@@ -247,7 +247,7 @@ const MyInfoPage = () => {
       {currentView === 'passwordConfirm' && (
         <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-            <h1 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h1>
+            <h6 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h6>
           </div>
           <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center">
             <div className="row pt-5 text-center">
@@ -272,7 +272,7 @@ const MyInfoPage = () => {
                   name="eventSection"
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large submit w-50 mt-60px mb-5px d-block"
+                  className="btn-large w-50 mt-60px mb-5px d-block"
                   onClick={handlePasswordConfirm}
                 >
                   확인

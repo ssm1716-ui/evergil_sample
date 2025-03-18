@@ -4,7 +4,7 @@ import ContactComponents from '@/components/Contact/ContactComponents';
 import Modal from '@/components/common/Modal/Modal';
 import { postInquiryRequest } from '@/api/guest/guestApi';
 import { isValidEmail } from '@/utils/validators';
-import VerticalCenterLineBg from '@/assets/images/vertical-center-line-bg.svg';
+import everlinkTop from '@/assets/images/everlink-top.png';
 
 const MyContactPage = () => {
   const initialFormState = { writerName: '', writerEmail: '', message: '' };
@@ -72,17 +72,37 @@ const MyContactPage = () => {
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
-        <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-          <h1 className="fw-600 text-dark-gray mb-10px">문의 하기</h1>
-        </div>
-        <section className="p-0">
-          <div className="pt-1 text-black">
-            <ContactComponents
-              contactUs={contactUs}
-              errors={errors}
-              handleSetContactUs={handleSetContactUs}
-              handleSendContactUs={handleSendContactUs}
-            />
+        <section className="page-title-separate-breadcrumbs cover-background magic-cursor round-cursor text-center p-0 pb-5 mt-0">
+          <div className="container position-relative">
+            <div
+              className="row align-items-start align-items-lg-end justify-content-end flex-column flex-lg-row"
+              data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+            >
+              <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
+                <img src={everlinkTop} alt="everlinkTop" />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="background-position-center background-repeat position-relative pt-0">
+          <div className="container position-relative">
+            <div className="row g-0">
+              <div
+                className="col-lg-12 md-mb-50px"
+                data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
+              >
+                <h4 className="text-dark-gray ls-minus-2px mb-5px">문의사항</h4>
+                <span className="d-block text-base-color fw-500 mb-25px">
+                  문의사항은 메세지로 남겨주세요
+                </span>
+                <ContactComponents
+                  contactUs={contactUs}
+                  errors={errors}
+                  handleSetContactUs={handleSetContactUs}
+                  handleSendContactUs={handleSendContactUs}
+                />
+              </div>
+            </div>
           </div>
         </section>
       </div>

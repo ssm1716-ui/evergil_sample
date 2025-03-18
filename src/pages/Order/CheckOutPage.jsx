@@ -198,14 +198,14 @@ const CheckOutPage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section">
+      <section className="top-space-margin pt-7 pb-1">
         <div className="container">
           <div
             className="row align-items-center justify-content-center"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
-              <h1 className="fw-600 text-dark-gray mb-10px">주문/결제</h1>
+            <div className="col-12 text-start position-relative page-title-extra-large">
+              <h4 className="fw-600 text-dark-gray mb-10px">주문/결제</h4>
             </div>
           </div>
         </div>
@@ -541,7 +541,7 @@ const CheckOutPage = () => {
           </div>
           <div className="col-lg-12">
             <Link
-              className="btn btn-dark-gray btn-large btn-switch-text btn-round-edge btn-box-shadow w-100"
+              className="btn btn-base-color btn-large btn-switch-text btn-round-edge btn-box-shadow w-100"
               onClick={handleCompleteAdd}
             >
               <span>

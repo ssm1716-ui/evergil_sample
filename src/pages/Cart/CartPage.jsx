@@ -94,14 +94,14 @@ const CartPage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section">
+      <section className="top-space-margin big-section pb-3">
         <div className="container">
           <div
             className="row align-items-center justify-content-center"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
-              <h1 className="fw-600 text-dark-gray mb-10px">장바구니</h1>
+            <div className="col-12 text-center position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+              <h4 className="fw-600 text-dark-gray mb-10px">장바구니</h4>
             </div>
             <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
           </div>
@@ -132,7 +132,7 @@ const CartPage = () => {
                   </div>
                 </div>
                 <div className="row align-items-center">
-                  <div className="col-12">
+                  <div className="col-12 p-0">
                     <table className="table cart-products">
                       <thead>
                         <tr>
@@ -246,7 +246,7 @@ const CartPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-4">
+              <div className="col-lg-4 p-0 ps-5">
                 <div className="bg-very-light-gray border-radius-6px p-50px xl-p-30px lg-p-25px">
                   <span className="fs-26 fw-600 text-dark-gray mb-5px d-block">
                     장바구니 총계
@@ -308,13 +308,14 @@ const CartPage = () => {
           </div>
         </section>
       ) : (
-        <section className="bg-base-white-color">
+        <section className="bg-base-white-color pt-0 pb-5">
           <div className="container">
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
               <div className="col">
-                <div className="mt-5 text-center ">
+                <div className="text-center ">
                   <a className="navbar-brand mb-10">
-                    <i className="feather icon-feather-shopping-cart align-middle text-extra-medium-gray fs-150 mb-10" />
+                    {/* <i className="feather icon-feather-shopping-cart align-middle text-extra-medium-gray fs-150 mb-10" /> */}
+                    <i className="bi bi-handbag align-middle align-middle text-extra-medium-gray fs-70 mb-5"></i>
                   </a>
 
                   <h6 className="fw-600 text-dark-gray  ls-minus-1px">
@@ -325,7 +326,7 @@ const CartPage = () => {
                     <Button
                       size="extra-large"
                       radiusOn="radius-on"
-                      className="btn btn-extra-large btn-round-edge btn-base-color btn-box-shadow submit w-100 text-transform-none"
+                      className="btn btn-large btn-round-edge btn-base-color btn-box-shadow w-50 text-transform-none"
                     >
                       쇼핑하기
                     </Button>

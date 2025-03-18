@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
 import footerIconYoutube from '@/assets/images/footer-icon-youtube.png';
 import footerIconInstagram from '@/assets/images/footer-icon-instagram.png';
 import footerIconNaver from '@/assets/images/footer-icon-naver.png';
@@ -29,7 +29,7 @@ const Footer = () => {
           <div className="row align-items-start justify-content-evenly mb-4 md-mb-25px xs-mb-25px instagram-follow-api position-relative">
             <div className="col-xl-4 col-sm-12 text-center text-md-center last-paragraph-no-margin fs-15 order-3 order-md-1 mb-25px">
               <img
-                src={defaultLogo}
+                src={defaultLogo_mobile}
                 data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                 alt=""
                 className="default-logo"

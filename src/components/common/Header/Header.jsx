@@ -5,7 +5,9 @@ import { logout } from '@/state/slices/authSlices';
 import { useNavigate } from 'react-router-dom';
 import { signLogout } from '@/api/memberApi';
 
-import defaultLogo from '@/assets/images/header-logo.png';
+// import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo_pc from '@/assets/images/logo_pc.png';
+import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -41,19 +43,19 @@ const Header = () => {
               onClick={closeMenu}
             >
               <img
-                src={defaultLogo}
+                src={defaultLogo_pc}
                 data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                 alt=""
                 className="default-logo"
               />
-              <img
-                src={defaultLogo}
+              {/* <img
+                src={defaultLogo_pc}
                 data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                 alt=""
                 className="alt-logo"
-              />
+              /> */}
               <img
-                src={defaultLogo}
+                src={defaultLogo_mobile}
                 data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                 alt=""
                 className="mobile-logo"

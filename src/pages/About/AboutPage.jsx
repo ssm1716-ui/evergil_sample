@@ -105,7 +105,7 @@ const AboutPage = () => {
       </section>
 
       <section
-        className="cover-background position-relative overflow-visible pb-150px"
+        className="cover-background position-relative overflow-visible pt-0 pb-150px"
         // style="background-image: url('https://via.placeholder.com/1920x796')"
       >
         <div className="container">

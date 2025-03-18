@@ -364,7 +364,6 @@ export const getInvitationsList = async (profileId, page = 1, pageSize = 10) => 
                 profileId, page, pageSize
             },
         });
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -375,15 +374,31 @@ export const getInvitationsList = async (profileId, page = 1, pageSize = 10) => 
 export const putInvitationPermissions = async (profileId, invitationId, params) => {
 
     try {
+        console.log(profileId, invitationId, params);
+
         const res = await axiosInstance.put(`/memorial-profiles/${profileId}/invitations/${invitationId}/permissions`, {
             permission: params
         });
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
     }
 };
+
+//초대받은 계정의 권한 삭제
+export const deleteInvitationPermissions = async (profileId, invitationId, params) => {
+
+    try {
+        console.log(profileId, invitationId, params);
+
+        const res = await axiosInstance.delete(`/memorial-profiles/${profileId}/invitations/${invitationId}/permissions`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 
 
 //프로필 설정(공개/비공개) 변경

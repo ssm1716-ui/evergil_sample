@@ -153,7 +153,7 @@ const AddressPage = () => {
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-          <h1 className="fw-600 text-dark-gray mb-10px">배송지 관리</h1>
+          <h6 className="fw-600 text-dark-gray mb-10px">배송지 관리</h6>
         </div>
 
         <div className="container">
@@ -278,9 +278,9 @@ const AddressPage = () => {
             <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
-                  <h4 className="text-dark-gray fw-500 mb-15px">
+                  <h6 className="text-dark-gray fw-500 mb-15px">
                     {!updateFlag ? '배송지 추가' : '배송지 수정'}
-                  </h4>
+                  </h6>
                   <button
                     type="button"
                     className="btn-close position-absolute top-10px right-10px"
@@ -384,38 +384,18 @@ const AddressPage = () => {
                     />
                   </>
                 </div>
-                {/* 
-                <div className="col-md-12 mb-2 checkout-accordion">
-                  <div className="position-relative terms-condition-box text-start d-flex align-items-center">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="terms_condition"
-                        value="1"
-                        className="check-box align-middle"
-                      />
-                      <span className="box">기본 배송지로 저장</span>
-                      <a
-                        className="accordion-toggle"
-                        data-bs-toggle="collapse"
-                        data-bs-parent="#accordion1"
-                        href="#collapseThree"
-                      ></a>
-                    </label>
-                  </div>
-                </div> */}
                 <div className="col-lg-112 text-center text-lg-center">
                   <input type="hidden" name="redirect" value="" />
                   {updateFlag ? (
                     <Button
-                      className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                      className="btn btn-base-color btn-small btn-box-shadow btn-round-edge me-1"
                       onClick={handleUpdateAddress}
                     >
                       수정
                     </Button>
                   ) : (
                     <Button
-                      className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                      className="btn btn-base-color btn-small btn-box-shadow btn-round-edge me-1"
                       onClick={handleAddAddress}
                     >
                       추가
@@ -423,7 +403,7 @@ const AddressPage = () => {
                   )}
 
                   <Button
-                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    className="btn btn-white btn-small btn-box-shadow btn-round-edge me-1"
                     onClick={() => setIsModalOpen(false)}
                   >
                     닫기

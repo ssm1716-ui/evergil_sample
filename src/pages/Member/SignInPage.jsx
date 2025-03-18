@@ -104,74 +104,20 @@ const SignInPage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section bg-gradient-very-light-gray">
+      <section className="top-space-margin big-section bg-very-light-gray">
         <div className="container">
-          <div className="row g-0 justify-content-center">
-            {/* <div
-              className="col-xl-4 col-lg-5 col-md-10 contact-form-style-04 md-mb-50px"
-              data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":100, "staggervalue": 150, "easing": "easeOutQuad" }'
-            >
-              <span className="fs-26 xs-fs-24  fw-600 text-dark-gray mb-20px d-block">
-                Member login
-              </span>
-              <form action="email-templates/contact-form.php" method="post">
-                <label className="text-dark-gray mb-10px fw-500">
-                  Username or email address<span className="text-red">*</span>
-                </label>
-                <input
-                  className="mb-20px bg-very-light-gray form-control required"
-                  type="email"
-                  name="name"
-                  placeholder="Enter your username"
-                />
-                <label className="text-dark-gray mb-10px fw-500">
-                  Password<span className="text-red">*</span>
-                </label>
-                <input
-                  className="mb-20px bg-very-light-gray form-control required"
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                />
-                <div className="position-relative terms-condition-box text-start d-flex align-items-center mb-20px">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="terms_condition"
-                      id="terms_condition"
-                      value="1"
-                      className="terms-condition check-box align-middle required"
-                    />
-                    <span className="box fs-14">Remember me</span>
-                  </label>
-                  <a
-                    href="#"
-                    className="fs-14 text-dark-gray fw-500 text-decoration-line-bottom ms-auto"
-                  >
-                    Forget your password?
-                  </a>
-                </div>
-                <input type="hidden" name="redirect" value="" />
-                <button
-                  className="btn btn-medium btn-round-edge btn-base-color btn-box-shadow submit w-100 text-transform-none"
-                  type="submit"
-                >
-                  Login
-                </button>
-                <div className="form-results mt-20px d-none"></div>
-              </form>
-            </div> */}
+          <div className="row g-0 justify-content-center bg-white">
             <div
-              className="row align-items-center justify-content-center pb-5"
+              className="row align-items-center justify-content-center py-5"
               data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
             >
               <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
-                <h1 className="fw-600 text-dark-gray mb-10px">로그인</h1>
+                <h4 className="fw-600 text-dark-gray mb-10px">로그인</h4>
               </div>
               <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
             </div>
             <div
-              className="col-lg-8 col-md-10  p-6 box-shadow-extra-large border-radius-6px"
+              className="col-lg-8 col-md-10  p-6"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <form>
@@ -194,7 +140,7 @@ const SignInPage = () => {
                   비밀번호<span className="text-red">*</span>
                 </label>
                 <input
-                  className="mb-10px bg-very-light-white form-control required"
+                  className="mb-20px bg-very-light-white form-control required"
                   type="password"
                   name="password"
                   value={member.password}
@@ -221,13 +167,13 @@ const SignInPage = () => {
                   <span className="px-5">|</span>
                   <Link to="/password-forgot">비밀번호찾기</Link>
                 </div>
-                <div className="pt-15 text-center">
+                <div className="pt-15 text-center d-flex flex-column align-items-center">
                   <Button
                     data-value="google"
                     name="google"
                     size="extra-large"
                     color="google"
-                    className="btn-large w-100 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-50 mt-20px mb-10px d-block btn-box-shadow border-0"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -274,7 +220,7 @@ const SignInPage = () => {
                     data-value="kakao"
                     size="extra-large"
                     color="kakao"
-                    className="btn-large w-100 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-50 mt-20px mb-10px d-block btn-box-shadow"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -305,7 +251,7 @@ const SignInPage = () => {
                     data-value="naver"
                     size="extra-large"
                     color="naver"
-                    className="btn-large w-100 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-50 mt-20px mb-10px d-block btn-box-shadow"
                     onClick={handleSnsLoginAction}
                   >
                     <svg

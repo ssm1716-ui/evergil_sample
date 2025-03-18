@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
@@ -9,17 +9,11 @@ import 'lightgallery/css/lg-fullscreen.css';
 import 'lightgallery/css/lg-zoom.css';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Button from '@/components/common/Button/Button';
-import { FiUpload, FiImage } from 'react-icons/fi'; // 업로드 아이콘 사용
-import { MdAddPhotoAlternate } from 'react-icons/md';
+import WebShareButton from '@/components/Share/WebShareButton';
 
 import {
-  postRegisterProfile,
   getSelectProfile,
-  putProfileBackgroundImage,
-  putProfileImage,
-  putProfileDescription,
   postAddProfileBookmark,
   deleteBookmarksProfile,
   getPhotoSeletct,
@@ -388,7 +382,8 @@ const ViewProfilePage = () => {
               <div className="row position-absolute md-position-initial top-50px end-0 z-index-1 pe-1">
                 {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                 <div className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px">
-                  <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
+                  <WebShareButton />
+                  {/* <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
                     <span>
                       <span>
                         <i className="feather icon-feather-share-2"></i>
@@ -400,7 +395,7 @@ const ViewProfilePage = () => {
                         공유하기
                       </span>
                     </span>
-                  </Link>
+                  </Link> */}
                   <Link
                     className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
                     onClick={handleBookmarkToggle}

@@ -41,7 +41,9 @@ const FaqComponents = () => {
           <div className="bg-base-color d-inline-block mb-20px fw-600 text-white text-uppercase border-radius-30px ps-20px pe-20px fs-12">
             공통 질문
           </div>
-          <h3 className="fw-700 text-dark-gray ls-minus-1px">FAQ</h3>
+          <h6 className="fw-700 text-dark-gray ls-minus-1px pb-1 text-decoration-line-bottom">
+            FAQ
+          </h6>
           <div
             className="accordion accordion-style-02"
             id="accordion-style-02"

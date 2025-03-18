@@ -96,9 +96,9 @@ const WebShareButton = () => {
           style={{
             position: 'absolute',
             bottom: '-145px', // ✅ 버튼 바로 아래 위치
-            left: '20%', // ✅ 버튼 중앙 정렬
+            left: '26%', // ✅ 버튼 중앙 정렬
             transform: 'translateX(-50%)',
-            width: '260px', // ✅ 박스 크기 조정
+            width: '240px', // ✅ 박스 크기 조정
             background: '#fff',
             padding: '12px',
             borderRadius: '8px',
@@ -111,7 +111,7 @@ const WebShareButton = () => {
           }}
         >
           <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
-            이 페이지 공유하기
+            프로필 공유하기
           </p>
 
           {/* ✅ 소셜 공유 버튼 */}

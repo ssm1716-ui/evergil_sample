@@ -120,7 +120,7 @@ const OrderListPage = () => {
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-          <h1 className="fw-600 text-dark-gray mb-10px">주문/배송내역</h1>
+          <h6 className="fw-600 text-dark-gray mb-10px">주문/배송내역</h6>
         </div>
         <div
           className="toolbar-wrapper border-color-extra-medium-gray d-flex flex-column flex-md-row flex-wrap align-items-center w-100 mb-10px"
@@ -134,42 +134,42 @@ const OrderListPage = () => {
                   href="#tab_five1"
                   className="nav-link active"
                 >
-                  전체 4<span className="tab-border bg-dark-gray"></span>
+                  전체 4<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#tab_five2">
-                  입금/결제 0<span className="tab-border bg-dark-gray"></span>
+                  입금/결제 0<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#tab_five3">
-                  배송중 0<span className="tab-border bg-dark-gray"></span>
+                  배송중 0<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
-                  배송완료 0<span className="tab-border bg-dark-gray"></span>
+                  배송완료 0<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
-                  구매확정 0<span className="tab-border bg-dark-gray"></span>
+                  구매확정 0<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
-                  교환 0<span className="tab-border bg-dark-gray"></span>
+                  교환 0<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
-                  환불 0<span className="tab-border bg-dark-gray"></span>
+                  환불 0<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-bs-toggle="tab" href="#tab_five4">
-                  취소 0<span className="tab-border bg-dark-gray"></span>
+                  취소 0<span className="tab-border bg-base-color"></span>
                 </a>
               </li>
             </ul>

@@ -89,7 +89,6 @@ const EditProfilePage = () => {
   const [imagesId, setImagesId] = useState('');
   const [activeTab, setActiveTab] = useState('이미지');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalShareOpen, setIsModalShareOpen] = useState(false);
   const [galleryKey, setGalleryKey] = useState(0);
 
   // const lgRef = useRef(null);
@@ -606,11 +605,6 @@ const EditProfilePage = () => {
     }
   };
 
-  const handleShareConfirm = (e) => {
-    e.preventDefault();
-    setIsModalShareOpen(true);
-  };
-
   return (
     <>
       <section
@@ -773,7 +767,7 @@ const EditProfilePage = () => {
             </div>
             <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
-                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5"
+                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
                 onClick={handleNavigate}
               >
                 <span>
@@ -783,7 +777,7 @@ const EditProfilePage = () => {
                 </span>
               </Link>
               <Link
-                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5"
+                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
                 onClick={handlePreview}
               >
                 <span>
@@ -806,12 +800,12 @@ const EditProfilePage = () => {
                   <li key={tab} className="nav-item">
                     <button
                       className={`nav-link ${
-                        activeTab === tab ? 'active' : ''
+                        activeTab === tab ? 'active text-base-color' : ''
                       }`}
                       onClick={() => setActiveTab(tab)}
                     >
                       {tab}
-                      <span className="tab-border bg-dark-gray"></span>
+                      <span className="tab-border bg-base-color"></span>
                     </button>
                   </li>
                 ))}
@@ -926,8 +920,10 @@ const EditProfilePage = () => {
                     <div className="row">
                       <div className="row align-items-center">
                         <div className="col-xl-12 col-lg-10 col-sm-5 form-results d-block mt-20px mb-0 text-center">
-                          <p className="text-black fs-22">
-                            아래 가족을 추가하고 드래그하세요.
+                          <p className="text-black fs-18">
+                            가족 관계도
+                            <br />
+                            아래 가족을 추가하고 드래그로 순서를 바꿔보세요.
                           </p>
                         </div>
                       </div>
@@ -1082,71 +1078,6 @@ const EditProfilePage = () => {
                         닫기
                       </Button>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal
-        isOpen={isModalShareOpen}
-        onClose={() => setIsModalShareOpen(false)}
-      >
-        <div className="w-40">
-          <div className="modal-content p-0 rounded shadow-lg">
-            <div className="row justify-content-center">
-              <div className="col-12">
-                <div className="p-10 sm-p-7 bg-white">
-                  <div className="row justify-content-center">
-                    <div className="row mb-2">
-                      <div className="col-10">
-                        <h2 className="text-dark-gray ls-minus-2px">
-                          공유하기
-                          <i className="bi bi-send icon-large text-dark-gray animation-float ps-2"></i>
-                        </h2>
-                      </div>
-                    </div>
-                    {/* <div className="col-8 d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-4">
-                      <form>
-                        <input
-                          className="input-large border-1 bg-light-gray border-color-gray text-black"
-                          type="text"
-                          name="email"
-                          placeholder="Invite Email"
-                          value={url}
-                          readOnly
-                        />
-                        <input type="hidden" name="redirect" value="" />
-                        <Button onClick={copyToClipboard}>URL 복사</Button>
-                      </form>
-                    </div> */}
-                    <div className="col-md-9 d-inline-block position-relative box-shadow mb-4  p-0">
-                      <input
-                        className="input-large border-1 bg-light-gray border-color-gray text-black"
-                        type="text"
-                        name="email"
-                        placeholder="Invite Email"
-                        value={url}
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-md-3 d-inline-block mb-4  p-0">
-                      <Button className="h-100" onClick={copyToClipboard}>
-                        URL 복사
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 text-center text-lg-center pt-3">
-                    <input type="hidden" name="redirect" value="" />
-
-                    <Button
-                      className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
-                      onClick={() => setIsModalShareOpen(false)}
-                    >
-                      닫기
-                    </Button>
                   </div>
                 </div>
               </div>

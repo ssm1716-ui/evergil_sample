@@ -46,9 +46,9 @@ const ForgotPage = () => {
 
   return (
     <>
-      <section className="bg-base-white-color">
+      <section className="top-space-margin big-section bg-very-light-gray">
         <div className="container">
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white pb-10">
             <div
               className="col"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
@@ -65,7 +65,7 @@ const ForgotPage = () => {
                 </h6>
                 <form>
                   <input
-                    className="mb-10px bg-very-light-white form-control required"
+                    className="mb-20px bg-very-light-white form-control required"
                     type="text"
                     name="loginEmail"
                     value={email}
@@ -74,13 +74,11 @@ const ForgotPage = () => {
                   />
                   {errors && <p className="text-danger text-start">{errors}</p>}
 
-                  <input type="hidden" name="redirect" value="" />
-
                   <Button
                     type="submit"
                     size="extra-large"
                     radiusOn="radius-on"
-                    className="btn btn-medium btn-round-edge btn-base-color btn-box-shadow submit w-100 text-transform-none"
+                    className="btn btn-medium btn-round-edge btn-base-color btn-box-shadow submit w-50 text-transform-none"
                     onClick={handleEmailCheck}
                   >
                     이메일 전송

@@ -10445,8 +10445,8 @@ blockquote footer {
 }
 .btn.btn-base-color:hover, .btn.btn-base-color:active {
   background-color: transparent;
-  border-color: var(--base-color);
-  color: var(--base-color);
+  border-color: var(--white);
+  color: var(--black);
 }
 .btn.btn-dark-gray {
   background-color: var(--dark-gray);
@@ -10829,9 +10829,15 @@ blockquote footer {
   background-color: var(--dark-gray);
   color: var(--white);
 }
-.btn.btn-box-shadow.btn-white:hover, .btn.btn-box-shadow.btn-white:active {
+
+.btn.btn-box-shadow.btn-base-color:hover, .btn.btn-box-shadow.btn-base-color:active {
   background: var(--white);
-  color: var(--dark-gray);
+  color: var(--black);
+  border: 1px solid #BFBFBF;
+}
+.btn.btn-box-shadow.btn-white:hover, .btn.btn-box-shadow.btn-white:active {
+  background: var(--base-color);
+  color: var(--white);
 }
 .btn.btn-box-shadow.btn-black:hover, .btn.btn-box-shadow.btn-black:active {
   background: var(--black);
@@ -10841,10 +10847,8 @@ blockquote footer {
   background: var(--dark-gray);
   color: var(--white);
 }
-.btn.btn-box-shadow.btn-base-color:hover, .btn.btn-box-shadow.btn-base-color:active {
-  background: var(--base-color);
-  color: var(--white);
-}
+
+
 .btn.btn-box-shadow.btn-cornflower-blue:hover, .btn.btn-box-shadow.btn-cornflower-blue:active {
   background-color: var(--cornflower-blue);
   color: var(--white);
@@ -10909,6 +10913,11 @@ blockquote footer {
   height: 26px;
   right: 5px;
 }
+
+.btn.radius-on {
+  border-radius: 30px;
+}
+
 /* Button icon position */
 .left-icon i {
   margin-right: 6px;
@@ -16420,7 +16429,9 @@ canvas {
   transition: transform 0.5s ease;
 }
 .tab-style-04 .nav-tabs .nav-item .nav-link.active, .tab-style-04 .nav-tabs .nav-item .nav-link.show, .tab-style-04 .nav-tabs .nav-item .nav-link:hover {
-  color: var(--dark-gray);
+  /* color: var(--dark-gray); */
+  color: var(--base-color);
+  font-weight: bold;
 }
 .tab-style-04 .nav-tabs .nav-item .nav-link.active .tab-border, .tab-style-04 .nav-tabs .nav-item .nav-link.show .tab-border, .tab-style-04 .nav-tabs .nav-item .nav-link:hover .tab-border {
   -webkit-transform: scaleX(1);
@@ -18943,6 +18954,10 @@ canvas {
   transform: translateY(0px);
 }
 /* Shop sidebar */
+.shop-sidebar {
+  padding-top: 43px;
+}
+
 .shop-sidebar .shop-filter {
   padding: 0;
   margin: 0;
@@ -18951,7 +18966,7 @@ canvas {
 .shop-sidebar .shop-filter li {
   position: relative;
   margin-bottom: 2px;
-  padding: 0 25px;
+  /* padding: 0 25px; */
 }
 .shop-sidebar .shop-filter li a {
   display: block;
