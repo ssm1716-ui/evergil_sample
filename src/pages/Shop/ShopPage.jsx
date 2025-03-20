@@ -282,7 +282,9 @@ const ShopPage = () => {
                   {Number(product.price).toLocaleString()}원
                 </span>
               </div>
-              <p className="mb-30px">{product.description}</p>
+              <p className="mb-30px" style={{ whiteSpace: 'pre-line' }}>
+                {product.description}
+              </p>
               {/* <div className="d-flex align-items-center mb-20px">
                 <label className="text-dark-gray me-15px fw-500">Color</label>
                 <ul className="shop-color mb-0">

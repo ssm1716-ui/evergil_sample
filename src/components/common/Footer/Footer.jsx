@@ -46,12 +46,10 @@ const Footer = () => {
 
             <div className="col-xl-4 col-sm-12 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-14">
-                (우)14441
-                <br />
-                주소: 경기 부천시 오정구 오정로211번길 35-24 <br />
-                대표: 전경아 <br />
+                주소:(우)14441 경기 부천시 오정구 오정로211번길 35-24 <br />
+                에버링크(everlink) / 대표자명:전경아 <br />
                 사업자 등록번호: 136-04-69494 <br />
-                통신판매업신고: 12345-000 <br />
+                통신판매업신고: 2024-경기광명-1086 <br />
                 {/* <p className="xl-w-hidden sm-w-block fs-16">
                   고객센터: 010-5922-1221
                   <br />

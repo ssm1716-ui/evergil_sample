@@ -58,6 +58,7 @@ export const getSelectProfile = async (id) => {
     try {
         const res = await axiosInstance.get(`/memorial-profiles/${id}`);
         console.log('getSelectProfile - ', res);
+        return res;
     } catch (err) {
         console.error(err);
     }

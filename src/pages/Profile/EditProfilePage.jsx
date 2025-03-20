@@ -131,15 +131,13 @@ const EditProfilePage = () => {
         if (result === 'NEED_TO_LOGIN') {
           setIsLoginModalOpen(true);
           return;
-        }
-
-        if (result === 'PERMISSION_DENIED') {
+        } else if (result === 'PERMISSION_DENIED') {
           setIsRequestModalOpen(true);
           return;
-        }
-
-        if (result === 'OK') {
+        } else if (result === 'OK' || result === 'PUBLIC_PROFILE') {
           setShowScreen(true);
+          return;
+        } else {
           return;
         }
 
