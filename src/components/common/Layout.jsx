@@ -12,6 +12,7 @@ const Layout = ({ children }) => {
     '/auth/token-validation',
     '/reset-password',
     '/check-point',
+    '/profile/invitation',
     '/error',
     '/test',
     '/qr',
@@ -21,7 +22,7 @@ const Layout = ({ children }) => {
   return (
     <>
       {!hideLayout && <Header />}
-      <main>
+      <main className="position-relative">
         <GlobalAnimeHandler />
         {children}
       </main>

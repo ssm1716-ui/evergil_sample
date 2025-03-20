@@ -69,7 +69,7 @@ const ErrorPage = () => {
                 {/* <h6 className="text-dark-gray fw-600 mb-5px text-uppercase">
                   Ooops!
                 </h6> */}
-                <h4 className="text-dark-gray fw-600 sm-fs-22 mb-10px ls-minus-1px mb-5">
+                <h4 className="text-dark-gray fw-600 sm-fs-22 mb-10px ls-minus-1px mb-10">
                   {desc}
                 </h4>
                 {/* <p className="mb-30px lh-28 sm-mb-30px w-55 md-w-80 sm-w-95 mx-auto">

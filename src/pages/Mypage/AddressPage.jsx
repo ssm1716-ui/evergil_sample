@@ -151,7 +151,7 @@ const AddressPage = () => {
 
   return (
     <>
-      <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+      <div className="col-xxl-10 col-lg-9 md-ps-15px">
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
           <h6 className="fw-600 text-dark-gray mb-10px">배송지 관리</h6>
         </div>

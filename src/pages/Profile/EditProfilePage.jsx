@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
@@ -16,11 +17,14 @@ import { MdAddPhotoAlternate } from 'react-icons/md';
 import { getFileType } from '@/utils/utils';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
+import LoginModal from '@/components/common/Modal/LoginModal';
+import RequestAccessModal from '@/components/common/Modal/RequestAccessModal';
+
 import WebShareButton from '@/components/Share/WebShareButton';
 
 import {
-  postRegisterProfile,
   getSelectProfile,
+  postPrivateProfileAccessRequest,
   putProfileBackgroundImage,
   putProfileImage,
   putProfileDescription,
@@ -65,6 +69,11 @@ const formats = [
   'align',
 ];
 
+const initFormPrivateProfile = {
+  name: '',
+  memo: '',
+};
+
 const EditProfilePage = () => {
   const navigate = useNavigate();
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
@@ -96,18 +105,62 @@ const EditProfilePage = () => {
   const fileInputRef = useRef(null);
 
   const [url, setUrl] = useState('');
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+  const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
+  const [showScreen, setShowScreen] = useState(false);
+  const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
+    initFormPrivateProfile
+  );
+
+  useEffect(() => {
+    const fetchPermission = async () => {
+      // if (!isAuthenticated) {
+      //   setIsLoginModalOpen(true); // 로그인 안 했으면 로그인 모달
+      //   return;
+      // }
+
+      try {
+        const res = await getSelectProfile(profileId);
+        console.log('프로필 권한 - ', res);
+
+        const { result } = res.data.data;
+
+        if (result === 'NEED_TO_LOGIN') {
+          setIsLoginModalOpen(true);
+          return;
+        }
+
+        if (result === 'PERMISSION_DENIED') {
+          setIsRequestModalOpen(true);
+          return;
+        }
+
+        if (result === 'OK') {
+          setShowScreen(true);
+          return;
+        }
+
+        // setIsAuthorized(response.isAuthorized);
+
+        // if (!response.isAuthorized) {
+        //   setShowRequestModal(true); // 권한 없으면 요청 모달 띄우기
+        // }
+      } catch (error) {
+        console.error('권한 체크 실패:', error);
+        setIsAuthorized(false);
+      }
+    };
+
+    fetchPermission();
+  }, [profileId]);
 
   useEffect(() => {
     // 현재 페이지의 URL을 가져와 상태 업데이트
     setUrl(window.location.href);
   }, []);
-
-  //  URL 복사 기능 추가
-  const copyToClipboard = () => {
-    navigator.clipboard
-      .writeText(url)
-      .then(() => alert('URL이 복사되었습니다!'));
-  };
 
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
   const handleUploadClick = () => {
@@ -209,8 +262,8 @@ const EditProfilePage = () => {
       }
     };
 
-    fetchTabDate();
-  }, [activeTab]);
+    if (showScreen) fetchTabDate();
+  }, [activeTab, showScreen]);
 
   useEffect(() => {
     const fetchFamily = async () => {
@@ -432,14 +485,14 @@ const EditProfilePage = () => {
   const handleNavigate = (e) => {
     e.preventDefault();
 
-    navigate(`/setting-profile/${profileId}`);
+    navigate(`/profile/setting-profile/${profileId}`);
   };
 
   //미리보기 페이지
   const handlePreview = (e) => {
     e.preventDefault();
 
-    navigate(`/preview-profile/${profileId}`);
+    navigate(`/profile/preview-profile/${profileId}`);
   };
 
   // 파일 선택 핸들러
@@ -511,6 +564,7 @@ const EditProfilePage = () => {
         throw new Error(`업로드 실패: ${file.originalFile.name}`);
 
       console.log('✅ 업로드 성공:', url);
+      console.log(imageType);
 
       // ✅ State 업데이트 전, 최신 profile 가져오기
       if (imageType !== 'photo' || imageType !== 'updatePhoto') {
@@ -605,8 +659,39 @@ const EditProfilePage = () => {
     }
   };
 
+  //비공개 계정 모달창 로그인 버튼
+  const handleLoginModalOpen = async () => {
+    localStorage.removeItem('dev_remberProfileUrl');
+    localStorage.setItem('dev_remberProfileUrl', window.location.pathname);
+    navigate('/signin');
+  };
+
+  // 비공개 접근권한 요청 입력 핸들러
+  const handleFormRequestPrivateProfileChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setFormRequestPrivateProfile((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
+  //비공개 프로필 접근 권한 요청
+  const handleRequestPrivateProfile = async () => {
+    const res = await postPrivateProfileAccessRequest(
+      profileId,
+      formRequestPrivateProfile
+    );
+
+    if (res.status === 200) {
+      isRequestModalOpen(false);
+      setIsCompletedModalOpen(true);
+    }
+  };
+
   return (
     <>
+      {!showScreen && <div className="blur-overlay"></div>}
       <section
         className="top-space-margin page-title-big-typography cover-background position-relative p-0 border-radius-10px lg-no-border-radius"
         style={{
@@ -708,44 +793,30 @@ const EditProfilePage = () => {
                   {profile.birthday}~{profile.deathDate}
                 </h6>
               </div>
-              <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
-                {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-                <div className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px">
-                  <WebShareButton />
-                  {/* <Link
-                    className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
-                    onClick={handleShareConfirm}
-                  >
-                    <span>
+              {showScreen && (
+                <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
+                  {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
+                  <div className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px">
+                    <WebShareButton />
+                    <Link
+                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
+                      to={`/profile/manage-profile/${profileId}`}
+                    >
                       <span>
-                        <i className="feather icon-feather-share-2"></i>
+                        <span>
+                          <i className="feather icon-feather-users"></i>
+                        </span>
+                        <span
+                          className="btn-double-text ls-0px"
+                          data-text="초대하기"
+                        >
+                          초대하기
+                        </span>
                       </span>
-                      <span
-                        className="btn-double-text ls-0px"
-                        data-text="공유하기"
-                      >
-                        공유하기
-                      </span>
-                    </span>
-                  </Link> */}
-                  <Link
-                    className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
-                    to={`/manage-profile/${profileId}`}
-                  >
-                    <span>
-                      <span>
-                        <i className="feather icon-feather-users"></i>
-                      </span>
-                      <span
-                        className="btn-double-text ls-0px"
-                        data-text="초대하기"
-                      >
-                        초대하기
-                      </span>
-                    </span>
-                  </Link>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -791,265 +862,274 @@ const EditProfilePage = () => {
         </div>
       </section>
 
-      <section id="tab" className="pt-0 sm-pt-40px">
-        <div className="container">
-          <div className="row">
-            <div className="col-12 tab-style-04">
-              <ul className="nav nav-tabs border-0 justify-content-center fs-19">
-                {['이미지', '하늘편지', '가족관계도'].map((tab) => (
-                  <li key={tab} className="nav-item">
-                    <button
-                      className={`nav-link ${
-                        activeTab === tab ? 'active text-base-color' : ''
-                      }`}
-                      onClick={() => setActiveTab(tab)}
-                    >
-                      {tab}
-                      <span className="tab-border bg-base-color"></span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+      {showScreen && (
+        <section id="tab" className="pt-0 sm-pt-40px">
+          <div className="container">
+            <div className="row">
+              <div className="col-12 tab-style-04">
+                <ul className="nav nav-tabs border-0 justify-content-center fs-19">
+                  {['이미지', '하늘편지', '가족관계도'].map((tab) => (
+                    <li key={tab} className="nav-item">
+                      <button
+                        className={`nav-link ${
+                          activeTab === tab ? 'active text-base-color' : ''
+                        }`}
+                        onClick={() => setActiveTab(tab)}
+                      >
+                        {tab}
+                        <span className="tab-border bg-base-color"></span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
 
-              <div className="mb-5 h-1px w-100 bg-extra-medium-gray sm-mt-10px xs-mb-8"></div>
-              <div className="tab-content">
-                {activeTab === '이미지' && (
-                  <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                    <LightGallery
-                      key={galleryKey} // ✅ 리렌더링을 위한 key
-                      speed={500}
-                      download={false}
-                      thumbnail={true}
-                      plugins={[lgThumbnail]}
-                      selector=".gallery-item"
-                      onAfterOpen={handleGalleryOpen} // ✅ LightGallery가 열린 후 실행
-                      onInit={onInit} // ✅ 인스턴스 저장
-                      ref={lgRef}
-                    >
-                      <div style={galleryStyle}>
-                        {/* 첫 번째 업로드 영역 */}
-                        <div
-                          onClick={handleUploadClick}
-                          style={{
-                            ...imageStyle,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: '#f0f0f0',
-                            cursor: 'pointer',
-                            border: '2px dashed #ccc',
-                          }}
-                        >
-                          <MdAddPhotoAlternate size={200} color="#888" />
-                          <input
-                            type="file"
-                            accept="image/*"
-                            ref={fileInputRef}
-                            style={{ display: 'none' }}
-                            onChange={handleFileChange}
-                          />
-                        </div>
-
-                        {images.map((image, index) => (
-                          <a
-                            href={image.url}
-                            key={index}
-                            className="gallery-item"
-                            data-src={image.url}
+                <div className="mb-5 h-1px w-100 bg-extra-medium-gray sm-mt-10px xs-mb-8"></div>
+                <div className="tab-content">
+                  {activeTab === '이미지' && (
+                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
+                      <LightGallery
+                        key={galleryKey} // ✅ 리렌더링을 위한 key
+                        speed={500}
+                        download={false}
+                        thumbnail={true}
+                        plugins={[lgThumbnail]}
+                        selector=".gallery-item"
+                        onAfterOpen={handleGalleryOpen} // ✅ LightGallery가 열린 후 실행
+                        onInit={onInit} // ✅ 인스턴스 저장
+                        ref={lgRef}
+                      >
+                        <div style={galleryStyle}>
+                          {/* 첫 번째 업로드 영역 */}
+                          <div
+                            onClick={handleUploadClick}
+                            style={{
+                              ...imageStyle,
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              backgroundColor: '#f0f0f0',
+                              cursor: 'pointer',
+                              border: '2px dashed #ccc',
+                            }}
                           >
-                            <img
-                              src={image.url}
-                              // alt={`Gallery Image ${index}`}
-                              style={imageStyle}
+                            <MdAddPhotoAlternate size={200} color="#888" />
+                            <input
+                              type="file"
+                              accept="image/*"
+                              ref={fileInputRef}
+                              style={{ display: 'none' }}
+                              onChange={handleFileChange}
                             />
-                          </a>
-                        ))}
-                      </div>
-                    </LightGallery>
-                  </div>
-                )}
-                {activeTab === '하늘편지' && (
-                  <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                    <div className="row m-0">
-                      {letters.length > 0 ? (
-                        <div
-                          className="col-12"
-                          // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
-                        >
-                          {letters.map((letter, index) => (
-                            <div
-                              className="row border-bottom border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-30px"
-                              key={letter.letterId}
+                          </div>
+
+                          {images.map((image, index) => (
+                            <a
+                              href={image.url}
+                              key={index}
+                              className="gallery-item"
+                              data-src={image.url}
                             >
-                              <div className="col-12 col-md-1 text-md-center align-self-center">
-                                <span className="text-dark-gray fs-14 fw-600">
-                                  {letter.displayName}
-                                </span>
-                              </div>
-                              <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
-                                <p className="sm-w-85">{letter.content}</p>
-                              </div>
-                              <div className="col-lg-2 col-md-3 align-self-center text-md-end">
-                                <span>{letter.createdAt}</span>
-                              </div>
-                              <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                                <Link
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    handleRemoveLetterConfirm(letter.letterId);
-                                  }}
-                                >
-                                  <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                                </Link>
-                              </div>
-                            </div>
+                              <img
+                                src={image.url}
+                                // alt={`Gallery Image ${index}`}
+                                style={imageStyle}
+                              />
+                            </a>
                           ))}
                         </div>
-                      ) : (
-                        <div className="col-12 text-center mt-100px pb-2 fs-24">
-                          <i className="line-icon-Letter-Open align-middle icon-extra-large text-light-gray pb-1"></i>
-                          <p>등록된 하늘편지가 없습니다.</p>
-                        </div>
-                      )}
+                      </LightGallery>
                     </div>
-                  </div>
-                )}
-
-                {activeTab === '가족관계도' && (
-                  <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                    <div className="row">
-                      <div className="row align-items-center">
-                        <div className="col-xl-12 col-lg-10 col-sm-5 form-results d-block mt-20px mb-0 text-center">
-                          <p className="text-black fs-18">
-                            가족 관계도
-                            <br />
-                            아래 가족을 추가하고 드래그로 순서를 바꿔보세요.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="row  align-items-center">
-                        <div className="col-xl-10 col-lg-10 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
-                          <Button
-                            className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase"
-                            onClick={handleAddItem}
+                  )}
+                  {activeTab === '하늘편지' && (
+                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
+                      <div className="row m-0">
+                        {letters.length > 0 ? (
+                          <div
+                            className="col-12"
+                            // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
                           >
-                            <i className="feather icon-feather-plus align-bottom text-white icon-extra-medium"></i>
-                            가족 추가하기
-                          </Button>
-                        </div>
+                            {letters.map((letter, index) => (
+                              <div
+                                className="row border-bottom border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-30px"
+                                key={letter.letterId}
+                              >
+                                <div className="col-12 col-md-1 text-md-center align-self-center">
+                                  <span className="text-dark-gray fs-14 fw-600">
+                                    {letter.displayName}
+                                  </span>
+                                </div>
+                                <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                                  <p className="sm-w-85">{letter.content}</p>
+                                </div>
+                                <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                                  <span>{letter.createdAt}</span>
+                                </div>
+                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                                  <Link
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleRemoveLetterConfirm(
+                                        letter.letterId
+                                      );
+                                    }}
+                                  >
+                                    <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                                  </Link>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="col-12 text-center mt-100px pb-2 fs-24">
+                            <i className="line-icon-Letter-Open align-middle icon-extra-large text-light-gray pb-1"></i>
+                            <p>등록된 하늘편지가 없습니다.</p>
+                          </div>
+                        )}
                       </div>
+                    </div>
+                  )}
 
-                      <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="list">
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.droppableProps}
+                  {activeTab === '가족관계도' && (
+                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
+                      <div className="row">
+                        <div className="row align-items-center">
+                          <div className="col-xl-12 col-lg-10 col-sm-5 form-results d-block mt-20px mb-0 text-center">
+                            <p className="text-black fs-18">
+                              가족 관계도
+                              <br />
+                              아래 가족을 추가하고 드래그로 순서를 바꿔보세요.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="row  align-items-center">
+                          <div className="col-xl-10 col-lg-10 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
+                            <Button
+                              className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase"
+                              onClick={handleAddItem}
                             >
-                              {family.map((f, index) => (
-                                <Draggable
-                                  key={index}
-                                  draggableId={`draggable-${index}`} // 숫자가 아닌 문자열로 변환
-                                  index={index}
-                                >
-                                  {(provided) => (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      className="sortable-item text-center list-item"
-                                    >
-                                      <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-5px ps-200px pe-200px md-ps-0 md-pe-0">
-                                        <div className="col-auto col-md-1 text-md-center align-self-center">
-                                          <i className="bi bi-grip-vertical align-middle icon-extra-medium text-gray md-fs-18"></i>
-                                        </div>
+                              <i className="feather icon-feather-plus align-bottom text-white icon-extra-medium"></i>
+                              가족 추가하기
+                            </Button>
+                          </div>
+                        </div>
 
-                                        {/* 관계 선택 */}
-                                        <div className="col-12 col-md-3 text-md-center align-self-center pt-1">
-                                          {f.isCustomInput ? (
+                        <DragDropContext onDragEnd={onDragEnd}>
+                          <Droppable droppableId="list">
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                              >
+                                {family.map((f, index) => (
+                                  <Draggable
+                                    key={index}
+                                    draggableId={`draggable-${index}`} // 숫자가 아닌 문자열로 변환
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        className="sortable-item text-center list-item"
+                                      >
+                                        <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-5px ps-200px pe-200px md-ps-0 md-pe-0">
+                                          <div className="col-auto col-md-1 text-md-center align-self-center">
+                                            <i className="bi bi-grip-vertical align-middle icon-extra-medium text-gray md-fs-18"></i>
+                                          </div>
+
+                                          {/* 관계 선택 */}
+                                          <div className="col-12 col-md-3 text-md-center align-self-center pt-1">
+                                            {f.isCustomInput ? (
+                                              <input
+                                                className="border-color-transparent-dark-very-light form-control bg-transparent required"
+                                                type="text"
+                                                value={f.familyTitle}
+                                                onChange={(e) =>
+                                                  handleCustomInputChange(
+                                                    index,
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                            ) : (
+                                              <select
+                                                className="form-control border-color-transparent-dark-very-light bg-transparent md-pt-0 md-pb-0"
+                                                value={f.familyTitle}
+                                                onChange={(e) =>
+                                                  handleSelectChange(
+                                                    index,
+                                                    e.target.value
+                                                  )
+                                                }
+                                              >
+                                                <option value="">
+                                                  - 선택 -
+                                                </option>
+                                                <option value="아버지">
+                                                  아버지
+                                                </option>
+                                                <option value="어머니">
+                                                  어머니
+                                                </option>
+                                                <option value="아들">
+                                                  아들
+                                                </option>
+                                                <option value="딸">딸</option>
+                                                <option value="직접 입력">
+                                                  직접 입력
+                                                </option>
+                                              </select>
+                                            )}
+                                          </div>
+
+                                          {/* 이름 입력 필드 */}
+                                          <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px sm-pt-15px sm-pb-15px sm-px-0">
                                             <input
-                                              className="border-color-transparent-dark-very-light form-control bg-transparent required"
+                                              className="mb-20px md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
                                               type="text"
-                                              value={f.familyTitle}
+                                              placeholder="이름"
+                                              value={f.displayName}
                                               onChange={(e) =>
-                                                handleCustomInputChange(
+                                                handleNameChange(
                                                   index,
                                                   e.target.value
                                                 )
                                               }
                                             />
-                                          ) : (
-                                            <select
-                                              className="form-control border-color-transparent-dark-very-light bg-transparent md-pt-0 md-pb-0"
-                                              value={f.familyTitle}
-                                              onChange={(e) =>
-                                                handleSelectChange(
-                                                  index,
-                                                  e.target.value
-                                                )
+                                          </div>
+
+                                          {/* 삭제 아이콘 */}
+                                          <div className="col-auto col-md-1 align-self-start align-self-md-center text-end text-md-center sm-position-absolute right-5px">
+                                            <button
+                                              onClick={() =>
+                                                handleFailyDelete(index)
                                               }
+                                              className="btn btn-link"
                                             >
-                                              <option value="">- 선택 -</option>
-                                              <option value="아버지">
-                                                아버지
-                                              </option>
-                                              <option value="어머니">
-                                                어머니
-                                              </option>
-                                              <option value="아들">아들</option>
-                                              <option value="딸">딸</option>
-                                              <option value="직접 입력">
-                                                직접 입력
-                                              </option>
-                                            </select>
-                                          )}
-                                        </div>
-
-                                        {/* 이름 입력 필드 */}
-                                        <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px sm-pt-15px sm-pb-15px sm-px-0">
-                                          <input
-                                            className="mb-20px md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
-                                            type="text"
-                                            placeholder="이름"
-                                            value={f.displayName}
-                                            onChange={(e) =>
-                                              handleNameChange(
-                                                index,
-                                                e.target.value
-                                              )
-                                            }
-                                          />
-                                        </div>
-
-                                        {/* 삭제 아이콘 */}
-                                        <div className="col-auto col-md-1 align-self-start align-self-md-center text-end text-md-center sm-position-absolute right-5px">
-                                          <button
-                                            onClick={() =>
-                                              handleFailyDelete(index)
-                                            }
-                                            className="btn btn-link"
-                                          >
-                                            <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium md-fs-18"></i>
-                                          </button>
+                                              <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium md-fs-18"></i>
+                                            </button>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  )}
-                                </Draggable>
-                              ))}
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
-                      </DragDropContext>
+                                    )}
+                                  </Draggable>
+                                ))}
+                                {provided.placeholder}
+                              </div>
+                            )}
+                          </Droppable>
+                        </DragDropContext>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="w-40">
           <div className="modal-content p-0 rounded shadow-lg">
@@ -1076,6 +1156,156 @@ const EditProfilePage = () => {
                         onClick={() => setIsModalOpen(false)}
                       >
                         닫기
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      >
+        <div className="w-30 md-w-90">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-5 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        비공개 계정입니다.
+                      </h6>
+                      <p>로그인 후 프로필 초대 요청이 필요합니다.</p>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+
+                      <Button
+                        radiusOn="radius-on"
+                        className="btn btn-base-color btn-large btn-box-shadow btn-round-edge me-1 w-50"
+                        onClick={handleLoginModalOpen}
+                      >
+                        로그인
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isRequestModalOpen}
+        onClose={() => setIsRequestModalOpen(false)}
+      >
+        <div className="row justify-content-center">
+          <div className="col-6">
+            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+              <div className="row justify-content-center mb-30px sm-mb-10px">
+                <div className="col-md-9 text-center">
+                  <h6 className="text-dark-gray fw-500 mb-15px">
+                    비공개 계정 요청하기
+                  </h6>
+                  <button
+                    type="button"
+                    className="btn-close position-absolute top-10px right-10px"
+                    onClick={() => setIsRequestModalOpen(false)}
+                  ></button>
+                </div>
+              </div>
+              <form className="row">
+                <div className="col-12 mb-20px ">
+                  <label className="fw-bold">이름</label>
+                  <input
+                    className="border-radius-15px input-large mb-5px"
+                    type="text"
+                    name="name"
+                    placeholder="이름을 입력해 주세요."
+                    value={formRequestPrivateProfile.name}
+                    onChange={handleFormRequestPrivateProfileChange}
+                    required
+                  />
+                  {/* {errors.displayName && (
+                    <p className="text-danger text-start">
+                      이름을 입력 하셔야 됩니다.
+                    </p>
+                  )} */}
+                </div>
+                <div className="col-12 mb-20px ">
+                  <label className="fw-bold">메모</label>
+                  <textarea
+                    className="border-radius-15px form-control"
+                    cols="40"
+                    rows="4"
+                    name="memo"
+                    value={formRequestPrivateProfile.memo}
+                    onChange={handleFormRequestPrivateProfileChange}
+                    placeholder="비공개 계정 방문을 위해 본인을 알릴 수 있는 메모를 입력해 주세요."
+                  ></textarea>
+                  {/* {errors.memo && (
+                    <p className="text-danger text-start">
+                      받는분 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                </div>
+
+                <div className="col-lg-112 text-center text-lg-center">
+                  <input type="hidden" name="redirect" value="" />
+
+                  <Button
+                    radiusOn="radius-on"
+                    className="btn btn-base-color btn-small btn-box-shadow btn-round-edge me-1 w-100 mb-3"
+                    onClick={handleRequestPrivateProfile}
+                  >
+                    보내기
+                  </Button>
+                  <Button
+                    radiusOn="radius-on"
+                    className="btn btn-white btn-small btn-box-shadow btn-round-edge me-1 w-100"
+                    onClick={() => navigate('/profile')}
+                  >
+                    나의 프로필 리스트
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isCompletedModalOpen}
+        onClose={() => setIsCompletedModalOpen(false)}
+      >
+        <div className="w-30 md-w-90">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-5 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        요청이 완료되었습니다.
+                      </h6>
+                      <p>초대 승인을 기다려주세요.</p>
+                      <p>감사합니다.</p>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+
+                      <Button
+                        radiusOn="radius-on"
+                        className="btn btn-base-color btn-large btn-box-shadow btn-round-edge me-1 w-50"
+                        onClick={() => navigate('/profile')}
+                      >
+                        접속하기
                       </Button>
                     </div>
                   </div>

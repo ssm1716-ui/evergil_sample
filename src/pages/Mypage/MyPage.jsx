@@ -16,7 +16,7 @@ const MyPage = () => {
           <div className="row flex-row-reverse">
             <Outlet />
             <div
-              className="col-xxl-2 col-lg-3 shop-sidebar"
+              className="col-xxl-2 col-lg-3 shop-sidebar md-pt-0"
               data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
               <div className="mb-30px">

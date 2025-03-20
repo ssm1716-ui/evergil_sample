@@ -437,7 +437,7 @@ const ShopPage = () => {
                     상품 설명<span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item d-none">
                   <a
                     className="nav-link"
                     data-bs-toggle="tab"

@@ -93,7 +93,9 @@ const ManagePage = () => {
     try {
       const res = await getInvitationsList(id);
       if (res.status === 200) {
-        setInvitations(res.data);
+        const { items } = res.data.data;
+        console.log(items);
+        setInvitations(items);
       }
     } catch (error) {
       console.error(error);
@@ -121,9 +123,6 @@ const ManagePage = () => {
         getPrivateProfileAccessRequests(id),
       ]);
 
-      console.log(invitationsRes);
-      console.log(privateAccessRes);
-
       if (profileRes.status === 200) {
         const { profile } = profileRes.data.data;
         setScope(profile.scope);
@@ -145,7 +144,6 @@ const ManagePage = () => {
   //초기 데이터 가져오기
   useEffect(() => {
     if (profileId) {
-      4;
       fetchAllData(profileId); // ✅ 병렬 호출로 성능 최적화
     }
   }, [profileId]);
@@ -180,39 +178,34 @@ const ManagePage = () => {
 
   const handleCopylink = () => {
     navigator.clipboard.writeText(
-      window.location.origin + '/view-profile/' + profileId
+      window.location.origin + '/profile/view-profile/' + profileId
     );
     setIsModalCopyLinkOpen(true);
   };
 
   // 초대한 사용자 권한 변경 핸들러
   const handleInvitationsPermissionChange = async (invitationId, value) => {
-    let updatedItems;
+    // let updatedItems;
     let res;
 
     if (!value) return;
 
     if (value === 'DELETE') {
-      updatedItems = invitations.filter((item) => item.id === invitationId);
+      // updatedItems = invitations.filter((item) => item.id === invitationId);
       res = await deleteInvitationPermissions(profileId, invitationId);
     } else if (value && (value === 'EDITOR' || value === 'VIEWER')) {
-      updatedItems = invitations.map((item, i) =>
-        item.id === invitationId
-          ? {
-              ...item,
-              permission: value,
-            }
-          : item
-      );
+      // updatedItems = invitations.map((item, i) =>
+      //   item.id === invitationId
+      //     ? {
+      //         ...item,
+      //         permission: value,
+      //       }
+      //     : item
+      // );
 
       res = await putInvitationPermissions(profileId, invitationId, value);
     }
-    console.log(updatedItems);
-    setInvitations(updatedItems);
-
-    // const res = await putInvitationPermissions(profileId, invitationId, value);
-
-    console.log(res);
+    fetchInvitations(profileId);
   };
 
   return (

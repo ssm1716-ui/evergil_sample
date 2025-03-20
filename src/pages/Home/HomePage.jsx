@@ -12,6 +12,12 @@ import mainSubImage4 from '@/assets/images/demo-travel-agency-about-03.jpg';
 import mainSubImage5 from '@/assets/images/demo-travel-agency-about-04.jpg';
 import mainSubBgImage from '@/assets/images/demo-branding-agency-pattern.svg';
 
+import mainLogoPc from '@/assets/images/main_logo_pc.png';
+import mainLogoMobile from '@/assets/images/main_logo_mobile.png';
+import guide1 from '@/assets/images/guide_1.jpg';
+import guide2 from '@/assets/images/guide_2.jpg';
+import guide3 from '@/assets/images/guide_3.jpg';
+
 // Modal.setAppElement('#root');
 
 const HomeSubPage = () => {
@@ -49,7 +55,7 @@ const HomeSubPage = () => {
                   Luxury space that you can afford
                 </h5> */}
               <div className="fs-200 lg-fs-200 md-fs-170 sm-fs-150 xs-fs-110 fw-700 mb-20px ls-minus-8px md-ls-minus-4px xs-ls-minus-2px text-shadow-double-large">
-                Everlink
+                <img src={mainLogoPc} alt="mainlogo" />
               </div>
               <div className="mb-30px">
                 <a
@@ -247,25 +253,25 @@ const HomeSubPage = () => {
       >
         <div className="container">
           <div
-            className="row row-cols-1 row-cols-lg-3 row-cols-md-2 justify-content-center"
+            className="row row-cols-1 row-cols-lg-3 row-cols-md-2 justify-content-center interactive-banner-container"
             data-anime='{"el": "childs", "translateY": [0, 0], "perspective": [1000,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
           >
             <div className="col interactive-banner-style-03 transition-inner-all md-mb-30px">
               <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
                 <figure className="m-0">
-                  <div className="bg-gradient-gray-light-dark-transparent position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
-                  <img src={mainSubImage3} alt="" />
+                  <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
+                  <img src={guide1} alt="" />
                   <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1">
-                    <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
+                    {/* <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
                       Preferred style of accommodation.
-                    </span>
-                    <a
+                    </span> */}
+                    {/* <a
                       href="#"
                       className="align-self-start fs-15 fw-500 ls-1px text-uppercase text-white"
                     >
                       <i className="bi bi-bookmark-heart align-middle icon-extra-medium me-10px"></i>
                       Superior service
-                    </a>
+                    </a> */}
                   </figcaption>
                 </figure>
               </div>
@@ -273,10 +279,10 @@ const HomeSubPage = () => {
             <div className="col interactive-banner-style-03 transition-inner-all md-mb-30px">
               <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
                 <figure className="m-0">
-                  <div className="bg-gradient-gray-light-dark-transparent position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
-                  <img src={mainSubImage4} alt="" />
+                  <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
+                  <img src={guide2} alt="" />
                   <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1">
-                    <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
+                    {/* <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
                       Our local guides and tour directors.
                     </span>
                     <a
@@ -285,7 +291,7 @@ const HomeSubPage = () => {
                     >
                       <i className="bi bi-award align-middle icon-extra-medium me-10px"></i>
                       Greatest guides
-                    </a>
+                    </a> */}
                   </figcaption>
                 </figure>
               </div>
@@ -293,10 +299,10 @@ const HomeSubPage = () => {
             <div className="col interactive-banner-style-03 transition-inner-all">
               <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
                 <figure className="m-0">
-                  <div className="bg-gradient-gray-light-dark-transparent position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
-                  <img src={mainSubImage5} alt="" />
+                  <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
+                  <img src={guide3} alt="" />
                   <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1">
-                    <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
+                    {/* <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
                       The best consumer protection plan.
                     </span>
                     <a
@@ -305,7 +311,7 @@ const HomeSubPage = () => {
                     >
                       <i className="bi bi-shield-check align-middle icon-extra-medium me-10px"></i>
                       Fully protected
-                    </a>
+                    </a> */}
                   </figcaption>
                 </figure>
               </div>

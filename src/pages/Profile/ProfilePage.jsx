@@ -154,10 +154,10 @@ const ProfilePage = () => {
 
   const handleMovePageProfile = (profileId) => {
     if (activeTab === 'My Everlinks') {
-      navigate(`/edit-profile/${profileId}`);
+      navigate(`/profile/edit-profile/${profileId}`);
       return;
     }
-    navigate(`/view-profile/${profileId}`);
+    navigate(`/profile/view-profile/${profileId}`);
   };
   const handleRemoveConfirm = (id) => {
     setProfileId(id);
@@ -258,7 +258,7 @@ const ProfilePage = () => {
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       {activeTab === 'My Everlinks' && (
                         <div className="col col-lg-11 col-sm-5 text-end text-sm-end text-lg-end text-xl-end xs-mt-25px">
-                          {/* <Link to="/setting-profile"> */}
+                          {/* <Link to="/profile/setting-profile"> */}
                           <Link to="/bridge-profile">
                             <Button
                               variant="primary"
@@ -329,7 +329,8 @@ const ProfilePage = () => {
                 {profiles.length === 0 && (
                   <div className="text-center pt-12">
                     {activeTab === 'My Everlinks' && (
-                      <Link to="/setting-profile">
+                      // <Link to="/profile/setting-profile">
+                      <Link to="/bridge-profile">
                         <div className="pb-2">
                           <i className="fa-solid fa-circle-plus align-middle text-extra-medium-gray fs-250"></i>
                         </div>

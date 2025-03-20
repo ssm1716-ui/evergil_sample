@@ -74,6 +74,23 @@ const SignInPage = () => {
       }
       dispatch(loginSuccess({ token }));
 
+      //이메일로 전달받은 초대하기로 로그인 후 로컬스토리지에서 get
+      const invitationKey = localStorage.getItem('dev_invitation');
+
+      //비공개 프로필 -> 로그인 후 로컬스토리지 get
+      const remberProfileUrl = localStorage.getItem('dev_remberProfileUrl');
+
+      if (invitationKey) {
+        localStorage.removeItem('dev_invitation');
+        navigate(`/profile/invitation?key=${invitationKey}`);
+        return;
+      }
+      if (remberProfileUrl) {
+        localStorage.removeItem('dev_remberProfileUrl');
+        navigate(`${remberProfileUrl}`);
+        return;
+      }
+
       navigate('/profile');
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
@@ -108,20 +125,20 @@ const SignInPage = () => {
         <div className="container">
           <div className="row g-0 justify-content-center bg-white">
             <div
-              className="row align-items-center justify-content-center py-5"
+              className="row align-items-center justify-content-center py-5 d-none d-md-inline-block"
               data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
             >
-              <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
+              <div className="col-12 text-center position-relative page-title-extra-large">
                 <h4 className="fw-600 text-dark-gray mb-10px">로그인</h4>
               </div>
               <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
             </div>
             <div
-              className="col-lg-8 col-md-10  p-6"
+              className="col-lg-8 col-md-10 p-5"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <form>
-                <label className="text-dark-gray mb-10px fw-500">
+                <label className="text-dark-gray mb-10px md-mb-0 fw-500">
                   이메일<span className="text-red">*</span>
                 </label>
                 <input
@@ -136,7 +153,7 @@ const SignInPage = () => {
                   <p className="text-danger">{errors.loginEmail}</p>
                 )}
 
-                <label className="text-dark-gray mb-10px fw-500">
+                <label className="text-dark-gray mb-10px md-mb-0 fw-500">
                   비밀번호<span className="text-red">*</span>
                 </label>
                 <input
@@ -152,28 +169,29 @@ const SignInPage = () => {
                 )}
 
                 <input type="hidden" name="redirect" value="" />
-
-                <Button
-                  type="submit"
-                  size="extra-large"
-                  radiusOn="radius-on"
-                  className="btn btn-medium btn-round-edge btn-base-color btn-box-shadow submit w-100 text-transform-none"
-                  onClick={handleLogin}
-                >
-                  로그인
-                </Button>
-                <div className="pt-15 text-center">
+                <div className="text-center">
+                  <Button
+                    type="submit"
+                    size="extra-large"
+                    radiusOn="radius-on"
+                    className="btn btn-medium btn-round-edge btn-base-color btn-box-shadow w-100 md-w-50 text-transform-none"
+                    onClick={handleLogin}
+                  >
+                    로그인
+                  </Button>
+                </div>
+                <div className="pt-15 md-pt-5 text-center">
                   <Link to="/signup">회원가입</Link>
                   <span className="px-5">|</span>
                   <Link to="/password-forgot">비밀번호찾기</Link>
                 </div>
-                <div className="pt-15 text-center d-flex flex-column align-items-center">
+                <div className="pt-15 md-pt-2 text-center d-flex flex-column align-items-center">
                   <Button
                     data-value="google"
                     name="google"
                     size="extra-large"
                     color="google"
-                    className="btn-large w-50 mt-20px mb-10px d-block btn-box-shadow border-0"
+                    className="btn-large w-50 md-w-100 mt-20px d-block btn-box-shadow border-0"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -220,7 +238,7 @@ const SignInPage = () => {
                     data-value="kakao"
                     size="extra-large"
                     color="kakao"
-                    className="btn-large w-50 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-50 md-w-100  mt-20px d-block btn-box-shadow"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -251,7 +269,7 @@ const SignInPage = () => {
                     data-value="naver"
                     size="extra-large"
                     color="naver"
-                    className="btn-large w-50 mt-20px mb-10px d-block btn-box-shadow"
+                    className="btn-large w-50 md-w-100  mt-20px d-block btn-box-shadow"
                     onClick={handleSnsLoginAction}
                   >
                     <svg

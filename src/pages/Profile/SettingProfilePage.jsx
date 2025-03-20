@@ -19,7 +19,7 @@ const SettingProfilePage = () => {
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formProfile, setFormProfile] = useState({
-    qrKey: 'ZBwljGfHmgRGx7n0',
+    qrKey: 'RUcPvIvjo5bfdEtg',
     memorialType: '', // 사람 or 동물
     displayName: '',
     birthday: '',
@@ -128,7 +128,7 @@ const SettingProfilePage = () => {
     <>
       <section>
         <div className="container">
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overㄹㄹlow-hidden">
             <div className="col contact-form-style-04">
               <div className="pt-15 text-center">
                 <div className="pb-15">
@@ -257,7 +257,7 @@ const SettingProfilePage = () => {
                     >
                       <option value="">선택</option>
                       <option value="PUBLIC">전체공개</option>
-                      <option value="PRIVITE">비공개</option>
+                      <option value="PRIVATE">비공개</option>
                     </select>
                   </div>
                   {errors.scope && (
@@ -294,7 +294,7 @@ const SettingProfilePage = () => {
               <h4 className="fw-800 text-dark-gray mt-2 mb-2 ls-minus-1px">
                 추모페이지 {profileId ? '변경 완료' : '생성 완료'}
               </h4>
-              <Link to={`/edit-profile/${profileId}`}>
+              <Link to={'/profile'}>
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"

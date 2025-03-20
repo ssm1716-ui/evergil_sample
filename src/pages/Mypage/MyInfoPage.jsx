@@ -245,7 +245,7 @@ const MyInfoPage = () => {
   return (
     <>
       {currentView === 'passwordConfirm' && (
-        <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+        <div className="col-xxl-10 col-lg-9 md-ps-15px">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
             <h6 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h6>
           </div>
@@ -272,7 +272,7 @@ const MyInfoPage = () => {
                   name="eventSection"
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large w-50 mt-60px mb-5px d-block"
+                  className="btn-large w-40 mt-60px md-mt-10px mb-5px d-inline-block"
                   onClick={handlePasswordConfirm}
                 >
                   확인
@@ -284,7 +284,7 @@ const MyInfoPage = () => {
       )}
 
       {currentView === 'infoList' && (
-        <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+        <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
             <h1 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h1>
           </div>
@@ -404,7 +404,7 @@ const MyInfoPage = () => {
 
       {currentView === 'passwordChange' && (
         // <ChangePassword onBack={handleGoBackToList} onChange={} errors={errors} />
-        <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px">
+        <div className="col-xxl-10 col-lg-9 md-ps-15px">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
             <h1 className="fw-600 text-dark-gray mb-10px">비밀번호 변경</h1>
           </div>
@@ -481,7 +481,7 @@ const MyInfoPage = () => {
       )}
       {currentView === 'nameChange' && (
         // <ChangeName onBack={handleGoBackToList} errors={errors} />
-        <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+        <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
             <h1 className="fw-600 text-dark-gray mb-10px">이름 변경</h1>
           </div>
@@ -507,7 +507,7 @@ const MyInfoPage = () => {
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large submit w-50 mt-60px mb-5px d-block"
+                  className="btn-large submit w-50 md-mt-60px mb-5px d-block"
                   onClick={handleNameChange}
                 >
                   이름 변경 완료
@@ -519,7 +519,7 @@ const MyInfoPage = () => {
       )}
       {currentView === 'phoneChange' && (
         // <ChangePhone onBack={handleGoBackToList} errors={errors} />
-        <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+        <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
             <h1 className="fw-600 text-dark-gray mb-10px">핸드폰 변경</h1>
           </div>
@@ -583,7 +583,7 @@ const MyInfoPage = () => {
       )}
       {currentView === 'emailChange' && (
         // <ChangeEmail onBack={handleGoBackToList} errors={errors} />
-        <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+        <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
             <h1 className="fw-600 text-dark-gray mb-10px">이메일 변경</h1>
           </div>

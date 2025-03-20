@@ -71,7 +71,7 @@ const MyContactPage = () => {
 
   return (
     <>
-      <div className="col-xxl-10 col-lg-9 md-ps-15px md-mb-60px ">
+      <div className="col-xxl-10 col-lg-9 md-ps-15px">
         <section className="page-title-separate-breadcrumbs cover-background magic-cursor round-cursor text-center p-0 pb-5 mt-0">
           <div className="container position-relative">
             <div

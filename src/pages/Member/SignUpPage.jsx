@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '@/state/slices/authSlices';
 import {
@@ -43,6 +43,11 @@ const SignUpPage = () => {
   const [errors, setErrors] = useState({});
   const [otp, setOtp] = useState(['', '', '', '', '']);
   const checkboxGroupRef = useRef([]);
+  const [invitationKey, setInvitationKey] = useState('');
+
+  useEffect(() => {
+    setInvitationKey(localStorage.getItem('dev_invitation'));
+  }, []);
 
   // 약관 전체 동의하기 (전체 선택, 전체 해제)
   const handleGroupCheck = (name) => {
@@ -529,18 +534,37 @@ const SignUpPage = () => {
                   <h4 className="fw-800 text-dark-gray mt-15 mb-2 ls-minus-1px">
                     회원가입 완료
                   </h4>
-                  <Link to="/profile">
-                    <Button
-                      size="extra-large"
-                      radiusOn="radius-on"
-                      className=" w-50 mt-20px mb-20px d-block"
-                    >
-                      계속하기
-                    </Button>
-                  </Link>
-                  <h6 className=" mb-8 ls-minus-1px">
-                    에버링크 프로필을 생성해보세요.
-                  </h6>
+                  {!invitationKey ? (
+                    <>
+                      <Link to="/profile">
+                        <Button
+                          size="extra-large"
+                          radiusOn="radius-on"
+                          className=" w-50 mt-20px mb-20px d-block"
+                        >
+                          계속하기
+                        </Button>
+                      </Link>
+                      <h6 className=" mb-8 ls-minus-1px">
+                        에버링크 프로필을 생성해보세요.
+                      </h6>
+                    </>
+                  ) : (
+                    <>
+                      <Link to={`/profile/invitation?key=${invitationKey}`}>
+                        <Button
+                          size="extra-large"
+                          radiusOn="radius-on"
+                          className=" w-50 mt-20px mb-20px d-block"
+                        >
+                          계속하기
+                        </Button>
+                      </Link>
+                      <h6 className=" mb-8 ls-minus-1px">
+                        초대 수락을 결정 하세요.
+                      </h6>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

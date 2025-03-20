@@ -167,38 +167,6 @@ const ViewProfilePage = () => {
     setTabList(['이미지', '하늘편지']);
   }, [hasFamilyTree]);
 
-  // const onInit = () => {
-  //   setTimeout(() => {
-  //     // const lgContainer = document.querySelector('.lg-container');
-  //     const lgToolbar = document.getElementById('lg-toolbar-1');
-
-  //     if (lgToolbar && !document.getElementById('edit-button')) {
-  //       const editButton = document.createElement('button');
-  //       editButton.innerText = '수정';
-  //       editButton.classList.add('lg-custom-btn');
-  //       editButton.classList.add('lg-custom-modify');
-  //       editButton.id = 'edit-button';
-  //       editButton.onclick = () => {
-  //         const index = getCurrentImageIndex();
-  //         handleEdit(index);
-  //       };
-
-  //       const deleteButton = document.createElement('button');
-  //       deleteButton.innerText = '삭제';
-  //       deleteButton.classList.add('lg-custom-btn');
-  //       deleteButton.classList.add('lg-custom-remove');
-  //       deleteButton.id = 'delete-button';
-  //       deleteButton.onclick = () => {
-  //         const index = getCurrentImageIndex();
-  //         handleDelete(index);
-  //       };
-
-  //       lgToolbar.appendChild(editButton);
-  //       lgToolbar.appendChild(deleteButton);
-  //     }
-  //   }, 100);
-  // };
-
   // 현재 선택된 이미지의 index 찾기
   const getCurrentImageIndex = () => {
     const gallery = lgRef.current?.instance;

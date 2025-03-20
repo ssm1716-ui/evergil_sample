@@ -57,7 +57,7 @@ export const getSelectProfile = async (id) => {
 
     try {
         const res = await axiosInstance.get(`/memorial-profiles/${id}`);
-        return res;
+        console.log('getSelectProfile - ', res);
     } catch (err) {
         console.error(err);
     }
@@ -450,7 +450,21 @@ export const putPrivateAccessRequests = async (profileId, requestId, params) => 
 export const postPrivateProfileAccessRequest = async (profileId, params) => {
 
     try {
+        console.log(profileId);
+        console.log(params);
         const res = await axiosInstance.post(`/memorial-profiles/${profileId}/requests`, params);
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//초대를 수락/거절하기 
+export const putConfirmInvitation = async (params) => {
+
+    try {
+        const res = await axiosInstance.put('/memorial-profiles/invitations.resolve', params);
         console.log(res);
         return res;
     } catch (err) {

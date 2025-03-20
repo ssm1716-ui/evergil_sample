@@ -89,7 +89,7 @@
     padding-bottom: 40px;
   }
   section.big-section {
-    padding-top: 50px;
+    padding-top: 20px;
     padding-bottom: 50px;
   }
   section.extra-big-section {
@@ -19742,15 +19742,18 @@
   header .navbar-brand {
     padding: 22px 0;
   }
-  header .navbar-brand .default-logo, header .navbar-brand .alt-logo {
+  header .navbar-brand .default-logo, header .navbar-brand .alt-logo,
+  footer .default-logo, footer .alt-logo
+  {
     visibility: hidden !important;
     opacity: 0 !important;
     width: 0 !important;
   }
-  header .navbar-brand .mobile-logo {
+  header .navbar-brand .mobile-logo, footer .mobile-logo  {
     visibility: visible !important;
     opacity: 1 !important;
     width: auto !important;
+    height: 30px;
   }
   header .navbar-brand .mobile-logo:focus {
     outline: none;
@@ -20794,12 +20797,12 @@
 }
 @media (max-width: 767px) {
   .btn.btn-extra-large {
-    font-size: 15px;
-    padding: 20px 40px;
+    font-size: 14px;
+    padding: 10px 40px;
   }
   .btn.btn-large {
     font-size: 13px;
-    padding: 16px 36px;
+    padding: 5px 36px;
   }
   .btn.btn-rounded.btn-extra-large {
     padding: 16px 36px;
@@ -21727,4 +21730,8 @@
     padding-left: 0.8rem;
     padding-right: 0.8rem;
   }
+
+  /* footer .mobile-logo {
+    height: 30px;
+  } */
 }

@@ -14,6 +14,7 @@ import ValidationPage from '@/pages/Password/ValidationPage';
 import ResetPasswordPage from '@/pages/Password/ResetPasswordPage';
 
 import BridgePage from '@/pages/Profile/BridgePage';
+import InvitationPage from '@/pages/Profile/InvitationPage';
 
 import ProfilePage from '@/pages/Profile/ProfilePage';
 import SettingProfilePage from '@/pages/Profile/SettingProfilePage';
@@ -97,6 +98,7 @@ const App = () => {
 
             {/* 프로필 영역 start*/}
             <Route path="/bridge-profile" element={<BridgePage />} />
+            <Route path="/profile/invitation" element={<InvitationPage />} />
 
             <Route
               path="/profile"
@@ -106,40 +108,64 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/setting-profile" element={<SettingProfilePage />} />
             <Route
-              path="/setting-profile/:profileId"
-              element={<SettingProfilePage />}
+              path="/profile/setting-profile"
+              element={
+                <ProtectedRoute>
+                  <SettingProfilePage />
+                </ProtectedRoute>
+              }
             />
             <Route
-              path="/edit-profile/:profileId"
+              path="/profile/setting-profile/:profileId"
+              element={
+                <ProtectedRoute>
+                  <SettingProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/edit-profile/:profileId"
               element={
                 // <ProtectedRoute>
                 <EditProfilePage />
                 // </ProtectedRoute>
               }
             />
-
-            {/* <Route path="/view-profile" element={<ViewProfilePage />} /> */}
             <Route
-              path="/view-profile/:profileId"
-              element={<ViewProfilePage />}
+              path="/profile/view-profile/:profileId"
+              element={
+                // <ProtectedRoute>
+                <ViewProfilePage />
+                // </ProtectedRoute>
+              }
             />
             <Route
-              path="/preview-profile/:profileId"
-              element={<PreviewProfilePage />}
+              path="/profile/preview-profile/:profileId"
+              element={
+                // <ProtectedRoute>
+                <PreviewProfilePage />
+                // </ProtectedRoute>
+              }
             />
-            <Route path="/manage-profile/:profileId" element={<ManagePage />} />
+            <Route
+              path="/profile/manage-profile/:profileId"
+              element={
+                <ProtectedRoute>
+                  <ManagePage />
+                </ProtectedRoute>
+              }
+            />
 
             {/* 프로필 영역 end*/}
 
-            {/* 마이페이지 영억 start*/}
+            {/* MyPAGE */}
             <Route
               path="/mypage"
               element={
-                // <ProtectedRoute>
-                <MyPage />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <MyPage />
+                </ProtectedRoute>
               }
             >
               <Route path="order-list" element={<OrderListPage />} />
@@ -152,7 +178,7 @@ const App = () => {
               <Route path="myinfo" element={<MyInfoPage />} />
               <Route path="address" element={<AddressPage />} />
             </Route>
-            {/* 마이페이지 영억 end*/}
+            {/* MyPAGE*/}
           </Routes>
         </Layout>
       </Router>

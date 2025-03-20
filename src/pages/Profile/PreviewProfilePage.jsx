@@ -346,7 +346,7 @@ const ViewProfilePage = () => {
             <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
                 className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5"
-                to={`/edit-profile/${profileId}`}
+                to={`/profile/edit-profile/${profileId}`}
               >
                 <span>
                   <i className="fa-solid fa-backward align-middle"></i>
