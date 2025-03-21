@@ -20837,6 +20837,10 @@
   .btn.btn-switch-text.btn-very-small {
     padding: 0;
   }
+  .btn.btn-switch-text.btn-extra-large > span {
+    font-size: 14px !important;
+    padding: 4px 34px !important;
+  }
 }
 @media (max-width: 1199px) {
   .clients-style-02 .swiper-button-prev {
@@ -21293,6 +21297,9 @@
     display: table;
     /* margin: 0 auto 10px; */
   }
+  .tab-style-04 .nav-tabs .nav-item .nav-link{
+    font-size: 14px;
+  }
   .tab-style-05 .nav-tabs {
     display: inline-block;
     width: 100%;
@@ -21323,13 +21330,19 @@
   }
 
   .tab-style-09 .nav-tabs {
-    /* display: inline-block; */
+    display: flex;
+    justify-content: space-between;
     width: 100%;
+    font-size: 14px;
   }
   .tab-style-09 .nav-tabs .nav-item {
-    width: 50%;
+    width: 25%;
     display: table;
-    margin: 0 auto 10px;
+    /* margin: 0 auto 10px; */
+    text-align: center;
+  }
+  .nav-tabs > li.nav-item {
+    padding: 0;
   }
 }
 @media (max-width: 767px) {
@@ -21674,6 +21687,7 @@
     text-align: left !important;
     padding-right: 25px;
     margin-bottom: 15px;
+    font-size:14px;
   }
   .cart-products tbody tr td.product-quantity:before {
     margin-top: 8px;

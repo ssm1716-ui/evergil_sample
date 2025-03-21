@@ -9990,7 +9990,8 @@ blockquote footer {
 }
 .btn.btn-small {
   font-size: 12px;
-  padding: 13px 26px;
+  /* padding: 13px 26px; */
+  padding: 0px 26px;
 }
 .btn.btn-very-small {
   font-size: 11px;
@@ -16629,7 +16630,7 @@ canvas {
 
 /* Tab style 04 */
 .tab-style-09 .nav-tabs .nav-item {
-  padding: 0 20px;
+  /* padding: 0 20px; */
 }
 .tab-style-09 .nav-tabs .nav-item .nav-link {
   padding: 0;

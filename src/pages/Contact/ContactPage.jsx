@@ -116,7 +116,7 @@ const ContactPage = () => {
       </section>
 
       <section
-        className="background-position-center background-repeat position-relative pt-0"
+        className="background-position-center background-repeat position-relative py-0"
         style={{ backgroundImage: `url(${VerticalCenterLineBg})` }}
       >
         <div className="container position-relative">
@@ -141,7 +141,7 @@ const ContactPage = () => {
       </section>
 
       <section
-        className="background-position-center background-repeat"
+        className="background-position-center background-repeat md-py-0"
         style={{ backgroundImage: `url(${VerticalCenterLineBg})` }}
       >
         <div className="container">

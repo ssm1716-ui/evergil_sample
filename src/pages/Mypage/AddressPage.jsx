@@ -239,10 +239,11 @@ const AddressPage = () => {
                     </>
                   ))}
               </ul>
-              <div className="text-center">
+              <div className="text-center md-pt-5">
                 <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                   <Button
                     size="small"
+                    radiusOn="radius-on"
                     className="btn w-10 mt-10px d-inline w-40 "
                     onClick={() => {
                       setAddress(initialForm);
@@ -274,7 +275,7 @@ const AddressPage = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-12">
             <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
@@ -289,7 +290,7 @@ const AddressPage = () => {
                 </div>
               </div>
               <form className="row">
-                <div className="col-12 mb-20px ">
+                <div className="mb-20px ">
                   <label className="mb-10px">배송지 이름</label>
                   <input
                     className="border-radius-4px input-large mb-5px"
@@ -305,7 +306,7 @@ const AddressPage = () => {
                     </p>
                   )}
                 </div>
-                <div className="col-12 mb-20px ">
+                <div className="mb-20px ">
                   <label className="mb-10px">받는분 이름</label>
                   <input
                     className="border-radius-4px input-large mb-5px"
@@ -321,7 +322,7 @@ const AddressPage = () => {
                     </p>
                   )}
                 </div>
-                <div className="col-12 mb-20px">
+                <div className="mb-20px">
                   <label className="mb-10px">핸드폰번호</label>
                   <input
                     className="border-radius-4px input-large mb-5px"
@@ -338,8 +339,8 @@ const AddressPage = () => {
                   )}
                 </div>
 
-                <div className="col-12 mb-20px">
-                  <label className="col-12">배송주소</label>
+                <div className="mb-20px">
+                  <label className="">배송주소</label>
                   <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0 mt-10px">
                     <input
                       className="col-9 border-radius-4px input-large mb-5px"
@@ -361,7 +362,7 @@ const AddressPage = () => {
                   )}
                   <>
                     <input
-                      className="col-12 border-radius-4px input-large mb-5px mt-1"
+                      className="border-radius-4px input-large mb-5px mt-1"
                       type="text"
                       name="address1"
                       value={(address.address1 = selectedAddress.address1)}
@@ -375,7 +376,7 @@ const AddressPage = () => {
                     )}
 
                     <input
-                      className="col-12 border-radius-4px input-large mb-5px mt-1"
+                      className="border-radius-4px input-large mb-5px mt-1"
                       type="text"
                       name="address2"
                       value={address.address2}
@@ -384,7 +385,7 @@ const AddressPage = () => {
                     />
                   </>
                 </div>
-                <div className="col-lg-112 text-center text-lg-center">
+                <div className="col-lg-12 text-center text-lg-center">
                   <input type="hidden" name="redirect" value="" />
                   {updateFlag ? (
                     <Button

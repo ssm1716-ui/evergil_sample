@@ -11,8 +11,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* 어두운 반투명 배경 */
-  backdrop-filter: blur(12px); /* 블러 강하게 설정 */
+  background: rgba(0, 0, 0, 0.5); /* 어두운 반투명 */
+  backdrop-filter: blur(5px); /* 블러 효과 */
   z-index: 10;
 }
 
@@ -162,58 +162,56 @@
     background-color: #e64a19;
   } */
 
-  .paper-note-odd {
-    position: relative;
-    background-color: #e0f2f1; /* 연한 민트색 */
-    /* border: 1px solid #ccc; */
-    margin-bottom: 20px;
-    border-radius: 4px;
-    overflow: hidden;
-  }
+.paper-note-odd {
+  position: relative;
+  background-color: #e0f2f1; /* 연한 민트색 */
+  /* border: 1px solid #ccc; */
+  margin-bottom: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+}
 
-  .paper-note-even {
-    position: relative;
-    background-color: #ccc; /* 연한 민트색 */
-    /* border: 1px solid #ccc; */
-    margin-bottom: 20px;
-    border-radius: 4px;
-    overflow: hidden;
-  }
+.paper-note-even {
+  position: relative;
+  background-color: #ccc; /* 연한 민트색 */
+  /* border: 1px solid #ccc; */
+  margin-bottom: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+}
 
-  .divider-text {
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 0 35px;
-    font-size: 14px;
-    color: #333;
+.divider-text {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 0 35px;
+  font-size: 14px;
+  color: #333;
 
-  }
+}
 
-  .input-file-upload {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0; 
-    cursor: pointer;
-  }
+.input-file-upload {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0; 
+  cursor: pointer;
+}
 
-   .cart-products {
-    table-layout: fixed;
-    width: 100%;
-  }
+  .cart-products {
+  table-layout: fixed;
+  width: 100%;
+}
 
 .cart-products th,
 .cart-products td {
   text-align: left;
   padding: 10px;
 }
-
-
 
 .cart-products th:nth-child(1),
 .cart-products td:nth-child(1) {
@@ -322,6 +320,16 @@
     .select-container {
       width: 100%;
     }
+}
+
+@media (max-width: 768px) {
+  .signup-label{
+    font-size:14px;
+  }
+  .signup-input {
+    padding: 5px 25px;
+    font-size: 12px;
+  }
 }
 
 

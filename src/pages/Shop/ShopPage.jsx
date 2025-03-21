@@ -282,7 +282,7 @@ const ShopPage = () => {
                   {Number(product.price).toLocaleString()}원
                 </span>
               </div>
-              <p className="mb-30px" style={{ whiteSpace: 'pre-line' }}>
+              <p className="mb-30px fs-14" style={{ whiteSpace: 'pre-line' }}>
                 {product.description}
               </p>
               {/* <div className="d-flex align-items-center mb-20px">
@@ -381,7 +381,7 @@ const ShopPage = () => {
                   </button>
                 </div>
                 <Link
-                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-3 order-sm w-45"
+                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-3 order-sm w-45 d-none d-md-block"
                   onClick={handleCartAdd}
                 >
                   <span>
@@ -398,13 +398,13 @@ const ShopPage = () => {
                 </Link>
                 <a
                   href="#"
-                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3"
+                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 md-w-50"
                 >
                   <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
                 </a>
               </div>
 
-              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative">
+              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-none d-md-block">
                 <Link
                   className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2 w-100"
                   onClick={handleBuyNow}
@@ -425,11 +425,11 @@ const ShopPage = () => {
         </div>
       </section>
 
-      <section id="tab" className="pt-4 sm-pt-40px">
+      <section id="tab" className="pt-4 md-pt-0">
         <div className="container">
           <div className="row">
             <div className="col-12 tab-style-09">
-              <ul className="nav nav-tabs border-0 justify-content-center fs-19">
+              <ul className="nav nav-tabs border-0 fs-19">
                 <li className="nav-item">
                   <a
                     data-bs-toggle="tab"
@@ -471,7 +471,7 @@ const ShopPage = () => {
                   </a>
                 </li>
               </ul>
-              <div className="mb-5 h-1px w-100 bg-extra-medium-gray sm-mt-10px xs-mb-8"></div>
+              <div className="mb-5 h-1px w-100 bg-extra-medium-gray xs-mb-8"></div>
               <div className="tab-content">
                 <div className="tab-pane fade in active show" id="tab_five1">
                   <div className="row align-items-center justify-content-center">
@@ -535,11 +535,11 @@ const ShopPage = () => {
                 <div className="tab-pane fade in" id="tab_five3">
                   <div className="row">
                     <div className="col-12 col-md-6 last-paragraph-no-margin sm-mb-30px">
-                      <div className="fs-22 text-dark-gray mb-15px fw-500">
+                      <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-0 fw-500">
                         배송 기간 안내
                       </div>
 
-                      <p className="w-80 md-w-100">
+                      <p className="w-80 md-w-100 md-fs-12">
                         에버링크 쇼핑몰의 배송기간은 주문 결제 완료 후
                         평균적으로 2~5일 이내에 이루어집니다. (공휴일 및 주말
                         제외) <br /> 기본적으로 국내 배송은 평균 3일 이내
@@ -554,10 +554,10 @@ const ShopPage = () => {
                       </p>
                     </div>
                     <div className="col-12 col-md-6 last-paragraph-no-margin">
-                      <div className="fs-22 text-dark-gray mb-15px fw-500">
+                      <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-0 fw-500">
                         교환 및 환불 정책
                       </div>
-                      <p className="w-80 md-w-100">
+                      <p className="w-80  md-w-100 md-fs-12">
                         상품 수령 후 7일 이내에 교환 신청이 가능합니다. 단,
                         제품의 훼손, 사용 흔적, 라벨 제거 등의 경우 교환이
                         제한될 수 있습니다.
@@ -569,7 +569,7 @@ const ShopPage = () => {
                         빠른 처리를 위해 교환 신청 시 제품 상태를 촬영하여
                         첨부해 주시면 더욱 원활한 처리가 가능합니다.
                       </p>
-                      <p className="w-80 md-w-100">
+                      <p className="w-80  md-w-100 md-fs-12">
                         구매하신 상품은 수령 후 7일 이내에 환불 신청이
                         가능합니다.
                         <br /> 단순 변심으로 인한 환불 요청 시 왕복 배송비가
@@ -589,10 +589,10 @@ const ShopPage = () => {
                 <div className="tab-pane fade in" id="tab_five4">
                   <div className="row g-0 mb-4 md-mb-35px">
                     {reviews.length > 0 && (
-                      <div className="toolbar-wrapper d-flex flex-column flex-md-row align-items-end w-100  md-mb-30px pb-15px">
-                        <div className="mx-auto me-md-0">
+                      <div className="toolbar-wrapper d-flex flex-column align-items-end w-100 md-mb-30px pb-15px">
+                        <div className="me-md-0 text-end">
                           <select
-                            className="fs-18 form-select border-1 border-black w-150 text-black"
+                            className="fs-18 form-select border-1 border-black w-150 text-black py-0 px-10"
                             aria-label="Default sorting"
                             onChange={handleChangeSort}
                           >

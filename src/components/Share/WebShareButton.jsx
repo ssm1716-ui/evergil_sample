@@ -63,16 +63,10 @@ const WebShareButton = () => {
   }, [showShareBox]);
 
   return (
-    <div
-      style={{
-        textAlign: 'center',
-        position: 'relative',
-        display: 'inline-block',
-      }}
-    >
+    <>
       {/* ✅ 공유 버튼 */}
       <Link
-        className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
+        className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5"
         onClick={handleShare}
         ref={buttonRef} // ✅ 버튼 위치 참조
       >
@@ -176,7 +170,7 @@ const WebShareButton = () => {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

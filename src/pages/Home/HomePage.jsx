@@ -84,30 +84,31 @@ const HomeSubPage = () => {
         <div className="container">
           <div className="row align-items-center mb-12 md-mb-17 xs-mb-25">
             <div
-              className="col-lg-5 md-mb-50px p-0 xs-p-2"
+              className="col-lg-5 md-mb-50px p-0 xs-p-4"
               data-anime='{ "el": "childs", "opacity": [0, 1], "rotateY": [-90, 0], "rotateZ": [-10, 0], "translateY": [80, 0], "translateZ": [50, 0], "staggervalue": 200, "duration": 800, "delay": 200, "easing": "easeOutCirc" }'
             >
-              <span className="mb-10px text-base-color fw-500 d-block">
+              <span className="mb-10px text-base-color fw-500 md-mb-0 d-block">
                 소중한 사람들이 항상 기억될 수 있도록
               </span>
-              <h2 className="text-dark-gray lh-60">
-                에버링크 <br />
-                추모페이지
-              </h2>
+              <h6 className="text-dark-gray lh-60 md-mb-0">
+                에버링크 추모페이지
+              </h6>
 
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14">
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14 md-fs-11">
                 추모 페이지에 사랑하는 사람의 사진과 영상을 업로드 할 수
                 있습니다.
                 <br />
                 또한 가족들이 방문할 때 마다 추모페이지에서 하늘편지를 남기실 수
                 있습니다.
-                <br /> 평생동안 사랑하는 사람의 기억을 보관할 수 있는
-                추모페이지를 사용해보세요.
+                <br />
+                평생동안 사랑하는 사람의 기억을 보관할 수 있는 추모페이지를
+                사용해보세요.
               </p>
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14">
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14 md-fs-11">
                 우리의 사명은 사랑하는 사람들이 영원히 기억되는 것 입니다.
                 <br />
                 대부분 2-3세대가 지나면 사람들은 우리가 존재했다는 사실조차
+                <br />
                 기억하지 못할 것입니다. <br />
                 확실한 건 시간이 지나면 기억은 희미해집니다.
                 <br /> 우리는 사랑하는 사람을 기억하고,그들과의 추억을 보존하고,
@@ -134,7 +135,7 @@ const HomeSubPage = () => {
               </div>
             </div>
             <div className="col-lg-7 position-relative ">
-              <div className="w-75 position-relative xs-w-80 border-radius-4px float-end">
+              <div className="w-75 position-relative md-w-100 border-radius-4px float-end ">
                 <img className="w-100" src={mainSubImage1} alt="" />
               </div>
             </div>
@@ -392,7 +393,7 @@ const HomeSubPage = () => {
                     </a> */}
                     <div className="col text-center fit-videos md-mb-50px sm-mb-30px">
                       <iframe
-                        width="560"
+                        width="100%"
                         height="315"
                         src="https://www.youtube.com/embed/sU3FkzUKHXU?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
                         allowfullscreen

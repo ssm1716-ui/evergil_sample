@@ -204,8 +204,10 @@ const CheckOutPage = () => {
             className="row align-items-center justify-content-center"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <div className="col-12 text-start position-relative page-title-extra-large">
-              <h4 className="fw-600 text-dark-gray mb-10px">주문/결제</h4>
+            <div className="col-12 text-start position-relative page-title-extra-large ">
+              <h6 className="fw-600 text-dark-gray mb-10px text-decoration-line-bottom">
+                주문/결제
+              </h6>
             </div>
           </div>
         </div>
@@ -289,37 +291,37 @@ const CheckOutPage = () => {
 
       <section className="pt-0 pb-0">
         <div className="container ">
-          <div className="row align-items-start ">
-            <div className="col-lg-12 md-pe-15px md-mb-50px xs-mb-35px text-decoration-line-bottom pb-5">
-              <span className="fs-26 fw-600 text-dark-gray mb-20px d-block">
+          <div className="align-items-start ">
+            <div className="col-lg-12 md-mb-50px xs-mb-35px text-decoration-line-bottom pb-5">
+              <span className="fs-26 md-fs-20 fw-600 text-dark-gray mb-20px md-mb-0 d-block">
                 배송지 정보
               </span>
-              <form className="">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="row d-flex justify-content-end m-0">
-                      <input
-                        className="d-none col-9 border-radius-4px input-large"
-                        type="text"
-                        aria-label="first-name"
-                        required
-                      />
-                      <Button
-                        size="large"
-                        radiusOn="radius-on"
-                        color="black"
-                        className="col-3 btn w-20 sm-w-50 btn-round-edge"
-                        onClick={handleDeliveryModalOpen}
-                      >
-                        배송지 변경
-                      </Button>
-                    </div>
-                  </div>
 
-                  <div className="col-12 mb-20px ">
-                    <label className="mb-10px">배송지 이름</label>
+              <div className="row">
+                <div className="col-12">
+                  <div className="row d-flex justify-content-end m-0">
                     <input
-                      className="border-radius-4px input-large"
+                      className="d-none col-9 border-radius-4px input-large"
+                      type="text"
+                      aria-label="first-name"
+                      required
+                    />
+                    <Button
+                      size="large"
+                      radiusOn="radius-on"
+                      color="black"
+                      className="col-3 btn w-20 sm-w-40 btn-round-edge"
+                      onClick={handleDeliveryModalOpen}
+                    >
+                      배송지 변경
+                    </Button>
+                  </div>
+                </div>
+                <form className="">
+                  <div className="col-12 mb-20px md-mb-10px">
+                    <label>배송지 이름</label>
+                    <input
+                      className="border-radius-4px input-large md-py-0"
                       type="text"
                       name="deliveryName"
                       aria-label="first-name"
@@ -333,10 +335,10 @@ const CheckOutPage = () => {
                       </p>
                     )}
                   </div>
-                  <div className="col-12 mb-20px ">
-                    <label className="mb-10px">받는분 이름</label>
+                  <div className="col-12 mb-20px md-mb-10px">
+                    <label>받는분 이름</label>
                     <input
-                      className="border-radius-4px input-large"
+                      className="border-radius-4px input-large md-py-0"
                       type="text"
                       aria-label="first-name"
                       name="recipientName"
@@ -350,10 +352,10 @@ const CheckOutPage = () => {
                       </p>
                     )}
                   </div>
-                  <div className="col-12 mb-20px">
-                    <label className="mb-10px">핸드폰번호</label>
+                  <div className="col-12 mb-20px md-mb-10px">
+                    <label>핸드폰번호</label>
                     <input
-                      className="border-radius-4px input-large"
+                      className="border-radius-4px input-large md-py-0"
                       type="text"
                       aria-label="first-name"
                       name="phoneNumber"
@@ -368,11 +370,11 @@ const CheckOutPage = () => {
                     )}
                   </div>
 
-                  <div className="col-12 mb-20px">
+                  <div className="col-12 mb-10px">
                     <label className="col-12">배송주소</label>
-                    <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0 mt-10px">
+                    <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0">
                       <input
-                        className="col-9 border-radius-4px input-large"
+                        className="col-7 col-md-9 border-radius-4px input-large md-py-0"
                         type="text"
                         aria-label="first-name"
                         name="zipcode"
@@ -393,7 +395,7 @@ const CheckOutPage = () => {
                       </AddressSearch>
                     </div>
                     <input
-                      className="col-12 border-radius-4px input-large mt-1"
+                      className="col-12 border-radius-4px input-large md-py-0 mt-1"
                       type="text"
                       aria-label="first-name"
                       name="address1"
@@ -409,7 +411,7 @@ const CheckOutPage = () => {
                       </p>
                     )}
                     <input
-                      className="col-12 border-radius-4px input-large mt-1"
+                      className="col-12 border-radius-4px input-large md-py-0 mt-1"
                       type="text"
                       aria-label="first-name"
                       name="address2"
@@ -440,34 +442,34 @@ const CheckOutPage = () => {
                   </div>
 
                   <div className="col-12">
-                    <label className="mb-10px">배송메시지</label>
+                    <label>배송메시지</label>
                     <textarea
                       className="border-radius-4px textarea-small"
-                      rows="5"
+                      rows="3"
                       cols="5"
                       placeholder=""
                     ></textarea>
                   </div>
+                </form>
 
-                  {/* <AddressSearch onComplete={setSelectedAddress} />
+                {/* <AddressSearch onComplete={setSelectedAddress} />
                   <p>선택된 주소: {selectedAddress}</p> */}
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section>
+      <section className=" md-pt-0">
         <div className="container ">
-          <div className="row row-cols-1 row-cols-lg-4 row-cols-sm-2 justify-content-center pb-5">
+          <div className="row row-cols-1 row-cols-lg-4 row-cols-sm-2 d-md-flex justify-content-center pb-5">
             {paymentMethods.map((method) => (
               <div
                 key={method.id}
-                className="col icon-with-text-style-07 transition-inner-all md-mb-30px"
+                className="col icon-with-text-style-07 transition-inner-all md-w-25"
               >
                 <div
-                  className={`feature-box h-100 justify-content-start text-center p-17 sm-p-14 border border-1 border-radius-10px  ${
+                  className={`feature-box h-100 justify-content-start text-center p-17 md-p-0 border border-1 border-radius-10px ${
                     selectedMethod === method.id
                       ? 'bg-black'
                       : 'border-dark-gray bg-light-gray bg-white'
@@ -475,7 +477,7 @@ const CheckOutPage = () => {
                   role="button"
                   onClick={() => setSelectedMethod(method.id)}
                 >
-                  <div className="feature-box-icon mb-30px">
+                  <div className="feature-box-icon mb-30px md-mb-5px md-pt-10px">
                     <i
                       className={`${method.icon} icon-large text-dark-gray ${
                         selectedMethod === method.id ? 'text-white' : ''
@@ -484,7 +486,7 @@ const CheckOutPage = () => {
                   </div>
                   <div className="feature-box-content">
                     <span
-                      className={`d-inline-block fw-600 text-dark-gray fs-18  ${
+                      className={`d-inline-block fw-600 text-dark-gray fs-18 md-fs-12 ${
                         selectedMethod === method.id ? 'text-white' : ''
                       }`}
                     >
@@ -497,7 +499,7 @@ const CheckOutPage = () => {
           </div>
           <div className="col-lg-12 pb-40px">
             <div className="bg-very-light-gray border-radius-6px p-50px xl-p-30px lg-p-25px">
-              <span className="fs-26 fw-600 text-dark-gray mb-5px d-block">
+              <span className="fs-26 md-fs-20 fw-600 text-dark-gray mb-5px d-block">
                 주문 총계
               </span>
               <table className="w-100 total-price-table">
@@ -541,7 +543,7 @@ const CheckOutPage = () => {
           </div>
           <div className="col-lg-12">
             <Link
-              className="btn btn-base-color btn-large btn-switch-text btn-round-edge btn-box-shadow w-100"
+              className="btn btn-base-color btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 border-radius-30px"
               onClick={handleCompleteAdd}
             >
               <span>

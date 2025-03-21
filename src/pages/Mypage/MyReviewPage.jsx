@@ -222,7 +222,7 @@ const MyReviewPage = () => {
           // data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
           <div className="mx-auto me-md-0 col tab-style-01">
-            <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-14 fw-600 mb-3">
+            <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-12 fw-600 mb-3">
               <li className="nav-item mt-10px">
                 <a
                   className="nav-link active"
@@ -423,8 +423,8 @@ const MyReviewPage = () => {
               </div>
             ))
           ) : (
-            <p className="text-center w-100 fs-22">
-              <i className="fa-regular fa-pen-to-square align-middle icon-large text-light-black pe-1"></i>
+            <p className="text-center w-100 fs-22 md-fs-16">
+              <i className="fa-regular fa-pen-to-square align-middle icon-large md-icon-medium text-light-black pe-1"></i>
               작성된 리뷰가 없습니다.
             </p>
           )}

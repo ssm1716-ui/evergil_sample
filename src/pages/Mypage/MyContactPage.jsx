@@ -84,7 +84,7 @@ const MyContactPage = () => {
             </div>
           </div>
         </section>
-        <section className="background-position-center background-repeat position-relative pt-0">
+        <section className="background-position-center background-repeat position-relative py-0 ">
           <div className="container position-relative">
             <div className="row g-0">
               <div

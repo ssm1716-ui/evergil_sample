@@ -132,7 +132,7 @@ const CartPage = () => {
                   </div>
                 </div>
                 <div className="row align-items-center">
-                  <div className="col-12 p-0">
+                  <div className="col-12 p-0 md-p-4">
                     <table className="table cart-products">
                       <thead>
                         <tr>
@@ -246,9 +246,9 @@ const CartPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-4 p-0 ps-5">
+              <div className="col-lg-4 p-0 md-p-4">
                 <div className="bg-very-light-gray border-radius-6px p-50px xl-p-30px lg-p-25px">
-                  <span className="fs-26 fw-600 text-dark-gray mb-5px d-block">
+                  <span className="fs-26 md-fs-20 fw-600 text-dark-gray mb-5px d-block">
                     장바구니 총계
                   </span>
                   <table className="w-100 total-price-table">
@@ -293,7 +293,7 @@ const CartPage = () => {
                     </tbody>
                   </table>
                   <Link
-                    className="btn btn-dark-gray btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 mt-25px"
+                    className="btn btn-base-color btn-large btn-switch-text btn-round-edge btn-box-shadow border-radius-30px w-100 mt-25px"
                     onClick={handleCartCheckout}
                   >
                     <span>

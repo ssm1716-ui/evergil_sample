@@ -251,7 +251,7 @@ const MyInfoPage = () => {
           </div>
           <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center">
             <div className="row pt-5 text-center">
-              <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+              <label className="text-dark-gray fw-500 d-block text-start">
                 비밀번호
               </label>
               <input
@@ -286,7 +286,7 @@ const MyInfoPage = () => {
       {currentView === 'infoList' && (
         <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-            <h1 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h1>
+            <h6 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h6>
           </div>
           <section className="p-0">
             <div className="pt-1">
@@ -297,8 +297,8 @@ const MyInfoPage = () => {
                       <tbody>
                         {!isPlatform && (
                           <tr className="pb-2">
-                            <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20">
-                              <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
+                            <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
+                              <h6 className="m-0 fw-600 ls-minus-1px">
                                 비밀번호
                               </h6>
                             </td>
@@ -319,13 +319,13 @@ const MyInfoPage = () => {
                         )}
 
                         <tr>
-                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-15">
+                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2  w-20 md-w-30">
                             <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
                               이름
                             </h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-32 m-0 fw-400 ls-minus-1px text-gray">
+                            <h6 className="m-0 fw-400 ls-minus-1px text-gray">
                               {userInfo.maskedDisplayName}
                             </h6>
                           </td>
@@ -344,10 +344,8 @@ const MyInfoPage = () => {
                         </tr>
 
                         <tr>
-                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
-                              휴대폰
-                            </h6>
+                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
+                            <h6 className="m-0 fw-600 ls-minus-1px">휴대폰</h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
                             <h6 className="fs-32 m-0 fw-400 ls-minus-1px text-gray">
@@ -369,10 +367,8 @@ const MyInfoPage = () => {
                         </tr>
 
                         <tr>
-                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
-                              이메일
-                            </h6>
+                          <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
+                            <h6 className="m-0 fw-600 ls-minus-1px">이메일</h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
                             <h6 className="fs-32 m-0 fw-400 ls-minus-1px text-gray">
@@ -406,18 +402,18 @@ const MyInfoPage = () => {
         // <ChangePassword onBack={handleGoBackToList} onChange={} errors={errors} />
         <div className="col-xxl-10 col-lg-9 md-ps-15px">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-            <h1 className="fw-600 text-dark-gray mb-10px">비밀번호 변경</h1>
+            <h6 className="fw-600 text-dark-gray mb-10px">비밀번호 변경</h6>
           </div>
 
           <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 justify-content-center">
             <div className="col">
               <div className="row pt-5 text-center">
                 <form>
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     기존 비밀번호
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control required w-100"
+                    className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
                     type="password"
                     name="password"
                     value={password}
@@ -430,11 +426,11 @@ const MyInfoPage = () => {
                     </p>
                   )}
 
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     새로운 비밀번호
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control required w-100"
+                    className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
                     type="password"
                     name="newPassword"
                     value={newPassword}
@@ -447,11 +443,11 @@ const MyInfoPage = () => {
                     </p>
                   )}
 
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     새로운 비밀번호 확인
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control required w-100"
+                    className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
                     type="password"
                     name="confirmPassword"
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -467,7 +463,7 @@ const MyInfoPage = () => {
                     <Button
                       size="extra-large"
                       radiusOn="radius-on"
-                      className="btn-large submit w-50 mt-60px mb-5px d-block"
+                      className="btn-large w-50 mt-60px md-mt-10px mb-5px md-mb-20px"
                       onClick={handlePasswordChange}
                     >
                       비밀번호 변경 완료
@@ -483,16 +479,16 @@ const MyInfoPage = () => {
         // <ChangeName onBack={handleGoBackToList} errors={errors} />
         <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-            <h1 className="fw-600 text-dark-gray mb-10px">이름 변경</h1>
+            <h6 className="fw-600 text-dark-gray mb-10px">이름 변경</h6>
           </div>
 
           <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 justify-content-center">
             <div className="row pt-5 text-center">
-              <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+              <label className="text-dark-gray fw-500 d-block text-start">
                 이름 변경
               </label>
               <input
-                className="mb-5px bg-very-light-white form-control required w-100"
+                className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
                 type="text"
                 name="displayName"
                 value={displayName}
@@ -507,7 +503,7 @@ const MyInfoPage = () => {
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large submit w-50 md-mt-60px mb-5px d-block"
+                  className="btn-large w-50 mt-60px md-mt-10px mb-5px md-mb-20px"
                   onClick={handleNameChange}
                 >
                   이름 변경 완료
@@ -521,17 +517,17 @@ const MyInfoPage = () => {
         // <ChangePhone onBack={handleGoBackToList} errors={errors} />
         <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-            <h1 className="fw-600 text-dark-gray mb-10px">핸드폰 변경</h1>
+            <h6 className="fw-600 text-dark-gray mb-10px">핸드폰 변경</h6>
           </div>
 
           <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 justify-content-center">
             <div className="row pt-5 text-center  d-flex align-items-baseline">
-              <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+              <label className="text-dark-gray fw-500 d-block text-start">
                 휴대폰 번호 변경
               </label>
               <div className="row d-flex align-items-baseline justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75"
+                  className="mb-5px bg-very-light-white form-control required w-75 md-w-55"
                   type="text"
                   name="phoneNumber"
                   value={phoneNumber}
@@ -542,7 +538,7 @@ const MyInfoPage = () => {
                 <Button
                   size="large"
                   radiusOn="radius-on"
-                  className="btn btn-large w-20 d-block"
+                  className="btn btn-large w-20 md-w-auto"
                   onClick={handlePhoneAuthRequest}
                 >
                   인증 하기
@@ -571,7 +567,7 @@ const MyInfoPage = () => {
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large submit w-50 mt-60px mb-5px d-block"
+                  className="btn-large w-50 mt-60px md-mt-10px mb-5px md-mb-20px"
                   onClick={handlePhoneNumberChangeConfirm}
                 >
                   확인
@@ -595,7 +591,7 @@ const MyInfoPage = () => {
               </label>
               <div className="row d-flex align-items-baseline justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75"
+                  className="mb-5px bg-very-light-white form-control required w-75 md-w-55"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -604,7 +600,7 @@ const MyInfoPage = () => {
                 <Button
                   size="large"
                   radiusOn="radius-on"
-                  className="btn btn-large w-20 d-block"
+                  className="btn btn-large w-20 md-w-auto"
                   onClick={handleEmailChange}
                 >
                   인증 하기
@@ -632,7 +628,7 @@ const MyInfoPage = () => {
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large submit w-50 mt-60px mb-5px d-block"
+                  className="btn-large w-50 mt-60px md-mt-10px mb-5px md-mb-20px"
                   onClick={handleEmailAuthConfirm}
                 >
                   확인

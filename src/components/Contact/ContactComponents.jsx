@@ -1,3 +1,5 @@
+import Button from '@/components/common/Button/Button';
+
 const ContactComponents = ({
   contactUs,
   errors,
@@ -17,7 +19,7 @@ const ContactComponents = ({
           <i className="bi bi-emoji-smile"></i>
         </span>
         <input
-          className="ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
+          className="ps-0 md-py-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
           id="exampleInputEmail1"
           type="text"
           name="writerName"
@@ -39,7 +41,7 @@ const ContactComponents = ({
           <i className="bi bi-envelope"></i>
         </span>
         <input
-          className="ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
+          className="ps-0 md-py-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
           id="exampleInputEmail2"
           type="email"
           name="writerEmail"
@@ -60,7 +62,7 @@ const ContactComponents = ({
       </label>
       <div className="position-relative form-group form-textarea mb-5px">
         <textarea
-          className="ps-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
+          className="ps-0 md-py-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
           name="message"
           value={contactUs.message}
           onChange={handleSetContactUs}
@@ -73,7 +75,7 @@ const ContactComponents = ({
       </div>
       {errors.message && <p className="text-danger">{errors.message}</p>}
 
-      <div className="row mt-25px align-items-center">
+      <div className="row mt-25px md-mt-0 align-items-center">
         <div className="col-xl-7 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div>
         <div className="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-end text-lg-start text-xl-end xs-mt-25px">
           <input
@@ -82,12 +84,13 @@ const ContactComponents = ({
             name="redirect"
             value=""
           />
-          <button
+          <Button
+            radiusOn="radius-on"
             className="btn btn-base-color btn-small btn-round-edge btn-box-shadow text-uppercase submit"
             onClick={handleSendContactUs}
           >
             메시지 남기기
-          </button>
+          </Button>
         </div>
         <div className="col-12 form-results d-none mt-20px mb-0"></div>
       </div>

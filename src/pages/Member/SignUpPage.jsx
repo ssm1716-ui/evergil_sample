@@ -28,7 +28,7 @@ import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SignUpPage = () => {
   const inputRefs = useRef([]);
-  const [step, byStep] = useState(0);
+  const [step, byStep] = useState(3);
   const dispatch = useDispatch();
   const [member, setMember] = useState({
     loginEmail: '',
@@ -255,7 +255,7 @@ const SignUpPage = () => {
         <div className="container">
           {step === 0 && (
             <div className="col contact-form-style-04 text-center bg-white">
-              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden pt-10 md-p-10 text-center">
+              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden pt-10 md-p-10 text-center md-fs-14">
                 <div className="position-relative terms-condition-box text-start d-inline-block mb-20px">
                   <label className="pb-3">
                     <input
@@ -315,7 +315,7 @@ const SignUpPage = () => {
                         className="terms-condition check-box align-middle"
                       />
                       <span className="box fs-25">
-                        마케팅 목적의 개인정보 수집 및 이용 동의(선택)
+                        개인정보수집,이용동의(선택)
                       </span>
                     </div>
                     <span className="fs-25 terms-view">
@@ -351,14 +351,16 @@ const SignUpPage = () => {
                   </label>
                 </div>
               </div>
-              <Button
-                size="extra-large"
-                radiusOn="radius-on"
-                className="btn-large w-30 mt-60px mb-20px d-block"
-                onClick={firstStep}
-              >
-                동의하고 다음으로
-              </Button>
+              <div>
+                <Button
+                  size="extra-large"
+                  radiusOn="radius-on"
+                  className="btn-large w-30 md-w-50 mt-60px md-mt-0 mb-20px"
+                  onClick={firstStep}
+                >
+                  동의하고 다음으로
+                </Button>
+              </div>
             </div>
           )}
           {step === 1 && (
@@ -367,11 +369,11 @@ const SignUpPage = () => {
                 <div className="py-5 text-center">
                   <img src={signup} alt="" className="default-logo" />
                   <form className="mt-50px">
-                    <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                    <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       이메일<span className="text-red">*</span>
                     </label>
                     <input
-                      className="mb-5px bg-very-light-white form-control required"
+                      className="mb-5px bg-very-light-white form-control signup-input required "
                       type="email"
                       name="loginEmail"
                       value={member.loginEmail}
@@ -384,11 +386,11 @@ const SignUpPage = () => {
                         {errors.loginEmail}
                       </p>
                     )}
-                    <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                    <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       비밀번호<span className="text-red">*</span>
                     </label>
                     <input
-                      className="mb-5px bg-very-light-white form-control required"
+                      className="mb-5px bg-very-light-white form-control signup-input required"
                       type="password"
                       name="password"
                       value={member.password}
@@ -400,11 +402,11 @@ const SignUpPage = () => {
                         {errors.password}
                       </p>
                     )}
-                    <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                    <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       비밀번호 확인<span className="text-red">*</span>
                     </label>
                     <input
-                      className="mb-5px bg-very-light-white form-control required"
+                      className="mb-5px bg-very-light-white form-control signup-input required"
                       type="password"
                       name="passwordConfirm"
                       value={member.passwordConfirm}
@@ -416,11 +418,11 @@ const SignUpPage = () => {
                         {errors.passwordConfirm}
                       </p>
                     )}
-                    <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                    <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       이름<span className="text-red">*</span>
                     </label>
                     <input
-                      className="mb-5px bg-very-light-white form-control required"
+                      className="mb-5px bg-very-light-white form-control signup-input required"
                       type="text"
                       name="displayName"
                       value={member.displayName}
@@ -432,11 +434,11 @@ const SignUpPage = () => {
                         {errors.displayName}
                       </p>
                     )}
-                    <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                    <label className="text-dark-gray mb-10px fw-500 d-block text-start signup-label">
                       핸드폰 번호<span className="text-red">*</span>
                     </label>
                     <input
-                      className="mb-5px bg-very-light-white form-control required"
+                      className="mb-5px bg-very-light-white form-control signup-input required"
                       type="text"
                       name="phoneNumber"
                       value={member.phoneNumber}
@@ -454,7 +456,7 @@ const SignUpPage = () => {
                       type="button"
                       size="extra-large"
                       radiusOn="radius-on"
-                      className="btn-large w-50 mt-60px mb-20px d-block"
+                      className="btn-large w-50 mt-60px mb-20px "
                       onClick={secondStep}
                     >
                       회원가입 완료
@@ -475,8 +477,8 @@ const SignUpPage = () => {
                       이메일 인증하기
                     </h3>
                     <h6 className="fw-400 fs-16 text-dark-gray mb-8 ls-minus-1px">
-                      귀하의 이메일 계정으로 승인 메일을 보냈습니다. 링크를 열어
-                      인증 코드를 확인하세요
+                      귀하의 이메일 계정으로 승인 메일을 보냈습니다.
+                      <br /> 링크를 열어 인증 코드를 확인하세요
                     </h6>
                     <div className="d-flex justify-content-center gap-3">
                       {otp.map((value, index) => (
@@ -499,7 +501,7 @@ const SignUpPage = () => {
                     <Button
                       size="extra-large"
                       color="white"
-                      className="btn-large submit w-80 mt-20px mb-20px d-block"
+                      className="btn-large submit w-80 mt-20px mb-20px"
                       onClick={thirdStep}
                     >
                       인증하기
@@ -514,7 +516,7 @@ const SignUpPage = () => {
                     <Button
                       size="extra-large"
                       color="black"
-                      className="btn-large submit w-80 mt-60px mb-20px d-block"
+                      className="btn-large submit w-80 mt-60px mb-20px"
                       onClick={verificationCodeResetSend}
                     >
                       인증번호 재전송
@@ -540,7 +542,7 @@ const SignUpPage = () => {
                         <Button
                           size="extra-large"
                           radiusOn="radius-on"
-                          className=" w-50 mt-20px mb-20px d-block"
+                          className=" w-50 mt-20px mb-20px"
                         >
                           계속하기
                         </Button>
@@ -555,7 +557,7 @@ const SignUpPage = () => {
                         <Button
                           size="extra-large"
                           radiusOn="radius-on"
-                          className=" w-50 mt-20px mb-20px d-block"
+                          className=" w-50 mt-20px mb-20px"
                         >
                           계속하기
                         </Button>

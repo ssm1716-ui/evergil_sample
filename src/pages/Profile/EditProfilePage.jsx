@@ -794,10 +794,17 @@ const EditProfilePage = () => {
               {showScreen && (
                 <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                   {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-                  <div className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px">
+                  <div
+                    className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px"
+                    style={{
+                      textAlign: 'center',
+                      position: 'relative',
+                      display: 'inline-block',
+                    }}
+                  >
                     <WebShareButton />
                     <Link
-                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5"
+                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5"
                       to={`/profile/manage-profile/${profileId}`}
                     >
                       <span>
@@ -861,7 +868,7 @@ const EditProfilePage = () => {
       </section>
 
       {showScreen && (
-        <section id="tab" className="pt-0 sm-pt-40px">
+        <section id="tab" className="pt-0 sm-pt-40px md-pb-70px">
           <div className="container">
             <div className="row">
               <div className="col-12 tab-style-04">
@@ -881,7 +888,7 @@ const EditProfilePage = () => {
                   ))}
                 </ul>
 
-                <div className="mb-5 h-1px w-100 bg-extra-medium-gray sm-mt-10px xs-mb-8"></div>
+                <div className="mb-5 h-1px w-100 bg-extra-medium-gray xs-mb-8"></div>
                 <div className="tab-content">
                   {activeTab === '이미지' && (
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
@@ -991,8 +998,8 @@ const EditProfilePage = () => {
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <div className="row">
                         <div className="row align-items-center">
-                          <div className="col-xl-12 col-lg-10 col-sm-5 form-results d-block mt-20px mb-0 text-center">
-                            <p className="text-black fs-18">
+                          <div className="col-xl-12 col-lg-10 col-sm-5 form-results d-block mt-20px mb-mt-0  mb-0 text-center">
+                            <p className="text-black fs-18 md-fs-14">
                               가족 관계도
                               <br />
                               아래 가족을 추가하고 드래그로 순서를 바꿔보세요.
@@ -1002,7 +1009,7 @@ const EditProfilePage = () => {
                         <div className="row  align-items-center">
                           <div className="col-xl-10 col-lg-10 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
                             <Button
-                              className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase"
+                              className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase px-3"
                               onClick={handleAddItem}
                             >
                               <i className="feather icon-feather-plus align-bottom text-white icon-extra-medium"></i>
