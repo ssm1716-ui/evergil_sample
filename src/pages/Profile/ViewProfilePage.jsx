@@ -701,14 +701,14 @@ const ViewProfilePage = () => {
                   <input type="hidden" name="redirect" value="" />
 
                   <Button
-                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                    className="btn btn-black btn-box-shadow btn-round-edge border-0 submit me-1"
                     onClick={handleSendLetter}
                   >
                     남기기
                   </Button>
 
                   <Button
-                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    className="btn btn-white btn-box-shadow btn-round-edge border-1 submit me-1"
                     onClick={() => {
                       setIsRegisterModalOpen(false);
                       letterInit();

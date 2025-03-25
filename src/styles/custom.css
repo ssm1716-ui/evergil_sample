@@ -316,6 +316,8 @@ height: 1297px;
   display: block;
 }
 
+/* 최소 가로 너비 지정 */
+
 @media (max-width: 991px) {
   .menu-order {
       width:unset;
@@ -332,20 +334,24 @@ height: 1297px;
   .select-container {
     width: 100%;
   }
+  
 }
 
 @media (max-width: 768px) {
-.signup-label{
-  font-size:14px;
-}
-.signup-input {
-  padding: 5px 25px;
-  font-size: 12px;
-}
-.blog-image {
-  width: 157px;
-  height: 157px;
-}
+  .signup-label{
+    font-size:14px;
+  }
+  .signup-input {
+    padding: 5px 25px;
+    font-size: 12px;
+  }
+  .blog-image {
+    width: 157px;
+    height: 157px;
+  }
+  .md-w-25 {
+    width: 25%;
+  }
 }
 
 

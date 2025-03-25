@@ -44,7 +44,7 @@ const Header = () => {
             >
               <img
                 src={defaultLogo_pc}
-                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                 alt=""
                 className="default-logo"
               />
@@ -56,7 +56,7 @@ const Header = () => {
               /> */}
               <img
                 src={defaultLogo_mobile}
-                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                 alt=""
                 className="mobile-logo"
               />

@@ -123,19 +123,19 @@ const ResetPasswordPage = () => {
               <Link to="/" className="navbar-brand ps-0 md-ps-15px">
                 <img
                   src={defaultLogo}
-                  data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                  // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                   alt=""
                   className="default-logo"
                 />
                 <img
                   src={defaultLogo}
-                  data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                  // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                   alt=""
                   className="alt-logo"
                 />
                 <img
                   src={defaultLogo}
-                  data-at2x="images/demo-hotel-and-resort-logo@2x.png"
+                  // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
                   alt=""
                   className="mobile-logo"
                 />

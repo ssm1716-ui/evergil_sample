@@ -18,22 +18,19 @@ const useProfilePermission = (profileId) => {
                 console.log('프로필 권한 - ', result);
 
                 switch (result) {
-                    case 'PUBLIC_PROFILE':
-                        setShowScreen(true);
-                        break;
                     case 'NEED_TO_LOGIN':
                         setIsLoginModalOpen(true);
                         break;
                     case 'PERMISSION_DENIED':
                         setIsRequestModalOpen(true);
                         break;
-                    // case 'OK':
-                    //     setShowScreen(true);
-                    //     break;
+                    case 'PUBLIC_PROFILE':
                     case 'YOU_HAVE_VIEWER_PERMISSION':
                         navigate(`/profile/view-profile/${profileId}`);
                         setShowScreen(true);
                         break;
+                    case 'PUBLIC_PROFILE_EDITOR':
+                    case 'PUBLIC_PROFILE_OWNER':
                     case 'YOU_HAVE_EDITOR_PERMISSION':
                     case 'YOU_HAVE_OWNER_PERMISSION':
                         // navigate(`/profile/edit-profile/${profileId}`);
@@ -47,6 +44,8 @@ const useProfilePermission = (profileId) => {
                 setIsAuthorized(false);
             }
         };
+
+
 
         if (profileId) {
             fetchPermission();
