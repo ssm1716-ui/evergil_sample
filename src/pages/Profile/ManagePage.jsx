@@ -7,8 +7,10 @@ import { FaEye, FaEyeSlash, FaLink, FaShareAlt } from 'react-icons/fa'; // 아�
 
 import everlinkTop from '@/assets/images/everlink-top.png';
 
+import useProfilePermission from '@/hooks/useProfilePermission';
 import {
   postEmailInvitations,
+  postPrivateProfileAccessRequest,
   getInvitationsList,
   putInvitationPermissions,
   deleteInvitationPermissions,
@@ -41,7 +43,13 @@ const options = [
   },
 ];
 
+const initFormPrivateProfile = {
+  name: '',
+  memo: '',
+};
+
 const ManagePage = () => {
+  const navigate = useNavigate();
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
   const [receiverEmail, setReceiverEmail] = useState('');
   const [isError, setIsError] = useState(false);
@@ -52,29 +60,19 @@ const ManagePage = () => {
   //Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCopyLinkOpen, setIsModalCopyLinkOpen] = useState(false);
+  const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
+    initFormPrivateProfile
+  );
 
   const lgRef = useRef(null);
 
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     let res;
-  //     try {
-  //       res = await getSelectProfile(profileId);
-  //       if (res.status === 200) {
-  //         const { data } = res.data;
-  //         setScope(data.profile.scope);
-  //         //초대된 계정 리스트
-  //         res = await getInvitationsList(profileId);
-
-  //         //비공개 계정 요청 리스트
-  //         res = await getPrivateProfileAccessRequests(profileId);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   if (profileId) fetchProfile();
-  // }, [profileId]);
+  const {
+    isLoginModalOpen,
+    setIsLoginModalOpen,
+    isRequestModalOpen,
+    setIsRequestModalOpen,
+    showScreen,
+  } = useProfilePermission(profileId);
 
   // 프로필 데이터 가져오기
   const fetchProfile = async (id) => {
@@ -130,6 +128,7 @@ const ManagePage = () => {
 
       if (invitationsRes.status === 200) {
         const { items } = invitationsRes.data.data;
+        console.log(items);
         setInvitations(items);
       }
       if (privateAccessRes.status === 200) {
@@ -143,10 +142,10 @@ const ManagePage = () => {
 
   //초기 데이터 가져오기
   useEffect(() => {
-    if (profileId) {
+    if (profileId && showScreen) {
       fetchAllData(profileId); // ✅ 병렬 호출로 성능 최적화
     }
-  }, [profileId]);
+  }, [profileId, showScreen]);
 
   const handleOptionChange = async (selectedOption) => {
     console.log('선택한 값:', selectedOption.value);
@@ -208,214 +207,269 @@ const ManagePage = () => {
     fetchInvitations(profileId);
   };
 
+  const handlePrivateRequests = async (obj, status) => {
+    console.log(obj);
+    const { requestId } = obj;
+    if (!requestId) return;
+
+    const res = await putPrivateAccessRequests(profileId, requestId, status);
+    if (res.status === 200) {
+      fetchAllData(profileId);
+    }
+  };
+  // 433f95be-7dc1-47a5-a7b4-974fd6d628e3 6049230d-fc41-4cbd-8327-3a84260dc937 DENY
   return (
     <>
-      <section className="top-space-margin big-section pb-0 pt-5 md-pt-10px">
-        <div className="container">
-          <div
-            className="row align-items-center justify-content-center"
-            data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
-          >
-            <div className="col-12 text-center position-relative page-title-extra-large">
-              <img src={everlinkTop} alt="everlinkTop" />
+      {!showScreen && <div className="blur-overlay"></div>}
+      {showScreen ? (
+        <>
+          <section className="top-space-margin big-section pb-0 pt-5 md-pt-10px">
+            <div className="container">
+              <div
+                className="row align-items-center justify-content-center"
+                data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+              >
+                <div className="col-12 text-center position-relative page-title-extra-large">
+                  <img src={everlinkTop} alt="everlinkTop" />
+                </div>
+                <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
+              </div>
             </div>
-            <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
-          </div>
-        </div>
-      </section>
-      <section className="cover-background py-5">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-12 col-xl-7 col-lg-8 col-md-10 text-center">
-              <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-2  md-mb-5">
-                초대 및 사용자 관리 페이지
-              </h5>
-              <Link onClick={handleCopylink}>
-                <h6 className="text-base-color fs-20 fw-800 w-100 text-end pb-0">
-                  <FaLink className="me-1" />
-                  Copy link
-                </h6>
-              </Link>
-              <div className="d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-4">
-                <form>
-                  <input
-                    className="input-large border-1 bg-white border-color-gray form-control"
-                    type="email"
-                    name="email"
-                    value={receiverEmail}
-                    placeholder="Invite Email"
-                    onChange={(e) => setReceiverEmail(e.target.value)}
-                  />
-                  <input type="hidden" name="redirect" value="" />
+          </section>
+          <section className="cover-background py-5">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-12 col-xl-7 col-lg-8 col-md-10 text-center">
+                  <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-2  md-mb-5">
+                    초대 및 사용자 관리 페이지
+                  </h5>
+                  <Link onClick={handleCopylink}>
+                    <h6 className="text-base-color fs-20 fw-800 w-100 text-end pb-0">
+                      <FaLink className="me-1" />
+                      Copy link
+                    </h6>
+                  </Link>
+                  <div className="d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-4">
+                    <form>
+                      <input
+                        className="input-large border-1 bg-white border-color-gray form-control"
+                        type="email"
+                        name="email"
+                        value={receiverEmail}
+                        placeholder="Invite Email"
+                        onChange={(e) => setReceiverEmail(e.target.value)}
+                      />
+                      <input type="hidden" name="redirect" value="" />
+                      <Button
+                        className="btn btn-large btn-base-color"
+                        onClick={handleInvitation}
+                      >
+                        초대하기
+                      </Button>
+                      <div className="form-results border-radius-4px mt-15px pt-10px pb-10px ps-15px pe-15px fs-15 w-100 text-center position-absolute d-none"></div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="py-0">
+            <div className="container pb-1">
+              <div className="row align-items-start">
+                <div className="col-lg-12 pe-50px md-pe-15px">
+                  <div className="row align-items-center">
+                    <div className="col-12">
+                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
+                        초대된 계정
+                      </h6>
+
+                      {invitations.length > 0 ? (
+                        <table className="table invite-table">
+                          <thead>
+                            <tr>
+                              <th scope="col" className="fw-600">
+                                이메일
+                              </th>
+                              <th scope="col" className="fw-600">
+                                이름
+                              </th>
+                              <th scope="col" className="fw-600">
+                                권한
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {invitations.map((invitation, index) => (
+                              <tr key={invitation.invitationId}>
+                                <td className="product-name">
+                                  <a className="text-dark-gray fw-500 d-block">
+                                    {invitation.email}
+                                  </a>
+                                </td>
+                                <td>{invitation.name || ''}</td>{' '}
+                                {/* 🔹 이름이 없을 경우 기본값 처리 */}
+                                <td>
+                                  {invitation.isConfirmed ? (
+                                    <div className="select select-container">
+                                      <select
+                                        className="form-control select-invite"
+                                        name="scope"
+                                        value={invitation.permission}
+                                        onChange={(e) =>
+                                          handleInvitationsPermissionChange(
+                                            invitation.invitationId,
+                                            e.target.value
+                                          )
+                                        }
+                                      >
+                                        <option value="">선택하기</option>
+                                        <option value="EDITOR">Edit</option>
+                                        <option value="VIEWER">View</option>
+                                        <option value="DELETE">Delete</option>
+                                      </select>
+                                    </div>
+                                  ) : (
+                                    <span>초대수락 대기중</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <p>초대하신 사용자가 없습니다.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="p-0">
+            <div className="container pb-3 md-pb-5">
+              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0overflow-hidden">
+                <div className="col contact-form-style-04">
+                  <div className="text-left">
+                    <form>
+                      <label className="text-dark-gray  fw-500 d-block text-start">
+                        일반 액세스
+                      </label>
+                      <div className="w-30 md-w-50">
+                        <Select
+                          options={options}
+                          onChange={handleOptionChange}
+                          placeholder="선택하세요"
+                          value={options.find(
+                            (option) => option.value === scope
+                          )}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="pt-0 ">
+            <div className="container pb-3">
+              <div className="row align-items-start">
+                <div className="col-lg-12 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
+                  <div className="row align-items-center">
+                    <div className="col-12">
+                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
+                        비공개 계정 보기 요청
+                      </h6>
+
+                      {privateRequests.length > 0 ? (
+                        <table className="table nondisclosure-table">
+                          <thead>
+                            <tr>
+                              {/* <th scope="col" className="fw-600">이메일</th> */}
+                              <th scope="col" className="fw-600">
+                                이름
+                              </th>
+                              <th scope="col" className="fw-600">
+                                메모
+                              </th>
+                              <th scope="col" className="fw-600">
+                                허용 여부
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {privateRequests.map((p, index) => (
+                              <tr key={index}>
+                                {/* <td>DavidKim@gmai.com</td> */}
+                                <td>{p.name}</td>
+                                <td>{p.memo}</td>
+                                <td>
+                                  <div className="d-flex">
+                                    <Link
+                                      className="btn btn-black btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                                      onClick={(e) =>
+                                        handlePrivateRequests(p, 'ALLOW')
+                                      }
+                                    >
+                                      허용
+                                    </Link>
+                                    <Link
+                                      className="btn btn-white btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                                      onClick={(e) =>
+                                        handlePrivateRequests(p, 'DENY')
+                                      }
+                                    >
+                                      거부
+                                    </Link>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <p>비공개로 요청한 사용자가 없습니다.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </>
+      ) : (
+        <>
+          <section className="top-space-margin big-section pb-0 pt-5 md-pt-10px">
+            <div className="container">
+              <div
+                className="row align-items-center justify-content-center"
+                data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+              >
+                <div className="col-12 text-center position-relative page-title-extra-large">
+                  <img src={everlinkTop} alt="everlinkTop" />
+                </div>
+                <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
+              </div>
+            </div>
+          </section>
+          <section className="cover-background py-5">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-12 col-xl-7 col-lg-8 col-md-10 text-center">
+                  <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-2  md-mb-5">
+                    접근 할 수 없습니다.
+                  </h5>
                   <Button
                     className="btn btn-large btn-base-color"
-                    onClick={handleInvitation}
+                    onClick={() => navigate('/profile')}
                   >
-                    초대하기
+                    돌아가기
                   </Button>
-                  <div className="form-results border-radius-4px mt-15px pt-10px pb-10px ps-15px pe-15px fs-15 w-100 text-center position-absolute d-none"></div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="py-0">
-        <div className="container pb-1">
-          <div className="row align-items-start">
-            <div className="col-lg-12 pe-50px md-pe-15px">
-              <div className="row align-items-center">
-                <div className="col-12">
-                  <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
-                    초대된 계정
-                  </h6>
-
-                  {invitations.length > 0 ? (
-                    <table className="table invite-table">
-                      <thead>
-                        <tr>
-                          <th scope="col" className="fw-600">
-                            이메일
-                          </th>
-                          <th scope="col" className="fw-600">
-                            이름
-                          </th>
-                          <th scope="col" className="fw-600">
-                            권한
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {invitations.map((invitation, index) => (
-                          <tr key={invitation.invitationId}>
-                            <td className="product-name">
-                              <a className="text-dark-gray fw-500 d-block">
-                                {invitation.email}
-                              </a>
-                            </td>
-                            <td>{invitation.name || ''}</td>{' '}
-                            {/* 🔹 이름이 없을 경우 기본값 처리 */}
-                            <td>
-                              <div className="select select-container">
-                                <select
-                                  className="form-control select-invite"
-                                  name="scope"
-                                  value={invitation.permission}
-                                  onChange={(e) =>
-                                    handleInvitationsPermissionChange(
-                                      invitation.invitationId,
-                                      e.target.value
-                                    )
-                                  }
-                                >
-                                  <option value="">선택하기</option>
-                                  <option value="EDITOR">Edit</option>
-                                  <option value="VIEWER">View</option>
-                                  <option value="DELETE">Delete</option>
-                                </select>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <p>초대하신 사용자가 없습니다.</p>
-                  )}
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="p-0">
-        <div className="container pb-3 md-pb-5">
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0overflow-hidden">
-            <div className="col contact-form-style-04">
-              <div className="text-left">
-                <form>
-                  <label className="text-dark-gray  fw-500 d-block text-start">
-                    일반 액세스
-                  </label>
-                  <div className="w-30 md-w-50">
-                    <Select
-                      options={options}
-                      onChange={handleOptionChange}
-                      placeholder="선택하세요"
-                      value={options.find((option) => option.value === scope)}
-                    />
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="pt-0 ">
-        <div className="container pb-3">
-          <div className="row align-items-start">
-            <div className="col-lg-12 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
-              <div className="row align-items-center">
-                <div className="col-12">
-                  <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
-                    비공개 계정 보기 요청
-                  </h6>
-
-                  {privateRequests.length > 0 ? (
-                    <table className="table nondisclosure-table">
-                      <thead>
-                        <tr>
-                          <th scope="col" className="fw-600">
-                            이메일
-                          </th>
-                          <th scope="col" className="fw-600">
-                            이름
-                          </th>
-                          <th scope="col" className="fw-600">
-                            메모
-                          </th>
-                          <th scope="col" className="fw-600">
-                            허용 여부
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>DavidKim@gmai.com</td>
-
-                          <td>David Kim</td>
-                          <td>데이비드입니다.</td>
-                          <td>
-                            <div className="d-flex">
-                              <a
-                                href="#"
-                                className="btn btn-black btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
-                              >
-                                허용
-                              </a>
-                              <a
-                                href="#"
-                                className="btn btn-white btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
-                              >
-                                거부
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  ) : (
-                    <p>비공개로 요청한 사용자가 없습니다.</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+          </section>
+        </>
+      )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="w-40">
           <div className="modal-content p-0 rounded shadow-lg">
@@ -449,7 +503,6 @@ const ManagePage = () => {
           </div>
         </div>
       </Modal>
-
       <Modal
         isOpen={isModalCopyLinkOpen}
         onClose={() => setIsModalCopyLinkOpen(false)}
@@ -475,6 +528,39 @@ const ManagePage = () => {
                       >
                         확인
                       </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isRequestModalOpen}
+        onClose={() => setIsRequestModalOpen(false)}
+      >
+        <div className="w-30 md-w-90">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-5 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        접근 할 수 없습니다.
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+
+                      <Button
+                        radiusOn="radius-on"
+                        className="btn btn-base-color btn-large btn-box-shadow btn-round-edge me-1 w-50"
+                        onClick={() => navigate('/profile')}
+                      >
+                        돌아가기
+                      </Button>
                     </div>
                   </div>
                 </div>

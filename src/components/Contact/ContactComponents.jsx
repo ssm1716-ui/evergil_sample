@@ -86,7 +86,7 @@ const ContactComponents = ({
           />
           <Button
             radiusOn="radius-on"
-            className="btn btn-base-color btn-small btn-round-edge btn-box-shadow text-uppercase submit"
+            className="btn btn-base-color btn-medium btn-round-edge btn-box-shadow text-uppercase submit"
             onClick={handleSendContactUs}
           >
             메시지 남기기

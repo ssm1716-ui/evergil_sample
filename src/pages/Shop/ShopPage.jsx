@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
+import LoginModal from '@/components/common/Modal/LoginModal';
 import { addCart } from '@/api/memberApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Autoplay } from 'swiper/modules';
@@ -11,24 +12,17 @@ import {
   getProductReviewsSelected,
 } from '@/api/products/productsApi';
 
+import useAuth from '@/hooks/useAuth';
 import { formatDate } from '@/utils/utils';
 
-import sampleImage1 from '@/assets/images/sample/demo-fashion-store-product-detail-01.jpg';
-import sampleImage2 from '@/assets/images/sample/demo-fashion-store-product-detail-02.jpg';
-import sampleImage3 from '@/assets/images/sample/demo-fashion-store-product-detail-03.jpg';
-import sampleImage4 from '@/assets/images/sample/demo-fashion-store-product-detail-04.jpg';
-
-import ShopDetailImage1 from '@/assets/images/shop-detail-image1.png';
-import ShopDetailImage2 from '@/assets/images/shop-detail-image2.png';
-import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
-import mainSubImage3 from '@/assets/images/main-sub-image3.png';
-
 const ShopPage = () => {
+  const { isAuthenticated, user } = useAuth();
   const { id } = useParams(); //URL에서 :id 값 가져오기
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [mainSwiper, setMainSwiper] = useState(null);
   const [qty, setQty] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [product, setProduct] = useState({ productImages: [] });
   const [reviews, setReviews] = useState([]);
   const [sortType, setSortType] = useState('BEST');
@@ -137,6 +131,10 @@ const ShopPage = () => {
   };
 
   const handleBuyNow = (e) => {
+    if (!isAuthenticated) {
+      setIsLoginModalOpen(true);
+      return;
+    }
     e.preventDefault();
     const updatedProduct = { ...product, qty };
     sessionStorage.setItem('order_product', JSON.stringify(updatedProduct));
@@ -439,7 +437,7 @@ const ShopPage = () => {
                     상품 설명<span className="tab-border bg-dark-gray"></span>
                   </a>
                 </li>
-                <li className="nav-item d-none">
+                <li className="nav-item">
                   <a
                     className="nav-link"
                     data-bs-toggle="tab"
@@ -943,6 +941,9 @@ const ShopPage = () => {
           </div>
         </div>
       </Modal>
+      {!isAuthenticated && isLoginModalOpen && (
+        <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+      )}
     </>
   );
 };

@@ -57,7 +57,6 @@ export const getSelectProfile = async (id) => {
 
     try {
         const res = await axiosInstance.get(`/memorial-profiles/${id}`);
-        console.log('getSelectProfile - ', res);
         return res;
     } catch (err) {
         console.error(err);
@@ -434,12 +433,15 @@ export const getPrivateProfileAccessRequests = async (profileId, page = 1, pageS
 };
 
 //비공개 프로필 접근 권한 허용/거부 변경
-export const putPrivateAccessRequests = async (profileId, requestId, params) => {
-
+export const putPrivateAccessRequests = async (profileId, requestId, status) => {
     try {
-        const res = await axiosInstance.put(`/memorial-profiles/${profileId}/requests/${requestId}`, {
-            status: params
-        });
+        const res = await axiosInstance.put(
+            `/memorial-profiles/${profileId}/requests/${requestId}`,
+            null, // 바디는 없음 (query string만 사용할 경우 null)
+            {
+                params: { status }, // ✅ 여기에 query string으로 전달
+            }
+        );
         console.log(res);
         return res;
     } catch (err) {
@@ -451,8 +453,6 @@ export const putPrivateAccessRequests = async (profileId, requestId, params) => 
 export const postPrivateProfileAccessRequest = async (profileId, params) => {
 
     try {
-        console.log(profileId);
-        console.log(params);
         const res = await axiosInstance.post(`/memorial-profiles/${profileId}/requests`, params);
         console.log(res);
         return res;

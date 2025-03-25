@@ -28,7 +28,7 @@ import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SignUpPage = () => {
   const inputRefs = useRef([]);
-  const [step, byStep] = useState(3);
+  const [step, byStep] = useState(0);
   const dispatch = useDispatch();
   const [member, setMember] = useState({
     loginEmail: '',

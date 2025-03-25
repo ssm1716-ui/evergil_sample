@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { modifyCart, removeCart } from '@/api/memberApi';
+import useAuth from '@/hooks/useAuth';
 import Button from '@/components/common/Button/Button';
+import LoginModal from '@/components/common/Modal/LoginModal';
 import forgotImage from '@/assets/images/forgot-password.png';
 
 const CartPage = () => {
+  const { isAuthenticated, user } = useAuth();
   const [cartProducts, setCartProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
 
   //로드시 로컬스토리지에 장바구니 가져오기
@@ -88,6 +92,10 @@ const CartPage = () => {
   } = calculateCartTotal();
 
   const handleCartCheckout = (e) => {
+    if (!isAuthenticated) {
+      setIsLoginModalOpen(true);
+      return;
+    }
     e.preventDefault();
     navigate('/checkout', { state: { orderType: 'cart' } });
   };
@@ -116,7 +124,7 @@ const CartPage = () => {
                 <div className="row mb-20px">
                   <div className="col-12 text-center text-md-end sm-mt-15px d-flex justify-content-between">
                     <a
-                      className="btn btn-small border-1 btn-round-edge btn-transparent-light-gray text-transform-none me-15px lg-me-5px"
+                      className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none me-15px lg-me-5px"
                       onClick={handleAllChecked}
                     >
                       {selectedProducts.length === cartProducts.length
@@ -124,7 +132,7 @@ const CartPage = () => {
                         : '전체 선택'}
                     </a>
                     <a
-                      className="btn btn-small border-1 btn-round-edge btn-transparent-light-gray text-transform-none"
+                      className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none"
                       onClick={handleSelectRemove}
                     >
                       선택 삭제
@@ -247,7 +255,7 @@ const CartPage = () => {
                 </div>
               </div>
               <div className="col-lg-4 p-0 md-p-4">
-                <div className="bg-very-light-gray border-radius-6px p-50px xl-p-30px lg-p-25px">
+                <div className="bg-very-light-gray border-radius-6px ms-25px p-50px xl-p-30px lg-p-25px">
                   <span className="fs-26 md-fs-20 fw-600 text-dark-gray mb-5px d-block">
                     장바구니 총계
                   </span>
@@ -336,6 +344,9 @@ const CartPage = () => {
             </div>
           </div>
         </section>
+      )}
+      {!isAuthenticated && isLoginModalOpen && (
+        <LoginModal onClose={() => setIsLoginModalOpen(false)} />
       )}
     </>
   );

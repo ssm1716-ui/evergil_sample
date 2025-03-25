@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
+import useAuth from '@/hooks/useAuth';
 import PaymentDue from '@/components/Order/PaymentDue';
 import OrderEmptyComponents from '@/components/Order/OrderEmptyComponents';
 import OrderListComponents from '@/components/Order/OrderListComponents';
@@ -32,6 +33,7 @@ const paymentMethods = [
 ];
 
 const CheckOutPage = () => {
+  const { isAuthenticated, user } = useAuth();
   const location = useLocation();
   const [isAddresOpen, SetIsAddresOpen] = useState(false);
   const [focusAddress, setFocusAddress] = useState('');
@@ -56,6 +58,9 @@ const CheckOutPage = () => {
 
   //바로 주문, 장바구니 경로로 분기 처리
   useEffect(() => {
+    //주문페이지는 로그인 유저만 접근 가능
+    if (!isAuthenticated) navigate('/signin');
+
     let storedOrder = sessionStorage.getItem('order_product');
 
     if (storedOrder) {
@@ -205,9 +210,7 @@ const CheckOutPage = () => {
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
             <div className="col-12 text-start position-relative page-title-extra-large ">
-              <h6 className="fw-600 text-dark-gray mb-10px text-decoration-line-bottom">
-                주문/결제
-              </h6>
+              <h6 className="fw-600 text-dark-gray mb-10px">주문/결제</h6>
             </div>
           </div>
         </div>

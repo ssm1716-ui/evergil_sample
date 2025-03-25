@@ -33,8 +33,8 @@ const ProfilePage = () => {
 
   // SNS 계정 여부와 이메일 존재 여부를 확인합니다.
   // SNS 계정이면 passwordInput에는 보통 빈 문자열을 전달하거나 API 사양에 맞게 값을 전달합니다.
-  const { isSnsAccount, hasEmail, loading, error } =
-    useSnsAccountValidation('');
+  // const { isSnsAccount, hasEmail, loading, error } =
+  //   useSnsAccountValidation('');
 
   // useEffect(() => {
   //   const fetchProfiles = async () => {
@@ -203,39 +203,6 @@ const ProfilePage = () => {
         <div className="container">
           <div className="row">
             <div className="col-12 tab-style-10">
-              {/* <ul className="nav nav-tabs border-0 justify-content-center fs-20 md-fs-16 text-center">
-                <li className="nav-item">
-                  <a
-                    data-bs-toggle="tab"
-                    href="#tab_five1"
-                    className="nav-link active"
-                  >
-                    My Everlinks
-                    <span className="tab-border bg-dark-gray"></span>
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    data-bs-toggle="tab"
-                    href="#tab_five2"
-                  >
-                    View
-                    <span className="tab-border bg-dark-gray"></span>
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    data-bs-toggle="tab"
-                    href="#tab_five3"
-                  >
-                    Bookmark
-                    <span className="tab-border bg-dark-gray"></span>
-                  </a>
-                </li>
-              </ul> */}
-
               <ul className="nav nav-tabs border-0 justify-content-center fw-700 fs-26 md-fs-16 text-center">
                 {['My Everlinks', 'View', 'Bookmark'].map((tab) => (
                   <li key={tab} className="nav-item">
@@ -294,6 +261,12 @@ const ProfilePage = () => {
                                       : avatarImage
                                   }
                                   alt="Profile"
+                                  style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    display: 'block',
+                                  }}
                                 />
                               </Link>
                             </div>
@@ -411,7 +384,7 @@ const ProfilePage = () => {
         </div>
       </Modal>
 
-      <Modal isOpen={!hasEmail} onClose={() => setIsModalOpen(false)}>
+      {/* <Modal isOpen={!hasEmail} onClose={() => setIsModalOpen(false)}>
         <div className="w-40">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
@@ -439,7 +412,7 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

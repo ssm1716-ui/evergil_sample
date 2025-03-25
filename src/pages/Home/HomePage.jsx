@@ -58,8 +58,8 @@ const HomeSubPage = () => {
                 <img src={mainLogoPc} alt="mainlogo" />
               </div>
               <div className="mb-30px">
-                <a
-                  href="#"
+                <Link
+                  to="/store"
                   className="btn btn-extra-large btn-switch-text bg-base-color text-white fw-700 btn-round-edge btn-box-shadow border-radius-30px"
                 >
                   <span>
@@ -70,7 +70,7 @@ const HomeSubPage = () => {
                       <i className="fa-solid fa-arrow-right fs-14"></i>
                     </span>
                   </span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -117,11 +117,14 @@ const HomeSubPage = () => {
               </p>
               <div className="d-inline-block w-100 text-center">
                 <Link
-                  to="/shop"
-                  className="btn btn-extra-large btn-switch-text btn-dark-gray btn-box-shadow btn-round-edge d-inline-block align-middle me-30px xs-me-10px xs-mt-20px border-radius-30px"
+                  to="/store"
+                  className="btn btn-extra-large btn-switch-text btn-white btn-box-shadow btn-round-edge d-inline-block align-middle me-30px xs-me-10px xs-mt-20px border-radius-30px"
                 >
                   <span>
-                    <span className="btn-double-text" data-text="구매하러 가기">
+                    <span
+                      className=" btn-double-text"
+                      data-text="구매하러 가기"
+                    >
                       구매하러 가기
                     </span>
                   </span>

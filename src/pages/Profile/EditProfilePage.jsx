@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
@@ -12,13 +11,11 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Button from '@/components/common/Button/Button';
-import { FiUpload, FiImage } from 'react-icons/fi'; // 업로드 아이콘 사용
 import { MdAddPhotoAlternate } from 'react-icons/md';
 import { getFileType } from '@/utils/utils';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
-import LoginModal from '@/components/common/Modal/LoginModal';
-import RequestAccessModal from '@/components/common/Modal/RequestAccessModal';
+import useProfilePermission from '@/hooks/useProfilePermission';
 
 import WebShareButton from '@/components/Share/WebShareButton';
 
@@ -105,55 +102,23 @@ const EditProfilePage = () => {
   const fileInputRef = useRef(null);
 
   const [url, setUrl] = useState('');
-  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
-  const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
-  const [showScreen, setShowScreen] = useState(false);
+  // const [isAuthorized, setIsAuthorized] = useState(false);
+  // const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  // const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+  // const [showScreen, setShowScreen] = useState(false);
+  const [isRequestCompletedModalOpen, setIsRequestCompletedModalOpen] =
+    useState(false);
   const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
     initFormPrivateProfile
   );
 
-  useEffect(() => {
-    const fetchPermission = async () => {
-      // if (!isAuthenticated) {
-      //   setIsLoginModalOpen(true); // 로그인 안 했으면 로그인 모달
-      //   return;
-      // }
-
-      try {
-        const res = await getSelectProfile(profileId);
-        console.log('프로필 권한 - ', res);
-
-        const { result } = res.data.data;
-
-        if (result === 'NEED_TO_LOGIN') {
-          setIsLoginModalOpen(true);
-          return;
-        } else if (result === 'PERMISSION_DENIED') {
-          setIsRequestModalOpen(true);
-          return;
-        } else if (result === 'OK' || result === 'PUBLIC_PROFILE') {
-          setShowScreen(true);
-          return;
-        } else {
-          return;
-        }
-
-        // setIsAuthorized(response.isAuthorized);
-
-        // if (!response.isAuthorized) {
-        //   setShowRequestModal(true); // 권한 없으면 요청 모달 띄우기
-        // }
-      } catch (error) {
-        console.error('권한 체크 실패:', error);
-        setIsAuthorized(false);
-      }
-    };
-
-    fetchPermission();
-  }, [profileId]);
+  const {
+    isLoginModalOpen,
+    setIsLoginModalOpen,
+    isRequestModalOpen,
+    setIsRequestModalOpen,
+    showScreen,
+  } = useProfilePermission(profileId);
 
   useEffect(() => {
     // 현재 페이지의 URL을 가져와 상태 업데이트
@@ -681,9 +646,9 @@ const EditProfilePage = () => {
       formRequestPrivateProfile
     );
 
-    if (res.status === 200) {
-      isRequestModalOpen(false);
-      setIsCompletedModalOpen(true);
+    if (res.status === 201) {
+      setIsRequestModalOpen(false);
+      setIsRequestCompletedModalOpen(true);
     }
   };
 
@@ -908,7 +873,8 @@ const EditProfilePage = () => {
                           <div
                             onClick={handleUploadClick}
                             style={{
-                              ...imageStyle,
+                              width: '100%',
+                              height: 'auto',
                               display: 'flex',
                               justifyContent: 'center',
                               alignItems: 'center',
@@ -937,7 +903,7 @@ const EditProfilePage = () => {
                               <img
                                 src={image.url}
                                 // alt={`Gallery Image ${index}`}
-                                style={imageStyle}
+                                className="imageStyle"
                               />
                             </a>
                           ))}
@@ -1266,14 +1232,14 @@ const EditProfilePage = () => {
 
                   <Button
                     radiusOn="radius-on"
-                    className="btn btn-base-color btn-small btn-box-shadow btn-round-edge me-1 w-100 mb-3"
+                    className="btn btn-base-color btn-medium btn-box-shadow btn-round-edge me-1 w-100 mb-3"
                     onClick={handleRequestPrivateProfile}
                   >
                     보내기
                   </Button>
                   <Button
                     radiusOn="radius-on"
-                    className="btn btn-white btn-small btn-box-shadow btn-round-edge me-1 w-100"
+                    className="btn btn-white btn-medium btn-box-shadow btn-round-edge me-1 w-100"
                     onClick={() => navigate('/profile')}
                   >
                     나의 프로필 리스트
@@ -1286,8 +1252,8 @@ const EditProfilePage = () => {
       </Modal>
 
       <Modal
-        isOpen={isCompletedModalOpen}
-        onClose={() => setIsCompletedModalOpen(false)}
+        isOpen={isRequestCompletedModalOpen}
+        onClose={() => setIsRequestCompletedModalOpen(false)}
       >
         <div className="w-30 md-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
@@ -1299,8 +1265,8 @@ const EditProfilePage = () => {
                       <h6 className="text-dark-gray fw-500 mb-15px">
                         요청이 완료되었습니다.
                       </h6>
-                      <p>초대 승인을 기다려주세요.</p>
-                      <p>감사합니다.</p>
+                      <p className="m-0">초대 승인을 기다려주세요.</p>
+                      <p className="p-0">감사합니다.</p>
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
@@ -1324,18 +1290,18 @@ const EditProfilePage = () => {
   );
 };
 
-// CSS 스타일
+// // CSS 스타일
 const galleryStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
   gap: '10px',
 };
 
-const imageStyle = {
-  width: '100%',
-  height: 'auto',
-  cursor: 'pointer',
-};
+// const imageStyle = {
+//   width: '100%',
+//   height: 'auto',
+//   cursor: 'pointer',
+// };
 
 // 버튼 스타일
 const customButtonStyle = `

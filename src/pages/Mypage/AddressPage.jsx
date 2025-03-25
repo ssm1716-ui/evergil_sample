@@ -242,8 +242,6 @@ const AddressPage = () => {
               <div className="text-center md-pt-5">
                 <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                   <Button
-                    size="small"
-                    radiusOn="radius-on"
                     className="btn w-10 mt-10px d-inline w-40 "
                     onClick={() => {
                       setAddress(initialForm);
@@ -258,7 +256,6 @@ const AddressPage = () => {
                 {addressList.length > 0 && (
                   <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                     <Button
-                      size="small"
                       color="black"
                       className="btn w-10 mt-10px d-inline w-40"
                       onClick={handleDefaultAddress}
@@ -275,7 +272,7 @@ const AddressPage = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="row justify-content-center">
-          <div className="col-12">
+          <div className="col-6">
             <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
@@ -389,14 +386,14 @@ const AddressPage = () => {
                   <input type="hidden" name="redirect" value="" />
                   {updateFlag ? (
                     <Button
-                      className="btn btn-base-color btn-small btn-box-shadow btn-round-edge me-1"
+                      className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
                       onClick={handleUpdateAddress}
                     >
                       수정
                     </Button>
                   ) : (
                     <Button
-                      className="btn btn-base-color btn-small btn-box-shadow btn-round-edge me-1"
+                      className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
                       onClick={handleAddAddress}
                     >
                       추가
@@ -404,7 +401,7 @@ const AddressPage = () => {
                   )}
 
                   <Button
-                    className="btn btn-white btn-small btn-box-shadow btn-round-edge me-1"
+                    className="btn btn-white btn-box-shadow btn-round-edge me-1"
                     onClick={() => setIsModalOpen(false)}
                   >
                     닫기

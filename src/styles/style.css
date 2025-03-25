@@ -16628,7 +16628,11 @@ canvas {
   width: inherit;
 }
 
-/* Tab style 04 */
+/* Tab style 09 */
+.tab-style-09 .nav-tabs {
+  display: flex;
+  justify-content: center;
+}
 .tab-style-09 .nav-tabs .nav-item {
   /* padding: 0 20px; */
 }
