@@ -244,7 +244,7 @@ const ManagePage = () => {
                     초대 및 사용자 관리 페이지
                   </h5>
                   <Link onClick={handleCopylink}>
-                    <h6 className="text-base-color fs-20 fw-800 w-100 text-end pb-0">
+                    <h6 className="text-base-color fs-20 md-fs-14 fw-800 w-100 text-end pb-0">
                       <FaLink className="me-1" />
                       Copy link
                     </h6>
@@ -252,7 +252,7 @@ const ManagePage = () => {
                   <div className="d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-4">
                     <form>
                       <input
-                        className="input-large border-1 bg-white border-color-gray form-control"
+                        className="input-large md-input-small border-1 bg-white border-color-gray form-control"
                         type="email"
                         name="email"
                         value={receiverEmail}
@@ -284,15 +284,15 @@ const ManagePage = () => {
                       </h6>
 
                       {invitations.length > 0 ? (
-                        <table className="table invite-table">
+                        <table className="table invite-table md-fs-14">
                           <thead>
                             <tr>
                               <th scope="col" className="fw-600">
                                 이메일
                               </th>
-                              <th scope="col" className="fw-600">
+                              {/* <th scope="col" className="fw-600">
                                 이름
-                              </th>
+                              </th> */}
                               <th scope="col" className="fw-600">
                                 권한
                               </th>
@@ -306,7 +306,7 @@ const ManagePage = () => {
                                     {invitation.email}
                                   </a>
                                 </td>
-                                <td>{invitation.name || ''}</td>{' '}
+                                {/* <td>{invitation.name || ''}</td> */}
                                 {/* 🔹 이름이 없을 경우 기본값 처리 */}
                                 <td>
                                   {invitation.isConfirmed ? (
@@ -356,6 +356,7 @@ const ManagePage = () => {
                       </label>
                       <div className="w-30 md-w-50">
                         <Select
+                          className="md-input-small p-0"
                           options={options}
                           onChange={handleOptionChange}
                           placeholder="선택하세요"

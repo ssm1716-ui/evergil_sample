@@ -564,79 +564,79 @@ const CheckOutPage = () => {
         onClose={() => setIsModalDeliveryOpen(false)}
         title="Slide up animation"
       >
-        <div className="row align-items-center justify-content-center pricing-table-style-07 bg-gradient-very-light-gray">
-          <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
-            <div className="col-lg-12 col-md-12 md-mb-30px p-0">
-              <ul
-                className="nav nav-tabs justify-content-center border-0 text-left"
-                // data-anime='{ "el": "childs", "translateY": [-30, 0], "perspective": [1200,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
-              >
-                {addressList.length > 0 &&
-                  addressList.map((address, index) => (
-                    <>
-                      <li className="nav-item mb-30px p-0" key={index}>
-                        <a
-                          data-bs-toggle="tab"
-                          href="#tab_four1"
-                          className="nav-link box-shadow-extra-large ps-45px pe-45px pt-35px pb-35px lg-p-5 xs-p-8 border-radius-8px"
-                          onClick={() => setFocusAddress(address.id)}
-                        >
-                          <div className="flex-column flex-sm-row d-flex align-items-center">
-                            <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
-                              <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
-                                <i className="fa-solid fa-check"></i>
-                              </div>
-                            </div>
-                            <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
-                              <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
-                                <div className="feature-box-content">
-                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px">
-                                    {address.deliveryName}
-                                  </span>
-                                  {address.isDefault && (
-                                    <span className="py-1 ps-15px pe-15px md-mt-10px md-mb-10px border-radius-100px text-uppercase bg-yellow text-black fs-12 lh-28 fw-700">
-                                      기본배송지
-                                    </span>
-                                  )}
-                                  <p className="w-100 m-0">
-                                    받는분 이름 - {address.recipientName}
-                                  </p>
-                                  <p className="w-100 m-0">
-                                    핸드폰번호 - {address.phoneNumber}
-                                  </p>
-                                  <p className="w-100">
-                                    우편번호 - [{address.zipcode}] <br />
-                                    주소 - {address.address1} {address.address2}
-                                  </p>
+        <div className="w-60 md-w-90 md-h-100">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row align-items-center justify-content-center pricing-table-style-07 bg-gradient-very-light-gray">
+              <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+                <div className="col-lg-12 col-md-12 md-mb-30px p-0 fs-16 md-fs-12">
+                  <ul className="nav nav-tabs justify-content-center border-0 text-left">
+                    {addressList.length > 0 &&
+                      addressList.map((address, index) => (
+                        <>
+                          <li className="nav-item mb-30px p-0" key={index}>
+                            <a
+                              data-bs-toggle="tab"
+                              href="#tab_four1"
+                              className="nav-link box-shadow-extra-large ps-20px pe-20px pt-10px lg-px-5 pb-0 border-radius-8px pb-0"
+                              onClick={() => setFocusAddress(address.id)}
+                            >
+                              <div className="flex-column flex-sm-row d-flex align-items-center">
+                                <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
+                                  <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
+                                    <i className="fa-solid fa-check"></i>
+                                  </div>
+                                </div>
+                                <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
+                                  <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
+                                    <div className="feature-box-content">
+                                      <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px">
+                                        {address.deliveryName}
+                                      </span>
+                                      {address.isDefault && (
+                                        <span className="py-1 ps-15px pe-15px md-mt-10px md-mb-10px border-radius-100px text-uppercase bg-yellow text-black fs-12 lh-28 fw-700">
+                                          기본배송지
+                                        </span>
+                                      )}
+                                      <p className="w-100 m-0">
+                                        받는분 이름 - {address.recipientName}
+                                      </p>
+                                      <p className="w-100 m-0">
+                                        핸드폰번호 - {address.phoneNumber}
+                                      </p>
+                                      <p className="w-100">
+                                        우편번호 - [{address.zipcode}] <br />
+                                        주소 - {address.address1}{' '}
+                                        {address.address2}
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                    </>
-                  ))}
-              </ul>
-              <div className="text-center">
-                <Link to="#" className="fw-500 d-inline lh-initial ps-2">
-                  <Button
-                    size="small"
-                    className="btn w-10 mt-10px d-inline w-40 "
-                    onClick={handleDeliveryAddressChage}
-                  >
-                    배송지 변경
-                  </Button>
-                </Link>
-                <Link to="#" className="fw-500 d-inline lh-initial ps-2">
-                  <Button
-                    size="small"
-                    color="black"
-                    className="btn w-10 mt-10px d-inline w-40"
-                    onClick={() => setIsModalDeliveryOpen(false)}
-                  >
-                    닫기
-                  </Button>
-                </Link>
+                            </a>
+                          </li>
+                        </>
+                      ))}
+                  </ul>
+                  <div className="text-center">
+                    <Link to="#" className="fw-500 d-inline lh-initial ps-2">
+                      <Button
+                        className="btn w-10 mt-10px d-inline w-40 "
+                        onClick={handleDeliveryAddressChage}
+                      >
+                        배송지 변경
+                      </Button>
+                    </Link>
+                    <Link to="#" className="fw-500 d-inline lh-initial ps-2">
+                      <Button
+                        color="black"
+                        className="btn w-10 mt-10px d-inline w-40"
+                        onClick={() => setIsModalDeliveryOpen(false)}
+                      >
+                        닫기
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -131,19 +131,19 @@ const SettingProfilePage = () => {
           <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overㄹㄹlow-hidden">
             <div className="col contact-form-style-04">
               <div className="pt-15 text-center">
-                <div className="pb-15">
-                  <h3 className="fw-600 text-dark-gray mb-8 ls-minus-1px">
+                <div className="pb-15 md-pb-0">
+                  <h6 className="fw-600 text-dark-gray mb-8 ls-minus-1px">
                     추모페이지 설정
-                  </h3>
-                  <p>
+                  </h6>
+                  <p className="fs-16 md-fs-12">
                     사랑하는 사람에 대한 정보를 등록해보세요.
                     <br />
                     언제든지 이 정보는 수정할 수 있습니다.
                   </p>
                   {/* 사람/동물 버튼 */}
-                  <div className="me-15px xs-mb-15px pt-50px d-flex justify-content-around ">
+                  <div className="me-15px xs-mb-15px pt-50px md-pt-0 d-flex justify-content-around ">
                     <Button
-                      className={`btn w-30 lg-mb-15px me-10px ${
+                      className={`btn w-30 lg-mb-15px me-10px  border border-1 ${
                         formProfile.memorialType === 'HUMAN'
                           ? 'btn-black'
                           : 'btn-white'
@@ -153,7 +153,7 @@ const SettingProfilePage = () => {
                       사람
                     </Button>
                     <Button
-                      className={`btn w-30 lg-mb-15px me-10px ${
+                      className={`btn w-30 lg-mb-15px me-10px border border-1 ${
                         formProfile.memorialType === 'ANIMAL'
                           ? 'btn-black'
                           : 'btn-white'
@@ -173,11 +173,11 @@ const SettingProfilePage = () => {
                 {/* 폼 시작 */}
                 <form>
                   {/* 이름 */}
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     <span className="text-red">*</span>이름
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control required"
+                    className="mb-5px bg-very-light-white form-control md-input-small required"
                     type="text"
                     name="displayName"
                     placeholder="이름을 입력해 주세요."
@@ -191,11 +191,11 @@ const SettingProfilePage = () => {
                   )}
 
                   {/* 생년월일 */}
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     생년월일
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control"
+                    className="mb-5px bg-very-light-white form-control md-input-small "
                     type="date"
                     name="birthday"
                     value={formProfile.birthday}
@@ -208,11 +208,11 @@ const SettingProfilePage = () => {
                   )}
 
                   {/* 기일 */}
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     기일
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control"
+                    className="mb-5px bg-very-light-white form-control md-input-small"
                     type="date"
                     name="deathDate"
                     min="2024-02-01"
@@ -227,11 +227,11 @@ const SettingProfilePage = () => {
                   )}
 
                   {/* 닉네임 */}
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     닉네임
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control"
+                    className="mb-5px bg-very-light-white form-control md-input-small"
                     type="text"
                     name="nickname"
                     placeholder="https://everlink.kr/'닉네임'"
@@ -245,12 +245,12 @@ const SettingProfilePage = () => {
                   )}
 
                   {/* 계정 공개 범위 */}
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     계정 공개 범위
                   </label>
                   <div className="select">
                     <select
-                      className="form-control"
+                      className="form-control md-input-small"
                       name="scope"
                       value={formProfile.scope}
                       onChange={handleChange}
@@ -270,7 +270,7 @@ const SettingProfilePage = () => {
                     type="submit"
                     size="extra-large"
                     radiusOn="radius-on"
-                    className="btn-large submit w-40 mt-60px mb-5px"
+                    className="btn-large submit w-40 mt-60px md-mt-20px mb-5px"
                     onClick={handleSubmit}
                   >
                     {profileId ? '수정하기' : '저장하기'}

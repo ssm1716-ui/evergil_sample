@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import LoginModal from '@/components/common/Modal/LoginModal';
+import MobileBuyPanel from '@/components/Shop/MobileBuyPanel';
 import { addCart } from '@/api/memberApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Autoplay } from 'swiper/modules';
@@ -196,7 +197,7 @@ const ShopPage = () => {
                     watchSlidesVisibility={true}
                     thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
                     modules={[Navigation, Thumbs, Autoplay]}
-                    className="product-image-slider"
+                    className="product-image-slider product-main-image-box"
                   >
                     {(product.productImages || []).map((image, index) => (
                       <SwiperSlide key={index}>
@@ -605,8 +606,9 @@ const ShopPage = () => {
                       </div>
                     )}
 
-                    {reviews.length > 0
-                      ? reviews.map((review, index) => (
+                    <div className="d-none d-md-block">
+                      {reviews.length > 0 ? (
+                        reviews.map((review, index) => (
                           <div
                             className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px"
                             key={index}
@@ -682,110 +684,61 @@ const ShopPage = () => {
                             </div>
                           </div>
                         ))
-                      : 'test'}
-
-                    {/* 
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 align-items-center">
-                        <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-90px mb-10px"
-                            alt=""
-                          />
-                          <span className="text-dark-gray fw-600 d-block">
-                            Herman miller@gmail.com
-                          </span>
-                          <div className="fs-14 lh-18">2025.02.01</div>
-                        </div>
-                        <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-golden-yellow mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-
-                          <p className="w-85 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident.
-                          </p>
-                        </div>
-                      </div>
+                      ) : (
+                        <p>등록된 리뷰가 없습니다.</p>
+                      )}
                     </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px xs-mb-30px">
-                      <div className="d-block d-md-flex w-100 align-items-center">
-                        <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-90px mb-10px"
-                            alt=""
-                          />
-                          <span className="text-dark-gray fw-600 d-block">
-                            Herman miller@gmail.com
-                          </span>
-                          <div className="fs-14 lh-18">2025.02.01</div>
-                        </div>
-                        <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-golden-yellow mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
 
-                          <p className="w-85 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim ad minim veniamnisi ut
-                            aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate velit esse
-                            cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident.
-                          </p>
-                        </div>
-                      </div>
+                    <div className="d-block d-md-none">
+                      {reviews.length > 0 ? (
+                        reviews.map((review, index) => (
+                          <div
+                            className="col-12 border-bottom border-color-extra-medium-gray pb-10px mb-10px position-relative"
+                            key={index}
+                            style={{ minHeight: '120px' }}
+                          >
+                            {/* ✅ 오른쪽 상단 이미지 */}
+                            {review.image1 && (
+                              <img
+                                src={review.image1}
+                                alt="리뷰 이미지"
+                                style={{
+                                  width: '90px',
+                                  height: '60px',
+                                  objectFit: 'cover',
+                                  // borderRadius: '8px',
+                                  position: 'absolute',
+                                  top: '0px',
+                                  right: '0px',
+                                }}
+                              />
+                            )}
+
+                            {/* ✅ 리뷰 텍스트 영역 */}
+                            <div className="pe-100px">
+                              {' '}
+                              {/* 이미지 공간 확보 */}
+                              <span className="text-dark-gray fw-600 d-block fs-12">
+                                {review.email} / {formatDate(review.createdAt)}
+                              </span>
+                              <span className="text-golden-yellow d-block fs-13">
+                                {Array.from({ length: 5 }, (_, i) => (
+                                  <i
+                                    key={i}
+                                    className={`bi ${
+                                      i < review.rate ? 'bi-star-fill' : ''
+                                    }`}
+                                  ></i>
+                                ))}
+                              </span>
+                              <p className="fs-12 mb-0">{review.content}</p>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p>등록된 리뷰가 없습니다.</p>
+                      )}
                     </div>
-                    <div className="col-12 border-bottom border-color-extra-medium-gray pb-40px mb-40px xs-pb-30px md-mb-25px">
-                      <div className="d-block d-md-flex w-100 align-items-center">
-                        <div className="w-300px md-w-250px sm-w-100 sm-mb-10px text-center">
-                          <img
-                            src={ShopDetailImage3}
-                            className="w-90px mb-10px"
-                            alt=""
-                          />
-                          <span className="text-dark-gray fw-600 d-block">
-                            Herman miller@gmail.com
-                          </span>
-                          <div className="fs-14 lh-18">2025.02.01</div>
-                        </div>
-                        <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
-                          <span className="text-golden-yellow mb-5px sm-me-10px sm-mb-0 d-inline-block d-md-block">
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                            <i className="bi bi-star-fill"></i>
-                          </span>
-
-                          <p className="w-85 sm-w-100 sm-mt-15px">
-                            Lorem ipsum dolor sit sed do eiusmod tempor
-                            incididunt labore enim adquis nostrud exercitation
-                            ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non
-                            proident.
-                          </p>
-                        </div>
-                      </div>
-                    </div> */}
                     {more && (
                       <div className="col-12 last-paragraph-no-margin text-center">
                         <a
@@ -805,117 +758,31 @@ const ShopPage = () => {
                       </div>
                     )}
                   </div>
-
-                  {/* <div className="row justify-content-center">
-                    <div className="col-12">
-                      <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
-                        <div className="row justify-content-center mb-30px sm-mb-10px">
-                          <div className="col-md-9 text-center">
-                            <h4 className="text-dark-gray fw-500 mb-15px">
-                              Add a review
-                            </h4>
-                          </div>
-                        </div>
-                        <form
-                          action="email-templates/contact-form.php"
-                          method="post"
-                          className="row contact-form-style-02"
-                        >
-                          <div className="col-lg-5 col-md-6 mb-20px">
-                            <label className="form-label mb-15px">
-                              Your name*
-                            </label>
-                            <input
-                              className="input-name border-radius-4px form-control required"
-                              type="text"
-                              name="name"
-                              placeholder="Enter your name"
-                            />
-                          </div>
-                          <div className="col-lg-5 col-md-6 mb-20px">
-                            <label className="form-label mb-15px">
-                              Your email address*
-                            </label>
-                            <input
-                              className="border-radius-4px form-control required"
-                              type="email"
-                              name="email"
-                              placeholder="Enter your email address"
-                            />
-                          </div>
-                          <div className="col-lg-2 mb-20px">
-                            <label className="form-label">Your rating*</label>
-                            <div>
-                              <span className= icon-small d-block mt-20px md-mt-0">
-                                <i className="feather icon-feather-star text-golden-yellow"></i>
-                                <i className="feather icon-feather-star text-golden-yellow"></i>
-                                <i className="feather icon-feather-star text-golden-yellow"></i>
-                                <i className="feather icon-feather-star text-golden-yellow"></i>
-                                <i className="feather icon-feather-star text-golden-yellow"></i>
-                              </span>
-                            </div>
-                          </div>
-                          <div className="col-md-12 mb-20px">
-                            <label className="form-label mb-15px">
-                              Your review
-                            </label>
-                            <textarea
-                              className="border-radius-4px form-control"
-                              cols="40"
-                              rows="4"
-                              name="comment"
-                              placeholder="Your message"
-                            ></textarea>
-                          </div>
-                          <div className="col-lg-9 md-mb-25px">
-                            <div className="position-relative terms-condition-box text-start is-invalid mt-10px">
-                              <label className="d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  name="terms_condition"
-                                  id="terms_condition"
-                                  value="1"
-                                  className="terms-condition check-box align-middle required"
-                                />
-                                <span className="box fs-15">
-                                  I accept the crafto terms and conditions and I
-                                  have read the privacy policy.
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                          <div className="col-lg-3 text-start text-lg-end">
-                            <input type="hidden" name="redirect" value="" />
-                            <button
-                              className="btn btn-dark-gray btn-small btn-box-shadow btn-round-edge submit"
-                              type="submit"
-                            >
-                              Submit review
-                            </button>
-                          </div>
-                          <div className="col-12">
-                            <div className="form-results mt-20px d-none"></div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      <MobileBuyPanel
+        productName={product.productName}
+        productPrice={product.price}
+        qty={qty}
+        handleMinus={handleMinus}
+        handlePlus={handlePlus}
+        handleCartAdd={handleCartAdd}
+        handleBuyNow={handleBuyNow}
+      />
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-40 md-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-16">
                         장바구니에 추가되었습니다.
                       </h6>
                     </div>

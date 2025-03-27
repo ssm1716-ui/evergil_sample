@@ -48,7 +48,7 @@ const ForgotPage = () => {
     <>
       <section className="top-space-margin big-section bg-very-light-gray">
         <div className="container">
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white pb-10">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white pb-10 p-10px">
             <div
               className="col"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'

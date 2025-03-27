@@ -203,7 +203,7 @@ const ProfilePage = () => {
         <div className="container">
           <div className="row">
             <div className="col-12 tab-style-10">
-              <ul className="nav nav-tabs border-0 justify-content-center fw-700 fs-26 md-fs-16 text-center">
+              <ul className="nav nav-tabs border-0 justify-content-center fw-700 fs-26 md-fs-13 text-center">
                 {['My Everlinks', 'View', 'Bookmark'].map((tab) => (
                   <li key={tab} className="nav-item">
                     <button

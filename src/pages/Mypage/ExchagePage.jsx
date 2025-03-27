@@ -8,7 +8,7 @@ const ExchagePage = () => {
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px">
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-          <h1 className="fw-600 text-dark-gray mb-10px">교환 신청</h1>
+          <h6 className="fw-600 text-dark-gray mb-10px">교환신청</h6>
         </div>
         <section className="p-0">
           <div className="pt-1 border-bottom border-2 border-gray">
@@ -40,13 +40,13 @@ const ExchagePage = () => {
 
         <section className="p-0">
           <div className="pt-4">
-            <h6 className="fs-32 fw-600 border-black text-start text-black mb-1">
+            <h6 className="fw-600 border-black text-start text-black mb-1">
               교환 사유
             </h6>
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-1 ps-1">
               <div className="col contact-form-style-04">
-                <div className="text-center fs-26">
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                <div className="text-center fs-26 md-fs-16">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     구매자 책임 사유
                   </label>
 
@@ -64,8 +64,8 @@ const ExchagePage = () => {
             </div>
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-1 ps-1">
               <div className="col contact-form-style-04">
-                <div className="text-center fs-26">
-                  <label className="text-dark-gray mb-10px fw-500 d-block text-start">
+                <div className="text-center fs-26 md-fs-16">
+                  <label className="text-dark-gray fw-500 d-block text-start">
                     판매자 책임 사유
                   </label>
 
@@ -82,14 +82,14 @@ const ExchagePage = () => {
               </div>
             </div>
 
-            <div className="col-12 text-center pt-5">
+            <div className="col-12 text-center">
               <Button
-                type="submit"
+                name="eventSection"
                 size="extra-large"
                 radiusOn="radius-on"
-                className="btn-large submit w-30 mt-60px mb-20px d-block"
+                className="btn-large w-40 mt-60px md-mt-10px mb-5px d-inline-block"
               >
-                교환 신청
+                교환신청
               </Button>
             </div>
           </div>

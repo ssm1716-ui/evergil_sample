@@ -157,7 +157,7 @@ const CartPage = () => {
                         {cartProducts.length > 0 &&
                           cartProducts.map((product, index) => (
                             <tr key={index}>
-                              <td className="product-checkbox">
+                              <td className="product-checkbox me-2">
                                 <input
                                   type="checkbox"
                                   name="terms_condition"
@@ -255,7 +255,7 @@ const CartPage = () => {
                 </div>
               </div>
               <div className="col-lg-4 p-0 md-p-4">
-                <div className="bg-very-light-gray border-radius-6px ms-25px p-50px xl-p-30px lg-p-25px">
+                <div className="bg-very-light-gray border-radius-6px ms-25px md-ms-0 p-50px xl-p-30px lg-p-25px">
                   <span className="fs-26 md-fs-20 fw-600 text-dark-gray mb-5px d-block">
                     장바구니 총계
                   </span>

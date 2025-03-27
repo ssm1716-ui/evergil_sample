@@ -16,32 +16,11 @@ const Footer = () => {
         // style="background-image: url('images/vertical-center-line-bg-dark.svg')"
       >
         <div className="container">
-          {/* <div className="row justify-content-center mb-4">
-            <div className="col-xl-6 col-lg-8 col-md-10 text-center">
-              <img
-                src={defaultLogo}
-                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
-                alt=""
-                className="default-logo"
-              />
-            </div>
-          </div> */}
-
           <div className="row align-items-start justify-content-evenly mb-4 md-mb-25px xs-mb-10px instagram-follow-api position-relative">
             <div className="col-xl-4 col-sm-12 text-start text-md-center last-paragraph-no-margin fs-15 order-3 order-md-1 mb-10px">
-              <img
-                src={defaultLogo_pc}
-                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
-                alt=""
-                className="default-logo"
-              />
+              <img src={defaultLogo_pc} alt="" className="default-logo" />
 
-              <img
-                src={defaultLogo_mobile}
-                data-at2x="images/demo-hotel-and-resort-logo@2x.png"
-                alt=""
-                className="mobile-logo"
-              />
+              <img src={defaultLogo_mobile} alt="" className="mobile-logo" />
             </div>
 
             <div className="col-xl-4 col-sm-12 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">

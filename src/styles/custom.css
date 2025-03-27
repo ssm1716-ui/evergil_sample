@@ -316,6 +316,43 @@ height: 1297px;
   display: block;
 }
 
+.product-main-image-box {
+  width: 519px;
+  height: 662px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 5px;
+}
+
+.gallery-grid-item {
+  width: 100%;
+}
+
+/* 모바일 화면 (최대 768px)에서만 가로 3개씩 */
+@media (max-width: 768px) {
+  .gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* gap: 10px; */
+  }
+
+  .gallery-grid-item {
+    width: calc(33.333% - 10px);
+  }
+
+  .gallery-grid-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* border-radius: 6px; */
+  }
+}
+
+
 /* 최소 가로 너비 지정 */
 
 @media (max-width: 991px) {
@@ -346,11 +383,18 @@ height: 1297px;
     font-size: 12px;
   }
   .blog-image {
-    width: 157px;
+    width: 100%;
     height: 157px;
   }
   .md-w-25 {
     width: 25%;
+  }
+  .product-main-image-box {
+    width: 100%;
+    height: 100%;
+  }
+  .ql-container{
+    height: 50% !important;
   }
 }
 
@@ -363,4 +407,102 @@ height: 1297px;
       border-bottom: 1px solid #c8c8c8;
       background: #f9f9f9;
     }
+}
+
+
+.mobile-buy-fixed {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  z-index: 100;
+  border-top: 1px solid #ccc;
+}
+
+.buy-btn {
+  width: 100%;
+  background: #ff5b5b;
+  color: white;
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+}
+
+.mobile-buy-panel {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 101;
+  transition: bottom 0.3s ease-in-out;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-buy-panel.open {
+  bottom: 0;
+}
+
+.panel-header {
+  text-align: center;
+}
+
+.panel-header button {
+  padding: 0;
+  border: 0;
+  background-color: unset;
+}
+
+.panel-header button::before {
+  content: "\e842";
+  font-family: "feather";
+  font-size: 20px;
+  font-weight: 900;
+  display: inline-block;
+  padding: 0 5px 0 0px;
+}
+
+.panel-content {
+  padding: 15px;
+}
+
+.panel-info {
+  background-color: #f8f8f8;
+  padding: 10px;
+  padding-top:0px;
+  margin-bottom: 10px;
+}
+
+.qty-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.total {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.action-btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cart {
+  flex: 1;
+  background: black;
+  color: white;
+  padding: 12px;
+  border: none;
+}
+
+.buy {
+  flex: 1;
+  background: #ff5b5b;
+  color: white;
+  padding: 12px;
+  border: none;
 }

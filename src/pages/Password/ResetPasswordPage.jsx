@@ -121,24 +121,9 @@ const ResetPasswordPage = () => {
           <div className="container-fluid">
             <div className="menu-logo">
               <Link to="/" className="navbar-brand ps-0 md-ps-15px">
-                <img
-                  src={defaultLogo}
-                  // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
-                  alt=""
-                  className="default-logo"
-                />
-                <img
-                  src={defaultLogo}
-                  // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
-                  alt=""
-                  className="alt-logo"
-                />
-                <img
-                  src={defaultLogo}
-                  // data-at2x="images/demo-hotel-and-resort-logo@2x.png"
-                  alt=""
-                  className="mobile-logo"
-                />
+                <img src={defaultLogo} alt="" className="default-logo" />
+                <img src={defaultLogo} alt="" className="alt-logo" />
+                <img src={defaultLogo} alt="" className="mobile-logo" />
               </Link>
             </div>
             <div className="col-auto col-xl-12 col-lg-12 menu-order">

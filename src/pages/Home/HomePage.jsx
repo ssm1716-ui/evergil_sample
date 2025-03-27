@@ -146,7 +146,7 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      <section className="bg-very-light-gray half-section ps-6 pe-6">
+      <section className="bg-very-light-gray half-section ps-6 pe-6 d-none d-md-block">
         <div className="container-fluid">
           <div
             className="row row-cols-1 row-cols-lg-4 row-cols-md-2 justify-content-center"
@@ -219,28 +219,28 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      <section className="bg-gray half-section px-3">
+      <section className="bg-very-light-gray px-3 d-block d-md-none">
         <div className="container-fluid p-0">
           <div
             className="features-wrapper d-flex flex-wrap flex-md-nowrap"
             style={{ scrollSnapType: 'x mandatory' }} // 옵션: 스크롤 스냅
           >
             {/* ✅ 반복 영역 */}
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-75 sm-min-w-auto md-w-25">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="line-icon-Big-Data icon-medium text-base-color"></i>
                 </div>
                 <div className="feature-box-content last-paragraph-no-margin text-center">
                   <span className="text-dark-gray fs-14 ls-0px">저장 공간</span>
-                  <p className="fs-12">
+                  <p className="fs-12 px-2">
                     사랑하는 사람들의 소중한 기억을 모두 보관하세요.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-75 sm-min-w-auto md-w-25">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="bi-shield-check icon-medium text-base-color"></i>
@@ -249,14 +249,14 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-14 ls-0px">
                     데이터 보호
                   </span>
-                  <p className="fs-12">
+                  <p className="fs-12  px-2">
                     에버링크를 볼 수 있는 사용자를 결정할 수 있습니다.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-75 sm-min-w-auto md-w-25">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="ti-lock icon-medium text-base-color"></i>
@@ -265,14 +265,14 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-14 ls-0px">
                     분실 시 보안
                   </span>
-                  <p className="fs-12">
+                  <p className="fs-12  px-2">
                     에버링크를 도난당해도 즉시 교체할 수 있습니다.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-75 sm-min-w-auto md-w-25">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="line-icon-Life-Safer icon-medium text-base-color"></i>
@@ -281,7 +281,7 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-14 ls-0px">
                     일회성 결제
                   </span>
-                  <p className="fs-12">
+                  <p className="fs-12 px-2">
                     숨겨진 비용이나 구독이 없는 평생 서비스
                   </p>
                 </div>

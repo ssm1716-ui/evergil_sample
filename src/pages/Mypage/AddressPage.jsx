@@ -242,7 +242,7 @@ const AddressPage = () => {
               <div className="text-center md-pt-5">
                 <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                   <Button
-                    className="btn w-10 mt-10px d-inline w-40 "
+                    className="btn w-10 mt-10px d-inline w-45"
                     onClick={() => {
                       setAddress(initialForm);
                       setSelectedAddress('');
@@ -257,7 +257,7 @@ const AddressPage = () => {
                   <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                     <Button
                       color="black"
-                      className="btn w-10 mt-10px d-inline w-40"
+                      className="btn w-10 mt-10px d-inline w-45"
                       onClick={handleDefaultAddress}
                     >
                       기본 배송지 지정
@@ -271,146 +271,150 @@ const AddressPage = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="row justify-content-center">
-          <div className="col-6">
-            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
-              <div className="row justify-content-center mb-30px sm-mb-10px">
-                <div className="col-md-9 text-center">
-                  <h6 className="text-dark-gray fw-500 mb-15px">
-                    {!updateFlag ? '배송지 추가' : '배송지 수정'}
-                  </h6>
-                  <button
-                    type="button"
-                    className="btn-close position-absolute top-10px right-10px"
-                    onClick={() => setIsModalOpen(false)}
-                  ></button>
+        <div className="w-60 md-w-100 md-h-100 mt-10">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+                  <div className="row justify-content-center mb-30px sm-mb-10px">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        {!updateFlag ? '배송지 추가' : '배송지 수정'}
+                      </h6>
+                      <button
+                        type="button"
+                        className="btn-close position-absolute top-10px right-10px"
+                        onClick={() => setIsModalOpen(false)}
+                      ></button>
+                    </div>
+                  </div>
+                  <form className="row">
+                    <div>
+                      <label>배송지 이름</label>
+                      <input
+                        className="border-radius-4px input-small mb-5px"
+                        type="text"
+                        name="deliveryName"
+                        value={address.deliveryName}
+                        onChange={handleAddressChange}
+                        required
+                      />
+                      {errors.deliveryName && (
+                        <p className="text-danger text-start">
+                          배송지 이름을 추가 해주세요.
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label>받는분 이름</label>
+                      <input
+                        className="border-radius-4px input-small mb-5px"
+                        type="text"
+                        name="recipientName"
+                        value={address.recipientName}
+                        onChange={handleAddressChange}
+                        required
+                      />
+                      {errors.recipientName && (
+                        <p className="text-danger text-start">
+                          받는분 이름을 추가 해주세요.
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label>핸드폰번호</label>
+                      <input
+                        className="border-radius-4px input-small mb-5px"
+                        type="text"
+                        name="phoneNumber"
+                        value={address.phoneNumber}
+                        onChange={handleAddressChange}
+                        required
+                      />
+                      {errors.phoneNumber && (
+                        <p className="text-danger text-start">
+                          핸드폰번호를 추가 해주세요.
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label>배송주소</label>
+                      <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0 mt-10px">
+                        <input
+                          className="col-7 md-col-9 border-radius-4px input-small mb-5px"
+                          type="text"
+                          name="zipcode"
+                          value={(address.zipcode = selectedAddress.zipcode)}
+                          onChange={handleAddressChange}
+                          required
+                        />
+
+                        <AddressSearch onComplete={setSelectedAddress}>
+                          주소 찾기
+                        </AddressSearch>
+                      </div>
+                      {errors.zipcode && (
+                        <p className="text-danger text-start">
+                          주소 찾기로 우편번호를 추가 해주세요.
+                        </p>
+                      )}
+                      <>
+                        <input
+                          className="border-radius-4px input-small mb-5px mt-1"
+                          type="text"
+                          name="address1"
+                          value={(address.address1 = selectedAddress.address1)}
+                          onChange={handleAddressChange}
+                          required
+                        />
+                        {errors.address1 && (
+                          <p className="text-danger text-start">
+                            주소 찾기로 주소를 추가 해주세요.
+                          </p>
+                        )}
+
+                        <input
+                          className="border-radius-4px input-small mb-5px mt-1"
+                          type="text"
+                          name="address2"
+                          value={address.address2}
+                          onChange={handleAddressChange}
+                          required
+                        />
+                      </>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center mt-5">
+                      <input type="hidden" name="redirect" value="" />
+                      {updateFlag ? (
+                        <Button
+                          className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
+                          onClick={handleUpdateAddress}
+                        >
+                          수정
+                        </Button>
+                      ) : (
+                        <Button
+                          className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
+                          onClick={handleAddAddress}
+                        >
+                          추가
+                        </Button>
+                      )}
+
+                      <Button
+                        className="btn btn-white btn-box-shadow btn-round-edge me-1"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        닫기
+                      </Button>
+                    </div>
+
+                    {/* <AddressSearch onComplete={setSelectedAddress} />
+                          <p>선택된 주소: {selectedAddress}</p> */}
+                  </form>
                 </div>
               </div>
-              <form className="row">
-                <div className="mb-20px ">
-                  <label className="mb-10px">배송지 이름</label>
-                  <input
-                    className="border-radius-4px input-large mb-5px"
-                    type="text"
-                    name="deliveryName"
-                    value={address.deliveryName}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {errors.deliveryName && (
-                    <p className="text-danger text-start">
-                      배송지 이름을 추가 해주세요.
-                    </p>
-                  )}
-                </div>
-                <div className="mb-20px ">
-                  <label className="mb-10px">받는분 이름</label>
-                  <input
-                    className="border-radius-4px input-large mb-5px"
-                    type="text"
-                    name="recipientName"
-                    value={address.recipientName}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {errors.recipientName && (
-                    <p className="text-danger text-start">
-                      받는분 이름을 추가 해주세요.
-                    </p>
-                  )}
-                </div>
-                <div className="mb-20px">
-                  <label className="mb-10px">핸드폰번호</label>
-                  <input
-                    className="border-radius-4px input-large mb-5px"
-                    type="text"
-                    name="phoneNumber"
-                    value={address.phoneNumber}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {errors.phoneNumber && (
-                    <p className="text-danger text-start">
-                      핸드폰번호를 추가 해주세요.
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-20px">
-                  <label className="">배송주소</label>
-                  <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0 mt-10px">
-                    <input
-                      className="col-9 border-radius-4px input-large mb-5px"
-                      type="text"
-                      name="zipcode"
-                      value={(address.zipcode = selectedAddress.zipcode)}
-                      onChange={handleAddressChange}
-                      required
-                    />
-
-                    <AddressSearch onComplete={setSelectedAddress}>
-                      주소 찾기
-                    </AddressSearch>
-                  </div>
-                  {errors.zipcode && (
-                    <p className="text-danger text-start">
-                      주소 찾기로 우편번호를 추가 해주세요.
-                    </p>
-                  )}
-                  <>
-                    <input
-                      className="border-radius-4px input-large mb-5px mt-1"
-                      type="text"
-                      name="address1"
-                      value={(address.address1 = selectedAddress.address1)}
-                      onChange={handleAddressChange}
-                      required
-                    />
-                    {errors.address1 && (
-                      <p className="text-danger text-start">
-                        주소 찾기로 주소를 추가 해주세요.
-                      </p>
-                    )}
-
-                    <input
-                      className="border-radius-4px input-large mb-5px mt-1"
-                      type="text"
-                      name="address2"
-                      value={address.address2}
-                      onChange={handleAddressChange}
-                      required
-                    />
-                  </>
-                </div>
-                <div className="col-lg-12 text-center text-lg-center">
-                  <input type="hidden" name="redirect" value="" />
-                  {updateFlag ? (
-                    <Button
-                      className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
-                      onClick={handleUpdateAddress}
-                    >
-                      수정
-                    </Button>
-                  ) : (
-                    <Button
-                      className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
-                      onClick={handleAddAddress}
-                    >
-                      추가
-                    </Button>
-                  )}
-
-                  <Button
-                    className="btn btn-white btn-box-shadow btn-round-edge me-1"
-                    onClick={() => setIsModalOpen(false)}
-                  >
-                    닫기
-                  </Button>
-                </div>
-
-                {/* <AddressSearch onComplete={setSelectedAddress} />
-                          <p>선택된 주소: {selectedAddress}</p> */}
-              </form>
             </div>
           </div>
         </div>

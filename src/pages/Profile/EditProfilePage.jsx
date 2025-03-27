@@ -806,7 +806,7 @@ const EditProfilePage = () => {
                 className="w-700px md-w-95 lh-initial"
               />
             </div>
-            <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
+            <div className="mt-80px md-mt-0 d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
                 className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
                 onClick={handleNavigate}
@@ -833,16 +833,18 @@ const EditProfilePage = () => {
       </section>
 
       {showScreen && (
-        <section id="tab" className="pt-0 sm-pt-40px md-pb-70px">
+        <section id="tab" className="pt-0 md-pt-20px md-pb-70px">
           <div className="container">
             <div className="row">
               <div className="col-12 tab-style-04">
                 <ul className="nav nav-tabs border-0 justify-content-center fs-19">
                   {['이미지', '하늘편지', '가족관계도'].map((tab) => (
-                    <li key={tab} className="nav-item">
+                    <li key={tab} className="nav-item text-center">
                       <button
                         className={`nav-link ${
-                          activeTab === tab ? 'active text-base-color' : ''
+                          activeTab === tab
+                            ? 'active text-base-color d-inline-block'
+                            : ''
                         }`}
                         onClick={() => setActiveTab(tab)}
                       >
@@ -858,32 +860,33 @@ const EditProfilePage = () => {
                   {activeTab === '이미지' && (
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <LightGallery
-                        key={galleryKey} // ✅ 리렌더링을 위한 key
+                        key={galleryKey}
                         speed={500}
                         download={false}
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"
-                        onAfterOpen={handleGalleryOpen} // ✅ LightGallery가 열린 후 실행
-                        onInit={onInit} // ✅ 인스턴스 저장
+                        onAfterOpen={handleGalleryOpen}
+                        onInit={onInit}
                         ref={lgRef}
                       >
-                        <div style={galleryStyle}>
-                          {/* 첫 번째 업로드 영역 */}
+                        <div className="gallery-grid">
+                          {/* 업로드 버튼 */}
                           <div
                             onClick={handleUploadClick}
                             style={{
-                              width: '100%',
-                              height: 'auto',
+                              // width: '30%',
                               display: 'flex',
                               justifyContent: 'center',
                               alignItems: 'center',
                               backgroundColor: '#f0f0f0',
                               cursor: 'pointer',
                               border: '2px dashed #ccc',
+                              // marginBottom: '10px',
                             }}
+                            className="gallery-item gallery-grid-item"
                           >
-                            <MdAddPhotoAlternate size={200} color="#888" />
+                            <MdAddPhotoAlternate size={70} color="#888" />
                             <input
                               type="file"
                               accept="image/*"
@@ -893,18 +896,15 @@ const EditProfilePage = () => {
                             />
                           </div>
 
+                          {/* 이미지 썸네일 */}
                           {images.map((image, index) => (
                             <a
                               href={image.url}
                               key={index}
-                              className="gallery-item"
+                              className="gallery-item gallery-grid-item"
                               data-src={image.url}
                             >
-                              <img
-                                src={image.url}
-                                // alt={`Gallery Image ${index}`}
-                                className="imageStyle"
-                              />
+                              <img src={image.url} />
                             </a>
                           ))}
                         </div>
@@ -916,12 +916,16 @@ const EditProfilePage = () => {
                       <div className="row m-0">
                         {letters.length > 0 ? (
                           <div
-                            className="col-12"
+                            className="col-12 p-0"
                             // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
                           >
                             {letters.map((letter, index) => (
                               <div
-                                className="row border-bottom border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-30px"
+                                className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-p-5  ${
+                                  index % 2
+                                    ? 'paper-note-odd'
+                                    : 'paper-note-even'
+                                }`}
                                 key={letter.letterId}
                               >
                                 <div className="col-12 col-md-1 text-md-center align-self-center">
@@ -929,7 +933,7 @@ const EditProfilePage = () => {
                                     {letter.displayName}
                                   </span>
                                 </div>
-                                <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                                <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                   <p className="sm-w-85">{letter.content}</p>
                                 </div>
                                 <div className="col-lg-2 col-md-3 align-self-center text-md-end">
@@ -1291,11 +1295,11 @@ const EditProfilePage = () => {
 };
 
 // // CSS 스타일
-const galleryStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '10px',
-};
+// const galleryStyle = {
+//   display: 'grid',
+//   gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+//   gap: '10px',
+// };
 
 // const imageStyle = {
 //   width: '100%',

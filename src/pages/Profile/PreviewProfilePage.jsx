@@ -359,7 +359,7 @@ const ViewProfilePage = () => {
         <div className="container">
           <div className="row bottom-minus-60px end-0 z-index-1 pe-1 ">
             {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-            <div className="col-xl-7 col-lg-9 offset-0 offset-md-3  xs-mt-25px text-start fs-20">
+            <div className="col-xl-7 col-lg-9 offset-0 offset-md-3  xs-mt-25px text-start fs-20 md-ps-25px">
               <p dangerouslySetInnerHTML={{ __html: profile.description }}></p>
             </div>
             <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
@@ -386,20 +386,22 @@ const ViewProfilePage = () => {
               <div className="col-12 tab-style-04">
                 <ul className="nav nav-tabs border-0 justify-content-center fs-19">
                   {tabList.map((tab) => (
-                    <li key={tab} className="nav-item">
+                    <li key={tab} className="nav-item text-center">
                       <button
                         className={`nav-link ${
-                          activeTab === tab ? 'active' : ''
+                          activeTab === tab
+                            ? 'active text-base-color d-inline-block'
+                            : ''
                         }`}
                         onClick={() => setActiveTab(tab)}
                       >
                         {tab}
-                        <span className="tab-border bg-dark-gray"></span>
+                        <span className="tab-border bg-base-color"></span>
                       </button>
                     </li>
                   ))}
                 </ul>
-                <div className="mb-5 h-1px w-100 bg-extra-medium-gray sm-mt-10px xs-mb-8"></div>
+                <div className="mb-5 h-1px w-100 bg-extra-medium-gray xs-mb-8"></div>
                 <div className="tab-content">
                   {activeTab === '이미지' && (
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
@@ -412,19 +414,16 @@ const ViewProfilePage = () => {
                         // onInit={onInit}
                         // ref={lgRef}
                       >
-                        <div style={galleryStyle}>
+                        <div className="gallery-grid">
+                          {/* 이미지 썸네일 */}
                           {images.map((image, index) => (
                             <a
                               href={image.url}
                               key={index}
-                              className="gallery-item"
+                              className="gallery-item gallery-grid-item"
                               data-src={image.url}
                             >
-                              <img
-                                src={image.url}
-                                // alt={`Gallery Image ${index}`}
-                                style={imageStyle}
-                              />
+                              <img src={image.url} />
                             </a>
                           ))}
                         </div>
@@ -441,15 +440,16 @@ const ViewProfilePage = () => {
                   {activeTab === '하늘편지' && (
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <div className="row m-0">
-                        <div
-                          className="col-12 md-p-0"
-                          // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
-                        >
+                        <div className="col-12 md-p-0">
                           {letters.length > 0 ? (
                             <>
                               {letters.map((letter, index) => (
                                 <div
-                                  className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-20px paper-note-odd md-ps-3 ps-2"
+                                  className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-ps-3 ps-2 ${
+                                    index % 2
+                                      ? 'paper-note-odd'
+                                      : 'paper-note-even'
+                                  }`}
                                   key={index}
                                 >
                                   <div className="col-12 col-md-1 text-md-left align-self-center">
@@ -457,32 +457,12 @@ const ViewProfilePage = () => {
                                       {letter.displayName}
                                     </span>
                                   </div>
-                                  <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px pb-25px sm-pt-15px sm-pb-15px sm-px-0">
+                                  <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                     <p className="sm-w-85">{letter.content}</p>
                                   </div>
                                   <div className="col-lg-2 col-md-3 align-self-center text-md-end">
                                     <span>{letter.createdAt}</span>
                                   </div>
-                                  {letter.hasPermission && (
-                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
-                                      <span
-                                        className="cursor-pointer me-5"
-                                        onClick={() =>
-                                          handleRemoveLetterConfirm(
-                                            letter.letterId
-                                          )
-                                        }
-                                      >
-                                        <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                                      </span>
-                                      <span
-                                        className="cursor-pointer"
-                                        // onClick={handleModifyLetter}
-                                      >
-                                        <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
-                                      </span>
-                                    </div>
-                                  )}
                                 </div>
                               ))}
                             </>
@@ -505,15 +485,15 @@ const ViewProfilePage = () => {
                       >
                         {family.map((f, index) => (
                           <div
-                            className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-1 md-mt-50px text-center"
+                            className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-1 text-center"
                             key={index}
                           >
-                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
-                              <div className="process-step-icon-box position-relative mt-30px">
+                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin">
+                              <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
                                 <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-40 fs-18 rounded-circle text-dark-gray fw-500">
-                                  <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-70 fs-18 rounded-circle text-dark-gray fw-500">
+                                  <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                                     <span className="number position-relative z-index-1 fw-600">
                                       <i className="feather icon-feather-user align-middle icon-large text-white"></i>
                                     </span>
@@ -526,9 +506,9 @@ const ViewProfilePage = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin md-mb-50px">
-                              <div className="process-step-icon-box position-relative mt-30px">
-                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 fs-18 rounded-circle text-dark-gray fw-500">
+                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin">
+                              <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-80 fs-18 rounded-circle text-dark-gray fw-500">
                                   <span className="number position-relative z-index-1 fw-600">
                                     {f.displayName}{' '}
                                   </span>

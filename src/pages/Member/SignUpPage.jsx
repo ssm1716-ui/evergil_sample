@@ -364,7 +364,7 @@ const SignUpPage = () => {
             </div>
           )}
           {step === 1 && (
-            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white p-10px">
               <div className="col contact-form-style-04">
                 <div className="py-5 text-center">
                   <img src={signup} alt="" className="default-logo" />

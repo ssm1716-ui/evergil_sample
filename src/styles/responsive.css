@@ -2869,7 +2869,8 @@
     height: 900px !important;
   }
   .small-screen {
-    height: 300px !important;
+    /* height: 300px !important; */
+    height: 150px !important;
   }
   .extra-small-screen {
     height: 250px !important;
@@ -21637,6 +21638,15 @@
     display: block !important;
     min-height: 100px;
   }
+  .cart-products tbody tr.info-row {
+    padding-left: 0;
+    display: flex !important;
+    justify-content: space-between;
+    min-height: 0px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    padding-bottom: 0 !important;
+  }
   .cart-products tbody tr:last-child {
     margin-bottom: 0;
   }
@@ -21748,4 +21758,11 @@
   /* footer .mobile-logo {
     height: 30px;
   } */
+}
+
+@media (max-width: 767px) {
+  .md-input-small {
+    padding: 7px 15px;
+    font-size: 12px;
+}
 }

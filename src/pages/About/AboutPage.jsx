@@ -76,22 +76,25 @@ const AboutPage = () => {
               data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <h6 className="text-dark-gray mb-10px">Our Story</h6>
-              <p className="w-100 lg-w-100 fs-14">
+              <p className="w-100 lg-w-100 fs-14 md-fs-12">
                 Everlink(에버링크)는 2024년도에 시작하였습니다.
                 <br /> 지난 겨울 사랑하는 사람을 떠나보내면서 힘들 때 마다
                 사진을 꺼내 <br />그 사람을 회상하며 버텨왔습니다.
                 <br />
                 추억이 담긴 사진들을 납골당 혹은 묘비에 전부 다 보관하는 것은
-                장소의 한계가 있다는 사실을 깨닫게 되었습니다. <br />
+                장소의
+                <br /> 한계가 있다는 사실을 깨닫게 되었습니다. <br />
                 <br />
                 우리가 추구하는 Everlink(에버링크)는 신뢰할 수 있는 품질과
-                사랑하는 사람의 발자취를 평생 기억할 수 있는 가치, 그리고 고객과
+                사랑하는
+                <br /> 사람의 발자취를 평생 기억할 수 있는 가치, 그리고 고객과
                 함께 나아간다는 원칙을 통해 오늘도 진심으로 정성을 다해
                 움직입니다.
                 <br />
                 <br />
-                우리는 소중한 순간들을 우리의 마음 속에 영원히 남을 기억으로
-                바꾸고자 노력합니다.
+                우리는 소중한 순간들을 우리의 마음 속에
+                <br />
+                영원히 남을 기억으로 바꾸고자 노력합니다.
               </p>
             </div>
           </div>
@@ -111,7 +114,7 @@ const AboutPage = () => {
               <h6 className="text-dark-gray mb-10px">Our Mission</h6>
               <img src={AboutImage3} alt="" className="w-100" />
               <h5 className="text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
-              <p className="lg-w-100 mt-8 lh-24 fs-14">
+              <p className="lg-w-100 mt-8 lh-24 fs-14 md-fs-12">
                 우리의 사명은 사랑하는 사람들이 영원히 기억되는 것입니다.
                 <br />
                 대부분 2-3세대가 지나면 사람들은 우리가 존재했다는 <br />

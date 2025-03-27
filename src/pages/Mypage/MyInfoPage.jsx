@@ -296,7 +296,7 @@ const MyInfoPage = () => {
                     <table className="table cart-products">
                       <tbody>
                         {!isPlatform && (
-                          <tr className="pb-2">
+                          <tr className="pb-2 info-row">
                             <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
                               <h6 className="m-0 fw-600 ls-minus-1px">
                                 비밀번호
@@ -318,7 +318,7 @@ const MyInfoPage = () => {
                           </tr>
                         )}
 
-                        <tr>
+                        <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2  w-20 md-w-30">
                             <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
                               이름
@@ -343,7 +343,7 @@ const MyInfoPage = () => {
                           </td>
                         </tr>
 
-                        <tr>
+                        <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
                             <h6 className="m-0 fw-600 ls-minus-1px">휴대폰</h6>
                           </td>
@@ -366,7 +366,7 @@ const MyInfoPage = () => {
                           </td>
                         </tr>
 
-                        <tr>
+                        <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
                             <h6 className="m-0 fw-600 ls-minus-1px">이메일</h6>
                           </td>
