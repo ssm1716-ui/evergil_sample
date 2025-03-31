@@ -15,12 +15,29 @@ import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
 import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 
 const OrderListPage = () => {
+  // 올해 1월 1일 반환
+  const getFirstDayOfYear = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-01-01`;
+  };
+
+  // 오늘 날짜 반환 (YYYY-MM-DD 형식)
+  const getTodayDate = () => new Date().toISOString().split('T')[0];
+
+  const initData = {
+    from: getFirstDayOfYear(), // 기본값: to 기준 90일 전
+    to: getTodayDate(), // 기본값: 오늘 날짜
+    keyword: '',
+  };
+  const [viewSelect, setViewSelect] = useState(initData);
+
   const initialForm = {
     rate: 0,
     content: '',
     images: [],
   };
   const [orderProducts, setorderProducts] = useState([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState({
     rate: 0,
@@ -211,7 +228,7 @@ const OrderListPage = () => {
           data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
           <div className="mx-auto me-md-0 col tab-style-01">
-            <ul className="nav nav-tabs justify-content-start border-0 text-center fs-18 md-fs-14 fw-600 mb-3">
+            <ul className="nav nav-tabs justify-content-start border-0 text-center fs-18 md-fs-12 fw-600 mb-3">
               <li className="nav-item mt-10px">
                 <a
                   className="nav-link active"
@@ -240,8 +257,8 @@ const OrderListPage = () => {
                 <input
                   className="border-1 nav-link text-center"
                   type="date"
-                  name="date"
-                  // value="2024-02-06"
+                  name="from"
+                  value={viewSelect.from}
                   min="2024-01-01"
                   max="2099-12-31"
                   aria-label="date"
@@ -251,8 +268,8 @@ const OrderListPage = () => {
                 <input
                   className="border-1 nav-link text-center"
                   type="date"
-                  name="date"
-                  // value="2024-02-13"
+                  name="to"
+                  value={viewSelect.to}
                   min="2024-01-01"
                   max="2099-12-31"
                   aria-label="date"
@@ -325,7 +342,7 @@ const OrderListPage = () => {
                 <div>
                   <Link
                     to="/mypage/exchage"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="교환">
@@ -335,7 +352,7 @@ const OrderListPage = () => {
                   </Link>
                   <Link
                     to="/mypage/return"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="환불">
@@ -348,7 +365,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="배송조회">
@@ -358,7 +375,7 @@ const OrderListPage = () => {
                   </a>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="구매확정">
@@ -401,7 +418,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="배송조회">
@@ -411,7 +428,7 @@ const OrderListPage = () => {
                   </a>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="리뷰보기">
@@ -454,7 +471,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="배송조회">
@@ -464,7 +481,7 @@ const OrderListPage = () => {
                   </a>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                     onClick={() => setIsModalOpen(true)}
                   >
                     <span>
@@ -508,7 +525,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text w-40 me-2 mt-2"
+                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="결제 취소">

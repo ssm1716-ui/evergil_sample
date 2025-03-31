@@ -195,7 +195,7 @@ const SettingProfilePage = () => {
                     생년월일
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control md-input-small "
+                    className="mb-5px bg-very-light-white form-control md-input-small custom-date"
                     type="date"
                     name="birthday"
                     value={formProfile.birthday}
@@ -212,7 +212,7 @@ const SettingProfilePage = () => {
                     기일
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control md-input-small"
+                    className="mb-5px bg-very-light-white form-control md-input-small custom-date"
                     type="date"
                     name="deathDate"
                     min="2024-02-01"

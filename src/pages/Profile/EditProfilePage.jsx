@@ -884,7 +884,7 @@ const EditProfilePage = () => {
                               border: '2px dashed #ccc',
                               // marginBottom: '10px',
                             }}
-                            className="gallery-item gallery-grid-item"
+                            className="gallery-grid-item"
                           >
                             <MdAddPhotoAlternate size={70} color="#888" />
                             <input
@@ -1017,7 +1017,7 @@ const EditProfilePage = () => {
                                           <div className="col-12 col-md-3 text-md-center align-self-center pt-1">
                                             {f.isCustomInput ? (
                                               <input
-                                                className="border-color-transparent-dark-very-light form-control bg-transparent required"
+                                                className="border-color-transparent-dark-very-light form-control bg-transparent md-pt-0 md-pb-0 required"
                                                 type="text"
                                                 value={f.familyTitle}
                                                 onChange={(e) =>

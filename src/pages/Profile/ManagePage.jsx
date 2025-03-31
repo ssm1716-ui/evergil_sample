@@ -284,7 +284,7 @@ const ManagePage = () => {
                       </h6>
 
                       {invitations.length > 0 ? (
-                        <table className="table invite-table md-fs-14">
+                        <table className="table invite-table md-fs-12">
                           <thead>
                             <tr>
                               <th scope="col" className="fw-600">
@@ -382,7 +382,7 @@ const ManagePage = () => {
                       </h6>
 
                       {privateRequests.length > 0 ? (
-                        <table className="table nondisclosure-table">
+                        <table className="table nondisclosure-table md-fs-12">
                           <thead>
                             <tr>
                               {/* <th scope="col" className="fw-600">이메일</th> */}

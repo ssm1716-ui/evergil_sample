@@ -506,3 +506,13 @@ height: 1297px;
   padding: 12px;
   border: none;
 }
+
+.custom-date {
+  -webkit-appearance: none;
+  appearance: none;
+  text-align-last: left;
+  display: flex;
+  align-items: center;
+  height: 50px; /* 필요 시 조절 */
+  padding: 0 12px;
+}

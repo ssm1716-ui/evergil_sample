@@ -40,7 +40,6 @@ const ShopPage = () => {
         if (status !== 200) throw new Error('제품 정보를 불러올 수 없습니다.');
 
         setProduct(data.data);
-        console.log(data.data);
       } catch (err) {
         console.error(err.message);
       }

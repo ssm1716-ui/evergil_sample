@@ -40,7 +40,12 @@ const CheckOutPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeliveryOpen, setIsModalDeliveryOpen] = useState(false);
   const [orderProductData, setOrderProductData] = useState([]);
-  const [orderAddressData, seOrderAddressData] = useState({
+  const [orderInfo, setOrderInfo] = useState({
+    orderName: '',
+    orderPhoneNumber: '',
+    orderEmail: '',
+  });
+  const [orderAddressData, setOrderAddressData] = useState({
     id: '',
     deliveryName: '',
     recipientName: '',
@@ -86,7 +91,8 @@ const CheckOutPage = () => {
         const res = await getMembersAddressDefault();
         if (res.status === 200) {
           const { data } = res.data;
-          seOrderAddressData(data);
+          console.log(data);
+          setOrderAddressData(data);
         }
       } catch (error) {
         console.error(error);
@@ -100,6 +106,18 @@ const CheckOutPage = () => {
   const validate = () => {
     let newErrors = {};
 
+    //구매자 정보
+    if (!orderInfo.orderName) {
+      newErrors.orderName = '구매자 이름을 입력 해주세요.';
+    }
+    if (!orderInfo.orderPhoneNumber) {
+      newErrors.orderPhoneNumber = '구매자 휴대폰번호를 입력 해주세요.';
+    }
+    if (!orderInfo.orderEmail) {
+      newErrors.orderEmail = '구매자 이메일을 입력 해주세요.';
+    }
+
+    //배송지 정보
     if (!orderAddressData.deliveryName) {
       newErrors.deliveryName = '배송지 이름을 입력 해주세요.';
     }
@@ -108,7 +126,7 @@ const CheckOutPage = () => {
     }
     if (!orderAddressData.phoneNumber) {
       newErrors.phoneNumber = '휴대폰 번호를 입력해주세요.';
-    } else if (!/^\d{10,11}$/.test(orderAddressData.phoneNumber)) {
+    } else if (!isValidPhoneNumber(orderAddressData.phoneNumber)) {
       newErrors.phoneNumber = '올바른 휴대폰 번호를 입력해주세요.';
     }
     if (!orderAddressData.zipcode) {
@@ -135,7 +153,7 @@ const CheckOutPage = () => {
       removeHyphensPhoneNumber = removeHyphens(value);
     }
 
-    seOrderAddressData({
+    setOrderAddressData({
       ...orderAddressData,
       [name]: name === 'phoneNumber' ? removeHyphensPhoneNumber : value,
     });
@@ -197,7 +215,7 @@ const CheckOutPage = () => {
   const handleDeliveryAddressChage = () => {
     if (!focusAddress) return;
     const address = addressList.find((item) => item.id === focusAddress);
-    seOrderAddressData(address);
+    setOrderAddressData(address);
     setIsModalDeliveryOpen(false);
   };
 
@@ -295,8 +313,73 @@ const CheckOutPage = () => {
       <section className="pt-0 pb-0">
         <div className="container ">
           <div className="align-items-start ">
-            <div className="col-lg-12 md-mb-50px xs-mb-35px text-decoration-line-bottom pb-5">
+            <div className="col-lg-12 md-mb-50px xs-mb-10px pb-3">
               <span className="fs-26 md-fs-20 fw-600 text-dark-gray mb-20px md-mb-0 d-block">
+                구매자 정보
+              </span>
+              <form className="">
+                <div className="col-12 mb-20px md-mb-10px">
+                  <label>이름</label>
+                  <span className="text-red">*</span>
+                  <input
+                    className="border-radius-4px input-large md-py-0"
+                    type="text"
+                    name="orderName"
+                    value={orderInfo.orderName}
+                    onChange={handleAddressChange}
+                    required
+                  />
+
+                  {errors.orderName && (
+                    <p className="text-danger text-start">{errors.orderName}</p>
+                  )}
+                </div>
+                <div className="col-12 mb-20px md-mb-10px">
+                  <label>휴대폰</label>
+                  <span className="text-red">*</span>
+                  <input
+                    className="border-radius-4px input-large md-py-0"
+                    type="text"
+                    name="orderPhoneNumber"
+                    value={orderInfo.orderPhoneNumber}
+                    onChange={handleAddressChange}
+                    required
+                  />
+                  {errors.orderPhoneNumber && (
+                    <p className="text-danger text-start">
+                      {errors.orderPhoneNumber}
+                    </p>
+                  )}
+                </div>
+                <div className="col-12 mb-20px md-mb-10px">
+                  <label>이메일</label>
+                  <span className="text-red">*</span>
+                  <input
+                    className="border-radius-4px input-large md-py-0"
+                    type="text"
+                    aria-label="first-name"
+                    name="orderEmail"
+                    value={orderInfo.orderEmail}
+                    // onChange={handleAddressChange}
+                    required
+                  />
+                  {errors.orderEmail && (
+                    <p className="text-danger text-start">
+                      {errors.orderEmail}
+                    </p>
+                  )}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="pt-0 pb-0">
+        <div className="container ">
+          <div className="align-items-start ">
+            <div className="col-lg-12 md-mb-50px xs-mb-35px text-decoration-line-bottom pb-5">
+              <span className="fs-26 md-fs-20 fw-600 text-dark-gray mb-0 md-mb-0 d-block">
                 배송지 정보
               </span>
 
@@ -340,6 +423,7 @@ const CheckOutPage = () => {
                   </div>
                   <div className="col-12 mb-20px md-mb-10px">
                     <label>받는분 이름</label>
+                    <span className="text-red">*</span>
                     <input
                       className="border-radius-4px input-large md-py-0"
                       type="text"
@@ -356,7 +440,8 @@ const CheckOutPage = () => {
                     )}
                   </div>
                   <div className="col-12 mb-20px md-mb-10px">
-                    <label>핸드폰번호</label>
+                    <label>휴대폰번호</label>
+                    <span className="text-red">*</span>
                     <input
                       className="border-radius-4px input-large md-py-0"
                       type="text"
@@ -374,7 +459,8 @@ const CheckOutPage = () => {
                   </div>
 
                   <div className="col-12 mb-10px">
-                    <label className="col-12">배송주소</label>
+                    <label>배송주소</label>
+                    <span className="text-red">*</span>
                     <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0">
                       <input
                         className="col-7 col-md-9 border-radius-4px input-large md-py-0"
