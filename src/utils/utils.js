@@ -15,3 +15,17 @@ export const formatDate = (dateString) => {
 export const getFileType = (fileType) => {
     return fileType.replace('image/', '');
 };
+
+
+export const getTransformedCartData = (storedCart) => {
+    let transformedData;
+    if (storedCart.length > 0) {
+        transformedData = {
+            items: storedCart.map((item) => ({
+                productId: item.productId,
+                quantity: String(item.quantity),
+            })),
+        };
+    }
+    return transformedData;
+};

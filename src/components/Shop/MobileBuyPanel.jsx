@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const MobileBuyPanel = ({
   productName,
   productPrice,
-  qty,
+  quantity,
   handleMinus,
   handlePlus,
   handleCartAdd,
@@ -54,7 +54,7 @@ const MobileBuyPanel = ({
                   className="qty-text"
                   type="text"
                   id="1"
-                  value={qty}
+                  value={quantity}
                   aria-label="qty-text"
                 />
                 <button type="button" className="qty-plus" onClick={handlePlus}>
@@ -73,7 +73,7 @@ const MobileBuyPanel = ({
             총 합계
             <strong className="text-black">
               {' '}
-              {(Number(productPrice) * qty).toLocaleString()}
+              {(Number(productPrice) * quantity).toLocaleString()}
             </strong>
           </p>
           <div className="action-btns">

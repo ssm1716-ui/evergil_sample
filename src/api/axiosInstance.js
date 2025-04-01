@@ -12,36 +12,83 @@ const axiosInstance = axios.create({
     },
 });
 
-axiosInstance.interceptors.request.use(
-    (config) => {
-        // console.log(config.headers['Authorization']);
-        // console.log('Request Authorization Header:', config.headers['Authorization']);
-        return config;
-    });
+// axiosInstance.js
+// axiosInstance.interceptors.request.use((config) => {
+//     if (config.headers?.authRequired === false) {
+//         // ❗ 토큰 제거
+//         delete config.headers['Authorization'];
+//     } else {
+//         const token = localStorage.getItem('token');
+//         if (token) {
+//             config.headers['Authorization'] = `${token}`;
+//         }
+//     }
+//     return config;
+// });
+
+// axiosInstance.interceptors.response.use(
+//     (res) => {
+//         console.log('[✅ 응답 성공]', res);
+//         return res;
+//     },
+//     async (error) => {
+//         const originalRequest = error.config;
+
+//         const isAuthRequired =
+//             originalRequest?.headers?.authRequired !== false; // ❗ 기본값은 true처럼 작동하게
+
+//         console.log('🔍 authRequired:', isAuthRequired);
+//         console.log('🔍 error.response:', error.response);
+
+//         if (error.response?.status === 403 && isAuthRequired && !originalRequest._retry) {
+//             originalRequest._retry = true;
+
+//             try {
+//                 const refreshResponse = await axiosInstance.post('/api/access-tokens.refresh');
+//                 const newAccessToken = refreshResponse.data.accessToken;
+
+//                 localStorage.setItem('token', newAccessToken);
+//                 axiosInstance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
+//                 originalRequest.headers['Authorization'] = newAccessToken;
+
+//                 return axiosInstance(originalRequest); // 재시도
+//             } catch (refreshError) {
+//                 console.log('[❌ 리프레시 실패]', refreshError);
+//                 return Promise.reject(refreshError);
+//             }
+//         }
+
+//         return Promise.reject(error);
+//     }
+// );
+
+axiosInstance.interceptors.request.use((config) => {
+    if (config.headers?.authRequired === false) {
+        // ❗ 토큰 제거
+        delete config.headers['Authorization'];
+    } else {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `${token}`;
+        }
+    }
+    return config;
+});
 
 axiosInstance.interceptors.response.use(
-    (response) => response,
+    (res) => res,
     async (error) => {
-        const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+        console.log(error);
+        console.log(error.response);
 
-            try {
-                const refreshResponse = await axiosInstance.post('/api/access-tokens.refresh');
+        // if (error.response?.status === 401) {
+        if (!error.response) {
 
-                // 새 Access Token 설정
-                const newAccessToken = refreshResponse.data.accessToken;
-                // console.log('newAccessToken : ', newAccessToken);
-                axiosInstance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
-                originalRequest.headers['Authorization'] = newAccessToken;
+            localStorage.removeItem('token');
+            window.location.href = '/signin';
 
-                // 원래 요청 재시도
-                return axiosInstance(originalRequest);
-
-            } catch (refreshError) {
-                return Promise.reject(refreshError);
-            }
+            return Promise.reject(error);
         }
 
         return Promise.reject(error);

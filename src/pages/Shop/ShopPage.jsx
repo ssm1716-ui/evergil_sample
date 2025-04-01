@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import LoginModal from '@/components/common/Modal/LoginModal';
 import MobileBuyPanel from '@/components/Shop/MobileBuyPanel';
-import { addCart } from '@/api/memberApi';
+import { getCart, addCart } from '@/api/memberApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Autoplay } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
@@ -13,15 +13,17 @@ import {
   getProductReviewsSelected,
 } from '@/api/products/productsApi';
 
+import { postAddCart } from '@/api/member/cartApi';
+
 import useAuth from '@/hooks/useAuth';
-import { formatDate } from '@/utils/utils';
+import { formatDate, getTransformedCartData } from '@/utils/utils';
 
 const ShopPage = () => {
   const { isAuthenticated, user } = useAuth();
   const { id } = useParams(); //URL에서 :id 값 가져오기
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [mainSwiper, setMainSwiper] = useState(null);
-  const [qty, setQty] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [product, setProduct] = useState({ productImages: [] });
@@ -103,26 +105,37 @@ const ShopPage = () => {
   }, [thumbsSwiper, mainSwiper]);
 
   const handleMinus = () => {
-    if (qty <= 1) return;
-    setQty((prevQty) => {
+    if (quantity <= 1) return;
+    setQuantity((prevQty) => {
       const newQty = prevQty - 1;
-      setProduct((prevProduct) => ({ ...prevProduct, qty: newQty }));
+      setProduct((prevProduct) => ({ ...prevProduct, quantity: newQty }));
       return newQty;
     });
   };
   const handlePlus = () => {
-    setQty((prevQty) => {
+    setQuantity((prevQty) => {
       const newQty = prevQty + 1;
-      setProduct((prevProduct) => ({ ...prevProduct, qty: newQty }));
+      setProduct((prevProduct) => ({ ...prevProduct, quantity: newQty }));
       return newQty;
     });
   };
 
   //로컬스토리지에 장바구니 추가
-  const handleCartAdd = () => {
-    const updatedProduct = { ...product, qty }; // 🔥 새 객체 생성하여 qty 추가
+  const handleCartAdd = async () => {
+    const updatedProduct = { ...product, quantity }; // 🔥 새 객체 생성하여 qty 추가
     setProduct(updatedProduct); // 상태 업데이트
-    addCart(updatedProduct);
+
+    if (isAuthenticated) {
+      //로그인 유저는 DB에 저장
+      const transformedData = getTransformedCartData([updatedProduct]);
+      const res = await postAddCart(transformedData);
+      if (res.status !== 200) {
+        console.log('not saved cart!');
+      }
+    } else {
+      //게스트는 로컬스토리지에 저장
+      addCart(updatedProduct);
+    }
     setIsModalOpen(true);
   };
 
@@ -130,14 +143,18 @@ const ShopPage = () => {
     navigate('/cart');
   };
 
-  const handleBuyNow = (e) => {
+  const handleBuyNow = async (e) => {
     if (!isAuthenticated) {
       setIsLoginModalOpen(true);
       return;
     }
     e.preventDefault();
-    const updatedProduct = { ...product, qty };
-    sessionStorage.setItem('order_product', JSON.stringify(updatedProduct));
+    const updatedProduct = { ...product, quantity };
+    const transformedData = getTransformedCartData([updatedProduct]);
+    const res = await postAddCart(transformedData);
+    if (res.status !== 200) {
+      console.log('not saved cart!');
+    }
     navigate('/checkout', {
       state: { orderType: 'direct', product: updatedProduct },
     });
@@ -145,7 +162,6 @@ const ShopPage = () => {
 
   const handleChangeSort = async (e) => {
     const type = e.target.value;
-    console.log(type);
     setSortType(type);
     setPageSize(10);
     setPageNumber(1);
@@ -275,84 +291,14 @@ const ShopPage = () => {
               <div className="product-price mb-10px">
                 <span className="text-dark-gray fs-28 xs-fs-24 fw-700">
                   <del className="text-medium-gray me-10px fw-400">
-                    {Number(product.discountedPrice).toLocaleString()}원
+                    {Number(product.price).toLocaleString()}원
                   </del>
-                  {Number(product.price).toLocaleString()}원
+                  {Number(product.discountedPrice).toLocaleString()}원
                 </span>
               </div>
               <p className="mb-30px fs-14" style={{ whiteSpace: 'pre-line' }}>
                 {product.description}
               </p>
-              {/* <div className="d-flex align-items-center mb-20px">
-                <label className="text-dark-gray me-15px fw-500">Color</label>
-                <ul className="shop-color mb-0">
-                  <li>
-                    <input
-                      className="d-none"
-                      type="radio"
-                      id="color-1"
-                      name="color"
-                      checked=""
-                    />
-                    <label htmlFor="color-1">
-                      <span style={{ backgroundColor: '#D4AF37' }}></span>
-                    </label>
-                  </li>
-                  <li>
-                    <input
-                      className="d-none"
-                      type="radio"
-                      id="color-2"
-                      name="color"
-                      checked=""
-                    />
-                    <label htmlFor="color-2">
-                      <span style={{ backgroundColor: '#5881bf' }}></span>
-                    </label>
-                  </li>
-                  <li>
-                    <input
-                      className="d-none"
-                      type="radio"
-                      id="color-3"
-                      name="color"
-                      checked=""
-                    />
-                    <label htmlFor="color-3">
-                      <span style={{ backgroundColor: '#87a968' }}></span>
-                    </label>
-                  </li>
-                </ul>
-              </div> */}
-              {/* <div className="d-flex align-items-center mb-25px">
-                <label className="text-dark-gray me-15px fw-500">
-                  선택 사항
-                </label>
-                <ul className="shop-size mb-0">
-                  <li>
-                    <input
-                      className="d-none"
-                      type="radio"
-                      id="size-1"
-                      name="size"
-                    />
-                    <label htmlFor="size-1" className="btn-double-text ls-0px">
-                      <span>부착용</span>
-                    </label>
-                  </li>
-                  <li>
-                    <input
-                      className="d-none"
-                      type="radio"
-                      id="size-2"
-                      name="size"
-                    />
-                    <label htmlFor="size-2">
-                      <span>거치용</span>
-                    </label>
-                  </li>
-                </ul>
-              </div> */}
               <div className="d-flex align-items-baseline flex-row flex-sm-row mb-20px position-relative">
                 <label className="text-dark-gray me-10px fw-500">수량</label>
                 <div className="quantity me-10px xs-mb-15px order-1">
@@ -367,8 +313,9 @@ const ShopPage = () => {
                     className="qty-text"
                     type="text"
                     id="1"
-                    value={qty}
+                    value={quantity}
                     aria-label="qty-text"
+                    readOnly
                   />
                   <button
                     type="button"
@@ -766,7 +713,7 @@ const ShopPage = () => {
       <MobileBuyPanel
         productName={product.productName}
         productPrice={product.price}
-        qty={qty}
+        quantity={quantity}
         handleMinus={handleMinus}
         handlePlus={handlePlus}
         handleCartAdd={handleCartAdd}

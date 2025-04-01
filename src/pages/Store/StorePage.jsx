@@ -113,10 +113,8 @@ const StorePage = () => {
                           {product.productName}
                         </a>
                         <div className="price lh-22 fs-16">
-                          <del>
-                            {product.discountedPrice.toLocaleString()}원
-                          </del>
-                          {product.price.toLocaleString()}원
+                          <del>{product.price.toLocaleString()}원</del>
+                          {product.discountedPrice.toLocaleString()}원
                         </div>
                       </div>
                     </div>

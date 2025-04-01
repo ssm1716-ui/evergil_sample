@@ -201,7 +201,7 @@ export const putProfileDescription = async (id, param) => {
 };
 
 //추모 이미지 리스트 조회
-export const getPhotoSeletct = async (id, page = 1, pageSize = 10) => {
+export const getPhotoSeletct = async (id, type, page = 1, pageSize = type === 'edit' ? 11 : 12) => {
 
     try {
         const res = await axiosInstance.get(`/memorial-profiles/${id}/photos`, {

@@ -4,11 +4,14 @@ import axiosInstance from '@/api/axiosInstance';
 
 //상품 리스트
 export const getProductsSelected = async (page = 1, pageSize = 20) => {
-
     try {
         const res = await axiosInstance.get('/products', {
             params: {
-                page, pageSize
+                page,
+                pageSize,
+            },
+            headers: {
+                authRequired: false, // 👈 여기서 제대로!
             },
         });
         return res;
@@ -21,7 +24,11 @@ export const getProductsSelected = async (page = 1, pageSize = 20) => {
 export const getProductDetailSelected = async (id) => {
 
     try {
-        const res = await axiosInstance.get(`/products/${id}`);
+        const res = await axiosInstance.get(`/products/${id}`, {
+            headers: {
+                authRequired: false, // ✅ 이건 config 내 headers
+            },
+        });
         return res;
     } catch (err) {
         console.error(err);
@@ -36,6 +43,9 @@ export const getProductReviewsSelected = async (id, sortType, page = 1, pageSize
         const res = await axiosInstance.get(`/products/${id}/reviews`, {
             params: {
                 sortType, page, pageSize
+            },
+            headers: {
+                authRequired: false, // ✅ 이건 config 내 headers
             },
         });
         return res;

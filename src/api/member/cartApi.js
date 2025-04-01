@@ -3,7 +3,7 @@ import axiosInstance from '@/api/axiosInstance';
 // 장바구니 API
 
 //장바구니 갱신
-export const putUpdateCart = async (id, param) => {
+export const putUpdateCart = async (param) => {
 
     try {
         const res = await axiosInstance.put('/members/me/cart', param);
@@ -25,7 +25,7 @@ export const postAddCart = async (param) => {
 };
 
 //장바구니 조회 
-export const getSelectCart = async (id) => {
+export const getSelectCart = async () => {
 
     try {
         const res = await axiosInstance.get('/members/me/cart');
@@ -40,7 +40,6 @@ export const deleteCart = async (id) => {
 
     try {
         const res = await axiosInstance.delete(`/members/me/cart/${id}`);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);

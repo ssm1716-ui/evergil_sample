@@ -165,7 +165,7 @@ const ResetPasswordPage = () => {
                     </label>
                     <input
                       className="mb-10px bg-very-light-white form-control required"
-                      type="text"
+                      type="password"
                       name="password"
                       value={form.password}
                       onChange={handlePasswordChange}
@@ -182,7 +182,7 @@ const ResetPasswordPage = () => {
                     </label>
                     <input
                       className="mb-10px bg-very-light-white form-control required"
-                      type="text"
+                      type="password"
                       name="passwordConfirm"
                       value={form.passwordConfirm}
                       onChange={handlePasswordChange}

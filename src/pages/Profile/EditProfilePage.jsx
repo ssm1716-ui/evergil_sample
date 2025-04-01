@@ -190,7 +190,7 @@ const EditProfilePage = () => {
         let res;
         if (!activeTab) return;
         if (activeTab === '이미지') {
-          res = await getPhotoSeletct(profileId);
+          res = await getPhotoSeletct(profileId, 'edit');
           console.log('이미지 : ', res);
           if (res.status === 200) {
             const { data } = res.data;

@@ -16,7 +16,18 @@ export const postSignUp = async (param) => {
 export const postSignIn = async (param) => {
     try {
         const res = await axiosInstance.post('/authenticate', param);
-        return res.status;
+        const newAccessToken = res.headers['authorization'];
+
+
+        if (newAccessToken) {
+            // Axios 기본 헤더에 Authorization 설정/ 상태관리 / 로컬스토리지 설정
+            axiosInstance.defaults.headers.common['Authorization'] = newAccessToken;
+            // localStorage.setItem('dev_accessToken', newAccessToken);
+
+            console.log('Authorization Header Set:', newAccessToken);
+        }
+
+        return { status: res.status, token: newAccessToken };
     } catch (err) {
         console.error(err);
     }
@@ -104,26 +115,31 @@ export const getAccessToken = async () => {
 };
 
 
+//장바구니 상품 불러오기
+export const getCart = () => {
+    const storedCart = JSON.parse(localStorage.getItem('dev_cart')) || [];
+    return storedCart;
+};
+
+
 //장바구니 추가시 로컬스토리지 저장
 export const addCart = (newProduct) => {
     try {
 
-        // const cartData = JSON.parse(localStorage.getItem('dev_cart')) || [];
-        // cartData.push(product);
 
-
+        const product = convertProductForStorage(newProduct);
         const storedCart = JSON.parse(localStorage.getItem('dev_cart')) || []; // 기존 장바구니 불러오기
 
         const existingIndex = storedCart.findIndex(
-            (item) => item.productId === newProduct.productId
+            (item) => item.productId === product.productId
         ); // 2같은 productId가 있는지 확인
 
         if (existingIndex !== -1) {
             // 같은 상품이 존재하면 수량 합산
-            storedCart[existingIndex].qty += newProduct.qty;
+            storedCart[existingIndex].quantity += product.quantity;
         } else {
             // 새로운 상품이면 추가
-            storedCart.push(newProduct);
+            storedCart.push(product);
         }
 
         localStorage.setItem('dev_cart', JSON.stringify(storedCart));
@@ -141,7 +157,7 @@ export const modifyCart = (products) => {
         const cartData = JSON.parse(localStorage.getItem('dev_cart')) || [];
 
         products.map((product, index) => {
-            cartData[index] = { ...product, qty: product.qty };
+            cartData[index] = { ...product, quantity: product.quantity };
         });
 
         localStorage.setItem('dev_cart', JSON.stringify(cartData));
@@ -161,4 +177,25 @@ export const removeCart = (products) => {
     } catch (err) {
         console.error(err);
     }
+};
+
+//장바구니 로컬스토리지 삭제
+export const removeLocalStorageCart = () => {
+    try {
+
+        localStorage.removeItem('dev_cart');
+
+    } catch (err) {
+        console.error(err);
+    }
+
+};
+
+const convertProductForStorage = (product) => {
+    return {
+        ...product,
+        productImage: Array.isArray(product.productImages)
+            ? product.productImages[0] || '' // 첫 번째 이미지 또는 빈 문자열
+            : product.productImages, // 이미 문자열이면 그대로
+    };
 };

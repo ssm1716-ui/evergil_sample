@@ -3,26 +3,21 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
 import useAuth from '@/hooks/useAuth';
-import PaymentDue from '@/components/Order/PaymentDue';
-import OrderEmptyComponents from '@/components/Order/OrderEmptyComponents';
-import OrderListComponents from '@/components/Order/OrderListComponents';
-import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
-import AnimatedSection from '@/components/AnimatedSection';
 import AddressSearch from '@/components/AddressSearch';
 
 import {
   getMembersAddressDefault,
   getMembersAddressList,
-  putDefaultAddress,
 } from '@/api/member/deliveryApi';
 
+import { getSelectCart, deleteCart } from '@/api/member/cartApi';
+
 import {
-  isValidEmail,
-  isValidPassword,
-  isValidName,
-  isValidPhoneNumber,
-  isInteger,
-} from '@/utils/validators';
+  postInicisPaymentForm,
+  postInicisPaymentResult,
+} from '@/api/payment/paymentApi';
+
+import { isValidPhoneNumber } from '@/utils/validators';
 import { removeHyphens } from '@/utils/utils';
 
 const paymentMethods = [
@@ -33,18 +28,14 @@ const paymentMethods = [
 ];
 
 const CheckOutPage = () => {
-  const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
   const [isAddresOpen, SetIsAddresOpen] = useState(false);
   const [focusAddress, setFocusAddress] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeliveryOpen, setIsModalDeliveryOpen] = useState(false);
   const [orderProductData, setOrderProductData] = useState([]);
-  const [orderInfo, setOrderInfo] = useState({
-    orderName: '',
-    orderPhoneNumber: '',
-    orderEmail: '',
-  });
   const [orderAddressData, setOrderAddressData] = useState({
     id: '',
     deliveryName: '',
@@ -59,7 +50,12 @@ const CheckOutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState({});
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [addressList, setAddressList] = useState([]);
-  const navigate = useNavigate();
+  const [payment, setPayment] = useState({
+    buyerName: '',
+    buyerEmail: '',
+    buyerPhone: '',
+    orderItems: [],
+  });
 
   //바로 주문, 장바구니 경로로 분기 처리
   useEffect(() => {
@@ -67,17 +63,46 @@ const CheckOutPage = () => {
     if (!isAuthenticated) navigate('/signin');
 
     let storedOrder = sessionStorage.getItem('order_product');
+    let storedCartProduct;
 
-    if (storedOrder) {
-      // ✅ 로컬스토리지에서 데이터 복구
-      setOrderProductData([JSON.parse(storedOrder)]);
-    } else if (location.state?.orderType === 'direct') {
-      console.log(location.state);
+    // if (storedOrder) {
+    //   // ✅ 로컬스토리지에서 데이터 복구
+    //   setOrderProductData([JSON.parse(storedOrder)]);
+    // } else if (location.state?.orderType === 'direct') {
+    //   console.log(location.state);
+    //   setOrderProductData([location.state.product]); // 직접 구매
+    // } else {
+    //   const fetchOrder = async () => {
+    //     const res = await getSelectCart();
+    //     if (res.status === 200) {
+    //       const { data } = res.data;
+    //       setOrderProductData(data);
+    //     }
+    //   };
+
+    //   // setOrderProductData(storedCartProduct);
+    //   fetchOrder();
+    // }
+
+    if (location.state?.orderType === 'direct') {
       setOrderProductData([location.state.product]); // 직접 구매
+      setPayment((prev) => ({
+        ...prev,
+        orderItems: [location.state.product],
+      }));
     } else {
-      // 장바구니에서 온 경우 localStorage에서 데이터 가져오기
-      const storedCart = JSON.parse(localStorage.getItem('dev_cart')) || [];
-      setOrderProductData(storedCart);
+      const fetchOrder = async () => {
+        const res = await getSelectCart();
+        if (res.status === 200) {
+          const { data } = res.data;
+          setOrderProductData(data);
+          setPayment((prev) => ({
+            ...prev,
+            orderItems: data,
+          }));
+        }
+      };
+      fetchOrder();
     }
   }, [location.state]);
 
@@ -91,7 +116,6 @@ const CheckOutPage = () => {
         const res = await getMembersAddressDefault();
         if (res.status === 200) {
           const { data } = res.data;
-          console.log(data);
           setOrderAddressData(data);
         }
       } catch (error) {
@@ -107,14 +131,14 @@ const CheckOutPage = () => {
     let newErrors = {};
 
     //구매자 정보
-    if (!orderInfo.orderName) {
-      newErrors.orderName = '구매자 이름을 입력 해주세요.';
+    if (!payment.buyerName) {
+      newErrors.buyerName = '구매자 이름을 입력 해주세요.';
     }
-    if (!orderInfo.orderPhoneNumber) {
-      newErrors.orderPhoneNumber = '구매자 휴대폰번호를 입력 해주세요.';
+    if (!payment.buyerPhone) {
+      newErrors.buyerPhone = '구매자 휴대폰번호를 입력 해주세요.';
     }
-    if (!orderInfo.orderEmail) {
-      newErrors.orderEmail = '구매자 이메일을 입력 해주세요.';
+    if (!payment.buyerEmail) {
+      newErrors.buyerEmail = '구매자 이메일을 입력 해주세요.';
     }
 
     //배송지 정보
@@ -142,6 +166,16 @@ const CheckOutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  //주문자 변경
+  const handlePaymentChange = (e) => {
+    const { name, value } = e.target;
+
+    setPayment((prev) => ({
+      ...prev,
+      [name]: value, // 입력된 name에 해당하는 속성만 변경
+    }));
+  };
+
   //배송지정보 변경
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
@@ -167,13 +201,13 @@ const CheckOutPage = () => {
     let totalDeliveryFee = 0;
 
     orderProductData.forEach((product) => {
-      totalQty += product.qty;
-      totalProductPrice += product.price * product.qty;
-      totalDiscount += product.discountedPrice * product.qty;
+      totalQty += product.quantity;
+      totalProductPrice += product.price * product.quantity;
+      totalDiscount += product.discountedPrice * product.quantity;
       totalDeliveryFee += product.deliveryFee;
     });
 
-    const totalAmount = totalProductPrice + totalDeliveryFee;
+    const totalAmount = totalDiscount + totalDeliveryFee;
 
     return {
       totalQty,
@@ -193,7 +227,7 @@ const CheckOutPage = () => {
     totalAmount,
   } = calculateOrderTotal();
 
-  const handleCompleteAdd = (e) => {
+  const handlePaymentConfirm = (e) => {
     e.preventDefault();
 
     if (validate()) {
@@ -201,14 +235,52 @@ const CheckOutPage = () => {
     }
   };
 
-  const nextPage = (e) => {
+  //결제하기 이벤트 핸들러
+  const handlePaymentProgress = async (e) => {
     e.preventDefault();
-    navigate('/complete');
+
+    try {
+      // 1. 주문 폼 데이터 요청
+      console.log(payment);
+      const res = await postInicisPaymentForm(payment);
+      if (res.status !== 200) throw new Error('결제 정보 요청 실패');
+      const paymentReqObj = res.data.data;
+      paymentReqObj.P_PAY_TYPE = 'CARD';
+
+      // // 2. 결제 form 동적 생성
+      // const form = document.createElement('form');
+      // form.setAttribute('id', 'SendPayForm_id');
+      // form.setAttribute('method', 'post');
+
+      // Object.entries(formData).forEach(([key, value]) => {
+      //   const input = document.createElement('input');
+      //   input.type = 'hidden';
+      //   input.name = key;
+      //   input.value = key === 'P_PAY_TYPE' ? 'CARD' : value; // 테스트 고정
+      //   form.appendChild(input);
+      // });
+
+      // const inputVersion = document.createElement('input');
+      // inputVersion.type = 'hidden';
+      // inputVersion.name = 'version';
+      // inputVersion.value = '1.0';
+      // form.appendChild(inputVersion);
+
+      // document.body.appendChild(form);
+
+      if (window.INIPayPro) {
+        window.INIPayPro.requestPayment(paymentReqObj);
+      } else {
+        alert('결제 모듈이 로딩되지 않았습니다.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('결제 요청 중 오류가 발생했습니다.');
+    }
   };
 
   const handleDeliveryModalOpen = async () => {
     const { data } = await getMembersAddressList();
-    console.log(data);
     setAddressList(data.data);
     setIsModalDeliveryOpen(true);
   };
@@ -254,10 +326,10 @@ const CheckOutPage = () => {
                           배송비
                         </th>
                         <th scope="col" className="fw-600">
-                          할인 금액
+                          상품금액
                         </th>
                         <th scope="col" className="fw-600">
-                          금액
+                          상품할인금액
                         </th>
                       </tr>
                     </thead>
@@ -266,38 +338,44 @@ const CheckOutPage = () => {
                         orderProductData.map((order, index) => (
                           <tr key={index}>
                             <td className="product-thumbnail">
-                              <a href="demo-jewellery-store-single-product.html">
+                              <Link to={`/shop/${order.productId}`}>
                                 <img
                                   className="cart-product-image"
-                                  src={order.productImages[0]}
-                                  alt=""
+                                  src={
+                                    order.productImage || order.productImages[0]
+                                  }
+                                  alt={order.productImage}
                                 />
-                              </a>
+                              </Link>
                             </td>
                             <td className="product-name">
-                              <a
-                                href="demo-jewellery-store-single-product.html"
+                              <Link
+                                to={`/shop/${order.productId}`}
                                 className="text-dark-gray fw-500 d-block lh-initial"
                               >
                                 {order.productName}
-                              </a>
+                              </Link>
                             </td>
 
                             <td className="product-quantity" data-title="개수">
-                              {order.qty}개
+                              {order.quantity}개
                             </td>
                             <td className="product-price" data-title="배송비">
                               {order.deliveryFee}원
                             </td>
-                            <td className="product-price" data-title="할인금액">
-                              {(
-                                order.discountedPrice * order.qty
-                              ).toLocaleString()}
+                            <td className="product-price" data-title="상품금액">
+                              {(order.price * order.quantity).toLocaleString()}
                               원
                             </td>
 
-                            <td className="product-subtotal" data-title="가격">
-                              {(order.price * order.qty).toLocaleString()}원
+                            <td
+                              className="product-subtotal"
+                              data-title="상품할인금액"
+                            >
+                              {(
+                                order.discountedPrice * order.quantity
+                              ).toLocaleString()}
+                              원
                             </td>
                           </tr>
                         ))}
@@ -324,14 +402,14 @@ const CheckOutPage = () => {
                   <input
                     className="border-radius-4px input-large md-py-0"
                     type="text"
-                    name="orderName"
-                    value={orderInfo.orderName}
-                    onChange={handleAddressChange}
+                    name="buyerName"
+                    value={payment.buyerName}
+                    onChange={handlePaymentChange}
                     required
                   />
 
-                  {errors.orderName && (
-                    <p className="text-danger text-start">{errors.orderName}</p>
+                  {errors.buyerName && (
+                    <p className="text-danger text-start">{errors.buyerName}</p>
                   )}
                 </div>
                 <div className="col-12 mb-20px md-mb-10px">
@@ -340,14 +418,14 @@ const CheckOutPage = () => {
                   <input
                     className="border-radius-4px input-large md-py-0"
                     type="text"
-                    name="orderPhoneNumber"
-                    value={orderInfo.orderPhoneNumber}
-                    onChange={handleAddressChange}
+                    name="buyerPhone"
+                    value={payment.buyerPhone}
+                    onChange={handlePaymentChange}
                     required
                   />
-                  {errors.orderPhoneNumber && (
+                  {errors.buyerPhone && (
                     <p className="text-danger text-start">
-                      {errors.orderPhoneNumber}
+                      {errors.buyerPhone}
                     </p>
                   )}
                 </div>
@@ -357,15 +435,14 @@ const CheckOutPage = () => {
                   <input
                     className="border-radius-4px input-large md-py-0"
                     type="text"
-                    aria-label="first-name"
-                    name="orderEmail"
-                    value={orderInfo.orderEmail}
-                    // onChange={handleAddressChange}
+                    name="buyerEmail"
+                    value={payment.buyerEmail}
+                    onChange={handlePaymentChange}
                     required
                   />
-                  {errors.orderEmail && (
+                  {errors.buyerEmail && (
                     <p className="text-danger text-start">
-                      {errors.orderEmail}
+                      {errors.buyerEmail}
                     </p>
                   )}
                 </div>
@@ -600,17 +677,18 @@ const CheckOutPage = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th className="w-45 fw-600 text-dark-gray">상품 금액</th>
+                    <th className="w-45 fw-600 text-dark-gray">상품금액</th>
                     <td className="text-dark-gray fw-600">
-                      {totalProductPrice.toLocaleString()}원
+                      {totalProductPrice.toLocaleString()}
                     </td>
                   </tr>
                   <tr>
-                    <th className="w-45 fw-600 text-dark-gray">할인 금액</th>
+                    <th className="w-45 fw-600 text-dark-gray">상품할인금액</th>
                     <td className="text-dark-gray fw-600">
-                      {totalDiscount.toLocaleString()}
+                      {totalDiscount.toLocaleString()}원
                     </td>
                   </tr>
+
                   <tr>
                     <th className="w-45 fw-600 text-dark-gray">배송비</th>
                     <td className="text-dark-gray fw-600">
@@ -633,7 +711,7 @@ const CheckOutPage = () => {
           <div className="col-lg-12">
             <Link
               className="btn btn-base-color btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 border-radius-30px"
-              onClick={handleCompleteAdd}
+              onClick={handlePaymentConfirm}
             >
               <span>
                 <span className="btn-double-text" data-text="결제하기">
@@ -731,7 +809,7 @@ const CheckOutPage = () => {
 
       {/* 결제하기 모달 */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-60 md-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -746,7 +824,7 @@ const CheckOutPage = () => {
                       <input type="hidden" name="redirect" value="" />
                       <button
                         className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
-                        onClick={nextPage}
+                        onClick={handlePaymentProgress}
                       >
                         결제 진행
                       </button>

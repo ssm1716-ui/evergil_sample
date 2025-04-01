@@ -6,8 +6,12 @@ import { postSignIn, getAccessToken } from '@/api/memberApi';
 import { isValidEmail } from '@/utils/validators';
 import { loginSuccess } from '@/state/slices/authSlices';
 
+import { postAddCart } from '@/api/member/cartApi';
+
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
+import { getCart, removeLocalStorageCart } from '@/api/memberApi';
+import { getTransformedCartData } from '@/utils/utils';
 
 if (localStorage.getItem('persist:root') === null) {
   console.log('스토리지 초기화 방지');
@@ -61,35 +65,19 @@ const SignInPage = () => {
 
       if (Object.keys(newErrors).length > 0) return;
 
-      const resLoginStats = await postSignIn(member);
-      if (resLoginStats !== 200) {
+      const { status, token } = await postSignIn(member);
+      if (status !== 200) {
         setIsModalOpen(true);
         return;
       }
 
-      const { status, token } = await getAccessToken();
-      if (status !== 200) {
-        alert('토큰 통신에러가 발생하였습니다');
-        return;
-      }
       dispatch(loginSuccess({ token }));
 
-      //이메일로 전달받은 초대하기로 로그인 후 로컬스토리지에서 get
-      const invitationKey = localStorage.getItem('dev_invitation');
+      //로그인 후 장바구니 아이템 서버로 전송
+      sendCartProduct();
 
-      //비공개 프로필 -> 로그인 후 로컬스토리지 get
-      const remberProfileUrl = localStorage.getItem('dev_remberProfileUrl');
-
-      if (invitationKey) {
-        localStorage.removeItem('dev_invitation');
-        navigate(`/profile/invitation?key=${invitationKey}`);
-        return;
-      }
-      if (remberProfileUrl) {
-        localStorage.removeItem('dev_remberProfileUrl');
-        navigate(`${remberProfileUrl}`);
-        return;
-      }
+      //초대하기로 전달받은 로그인 & 비공개 프로필
+      profileBridge();
 
       navigate('/profile');
     } catch (error) {
@@ -101,7 +89,6 @@ const SignInPage = () => {
   const handleSnsLoginAction = (e) => {
     let url;
     const value = e.target.dataset.value || e.currentTarget.dataset.value;
-    console.log('Clicked button dataset value:', value);
     switch (value) {
       case 'kakao':
         url = 'https://dev-api.everlink.kr/oauth2/authorization/kakao';
@@ -115,8 +102,38 @@ const SignInPage = () => {
       default:
         break;
     }
-
     location.href = url;
+  };
+
+  const profileBridge = () => {
+    //이메일로 전달받은 초대하기로 로그인 후 로컬스토리지에서 get
+    const invitationKey = localStorage.getItem('dev_invitation');
+
+    //비공개 프로필 -> 로그인 후 로컬스토리지 get
+    const remberProfileUrl = localStorage.getItem('dev_remberProfileUrl');
+
+    if (invitationKey) {
+      localStorage.removeItem('dev_invitation');
+      navigate(`/profile/invitation?key=${invitationKey}`);
+      return;
+    }
+    if (remberProfileUrl) {
+      localStorage.removeItem('dev_remberProfileUrl');
+      navigate(`${remberProfileUrl}`);
+      return;
+    }
+  };
+
+  const sendCartProduct = async () => {
+    const storedCart = getCart();
+    if (storedCart.length <= 0) return;
+    const transformedData = getTransformedCartData(storedCart);
+
+    const res = await postAddCart(transformedData);
+    if (res.status !== 200) {
+      console.log('not saved cart!');
+    }
+    removeLocalStorageCart();
   };
 
   return (

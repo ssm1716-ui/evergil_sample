@@ -13,17 +13,6 @@ export const postPasswordConfirm = async (param) => {
     }
 };
 
-//로그인
-export const postSignIn = async (param) => {
-    try {
-        const res = await axiosInstance.post('/authenticate', param);
-        return res.status;
-    } catch (err) {
-        console.log(err);
-        console.error(err);
-    }
-};
-
 //회원가입 후 이메일 인증코드로 계정 활성화
 export const getVerificationCodeVerify = async (param) => {
     try {
