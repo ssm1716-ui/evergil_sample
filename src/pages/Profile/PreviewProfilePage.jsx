@@ -9,10 +9,8 @@ import 'lightgallery/css/lg-fullscreen.css';
 import 'lightgallery/css/lg-zoom.css';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Button from '@/components/common/Button/Button';
-import { FiUpload, FiImage } from 'react-icons/fi'; // 업로드 아이콘 사용
-import { MdAddPhotoAlternate } from 'react-icons/md';
+import WebShareButton from '@/components/Share/WebShareButton';
 
 import useProfilePermission from '@/hooks/useProfilePermission';
 
@@ -351,6 +349,27 @@ const ViewProfilePage = () => {
                   {profile.birthday}~{profile.deathDate}
                 </h6>
               </div>
+              {showScreen && (
+                <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
+                  {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
+                  <div className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 md-ps-25px md-pe-25p py-lg-0 py-md-4">
+                    <WebShareButton />
+                    <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-30 mb-5 md-mb-2">
+                      <span>
+                        <span>
+                          <i className="fa-regular fa-bookmark align-middle text-base-color"></i>
+                        </span>
+                        <span
+                          className="btn-double-text ls-0px"
+                          data-text="북마크"
+                        >
+                          북마크
+                        </span>
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -359,10 +378,10 @@ const ViewProfilePage = () => {
         <div className="container">
           <div className="row bottom-minus-60px end-0 z-index-1 pe-1 ">
             {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-            <div className="col-xl-7 col-lg-9 offset-0 offset-md-3  xs-mt-25px text-start fs-20 md-ps-25px">
+            <div className="col-xl-7 col-lg-9 offset-0 offset-md-0 xs-mt-25px text-left fs-20 md-ps-25px">
               <p dangerouslySetInnerHTML={{ __html: profile.description }}></p>
             </div>
-            <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
+            {/* <div className="mt-80px md-mt-100px sm-mt-90px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
                 className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5"
                 to={`/profile/edit-profile/${profileId}`}
@@ -372,9 +391,9 @@ const ViewProfilePage = () => {
                   <span className="btn-double-text ls-0px" data-text="돌아가기">
                     돌아가기
                   </span>
-                </span>
+              </span>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -431,7 +450,9 @@ const ViewProfilePage = () => {
                       {images.length <= 0 && (
                         <div className="col-12 text-center mt-100px pb-2 fs-24">
                           <i className="feather icon-feather-camera align-middle icon-extra-large text-dark fs-50 md-fs-70 p-30px border border-4 border-dark border-radius-100px mb-1"></i>
-                          <p className="fs-30 fw-800">No Posts Yet</p>
+                          <p className="fs-30 fw-800 text-black">
+                            No Posts Yet
+                          </p>
                         </div>
                       )}
                     </div>
@@ -457,11 +478,11 @@ const ViewProfilePage = () => {
                                       {letter.displayName}
                                     </span>
                                   </div>
-                                  <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
-                                    <p className="sm-w-85">{letter.content}</p>
-                                  </div>
                                   <div className="col-lg-2 col-md-3 align-self-center text-md-end">
                                     <span>{letter.createdAt}</span>
+                                  </div>
+                                  <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
+                                    <p className="sm-w-85">{letter.content}</p>
                                   </div>
                                 </div>
                               ))}
@@ -492,7 +513,7 @@ const ViewProfilePage = () => {
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
                                 <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-70 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-50 fs-18 rounded-circle text-dark-gray fw-500">
                                   <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                                     <span className="number position-relative z-index-1 fw-600">
                                       <i className="feather icon-feather-user align-middle icon-large text-white"></i>
@@ -508,7 +529,7 @@ const ViewProfilePage = () => {
                             </div>
                             <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin">
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
-                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-80 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 fs-18 rounded-circle text-dark-gray fw-500">
                                   <span className="number position-relative z-index-1 fw-600">
                                     {f.displayName}{' '}
                                   </span>
@@ -606,7 +627,7 @@ const ViewProfilePage = () => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       >
-        <div className="w-40">
+        <div className="w-40 md-w-70">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

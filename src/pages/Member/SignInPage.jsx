@@ -79,7 +79,10 @@ const SignInPage = () => {
       //초대하기로 전달받은 로그인 & 비공개 프로필
       profileBridge();
 
-      navigate('/profile');
+      const redirectPath =
+        localStorage.getItem('redirectAfterLogin') || '/profile';
+      localStorage.removeItem('redirectAfterLogin');
+      navigate(redirectPath);
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
     }
@@ -142,11 +145,13 @@ const SignInPage = () => {
         <div className="container">
           <div className="row g-0 justify-content-center bg-white">
             <div
-              className="row align-items-center justify-content-center py-5 d-none d-md-inline-block"
+              className="row align-items-center justify-content-center md-py-0 d-none d-md-inline-block"
               data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
             >
               <div className="col-12 text-center position-relative page-title-extra-large">
-                <h4 className="fw-600 text-dark-gray mb-10px">로그인</h4>
+                <h4 className="fw-600 text-dark-gray mb-10px py-4_5 md-pb-0">
+                  로그인
+                </h4>
               </div>
               <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
             </div>
@@ -197,18 +202,20 @@ const SignInPage = () => {
                     로그인
                   </Button>
                 </div>
-                <div className="pt-15 md-pt-5 text-center">
-                  <Link to="/signup">회원가입</Link>
+                <div className="pt-4_5 md-pt-5 md-pb-0 text-center">
+                  <Link to="/signup" className="ps-25px">
+                    회원가입
+                  </Link>
                   <span className="px-5">|</span>
                   <Link to="/password-forgot">비밀번호찾기</Link>
                 </div>
-                <div className="pt-15 md-pt-2 text-center d-flex flex-column align-items-center">
+                <div className="pt-40px md-pt-2 text-center d-flex flex-row align-items-center">
                   <Button
                     data-value="google"
                     name="google"
                     size="extra-large"
                     color="google"
-                    className="btn-large w-50 md-w-100 mt-20px d-block btn-box-shadow border-0"
+                    className="btn-large w-50 md-w-100 d-block"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -218,7 +225,7 @@ const SignInPage = () => {
                       viewBox="0 0 38 38"
                     >
                       <g fill="none" fillRule="evenodd">
-                        <circle cx="19" cy="19" r="19" fill="#FFF"></circle>
+                        <rect x="0" y="0" width="38" height="38" fill="#FFF" />
                         <g>
                           <path
                             d="M0 0H24V24H0z"
@@ -249,13 +256,15 @@ const SignInPage = () => {
                         </g>
                       </g>
                     </svg>
-                    구글로 시작하기
+                    <span className="ps-10px d-lg-inline-block d-md-none d-sm-none">
+                      구글 로그인
+                    </span>
                   </Button>
                   <Button
                     data-value="kakao"
                     size="extra-large"
                     color="kakao"
-                    className="btn-large w-50 md-w-100  mt-20px d-block btn-box-shadow"
+                    className="btn-large w-50 md-w-100 d-block"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -265,7 +274,13 @@ const SignInPage = () => {
                       viewBox="0 0 38 38"
                     >
                       <g fill="none" fillRule="evenodd">
-                        <circle cx="19" cy="19" r="19" fill="#FAE400"></circle>
+                        <rect
+                          x="0"
+                          y="0"
+                          width="38"
+                          height="38"
+                          fill="#FAE400"
+                        />
                         <g>
                           <path
                             d="M0 0H24V24H0z"
@@ -280,13 +295,15 @@ const SignInPage = () => {
                         </g>
                       </g>
                     </svg>
-                    카카오로 시작하기
+                    <span className="ps-10px d-lg-inline-block d-md-none d-sm-none">
+                      카카오 로그인
+                    </span>
                   </Button>
                   <Button
                     data-value="naver"
                     size="extra-large"
                     color="naver"
-                    className="btn-large w-50 md-w-100  mt-20px d-block btn-box-shadow"
+                    className="btn-large w-50 md-w-100 d-block"
                     onClick={handleSnsLoginAction}
                   >
                     <svg
@@ -296,7 +313,13 @@ const SignInPage = () => {
                       viewBox="0 0 38 38"
                     >
                       <g fill="none" fillRule="evenodd">
-                        <circle cx="19" cy="19" r="19" fill="#00C73C"></circle>
+                        <rect
+                          x="0"
+                          y="0"
+                          width="38"
+                          height="38"
+                          fill="#00C73C"
+                        />
                         <g>
                           <path
                             d="M0 0H24V24H0z"
@@ -305,15 +328,16 @@ const SignInPage = () => {
                           <path
                             d="M12.74 10.537l-5.7-8.193H2.312v15.303h4.953V9.454l5.7 8.193h4.727v-15.3h-4.953v8.19z"
                             fill="#FFF"
-                            transform="translate(7 7)"
+                            transform="translate(9 9)"
                           ></path>
                         </g>
                       </g>
                     </svg>
-                    네이버로 시작하기
+                    <span className="ps-10px d-lg-inline-block d-md-none d-sm-none">
+                      네이버 로그인
+                    </span>
                   </Button>
                 </div>
-                <div className="form-results mt-20px d-none"></div>
               </form>
             </div>
           </div>

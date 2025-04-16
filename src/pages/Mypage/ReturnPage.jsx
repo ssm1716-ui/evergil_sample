@@ -83,7 +83,7 @@ const ReturnPage = () => {
               </div>
             </div>
 
-            <div className="col-12 text-center">
+            <div className="col-12 text-center md-mt-40px">
               <Button
                 name="eventSection"
                 size="extra-large"

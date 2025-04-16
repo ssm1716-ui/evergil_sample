@@ -69,7 +69,7 @@ const SignUpPage = () => {
     const age_chk = checkboxGroupRef.current[1].checked;
     const terms_chk = checkboxGroupRef.current[2].checked;
 
-    if (!age_chk && !terms_chk) {
+    if (!age_chk || !terms_chk) {
       alert('필수 항목을 체크하셔야 됩니다.');
       return;
     }
@@ -241,6 +241,7 @@ const SignUpPage = () => {
     const resEmailResendStats = await getVerificationEmailResend();
     if (resEmailResendStats !== 200) {
       alert('인증번호 재전송 통신에러가 발생하였습니다.');
+      return;
     }
     setIsFirstModalOpen(true);
   };
@@ -255,8 +256,8 @@ const SignUpPage = () => {
         <div className="container">
           {step === 0 && (
             <div className="col contact-form-style-04 text-center bg-white">
-              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden pt-10 md-p-10 text-center md-fs-14">
-                <div className="position-relative terms-condition-box text-start d-inline-block mb-20px">
+              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden pt-10 md-p-10 md-pb-0 text-center md-fs-14">
+                <div className="position-relative terms-condition-box text-start d-inline-block mb-20px fs-18">
                   <label className="pb-3">
                     <input
                       ref={(el) => (checkboxGroupRef.current[0] = el)}
@@ -266,14 +267,16 @@ const SignUpPage = () => {
                       className="terms-condition check-box align-middle required"
                       onClick={() => handleGroupCheck('terms_condition')}
                     />
-                    <span className="box fs-25">
+                    <span className="box fs-25 md-mb-20px">
                       약관 전체 동의하기(선택 동의 포함)
                       <br />
-                      선택 사항에 대한 동의를 거부하는 경우에도 서비스는 이용이
-                      가능합니다.
+                      <p className="fs-16 md-mt-10px">
+                        선택 사항에 대한 동의를 거부하는 경우에도 서비스는
+                        이용이 가능합니다.
+                      </p>
                     </span>
                   </label>
-                  <label className="ps-5 pb-2">
+                  <label className="ps-5 pb-2 md-mb-20px">
                     <input
                       ref={(el) => (checkboxGroupRef.current[1] = el)}
                       type="checkbox"
@@ -281,9 +284,9 @@ const SignUpPage = () => {
                       id="age_consent"
                       className="terms-condition check-box align-middle required"
                     />
-                    <span className="box fs-25">만 14세 이상입니다.(필수)</span>
+                    <span className="box">만 14세 이상입니다.(필수)</span>
                   </label>
-                  <label className="ps-5 pb-2 d-flex justify-content-between align-items-center">
+                  <label className="ps-5 pb-2 md-mb-20px d-flex justify-content-between align-items-center">
                     <div>
                       <input
                         ref={(el) => (checkboxGroupRef.current[2] = el)}
@@ -292,9 +295,7 @@ const SignUpPage = () => {
                         id="terms_of_service"
                         className="terms-condition check-box align-middle required"
                       />
-                      <span className="box fs-25">
-                        Everlink 이용 약관(필수)
-                      </span>
+                      <span className="box">Everlink 이용 약관(필수)</span>
                     </div>
                     <span className="fs-25 terms-view">
                       <Link
@@ -305,7 +306,7 @@ const SignUpPage = () => {
                       </Link>
                     </span>
                   </label>
-                  <label className="ps-5 pb-2 d-flex justify-content-between align-items-center">
+                  <label className="ps-5 pb-2 md-mb-20px d-flex justify-content-between align-items-center">
                     <div>
                       <input
                         ref={(el) => (checkboxGroupRef.current[3] = el)}
@@ -314,9 +315,7 @@ const SignUpPage = () => {
                         id="marketing_consent"
                         className="terms-condition check-box align-middle"
                       />
-                      <span className="box fs-25">
-                        개인정보수집,이용동의(선택)
-                      </span>
+                      <span className="box">개인정보수집,이용동의(선택)</span>
                     </div>
                     <span className="fs-25 terms-view">
                       <Link
@@ -327,7 +326,7 @@ const SignUpPage = () => {
                       </Link>
                     </span>
                   </label>
-                  <label className="ps-5 pb-2 d-flex justify-content-between align-items-center">
+                  <label className="ps-5 pb-2 md-mb-20px d-flex justify-content-between align-items-center">
                     <div>
                       <input
                         ref={(el) => (checkboxGroupRef.current[4] = el)}
@@ -336,9 +335,7 @@ const SignUpPage = () => {
                         id="ad_info_consent"
                         className="terms-condition check-box align-middle"
                       />
-                      <span className="box fs-25">
-                        광고성 정보 수신 동의(선택)
-                      </span>
+                      <span className="box">광고성 정보 수신 동의(선택)</span>
                     </div>
                     <span className="fs-25 terms-view">
                       <Link
@@ -355,7 +352,7 @@ const SignUpPage = () => {
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large w-30 md-w-50 mt-60px md-mt-0 mb-20px"
+                  className="btn-large w-30 md-w-50 mt-60px md-mt-0 mb-50px "
                   onClick={firstStep}
                 >
                   동의하고 다음으로
@@ -364,9 +361,9 @@ const SignUpPage = () => {
             </div>
           )}
           {step === 1 && (
-            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white p-10px">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
-                <div className="py-5 text-center">
+                <div className="py-5 md-p-5 text-center">
                   <img src={signup} alt="" className="default-logo" />
                   <form className="mt-50px">
                     <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
@@ -468,15 +465,15 @@ const SignUpPage = () => {
             </div>
           )}
           {step === 2 && (
-            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
-                <div className="mt-10 py-5 text-center ">
-                  <img src={signup} alt="" className="default-logo" />
-                  <form method="post" className="mt-20">
-                    <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px">
+                <div className="mt-10 md-mt-0 py-4_5 text-center ">
+                  <img src={signup} alt="" className="default-logo pb-10px" />
+                  <form method="post" className="mt-40px md-mt-50px">
+                    <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px md-fs-40">
                       이메일 인증하기
                     </h3>
-                    <h6 className="fw-400 fs-16 text-dark-gray mb-8 ls-minus-1px">
+                    <h6 className="fw-400 fs-16 md-fs-18 text-dark-gray mb-8 ls-minus-1px">
                       귀하의 이메일 계정으로 승인 메일을 보냈습니다.
                       <br /> 링크를 열어 인증 코드를 확인하세요
                     </h6>
@@ -501,7 +498,7 @@ const SignUpPage = () => {
                     <Button
                       size="extra-large"
                       color="white"
-                      className="btn-large submit w-80 mt-20px mb-20px"
+                      className="btn-large border-1 border-black btn-box-shadow w-80 mt-20px mb-20px"
                       onClick={thirdStep}
                     >
                       인증하기
@@ -516,7 +513,7 @@ const SignUpPage = () => {
                     <Button
                       size="extra-large"
                       color="black"
-                      className="btn-large submit w-80 mt-60px mb-20px"
+                      className="btn-large w-80 btn-box-shadow mt-60px mb-20px"
                       onClick={verificationCodeResetSend}
                     >
                       인증번호 재전송
@@ -529,7 +526,7 @@ const SignUpPage = () => {
           {step === 3 && (
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
               <div className="col contact-form-style-04">
-                <div className="mt-20 py-5 text-center ">
+                <div className="mt-20 md-mt-0 py-5 text-center ">
                   <a className="navbar-brand" href="demo-hotel-and-resort.html">
                     <img src={checkCircle} alt="" />
                   </a>
@@ -577,14 +574,14 @@ const SignUpPage = () => {
         isOpen={isFirstModalOpen}
         onClose={() => setIsFirstModalOpen(false)}
       >
-        <div className="w-40">
+        <div className="w-40 md-w-70">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-18">
                         이메일로 인증번호를 재전송하였습니다.
                       </h6>
                     </div>

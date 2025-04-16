@@ -82,21 +82,24 @@ const AddressPage = () => {
   };
 
   const handleAddAddress = async () => {
-    // address 객체를 순회하면서 값이 비어있는지 확인
+    let hasError = false;
+    const newErrors = {};
+
     for (const key in address) {
+      if (key === 'address2') continue;
       if (!address[key]) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [key]: true,
-        })); // 값이 비어있으면 true (오류 발생)
+        newErrors[key] = true;
+        hasError = true;
       } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [key]: false,
-        })); // 값이 있으면 false (오류 발생)
+        newErrors[key] = false;
       }
     }
 
+    setErrors(newErrors);
+
+    if (hasError) return; // ❌ 하나라도 비어있으면 조기 종료
+
+    // ✅ 모든 값이 존재하면 요청 진행
     const res = await postAddAddress(address);
 
     if (res.status === 201) {
@@ -120,6 +123,23 @@ const AddressPage = () => {
   };
 
   const handleUpdateAddress = async () => {
+    let hasError = false;
+    const newErrors = {};
+
+    for (const key in address) {
+      if (key === 'address2') continue;
+      if (!address[key]) {
+        newErrors[key] = true;
+        hasError = true;
+      } else {
+        newErrors[key] = false;
+      }
+    }
+
+    setErrors(newErrors);
+
+    if (hasError) return; // ❌ 하나라도 비어있으면 조기 종료
+
     const res = await putUpdateAddress(focusAddress, address);
     if (res.status === 200) {
       setIsModalOpen(false);
@@ -182,7 +202,7 @@ const AddressPage = () => {
                             <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
                               <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
                                 <div className="feature-box-content">
-                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px">
+                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px vertical-align-top">
                                     {address.deliveryName}
                                   </span>
                                   {address.isDefault && (
@@ -205,7 +225,7 @@ const AddressPage = () => {
                             </div>
                             <div className="col-lg-3 col-md-3  text-md-end text-sm-center text-center">
                               <Link
-                                className="btn btn-white btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-75"
+                                className="btn btn-white btn-box-shadow btn-large btn-switch-text btn-rounded ms-3 mb-10px w-75"
                                 onClick={() =>
                                   handleUpdateModalOpen(address.id)
                                 }
@@ -220,7 +240,7 @@ const AddressPage = () => {
                                 </span>
                               </Link>
                               <Link
-                                className="btn btn-dark-gray btn-box-shadow btn-medium btn-switch-text btn-rounded ms-3 mb-10px w-75"
+                                className="btn btn-dark-gray btn-box-shadow btn-large btn-switch-text btn-rounded ms-3 mb-10px w-75"
                                 onClick={() => handleDeleteAddress(address.id)}
                               >
                                 <span>
@@ -271,7 +291,7 @@ const AddressPage = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-60 md-w-100 md-h-100 mt-10">
+        <div className="w-40 md-w-70 h-50 md-h-50">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -292,7 +312,7 @@ const AddressPage = () => {
                     <div>
                       <label>배송지 이름</label>
                       <input
-                        className="border-radius-4px input-small mb-5px"
+                        className="border-radius-4px input-small mb-5px text-black"
                         type="text"
                         name="deliveryName"
                         value={address.deliveryName}
@@ -300,7 +320,7 @@ const AddressPage = () => {
                         required
                       />
                       {errors.deliveryName && (
-                        <p className="text-danger text-start">
+                        <p className="text-danger text-start mb-1">
                           배송지 이름을 추가 해주세요.
                         </p>
                       )}
@@ -308,7 +328,7 @@ const AddressPage = () => {
                     <div>
                       <label>받는분 이름</label>
                       <input
-                        className="border-radius-4px input-small mb-5px"
+                        className="border-radius-4px input-small mb-5px text-black"
                         type="text"
                         name="recipientName"
                         value={address.recipientName}
@@ -316,7 +336,7 @@ const AddressPage = () => {
                         required
                       />
                       {errors.recipientName && (
-                        <p className="text-danger text-start">
+                        <p className="text-danger text-start mb-1">
                           받는분 이름을 추가 해주세요.
                         </p>
                       )}
@@ -324,7 +344,7 @@ const AddressPage = () => {
                     <div>
                       <label>핸드폰번호</label>
                       <input
-                        className="border-radius-4px input-small mb-5px"
+                        className="border-radius-4px input-small mb-5px text-black"
                         type="text"
                         name="phoneNumber"
                         value={address.phoneNumber}
@@ -332,7 +352,7 @@ const AddressPage = () => {
                         required
                       />
                       {errors.phoneNumber && (
-                        <p className="text-danger text-start">
+                        <p className="text-danger text-start mb-1">
                           핸드폰번호를 추가 해주세요.
                         </p>
                       )}
@@ -342,7 +362,7 @@ const AddressPage = () => {
                       <label>배송주소</label>
                       <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0 mt-10px">
                         <input
-                          className="col-7 md-col-9 border-radius-4px input-small mb-5px"
+                          className="col-7 md-col-9 border-radius-4px input-small text-black"
                           type="text"
                           name="zipcode"
                           value={(address.zipcode = selectedAddress.zipcode)}
@@ -355,13 +375,13 @@ const AddressPage = () => {
                         </AddressSearch>
                       </div>
                       {errors.zipcode && (
-                        <p className="text-danger text-start">
+                        <p className="text-danger text-start mb-1">
                           주소 찾기로 우편번호를 추가 해주세요.
                         </p>
                       )}
                       <>
                         <input
-                          className="border-radius-4px input-small mb-5px mt-1"
+                          className="border-radius-4px input-small mb-5px text-black mt-1"
                           type="text"
                           name="address1"
                           value={(address.address1 = selectedAddress.address1)}
@@ -369,13 +389,13 @@ const AddressPage = () => {
                           required
                         />
                         {errors.address1 && (
-                          <p className="text-danger text-start">
+                          <p className="text-danger text-start mb-1">
                             주소 찾기로 주소를 추가 해주세요.
                           </p>
                         )}
 
                         <input
-                          className="border-radius-4px input-small mb-5px mt-1"
+                          className="border-radius-4px input-small mb-5px text-black mt-1"
                           type="text"
                           name="address2"
                           value={address.address2}

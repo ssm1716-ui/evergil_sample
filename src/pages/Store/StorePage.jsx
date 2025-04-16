@@ -89,7 +89,7 @@ const StorePage = () => {
         </div>
       </section>
 
-      <section className="pt-0 ps-6 pe-6 lg-ps-2 lg-pe-2 sm-ps-0 sm-pe-0">
+      <section className="pt-0 ps-6 pe-6 lg-ps-2 lg-pe-2 md-pt-5 sm-ps-0 sm-pe-0">
         <div className="container-fluid">
           <div className="row flex-row-reverse">
             <div className="col-xxl-12 col-lg-12 md-ps-15px md-mb-60px">
@@ -103,16 +103,23 @@ const StorePage = () => {
                     <div className="shop-box mb-10px">
                       <div className="shop-image mb-20px">
                         <Link to={`/shop/${product.productId}`}>
-                          <img src={product.productImage} alt="Product" />
+                          <img
+                            src={product.productImage}
+                            alt="Product"
+                            className="product-main-image"
+                          />
                           <span className="lable new">New</span>
                           <div className="shop-overlay"></div>
                         </Link>
                       </div>
                       <div className="shop-footer text-center">
-                        <a href="#" className="text-dark-gray fs-19 fw-500">
+                        <a
+                          href="#"
+                          className="text-dark-gray fs-19 sm-fs-12 fw-500 sm-lh-20"
+                        >
                           {product.productName}
                         </a>
-                        <div className="price lh-22 fs-16">
+                        <div className="price lh-22 md-lh-40 fs-18 md-fs-20 sm-fs-12">
                           <del>{product.price.toLocaleString()}원</del>
                           {product.discountedPrice.toLocaleString()}원
                         </div>
@@ -120,7 +127,6 @@ const StorePage = () => {
                     </div>
                   </li>
                 ))}
-                ;
               </ul>
             </div>
           </div>

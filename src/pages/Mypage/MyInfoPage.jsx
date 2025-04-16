@@ -43,6 +43,11 @@ const MyInfoPage = () => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
   const [displayName, setDisplayName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneAuthCode, setPhoneAuthCode] = useState('');
@@ -242,6 +247,11 @@ const MyInfoPage = () => {
     setCurrentView('infoList');
   };
 
+  //패스워드 숨기기/보이기 기능
+  const toggleShow = (field) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
   return (
     <>
       {currentView === 'passwordConfirm' && (
@@ -267,7 +277,7 @@ const MyInfoPage = () => {
                 </p>
               )}
               {/* 오류 메시지 출력 */}
-              <div className="col-12 text-center">
+              <div className="col-12 text-center md-pt-40px">
                 <Button
                   name="eventSection"
                   size="extra-large"
@@ -298,7 +308,7 @@ const MyInfoPage = () => {
                         {!isPlatform && (
                           <tr className="pb-2 info-row">
                             <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
-                              <h6 className="m-0 fw-600 ls-minus-1px">
+                              <h6 className="m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
                                 비밀번호
                               </h6>
                             </td>
@@ -320,12 +330,12 @@ const MyInfoPage = () => {
 
                         <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2  w-20 md-w-30">
-                            <h6 className="fs-36 m-0 fw-600 ls-minus-1px">
+                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
                               이름
                             </h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="m-0 fw-400 ls-minus-1px text-gray">
+                            <h6 className="fs-20 md-fs-18 m-0 fw-400 ls-minus-1px text-gray">
                               {userInfo.maskedDisplayName}
                             </h6>
                           </td>
@@ -345,10 +355,12 @@ const MyInfoPage = () => {
 
                         <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
-                            <h6 className="m-0 fw-600 ls-minus-1px">휴대폰</h6>
+                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
+                              휴대폰
+                            </h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-32 m-0 fw-400 ls-minus-1px text-gray">
+                            <h6 className="fs-20 md-fs-18 m-0 fw-400 ls-minus-1px text-gray">
                               {userInfo.maskedPhoneNumber}
                             </h6>
                           </td>
@@ -368,10 +380,12 @@ const MyInfoPage = () => {
 
                         <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
-                            <h6 className="m-0 fw-600 ls-minus-1px">이메일</h6>
+                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
+                              이메일
+                            </h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-32 m-0 fw-400 ls-minus-1px text-gray">
+                            <h6 className="fs-20 md-fs-18 m-0 fw-400 ls-minus-1px text-gray">
                               {userInfo.maskedEmail}
                             </h6>
                           </td>
@@ -409,57 +423,86 @@ const MyInfoPage = () => {
             <div className="col">
               <div className="row pt-5 text-center">
                 <form>
+                  {/* 기존 비밀번호 */}
                   <label className="text-dark-gray fw-500 d-block text-start">
                     기존 비밀번호
                   </label>
-                  <input
-                    className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="기존 비밀번호를 입력하세요"
-                  />
+                  <div className="position-relative">
+                    <input
+                      className="mb-5px bg-very-light-white form-control w-100 md-fs-12 text-black pe-40px"
+                      type={showPassword.password ? 'text' : 'password'}
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="기존 비밀번호를 입력하세요"
+                    />
+                    <i
+                      className={`fa-regular ${
+                        showPassword.password ? 'fa-eye-slash' : 'fa-eye'
+                      } position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer text-black`}
+                      onClick={() => toggleShow('password')}
+                    ></i>
+                  </div>
                   {errors.password && (
                     <p className="text-danger text-start">
                       비밀번호를 입력해주세요.
                     </p>
                   )}
 
-                  <label className="text-dark-gray fw-500 d-block text-start">
+                  {/* 새로운 비밀번호 */}
+                  <label className="text-dark-gray fw-500 d-block text-start mt-3">
                     새로운 비밀번호
                   </label>
-                  <input
-                    className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
-                    type="password"
-                    name="newPassword"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="비밀번호 영문,숫자,특수문자 포함 8자 이상 입력해 주세요."
-                  />
+                  <div className="position-relative">
+                    <input
+                      className="mb-5px bg-very-light-white form-control w-100 md-fs-12 text-black pe-40px"
+                      type={showPassword.newPassword ? 'text' : 'password'}
+                      name="newPassword"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="비밀번호 영문,숫자,특수문자 포함 8자 이상 입력해 주세요."
+                    />
+                    <i
+                      className={`fa-regular ${
+                        showPassword.newPassword ? 'fa-eye-slash' : 'fa-eye'
+                      } position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer text-black`}
+                      onClick={() => toggleShow('newPassword')}
+                    ></i>
+                  </div>
                   {errors.newPassword && (
                     <p className="text-danger text-start">
                       비밀번호를 입력해주세요.
                     </p>
                   )}
 
-                  <label className="text-dark-gray fw-500 d-block text-start">
+                  {/* 비밀번호 확인 */}
+                  <label className="text-dark-gray fw-500 d-block text-start mt-3">
                     새로운 비밀번호 확인
                   </label>
-                  <input
-                    className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
-                    type="password"
-                    name="confirmPassword"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="비밀번호 영문,숫자,특수문자 포함 8자 이상 입력해 주세요."
-                  />
+                  <div className="position-relative">
+                    <input
+                      className="mb-5px bg-very-light-white form-control w-100 md-fs-12 text-black pe-40px"
+                      type={showPassword.confirmPassword ? 'text' : 'password'}
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="비밀번호 영문,숫자,특수문자 포함 8자 이상 입력해 주세요."
+                    />
+                    <i
+                      className={`fa-regular ${
+                        showPassword.confirmPassword ? 'fa-eye-slash' : 'fa-eye'
+                      } position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer text-black`}
+                      onClick={() => toggleShow('confirmPassword')}
+                    ></i>
+                  </div>
                   {errors.confirmPassword && (
                     <p className="text-danger text-start">
                       비밀번호가 일치하지 않습니다.
                     </p>
                   )}
 
-                  <div className="col-12 text-center">
+                  {/* 버튼 */}
+                  <div className="col-12 text-center md-pt-40px">
                     <Button
                       size="extra-large"
                       radiusOn="radius-on"
@@ -499,7 +542,7 @@ const MyInfoPage = () => {
                 <p className="text-danger text-start">이름을 입력해주세요.</p>
               )}
 
-              <div className="col-12 text-center">
+              <div className="col-12 text-center md-pt-40px">
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
@@ -527,7 +570,7 @@ const MyInfoPage = () => {
               </label>
               <div className="row d-flex align-items-baseline justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75 md-w-55"
+                  className="mb-5px bg-very-light-white form-control required w-75"
                   type="text"
                   name="phoneNumber"
                   value={phoneNumber}
@@ -536,12 +579,12 @@ const MyInfoPage = () => {
                 />
 
                 <Button
-                  size="large"
+                  size="extra-large"
                   radiusOn="radius-on"
                   className="btn btn-large w-20 md-w-auto"
                   onClick={handlePhoneAuthRequest}
                 >
-                  인증 하기
+                  인증번호 전송
                 </Button>
                 {errors.phoneNumber && (
                   <p className="text-danger text-start">
@@ -549,12 +592,12 @@ const MyInfoPage = () => {
                   </p>
                 )}
                 <input
-                  className="mt-20px bg-very-light-white form-control required w-100"
+                  className="mt-20px bg-very-light-white form-control required w-75"
                   type="text"
                   name="phoneAuthCode"
                   value={phoneAuthCode}
                   onChange={(e) => setPhoneAuthCode(e.target.value)}
-                  placeholder="인증번호"
+                  placeholder="인증번호 입력"
                 />
                 {errors.phoneAuthCode && (
                   <p className="text-danger text-start">
@@ -563,11 +606,11 @@ const MyInfoPage = () => {
                 )}
               </div>
 
-              <div className="col-12 text-center">
+              <div className="col-12 text-center md-pt-40px">
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="btn-large w-50 mt-60px md-mt-10px mb-5px md-mb-20px"
+                  className="btn btn-large w-50 mt-60px md-mt-10px mb-5px md-mb-20px"
                   onClick={handlePhoneNumberChangeConfirm}
                 >
                   확인
@@ -591,19 +634,19 @@ const MyInfoPage = () => {
               </label>
               <div className="row d-flex align-items-baseline justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75 md-w-55"
+                  className="mb-5px bg-very-light-white form-control required w-75"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="이메일"
                 />
                 <Button
-                  size="large"
+                  size="extra-large"
                   radiusOn="radius-on"
                   className="btn btn-large w-20 md-w-auto"
                   onClick={handleEmailChange}
                 >
-                  인증 하기
+                  인증번호 보내기
                 </Button>
                 {errors.email && (
                   <p className="text-danger text-start">
@@ -611,11 +654,11 @@ const MyInfoPage = () => {
                   </p>
                 )}
                 <input
-                  className="mt-20px bg-very-light-white form-control required w-100"
+                  className="mt-20px bg-very-light-white form-control required w-75"
                   type="text"
                   value={emailAuthCode}
                   onChange={(e) => setEmailAuthCode(e.target.value)}
-                  placeholder="인증번호"
+                  placeholder="인증번호 입력"
                 />
                 {errors.emailAuthCode && (
                   <p className="text-danger text-start">
@@ -624,7 +667,7 @@ const MyInfoPage = () => {
                 )}
               </div>
 
-              <div className="col-12 text-center">
+              <div className="col-12 text-center md-pt-40px">
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
@@ -677,7 +720,7 @@ const MyInfoPage = () => {
         isOpen={isSecondModalOpen}
         onClose={() => setIsSecondModalOpen(false)}
       >
-        <div className="w-40">
+        <div className="w-40 md-w-70">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

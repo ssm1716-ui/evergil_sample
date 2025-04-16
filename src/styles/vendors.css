@@ -4251,10 +4251,11 @@ textarea.form-control-lg {
   overflow-y: auto;
 }
 
-@media (min-width: 576px) {
+@media (max-width: 320px) {
   .navbar-expand-sm {
     flex-wrap: nowrap;
     justify-content: flex-start;
+    height: 60px;
   }
   .navbar-expand-sm .navbar-nav {
     flex-direction: row;
@@ -4349,6 +4350,7 @@ textarea.form-control-lg {
   .navbar-expand-lg {
     flex-wrap: nowrap;
     justify-content: flex-start;
+    height: 70px;
   }
   .navbar-expand-lg .navbar-nav {
     flex-direction: row;
@@ -7536,6 +7538,9 @@ textarea.form-control-lg {
 .align-text-top {
   vertical-align: text-top !important;
 }
+.align-sub {
+  vertical-align: sub !important;
+}
 
 .float-start {
   float: left !important;
@@ -8505,7 +8510,10 @@ textarea.form-control-lg {
   padding-top: 1.5rem !important;
   padding-bottom: 1.5rem !important;
 }
-
+.py-4_5 {
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
+}
 .py-5 {
   padding-top: 3rem !important;
   padding-bottom: 3rem !important;
@@ -8529,6 +8537,9 @@ textarea.form-control-lg {
 
 .pt-4 {
   padding-top: 1.5rem !important;
+}
+.pt-4_5 {
+  padding-top: 2.5rem !important;
 }
 
 .pt-5 {
@@ -9516,7 +9527,7 @@ textarea.form-control-lg {
   z-index: 3 !important;
 }
 
-@media (min-width: 576px) {
+/* @media (min-width: 576px) {
   .float-sm-start {
     float: left !important;
   }
@@ -10076,7 +10087,7 @@ textarea.form-control-lg {
   .text-sm-center {
     text-align: center !important;
   }
-}
+} */
 @media (min-width: 768px) {
   .float-md-start {
     float: left !important;
@@ -15653,4 +15664,31 @@ yx-axis
 [data-atropos-offset][data-atropos-opacity],
 ::slotted([data-atropos-offset][data-atropos-opacity]) {
   transition-property: transform, opacity;
+}
+
+@media (max-width: 320px) {
+  .text-sm-start {
+    text-align: left !important;
+  }
+  .text-sm-end {
+    text-align: right !important;
+  }
+  .text-sm-center {
+    text-align: center !important;
+  }
+  .d-sm-none {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .text-md-start {
+    text-align: left !important;
+  }
+  .text-md-end {
+    text-align: right !important;
+  }
+  .text-md-center {
+    text-align: center !important;
+  }
 }

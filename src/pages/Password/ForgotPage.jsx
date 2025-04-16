@@ -48,24 +48,28 @@ const ForgotPage = () => {
     <>
       <section className="top-space-margin big-section bg-very-light-gray">
         <div className="container">
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white pb-10 p-10px">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
             <div
               className="col"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <div className="mt-20 py-5 text-center ">
+              <div className="mt-20px py-5 text-center ">
                 <a className="navbar-brand" href="demo-hotel-and-resort.html">
-                  <img src={forgotImage} alt="" className="default-logo" />
+                  <img
+                    src={forgotImage}
+                    alt=""
+                    className="default-logo md-w-100px md-h-100px"
+                  />
                 </a>
-                <h3 className="fw-600 text-dark-gray mb-10 ls-minus-1px">
+                <h3 className="fs-30 md-fs-40 fw-600 text-dark-gray mb-20px md-mb-30px ls-minus-1px">
                   비밀번호 찾기
                 </h3>
-                <h6 className="fw-600 text-dark-gray mb-10 ls-minus-1px">
+                <h6 className="fs-25 fw-400 text-dark-gray mb-10 ls-minus-1px">
                   이메일을 통해 비밀번호 수정 링크가 전송됩니다.
                 </h6>
-                <form>
+                <form className="text-center">
                   <input
-                    className="mb-20px bg-very-light-white form-control required"
+                    className="md-w-80 d-md-inline-block mb-20px md-mb-40px bg-very-light-white form-control required"
                     type="text"
                     name="loginEmail"
                     value={email}
@@ -98,14 +102,14 @@ const ForgotPage = () => {
         </div>
       </section>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-40 md-w-70">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-18">
                         전송되었습니다.
                       </h6>
                     </div>

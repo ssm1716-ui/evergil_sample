@@ -36,10 +36,7 @@ const AboutPage = () => {
 
   return (
     <>
-      <section
-        className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center"
-        // style="background-image: url(https://via.placeholder.com/1920x526)"
-      >
+      <section className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center">
         {/* <div className="opacity-full-dark bg-gradient-dark-transparent"></div> */}
         <div className="container position-relative">
           <div
@@ -47,7 +44,11 @@ const AboutPage = () => {
             data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
             <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
-              <img src={aboutUsImage} alt="about_us" />
+              <img
+                src={aboutUsImage}
+                alt="about_us"
+                className="about_us_logo"
+              />
             </div>
           </div>
         </div>
@@ -61,70 +62,76 @@ const AboutPage = () => {
           data-anime='{ "el": "childs", "translateX": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
           <div className="row pb-10">
-            <div className="col-md-6 sm-mb-25px ">
-              {/* <span className="mb-15px text-base-color fw-500 d-block">
-                  Fabulous experience
-                </span>
-                <h3 className="text-dark-gray ls-minus-2px w-90 sm-w-100 mb-0">
-                  The best people to take care of our most valuable asset is
-                  you.
-                </h3> */}
-              <img src={AboutImage2} alt="" className="w-100" />
+            <div className="col-lg-5 col-sm-12 sm-mb-25px">
+              <img src={AboutImage2} alt="" className="w-100 about-img1" />
             </div>
             <div
-              className="col-xl-5 col-md-6 offset-xl-1 last-paragraph-no-margin"
+              className="col-xl-6 col-sm-12 offset-xl-1 last-paragraph-no-margin"
               data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <h6 className="text-dark-gray mb-10px">Our Story</h6>
-              <p className="w-100 lg-w-100 fs-14 md-fs-12">
-                Everlink(에버링크)는 2024년도에 시작하였습니다.
-                <br /> 지난 겨울 사랑하는 사람을 떠나보내면서 힘들 때 마다
-                사진을 꺼내 <br />그 사람을 회상하며 버텨왔습니다.
+              <h6 className="text-dark-gray mb-10px md-fs-28 text-md-center text-sm-center">
+                Our Story
+              </h6>
+              <p className="w-100 lg-w-100 fs-16 md-fs-18 sm-fs-14 text-lg-start text-md-center text-sm-center">
+                에버링크는 사랑하는 가족, 친구, 반려동물을 마음속에 오래도록
+                간직할 수 있도록 돕는 공간입니다.
                 <br />
-                추억이 담긴 사진들을 납골당 혹은 묘비에 전부 다 보관하는 것은
-                장소의
-                <br /> 한계가 있다는 사실을 깨닫게 되었습니다. <br />
+                <br /> 사랑하는 사람을 떠나보낸 후 기억들을 좀 더 오래, 좀 더
+                의미 있게 간직하고 싶다는 바람에서 시작되었습니다.
+                <br />그 마음으로 만든 것이 바로 에버링크의 “메모리태그” 입니다.
                 <br />
-                우리가 추구하는 Everlink(에버링크)는 신뢰할 수 있는 품질과
-                사랑하는
-                <br /> 사람의 발자취를 평생 기억할 수 있는 가치, 그리고 고객과
-                함께 나아간다는 원칙을 통해 오늘도 진심으로 정성을 다해
-                움직입니다.
+                5cm x 5cm의 견고한 양극산화 알루미늄 명판에는 QR 코드가 새겨져
+                있으며
                 <br />
+                이를 스캔하면 사진, 가족관계도, 하늘편지를 남길 수 있는 디지털
+                추모 공간으로 연결됩니다.
                 <br />
-                우리는 소중한 순간들을 우리의 마음 속에
+                에버링크는 2024년에 시작되어 지금까지, 추억을 지키는 가장 진심
+                어린 방법을 고민해왔습니다.
                 <br />
-                영원히 남을 기억으로 바꾸고자 노력합니다.
+                납골당, 묘비, 혹은 가정에서 언제 어디서나 사랑하는 사람을 기억할
+                수 있도록 정성과 품질을 담아 제작했습니다.
+                <br />
+                에버링크는 사랑을 추모하고, 기억을 공유하며, 세대를 넘어 마음을
+                잇는 다리입니다.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section
-        className="cover-background position-relative overflow-visible pt-0 pb-150px"
-        // style="background-image: url('https://via.placeholder.com/1920x796')"
-      >
+      <section className="cover-background position-relative overflow-visible pt-0 pb-150px">
         <div className="container">
           <div className="row justify-content-center">
             <div
               className="col-xl-12 col-lg-10 text-center"
               data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <h6 className="text-dark-gray mb-10px">Our Mission</h6>
+              <h6 className="text-dark-gray mb-10px md-fs-28">Our Mission</h6>
               <img src={AboutImage3} alt="" className="w-100" />
               <h5 className="text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
-              <p className="lg-w-100 mt-8 lh-24 fs-14 md-fs-12">
-                우리의 사명은 사랑하는 사람들이 영원히 기억되는 것입니다.
+              <p className="lg-w-100 mt-8 lh-24 fs-18 sm-fs-14 md-fs-18 md-lh-30">
+                에버링크의 사명은 사랑하는 사람의 기억을 의미 있게.
                 <br />
-                대부분 2-3세대가 지나면 사람들은 우리가 존재했다는 <br />
-                사실조차 기억하지 못할 것입니다. <br />
-                확실한 건 시간이 지나면 기억은 희미해집니다.
+                오래도록 간직할 수 있도록 돕는 것입니다.
                 <br />
-                <br /> 우리는 사랑하는 사람을 기억하고,
                 <br />
-                그들과의 추억을 보존하고,
-                <br /> 그들을 평생 기억할 수 있는 플랫폼을 제공할 것입니다.
+                사진은 바래고, 공간은 부족하며, 시간이 지나면 기억도 점점
+                흐려집니다.
+                <br />
+                "메모리태그"는 전통적인 추모 방식 이상의 현대적이고 상호작용적인
+                방식으로 가족들이 고인을 기릴 수 있도록 도와줍니다.
+                <br />
+                <br />
+                납골당, 추모비, 또는 집에 놓아 스캔하는 순간
+                <br />
+                이 에버링크의 QR코드는 풍부하고 살아있는 디지털 추모관으로
+                연결됩니다.
+                <br />
+                지금, 사랑하는 사람의 이야기를 영원히 담을 수 있는 에버링크와
+                함께하세요.
+                <br />
+                기억을 간직하는 가장 따뜻한 방법이 되어드리겠습니다.
               </p>
             </div>
           </div>

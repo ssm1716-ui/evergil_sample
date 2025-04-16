@@ -354,7 +354,7 @@ const MyReviewPage = () => {
                   </div>
 
                   {/* 리뷰 이미지 */}
-                  <div className="w-250px md-w-250px sm-w-100 sm-mb-10px text-center">
+                  <div className="w-250px md-w-250px sm-mb-10px text-center">
                     {review.image1 && (
                       <img
                         src={review.image1}
@@ -368,7 +368,7 @@ const MyReviewPage = () => {
                   </div>
 
                   {/* 리뷰 내용 */}
-                  <div className="w-100 last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
+                  <div className="w-100 ps-50px  md-ps-20px last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
                     {/* ⭐ 별점 표시 */}
                     <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-block">
                       {Array.from({ length: 5 }, (_, i) => (
@@ -423,7 +423,7 @@ const MyReviewPage = () => {
               </div>
             ))
           ) : (
-            <p className="text-center w-100 fs-22 md-fs-16">
+            <p className="pt-100px text-center w-100 fs-22 md-fs-16">
               <i className="fa-regular fa-pen-to-square align-middle icon-large md-icon-medium text-light-black pe-1"></i>
               작성된 리뷰가 없습니다.
             </p>

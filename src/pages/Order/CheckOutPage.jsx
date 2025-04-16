@@ -312,23 +312,23 @@ const CheckOutPage = () => {
             <div className="col-lg-12 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
               <div className="row align-items-center">
                 <div className="col-12">
-                  <table className="table cart-products">
+                  <table className="table cart-products order-products">
                     <thead>
                       <tr>
-                        <th scope="col" className="fw-600">
+                        <th scope="col" className="fw-600 text-center">
                           상품명
                         </th>
                         <th scope="col"></th>
-                        <th scope="col" className="fw-600">
+                        <th scope="col" className="fw-600 text-center">
                           개수
                         </th>
-                        <th scope="col" className="fw-600">
+                        <th scope="col" className="fw-600 text-center">
                           배송비
                         </th>
-                        <th scope="col" className="fw-600">
+                        <th scope="col" className="fw-600 text-center">
                           상품금액
                         </th>
-                        <th scope="col" className="fw-600">
+                        <th scope="col" className="fw-600 text-center">
                           상품할인금액
                         </th>
                       </tr>
@@ -348,7 +348,7 @@ const CheckOutPage = () => {
                                 />
                               </Link>
                             </td>
-                            <td className="product-name">
+                            <td className="product-name  md-fs-12 text-center">
                               <Link
                                 to={`/shop/${order.productId}`}
                                 className="text-dark-gray fw-500 d-block lh-initial"
@@ -357,19 +357,28 @@ const CheckOutPage = () => {
                               </Link>
                             </td>
 
-                            <td className="product-quantity" data-title="개수">
+                            <td
+                              className="product-quantity text-center"
+                              data-title="개수"
+                            >
                               {order.quantity}개
                             </td>
-                            <td className="product-price" data-title="배송비">
+                            <td
+                              className="product-price text-center"
+                              data-title="배송비"
+                            >
                               {order.deliveryFee}원
                             </td>
-                            <td className="product-price" data-title="상품금액">
+                            <td
+                              className="product-price text-center"
+                              data-title="상품금액"
+                            >
                               {(order.price * order.quantity).toLocaleString()}
                               원
                             </td>
 
                             <td
-                              className="product-subtotal"
+                              className="product-subtotal text-center"
                               data-title="상품할인금액"
                             >
                               {(
@@ -400,7 +409,7 @@ const CheckOutPage = () => {
                   <label>이름</label>
                   <span className="text-red">*</span>
                   <input
-                    className="border-radius-4px input-large md-py-0"
+                    className="border-radius-4px input-large md-py-0 text-black"
                     type="text"
                     name="buyerName"
                     value={payment.buyerName}
@@ -416,7 +425,7 @@ const CheckOutPage = () => {
                   <label>휴대폰</label>
                   <span className="text-red">*</span>
                   <input
-                    className="border-radius-4px input-large md-py-0"
+                    className="border-radius-4px input-large md-py-0 text-black"
                     type="text"
                     name="buyerPhone"
                     value={payment.buyerPhone}
@@ -433,7 +442,7 @@ const CheckOutPage = () => {
                   <label>이메일</label>
                   <span className="text-red">*</span>
                   <input
-                    className="border-radius-4px input-large md-py-0"
+                    className="border-radius-4px input-large md-py-0 text-black"
                     type="text"
                     name="buyerEmail"
                     value={payment.buyerEmail}
@@ -464,7 +473,7 @@ const CheckOutPage = () => {
                 <div className="col-12">
                   <div className="row d-flex justify-content-end m-0">
                     <input
-                      className="d-none col-9 border-radius-4px input-large"
+                      className="d-none col-9 border-radius-4px input-large text-black"
                       type="text"
                       aria-label="first-name"
                       required
@@ -484,7 +493,7 @@ const CheckOutPage = () => {
                   <div className="col-12 mb-20px md-mb-10px">
                     <label>배송지 이름</label>
                     <input
-                      className="border-radius-4px input-large md-py-0"
+                      className="border-radius-4px input-large md-py-0 text-black"
                       type="text"
                       name="deliveryName"
                       aria-label="first-name"
@@ -502,7 +511,7 @@ const CheckOutPage = () => {
                     <label>받는분 이름</label>
                     <span className="text-red">*</span>
                     <input
-                      className="border-radius-4px input-large md-py-0"
+                      className="border-radius-4px input-large md-py-0 text-black"
                       type="text"
                       aria-label="first-name"
                       name="recipientName"
@@ -520,7 +529,7 @@ const CheckOutPage = () => {
                     <label>휴대폰번호</label>
                     <span className="text-red">*</span>
                     <input
-                      className="border-radius-4px input-large md-py-0"
+                      className="border-radius-4px input-large md-py-0 text-black"
                       type="text"
                       aria-label="first-name"
                       name="phoneNumber"
@@ -540,7 +549,7 @@ const CheckOutPage = () => {
                     <span className="text-red">*</span>
                     <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0">
                       <input
-                        className="col-7 col-md-9 border-radius-4px input-large md-py-0"
+                        className="col-7 col-md-7 border-radius-4px input-large md-py-0 text-black"
                         type="text"
                         aria-label="first-name"
                         name="zipcode"
@@ -561,7 +570,7 @@ const CheckOutPage = () => {
                       </AddressSearch>
                     </div>
                     <input
-                      className="col-12 border-radius-4px input-large md-py-0 mt-1"
+                      className="col-12 border-radius-4px input-large md-py-0 mt-1 text-black"
                       type="text"
                       aria-label="first-name"
                       name="address1"
@@ -577,7 +586,7 @@ const CheckOutPage = () => {
                       </p>
                     )}
                     <input
-                      className="col-12 border-radius-4px input-large md-py-0 mt-1"
+                      className="col-12 border-radius-4px input-large md-py-0 mt-1 text-black"
                       type="text"
                       aria-label="first-name"
                       name="address2"
@@ -594,7 +603,7 @@ const CheckOutPage = () => {
                           type="checkbox"
                           name="terms_condition"
                           value="1"
-                          className="check-box align-middle"
+                          className="check-box align-middle text-black"
                         />
                         <span className="box">기본 배송지로 저장</span>
                         <a
@@ -610,7 +619,7 @@ const CheckOutPage = () => {
                   <div className="col-12">
                     <label>배송메시지</label>
                     <textarea
-                      className="border-radius-4px textarea-small"
+                      className="border-radius-4px textarea-large text-black"
                       rows="3"
                       cols="5"
                       placeholder=""
@@ -784,7 +793,7 @@ const CheckOutPage = () => {
                   <div className="text-center">
                     <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                       <Button
-                        className="btn w-10 mt-10px d-inline w-40 "
+                        className="btn w-10 mt-10px d-inline w-40"
                         onClick={handleDeliveryAddressChage}
                       >
                         배송지 변경

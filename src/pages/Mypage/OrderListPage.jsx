@@ -124,7 +124,7 @@ const OrderListPage = () => {
 
     // 이후 로직 (예: 업로드된 파일 URL을 백엔드에 전송)
     const res = await postReviewRegister(
-      '99999999-9999-9999-9999-999999999999',
+      '88888888-8888-8888-8888-888888888888',
       { ...reviews, images: completedUrls }
     );
     if (res.status === 200) {
@@ -312,7 +312,7 @@ const OrderListPage = () => {
           >
             <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
               <div className="col-12 d-flex justify-content-between md-mb-15px">
-                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
                   구매완료
                 </span>
                 <Link to="/mypage/order-detail">
@@ -322,7 +322,7 @@ const OrderListPage = () => {
                 </Link>
               </div>
               <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
-                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
@@ -342,7 +342,7 @@ const OrderListPage = () => {
                 <div>
                   <Link
                     to="/mypage/exchage"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="교환">
@@ -352,7 +352,7 @@ const OrderListPage = () => {
                   </Link>
                   <Link
                     to="/mypage/return"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn  btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="환불">
@@ -365,7 +365,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="배송조회">
@@ -375,7 +375,7 @@ const OrderListPage = () => {
                   </a>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="구매확정">
@@ -388,7 +388,7 @@ const OrderListPage = () => {
             </div>
             <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
               <div className="col-12 d-flex justify-content-between md-mb-15px">
-                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
                   배송완료
                 </span>
                 <Link to="/mypage/order-detail">
@@ -398,7 +398,7 @@ const OrderListPage = () => {
                 </Link>
               </div>
               <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
-                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
@@ -418,7 +418,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="배송조회">
@@ -428,7 +428,7 @@ const OrderListPage = () => {
                   </a>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="리뷰보기">
@@ -441,7 +441,7 @@ const OrderListPage = () => {
             </div>
             <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
               <div className="col-12 d-flex justify-content-between md-mb-15px">
-                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
                   구매확정
                 </span>
                 <Link to="/mypage/order-detail">
@@ -451,7 +451,7 @@ const OrderListPage = () => {
                 </Link>
               </div>
               <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
-                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
@@ -471,7 +471,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="배송조회">
@@ -481,7 +481,7 @@ const OrderListPage = () => {
                   </a>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                     onClick={() => setIsModalOpen(true)}
                   >
                     <span>
@@ -495,7 +495,7 @@ const OrderListPage = () => {
             </div>
             <div className="row mx-0 pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
               <div className="col-12 d-flex justify-content-between md-mb-15px">
-                <span className="fw-600 text-dark-gray fs-22 ls-minus-05px">
+                <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
                   결제완료
                 </span>
                 <Link to="/mypage/order-detail">
@@ -505,7 +505,7 @@ const OrderListPage = () => {
                 </Link>
               </div>
               <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
-                <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
@@ -525,7 +525,7 @@ const OrderListPage = () => {
                 <div>
                   <a
                     href="#"
-                    className="btn btn-white btn-large btn-switch-text border border-1 border-black w-40 me-2 mt-2"
+                    className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                   >
                     <span>
                       <span className="btn-double-text" data-text="결제 취소">
@@ -576,7 +576,7 @@ const OrderListPage = () => {
             </div> */}
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-100">
+        <div className="w-40 md-w-70">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

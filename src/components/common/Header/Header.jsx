@@ -34,13 +34,13 @@ const Header = () => {
 
   return (
     <header>
-      <nav className="navbar navbar-expand-lg header-light bg-white center-logo header-reverse">
+      <nav className="navbar navbar-expand-sm navbar-expand-lg  header-light bg-white center-logo header-reverse">
         <div className="container-fluid">
           <div className="menu-logo">
             <Link
               to="/"
               className="navbar-brand ps-0 md-ps-15px"
-              onClick={closeMenu}
+              // onClick={closeMenu}
             >
               <img src={defaultLogo_pc} alt="" className="default-logo" />
 
@@ -113,8 +113,8 @@ const Header = () => {
                       className="nav-link feature-box"
                       onClick={closeMenu}
                     >
-                      <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
-                        <i className="feather icon-feather-log-in align-middle icon-medium"></i>
+                      <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
+                        <i className="feather icon-feather-log-in align-middle icon-extra-medium"></i>
                       </div>
                       <div className="feature-box-content header-box-content">
                         <span className="d-inline-block">로그인</span>
@@ -127,8 +127,8 @@ const Header = () => {
                       className="nav-link feature-box"
                       onClick={handleLogout}
                     >
-                      <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
-                        <i className="feather icon-feather-log-out align-middle icon-medium"></i>
+                      <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
+                        <i className="feather icon-feather-log-out align-middle icon-extra-medium"></i>
                       </div>
                       <div className="feature-box-content header-box-content">
                         <span className="d-inline-block">로그아웃</span>
@@ -143,8 +143,8 @@ const Header = () => {
                       className="nav-link feature-box"
                       onClick={closeMenu}
                     >
-                      <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
-                        <i className="feather icon-feather-user align-middle icon-medium"></i>
+                      <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
+                        <i className="feather icon-feather-user align-middle icon-extra-medium"></i>
                       </div>
                       <div className="feature-box-content header-box-content">
                         <span className="d-inline-block">마이페이지</span>
@@ -158,8 +158,8 @@ const Header = () => {
                     className="nav-link feature-box"
                     onClick={closeMenu}
                   >
-                    <div className="feature-box-icon mb-10px d-lg-flex header-box-icon">
-                      <i className="feather icon-feather-shopping-cart align-middle icon-medium"></i>
+                    <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
+                      <i className="feather icon-feather-shopping-cart align-middle icon-extra-medium"></i>
                     </div>
                     <div className="feature-box-content header-box-content">
                       <span className="d-inline-block">장바구니</span>

@@ -143,7 +143,7 @@ const SettingProfilePage = () => {
                   {/* 사람/동물 버튼 */}
                   <div className="me-15px xs-mb-15px pt-50px md-pt-0 d-flex justify-content-around ">
                     <Button
-                      className={`btn w-30 lg-mb-15px me-10px  border border-1 ${
+                      className={`btn w-30 lg-mb-15px me-10px border border-1 btn-box-shadow btn-round-edge ${
                         formProfile.memorialType === 'HUMAN'
                           ? 'btn-black'
                           : 'btn-white'
@@ -153,7 +153,7 @@ const SettingProfilePage = () => {
                       사람
                     </Button>
                     <Button
-                      className={`btn w-30 lg-mb-15px me-10px border border-1 ${
+                      className={`btn w-30 lg-mb-15px me-10px border border-1 btn-box-shadow btn-round-edge ${
                         formProfile.memorialType === 'ANIMAL'
                           ? 'btn-black'
                           : 'btn-white'
@@ -177,7 +177,7 @@ const SettingProfilePage = () => {
                     <span className="text-red">*</span>이름
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control md-input-small required"
+                    className="mb-5px bg-very-light-white form-control md-input-small text-black required"
                     type="text"
                     name="displayName"
                     placeholder="이름을 입력해 주세요."
@@ -195,7 +195,7 @@ const SettingProfilePage = () => {
                     생년월일
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control md-input-small custom-date"
+                    className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
                     type="date"
                     name="birthday"
                     value={formProfile.birthday}
@@ -212,7 +212,7 @@ const SettingProfilePage = () => {
                     기일
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control md-input-small custom-date"
+                    className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
                     type="date"
                     name="deathDate"
                     min="2024-02-01"
@@ -231,7 +231,7 @@ const SettingProfilePage = () => {
                     닉네임
                   </label>
                   <input
-                    className="mb-5px bg-very-light-white form-control md-input-small"
+                    className="mb-5px bg-very-light-white form-control md-input-small text-black"
                     type="text"
                     name="nickname"
                     placeholder="https://everlink.kr/'닉네임'"
@@ -250,7 +250,7 @@ const SettingProfilePage = () => {
                   </label>
                   <div className="select">
                     <select
-                      className="form-control md-input-small"
+                      className="form-control md-input-small text-black"
                       name="scope"
                       value={formProfile.scope}
                       onChange={handleChange}
@@ -287,7 +287,7 @@ const SettingProfilePage = () => {
         onClose={() => setIsModalOpen(false)}
         title="Slide up animation"
       >
-        <div className="row justify-content-center overflow-hidden w-40 bg-white">
+        <div className="row justify-content-center overflow-hidden w-40 md-w-70 bg-white">
           <div className="col contact-form-style-04">
             <div className="py-5 text-center">
               <img src={checkCircle} alt="" />

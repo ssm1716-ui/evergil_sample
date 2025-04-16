@@ -151,6 +151,7 @@ const CartPage = () => {
 
   const handleCartCheckout = (e) => {
     if (!isAuthenticated) {
+      localStorage.setItem('redirectAfterLogin', '/cart'); // 현재 페이지 저장
       setIsLoginModalOpen(true);
       return;
     }
@@ -178,7 +179,7 @@ const CartPage = () => {
         <section className="pt-0">
           <div className="container">
             <div className="row align-items-start">
-              <div className="col-lg-8 pe-15px md-pe-15px md-mb-50px xs-mb-35px">
+              <div className="col-lg-8 pe-15px md-pe-15px xs-mb-35px">
                 <div className="row mb-20px">
                   <div className="col-12 text-center text-md-end sm-mt-15px d-flex justify-content-between">
                     <a
@@ -200,22 +201,32 @@ const CartPage = () => {
                 <div className="row align-items-center">
                   <div className="col-12 p-0 md-p-4">
                     <table className="table cart-products">
-                      <thead>
+                      <thead className="md-fs-14">
                         <tr>
-                          <th scope="col"></th>
-                          <th scope="col">상품명</th>
-                          <th scope="col"></th>
-                          <th scope="col">개수</th>
-                          <th scope="col">배송비</th>
-                          <th scope="col">상품금액</th>
-                          <th scope="col">상품할인금액</th>
+                          <th className="text-center" scope="col"></th>
+                          <th className="text-center" scope="col">
+                            상품명
+                          </th>
+                          <th className="text-center" scope="col"></th>
+                          <th className="text-center" scope="col">
+                            개수
+                          </th>
+                          <th className="text-center" scope="col">
+                            배송비
+                          </th>
+                          <th className="text-center" scope="col">
+                            상품금액
+                          </th>
+                          <th className="text-center" scope="col">
+                            상품할인금액
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {cartProducts.length > 0 &&
                           cartProducts.map((product, index) => (
                             <tr key={index}>
-                              <td className="product-checkbox me-2">
+                              <td className="product-checkbox me-2 text-center">
                                 <input
                                   type="checkbox"
                                   name="terms_condition"
@@ -225,7 +236,7 @@ const CartPage = () => {
                                   className="terms-condition check-box align-middle required"
                                 />
                               </td>
-                              <td className="product-thumbnail">
+                              <td className="product-thumbnail text-center">
                                 <Link to={`/shop/${product.productId}`}>
                                   <img
                                     className="cart-product-image"
@@ -237,16 +248,16 @@ const CartPage = () => {
                                   />
                                 </Link>
                               </td>
-                              <td className="product-name">
+                              <td className="product-name text-center p-0">
                                 <Link
                                   to={`/shop/${product.productId}`}
-                                  className="text-dark-gray fw-500 d-block lh-initial fs-14"
+                                  className="text-dark-gray fw-500 d-block lh-initial md-fs-12"
                                 >
                                   {product.productName}
                                 </Link>
                               </td>
                               <td
-                                className="product-quantity"
+                                className="product-quantity text-center"
                                 data-title="개수"
                               >
                                 <div className="quantity">
@@ -280,11 +291,14 @@ const CartPage = () => {
                                   </button>
                                 </div>
                               </td>
-                              <td className="product-price" data-title="배송비">
+                              <td
+                                className="product-price text-center"
+                                data-title="배송비"
+                              >
                                 {product.deliveryFee}원
                               </td>
                               <td
-                                className="product-price"
+                                className="product-price text-center"
                                 data-title="할인금액"
                               >
                                 {(
@@ -294,7 +308,7 @@ const CartPage = () => {
                               </td>
 
                               <td
-                                className="product-subtotal"
+                                className="product-subtotal text-center"
                                 data-title="금액"
                               >
                                 {(
@@ -353,17 +367,19 @@ const CartPage = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <Link
-                    className="btn btn-base-color btn-large btn-switch-text btn-round-edge btn-box-shadow border-radius-30px w-100 mt-25px"
-                    onClick={handleCartCheckout}
-                  >
-                    <span>
-                      <span className="btn-double-text" data-text="주문하기">
-                        주문하기
-                      </span>
-                    </span>
-                  </Link>
                 </div>
+              </div>
+              <div className="col-12">
+                <Link
+                  className="btn btn-base-color btn-large btn-switch-text btn-round-edge btn-box-shadow border-radius-30px w-100 mt-25px"
+                  onClick={handleCartCheckout}
+                >
+                  <span>
+                    <span className="btn-double-text" data-text="주문하기">
+                      주문하기
+                    </span>
+                  </span>
+                </Link>
               </div>
             </div>
           </div>

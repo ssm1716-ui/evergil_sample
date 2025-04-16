@@ -47,7 +47,8 @@ const AddressSearch = ({ onComplete, children }) => {
     <>
       <Button
         color="black"
-        className="col-3 btn w-20 md-w-40 btn-round-edge md-py-0"
+        size="extra-medium"
+        className="col-3 btn w-40 md-w-40 btn-round-edge md-py-0"
         onClick={handleOpenPostcode}
       >
         {children}

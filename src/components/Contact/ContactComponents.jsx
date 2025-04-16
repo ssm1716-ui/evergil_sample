@@ -77,7 +77,7 @@ const ContactComponents = ({
 
       <div className="row mt-25px md-mt-0 align-items-center">
         <div className="col-xl-7 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div>
-        <div className="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-end text-lg-start text-xl-end xs-mt-25px">
+        <div className="col-xl-5 col-lg-12 col-sm-5 text-center text-sm-end text-lg-start text-xl-end md-mt-30px">
           <input
             id="exampleInputEmail3"
             type="hidden"

@@ -207,7 +207,7 @@ const ProfilePage = () => {
                 {['My Everlinks', 'View', 'Bookmark'].map((tab) => (
                   <li key={tab} className="nav-item">
                     <button
-                      className={`w-100 nav-link text-center ${
+                      className={`w-100 nav-link text-center md-fs-20 ${
                         activeTab === tab ? 'active text-base-color' : ''
                       }`}
                       onClick={() => setActiveTab(tab)}
@@ -222,16 +222,16 @@ const ProfilePage = () => {
               <div className="tab-content">
                 {profiles.length > 0 ? (
                   <>
-                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
+                    <div className="w-100 sm-mt-10px xs-mb-8 my-5 text-center">
                       {activeTab === 'My Everlinks' && (
-                        <div className="col col-lg-11 col-sm-5 text-end text-sm-end text-lg-end text-xl-end xs-mt-25px">
+                        <div className="col text-lg-end text-md-center xs-mt-25px">
                           {/* <Link to="/profile/setting-profile"> */}
                           <Link to="/bridge-profile">
                             <Button
                               variant="primary"
                               color="base-color"
                               size="large"
-                              className="w-20 md-w-100 border-radius-20px"
+                              className="w-20 md-w-30 border-radius-20px"
                             >
                               <i className="feather icon-feather-plus align-top icon-small text-white"></i>
                               새로운 프로필 생성
@@ -270,12 +270,12 @@ const ProfilePage = () => {
                                 />
                               </Link>
                             </div>
-                            <div className="card-body p-12">
+                            <div className="card-body p-12 md-p-5">
                               <a className="card-title mb-15px fw-600 fs-18 lh-26 text-dark-gray text-dark-gray-hover d-block position-relative">
                                 {profile.displayName}
 
                                 {profile.permission === 'OWNER' ? (
-                                  <i className="fa-solid fa-crown align-bottom icon-medium text-yellow ps-3"></i>
+                                  <i className="fa-solid fa-crown align-center icon-medium text-yellow ps-3 md-fs-20"></i>
                                 ) : (
                                   <span
                                     className="cursor-pointer"
@@ -287,7 +287,7 @@ const ProfilePage = () => {
                                   </span>
                                 )}
                               </a>
-                              <p className="fw-600 fs-16">
+                              <p className="fw-600 fs-16 md-fs-18">
                                 {`${profile.birthday} ~ ${profile.deathDate}`}
                               </p>
                             </div>
@@ -305,13 +305,12 @@ const ProfilePage = () => {
                       // <Link to="/profile/setting-profile">
                       <Link to="/bridge-profile">
                         <div className="pb-2">
-                          <i className="fa-solid fa-circle-plus align-middle text-extra-medium-gray fs-250"></i>
+                          <i className="fa-solid fa-circle-plus align-middle text-extra-medium-gray fs-250 md-fs-160"></i>
                         </div>
                         <Button
-                          size="medium"
                           color="profile"
                           radiusOn="radius-on"
-                          className="w-40 fs-24 mt-30px mb-10px"
+                          className="w-40 md-w-150px fs-24 mt-30px md-mt-10px mb-10px md-fs-16 md-p-0 md-h-25px"
                         >
                           새로운 프로필 생성
                         </Button>
@@ -322,7 +321,9 @@ const ProfilePage = () => {
                       <>
                         <div className="pb-2 fs-24">
                           <i className="fa-regular fa-circle-user align-middle icon-extra-large text-light-gray pb-1"></i>
-                          <p>View 권한을 가진 프로필이 없습니다.</p>
+                          <p className="md-pt-20px">
+                            View 권한을 가진 프로필이 없습니다.
+                          </p>
                         </div>
                       </>
                     )}
@@ -331,7 +332,9 @@ const ProfilePage = () => {
                       <>
                         <div className="pb-2 fs-24">
                           <i className="fa-regular fa-circle-user align-middle icon-extra-large text-light-gray pb-1"></i>
-                          <p>북마크한 프로필이 없습니다.</p>
+                          <p className="md-pt-20px">
+                            hjhjgh북마크한 프로필이 없습니다.
+                          </p>
                         </div>
                       </>
                     )}

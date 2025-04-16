@@ -56,7 +56,7 @@ header .navbar-brand img {
     /* max-height: 30px; */
 }
 .navbar .navbar-nav .nav-link {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: normal;
 }
 .navbar .navbar-nav .dropdown.dropdown-with-icon .dropdown-menu li a span {
@@ -190,7 +190,7 @@ footer .elements-social li {
         line-height: 28px;
     }
 }
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .tab-style-07 .nav-tabs .nav-item .nav-link .number-box {
         right: 40px;
     }
@@ -209,6 +209,10 @@ footer .elements-social li {
     .tab-style-08 ul .nav-item .tab-border {
         top: inherit;
         bottom: 0;
+    }
+    .btn.btn-switch-text.btn-large > span {
+        font-size: 14px;
+        padding: 8px 20px;
     }
 }
 @media (max-width: 575px) {

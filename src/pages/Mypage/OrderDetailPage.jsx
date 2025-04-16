@@ -10,7 +10,7 @@ const MyPage = () => {
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px">
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-          <h1 className="fw-600 text-dark-gray mb-10px">주문/상세내역</h1>
+          <h6 className="fw-600 text-dark-gray mb-10px">주문/배송내역</h6>
         </div>
         <section className="pt-1 pb-1">
           <div>
@@ -20,7 +20,7 @@ const MyPage = () => {
             >
               <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
                 <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
-                  <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
+                  <div className="w-300px md-w-250px sm-mb-10px">
                     <img src={ShopDetailImage3} className="w-120px" alt="" />
                   </div>
                 </div>
@@ -40,7 +40,7 @@ const MyPage = () => {
                   <div>
                     <Link
                       to="/mypage/exchage"
-                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                      className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                     >
                       <span>
                         <span className="btn-double-text" data-text="교환">
@@ -50,7 +50,7 @@ const MyPage = () => {
                     </Link>
                     <Link
                       to="/mypage/return"
-                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                      className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                     >
                       <span>
                         <span className="btn-double-text" data-text="환불">
@@ -63,7 +63,7 @@ const MyPage = () => {
                   <div>
                     <a
                       href="#"
-                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                      className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                     >
                       <span>
                         <span className="btn-double-text" data-text="배송조회">
@@ -73,7 +73,7 @@ const MyPage = () => {
                     </a>
                     <a
                       href="#"
-                      className="btn btn-white btn-large btn-switch-text w-40 me-2 mb-2"
+                      className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                     >
                       <span>
                         <span className="btn-double-text" data-text="구매확정">
@@ -95,7 +95,7 @@ const MyPage = () => {
 
                 <div className="p-40px lg-p-25px bg-white border-radius-6px box-shadow-large mt-10px mb-30px sm-mb-25px checkout-accordion">
                   <div className="w-100" id="accordion-style-05">
-                    <div className="row pb-1 border-bottom border-1 border-black fs-20">
+                    <div className="row pb-1 border-bottom fs-20">
                       <label className="col-6 mb-5px">
                         <span className="d-inline-block text-dark-gray">
                           입금 금액
@@ -152,7 +152,7 @@ const MyPage = () => {
         </section>
         <section className="p-0">
           <div className="pt-4  border-bottom border-2 border-black">
-            <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+            <h6 className="fs-27 md-fs-29 fw-400 border-black text-start text-black m-0">
               배송지
             </h6>
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">
@@ -186,9 +186,9 @@ const MyPage = () => {
           </div>
         </section>
 
-        <section className="pb-5">
-          <div className="border-bottom border-2 border-black">
-            <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+        <section className="p-0">
+          <div className="pt-4 mb-4 border-bottom border-2 border-black">
+            <h6 className="fs-27 md-fs-29 fw-400 border-black text-start text-black m-0">
               최종 결제 정보
             </h6>
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">

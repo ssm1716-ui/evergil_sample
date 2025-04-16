@@ -36,7 +36,7 @@ const HomeSubPage = () => {
   return (
     <>
       <section
-        className="p-0 top-space-margin full-screen md-h-600px sm-h-500px border-top border-4 border-color-base-color position-relative"
+        className="p-0 top-space-margin full-screen md-h-600px sm-h-300px position-relative"
         data-parallax-background-ratio="0.3"
         style={{
           backgroundImage: `url(${mainBannerImage})`,
@@ -84,7 +84,7 @@ const HomeSubPage = () => {
         <div className="container">
           <div className="row align-items-center mb-12 md-mb-17 xs-mb-25">
             <div
-              className="col-lg-5 md-mb-50px p-0 xs-p-4"
+              className="col-lg-5 col-sm-12 md-mb-50px p-0 xs-p-2 text-lg-start text-sm-center"
               data-anime='{ "el": "childs", "opacity": [0, 1], "rotateY": [-90, 0], "rotateZ": [-10, 0], "translateY": [80, 0], "translateZ": [50, 0], "staggervalue": 200, "duration": 800, "delay": 200, "easing": "easeOutCirc" }'
             >
               <span className="mb-10px text-base-color fw-500 md-mb-0 d-block">
@@ -94,26 +94,32 @@ const HomeSubPage = () => {
                 에버링크 추모페이지
               </h6>
 
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14 md-fs-11">
-                추모 페이지에 사랑하는 사람의 사진과 영상을 업로드 할 수
-                있습니다.
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14">
+                Everlink 는 가족과 추억을 공유하고, 편지를 남기며,
+                <br /> 고인을 평생 기억할 수 있도록 만들어주는 추모페이지
+                입니다.
                 <br />
-                또한 가족들이 방문할 때 마다 추모페이지에서 하늘편지를 남기실 수
-                있습니다.
                 <br />
-                평생동안 사랑하는 사람의 기억을 보관할 수 있는 추모페이지를
-                사용해보세요.
-              </p>
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-14 md-fs-11">
-                우리의 사명은 사랑하는 사람들이 영원히 기억되는 것 입니다.
+                에버링크의 사명은 사랑하는 사람들이 영원히 기어되는 것입니다.
                 <br />
-                대부분 2-3세대가 지나면 사람들은 우리가 존재했다는 사실조차
+                대부분 2-3세대가 지나면 사람들은 우리의 이름조차 기억하지 못할
+                것입니다.
+                <br /> 확실한 건 시간이 지나면 기억은 희미해집니다.
                 <br />
-                기억하지 못할 것입니다. <br />
-                확실한 건 시간이 지나면 기억은 희미해집니다.
-                <br /> 우리는 사랑하는 사람을 기억하고,그들과의 추억을 보존하고,
                 <br />
-                그들을 평생 기억할 수 있는 플랫폼을 제공할 것입니다.
+                우리는 사랑하는 사람을 기억하고,
+                <br /> 고인과의 추억을 보존하고,
+                <br />
+                고인을 평생 기억할 수 있는 플랫폼을 제공할 것입니다.
+                <br />
+                <br />
+                에버링크는 신뢰할 수 있는 품질과
+                <br />
+                사랑하는 사람의 발자취를 평생 기억할 수 있는 가치
+                <br />
+                그리고 고객과 함께 나아간다는 원칙을 통해
+                <br />
+                오늘도 진심으로 정성을 다해 움직입니다.
               </p>
               <div className="d-inline-block w-100 text-center">
                 <Link
@@ -137,8 +143,8 @@ const HomeSubPage = () => {
                 </div> */}
               </div>
             </div>
-            <div className="col-lg-7 position-relative ">
-              <div className="w-75 position-relative md-w-100 border-radius-4px float-end ">
+            <div className="col-lg-7 col-sm-12 position-relative ">
+              <div className="w-100 position-relative md-w-100 border-radius-4px float-end ">
                 <img className="w-100" src={mainSubImage1} alt="" />
               </div>
             </div>
@@ -146,14 +152,14 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      <section className="bg-very-light-gray half-section ps-6 pe-6 d-none d-md-block">
+      <section className="bg-very-light-gray half-section ps-6 pe-6 d-none d-lg-block">
         <div className="container-fluid">
           <div
             className="row row-cols-1 row-cols-lg-4 row-cols-md-2 justify-content-center"
             data-anime='{ "el": "childs", "translateX": [-15, 0], "opacity": [0,1], "duration": 1000, "delay": 1000, "staggervalue": 300, "easing": "easeOutQuad" }'
           >
             <div className="col icon-with-text-style-10 border-end border-1 sm-border-end-0 border-color-transparent-base-color md-mb-50px">
-              <div className="feature-box ps-8 pe-8 xl-ps-5 xl-pe-5">
+              <div className="feature-box ps-5 pe-5 xl-ps-5 xl-pe-5">
                 <div className="feature-box-icon feature-box-icon-rounded w-120px h-120px rounded-circle mb-20px">
                   <i className="line-icon-Big-Data icon-extra-large text-base-color"></i>
                 </div>
@@ -161,7 +167,7 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     무제한 저장 공간
                   </span>
-                  <p className="fs-12">
+                  <p className="fs-16">
                     사랑하는 사람들의 소중한 기억을 모두 보관하세요.
                   </p>
                 </div>
@@ -169,7 +175,7 @@ const HomeSubPage = () => {
             </div>
 
             <div className="col icon-with-text-style-10 border-end border-1 sm-border-end-0 border-color-transparent-base-color sm-mb-50px">
-              <div className="feature-box ps-8 pe-8 xl-ps-5 xl-pe-5">
+              <div className="feature-box ps-5 pe-5 xl-ps-5 xl-pe-5">
                 <div className="feature-box-icon feature-box-icon-rounded w-120px h-120px rounded-circle mb-20px">
                   <i className="bi-shield-check icon-extra-large text-base-color"></i>
                 </div>
@@ -177,7 +183,7 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     데이터 보호
                   </span>
-                  <p className="fs-12">
+                  <p className="fs-16">
                     에버링크를 볼 수 있는 사용자를 결정할 수 있습니다.
                   </p>
                 </div>
@@ -185,7 +191,7 @@ const HomeSubPage = () => {
             </div>
 
             <div className="col icon-with-text-style-10 border-end border-1 sm-border-end-0 border-color-transparent-base-color sm-mb-50px">
-              <div className="feature-box ps-8 pe-8 xl-ps-5 xl-pe-5">
+              <div className="feature-box ps-5 pe-5 xl-ps-5 xl-pe-5">
                 <div className="feature-box-icon feature-box-icon-rounded w-120px h-120px rounded-circle mb-20px">
                   <i className="ti-lock icon-extra-large text-base-color"></i>
                 </div>
@@ -193,7 +199,7 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     분실 시 보안
                   </span>
-                  <p className="fs-12">
+                  <p className="fs-16">
                     에버링크를 도난당해도 즉시 교체할 수 있습니다.
                   </p>
                 </div>
@@ -201,7 +207,7 @@ const HomeSubPage = () => {
             </div>
 
             <div className="col icon-with-text-style-10">
-              <div className="feature-box ps-8 pe-8 xl-ps-5 xl-pe-5">
+              <div className="feature-box ps-5 pe-5 xl-ps-5 xl-pe-5">
                 <div className="feature-box-icon feature-box-icon-rounded w-120px h-120px rounded-circle mb-20px">
                   <i className="line-icon-Life-Safer icon-extra-large text-base-color"></i>
                 </div>
@@ -209,7 +215,7 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-22 ls-0px">
                     일회성 결제
                   </span>
-                  <p className="fs-12">
+                  <p className="fs-16">
                     숨겨진 비용이나 구독이 없는 평생 서비스
                   </p>
                 </div>
@@ -219,28 +225,28 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      <section className="bg-very-light-gray px-3 d-block d-md-none">
+      <section className="bg-very-light-gray px-3 d-sm-block d-lg-none">
         <div className="container-fluid p-0">
           <div
             className="features-wrapper d-flex flex-wrap flex-md-nowrap"
             style={{ scrollSnapType: 'x mandatory' }} // 옵션: 스크롤 스냅
           >
             {/* ✅ 반복 영역 */}
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-25 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="line-icon-Big-Data icon-medium text-base-color"></i>
                 </div>
                 <div className="feature-box-content last-paragraph-no-margin text-center">
                   <span className="text-dark-gray fs-14 ls-0px">저장 공간</span>
-                  <p className="fs-12 px-2">
+                  <p className="fs-12 sm-lh-20 px-2">
                     사랑하는 사람들의 소중한 기억을 모두 보관하세요.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-25 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="bi-shield-check icon-medium text-base-color"></i>
@@ -249,14 +255,14 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-14 ls-0px">
                     데이터 보호
                   </span>
-                  <p className="fs-12  px-2">
+                  <p className="fs-12 sm-lh-20 px-2">
                     에버링크를 볼 수 있는 사용자를 결정할 수 있습니다.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-25 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="ti-lock icon-medium text-base-color"></i>
@@ -265,14 +271,14 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-14 ls-0px">
                     분실 시 보안
                   </span>
-                  <p className="fs-12  px-2">
+                  <p className="fs-12 sm-lh-20 px-2">
                     에버링크를 도난당해도 즉시 교체할 수 있습니다.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-50 mb-10px">
+            <div className="flex-shrink-0 icon-with-text-style-10 min-w-50 sm-min-w-auto md-w-25 mb-10px">
               <div className="feature-box text-center">
                 <div className="feature-box-icon feature-box-icon-rounded w-60px h-60px rounded-circle">
                   <i className="line-icon-Life-Safer icon-medium text-base-color"></i>
@@ -281,7 +287,7 @@ const HomeSubPage = () => {
                   <span className="text-dark-gray fs-14 ls-0px">
                     일회성 결제
                   </span>
-                  <p className="fs-12 px-2">
+                  <p className="fs-12 sm-lh-20 px-2">
                     숨겨진 비용이나 구독이 없는 평생 서비스
                   </p>
                 </div>
@@ -291,48 +297,13 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      {/* <section
-          className="background-position-center background-repeat"
-          // style=background-image: url('images/vertical-center-line-bg.svg')"
-        >
-          <div className="container">
-            <div className="row justify-content-center mb-5 xs-mb-7">
-              <div
-                className="col-md-8 text-center"
-                data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1000, "delay": 500, "staggervalue": 300, "easing": "easeOutQuad" }'
-              >
-                <img src={mainSubImage2} alt="" />
-              </div>
-            </div>
-
-            <div className="row justify-content-center align-items-center">
-              <div
-                className="col-12 text-center last-paragraph-no-margin"
-                data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
-              >
-                <div className="d-inline-block align-middle bg-dark-gray fw-600 text-white text-uppercase border-radius-4px ps-20px pe-20px fs-12 me-10px md-m-5px">
-                  Awesome
-                </div>
-                <div className="d-inline-block align-middle text-dark-gray fs-20 fw-500">
-                  <span className="text-decoration-line-bottom fw-600">
-                    Open Get 20% discount
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> */}
-
-      <section
-        className="big-section bg-dark-gray p-3"
-        // style={{ backgroundImage: `url(${mainSubBgImage})` }}
-      >
+      <section className="big-section bg-dark-gray pt-3 pb-1">
         <div className="container">
           <div
             className="row row-cols-1 row-cols-lg-3 row-cols-md-2 justify-content-center interactive-banner-container"
             data-anime='{"el": "childs", "translateY": [0, 0], "perspective": [1000,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
           >
-            <div className="col interactive-banner-style-03 transition-inner-all md-mb-30px">
+            <div className="col interactive-banner-style-03 transition-inner-all sm-min-w-auto md-w-30">
               <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
                 <figure className="m-0">
                   <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
@@ -352,7 +323,7 @@ const HomeSubPage = () => {
                 </figure>
               </div>
             </div>
-            <div className="col interactive-banner-style-03 transition-inner-all md-mb-30px">
+            <div className="col interactive-banner-style-03 transition-inner-all sm-min-w-auto md-w-30">
               <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
                 <figure className="m-0">
                   <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
@@ -372,7 +343,7 @@ const HomeSubPage = () => {
                 </figure>
               </div>
             </div>
-            <div className="col interactive-banner-style-03 transition-inner-all">
+            <div className="col interactive-banner-style-03 transition-inner-all sm-min-w-auto md-w-30">
               <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
                 <figure className="m-0">
                   <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
@@ -393,7 +364,7 @@ const HomeSubPage = () => {
               </div>
             </div>
           </div>
-          <div className="row justify-content-center align-items-center pt-5">
+          <div className="row justify-content-center align-items-center pt-2">
             <div
               className="col-12 text-center last-paragraph-no-margin"
               data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
@@ -401,7 +372,7 @@ const HomeSubPage = () => {
               <div className="d-inline-block align-middle bg-base-color fw-600 text-white text-uppercase border-radius-4px ps-20px pe-20px fs-12 me-10px md-m-5px">
                 Awesome
               </div>
-              <div className="d-inline-block align-middle text-white fs-20 fw-500">
+              <div className="d-inline-block align-middle text-white fs-20 md-fs-16  sm-fs-12 fw-500">
                 <span className="text-decoration-line-bottom fw-600">
                   Open Get 20% discount
                 </span>
@@ -411,16 +382,37 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      <section
-        className="background-position-center background-repeat overlap-height position-relative bg-very-light-gray py-5 pb-0"
-        // style="background-image: url('images/vertical-center-line-bg.svg')"
-      >
+      <section className="background-position-center background-repeat overlap-height position-relative bg-very-light-gray py-5 pb-0">
         <div className="container">
           <div
             className="row justify-content-center xs-mb-7"
             data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1000, "delay": 1000, "staggervalue": 300, "easing": "easeOutQuad" }'
           >
-            <div className="col-md-8 text-center">
+            <section
+              className="cover-background pt-3"
+              // style="background-image: url(https://via.placeholder.com/1920x1080)"
+            >
+              <div className="opacity-extra-medium"></div>
+              <div className="container">
+                <div className="row justify-content-center">
+                  <div className="col-12 col-xl-10 text-center z-index-1">
+                    <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
+                      에버링크 영상
+                    </h6>
+                    <div className="col text-center fit-videos md-mb-50px sm-mb-30px">
+                      <iframe
+                        className="w-100 h-500px sm-h-200px"
+                        width="100%"
+                        height="550"
+                        src="https://www.youtube.com/embed/sU3FkzUKHXU?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
+                        allowfullscreen
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <div className="col-md-8 text-center pb-5">
               <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
                 가상 추모 페이지 <br />
                 구매하기 전 미리 보기
@@ -440,106 +432,6 @@ const HomeSubPage = () => {
                 </span>
               </Link>
             </div>
-            <section
-              className="cover-background pt-5 pb-3"
-              // style="background-image: url(https://via.placeholder.com/1920x1080)"
-            >
-              <div className="opacity-extra-medium"></div>
-              <div className="container">
-                <div className="row justify-content-center">
-                  <div className="col-12 col-xl-10 text-center z-index-1">
-                    <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
-                      에버링크 영상
-                    </h6>
-                    {/* <a
-                      href="#"
-                      className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
-                      onClick={handleOpenModal}
-                    >
-                      <span>
-                        <span className="btn-text">Open YouTube video</span>
-                        <span className="btn-icon">
-                          <i className="feather icon-feather-arrow-right"></i>
-                        </span>
-                        <span className="btn-icon">
-                          <i className="feather icon-feather-arrow-right"></i>
-                        </span>
-                      </span>
-                    </a> */}
-                    <div className="col text-center fit-videos md-mb-50px sm-mb-30px">
-                      <iframe
-                        width="100%"
-                        height="315"
-                        src="https://www.youtube.com/embed/sU3FkzUKHXU?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
-                        allowfullscreen
-                      ></iframe>
-                    </div>
-                  </div>
-                </div>
-                {/* React Modal로 모달 구현 */}
-                <Modal
-                  isOpen={isModalOpen}
-                  onRequestClose={handleCloseModal}
-                  contentLabel="YouTube Video Modal"
-                  ariaHideApp={false} // 이 옵션은 기본적으로 true이며, 배경 컨텐츠 접근을 막습니다
-                  shouldCloseOnOverlayClick={true} // 오버레이 클릭 시 닫기
-                  onAfterOpen={() => {
-                    document.body.style.overflow = 'auto'; // 모달이 열릴 때 스크롤 허용
-                  }}
-                  onAfterClose={() => {
-                    document.body.style.overflow = ''; // 모달 닫힐 때 원상 복구
-                  }}
-                  style={{
-                    overlay: {
-                      backgroundColor: 'rgba(0, 0, 0, 1)',
-                      zIndex: 9999,
-                    },
-                    content: {
-                      position: 'relative',
-                      top: '50%',
-                      left: '50%',
-                      right: 'auto',
-                      bottom: 'auto',
-                      transform: 'translate(-50%, -50%)',
-                      background: '#000',
-                      padding: '0',
-                      border: 'none',
-                      borderRadius: '10px',
-                      width: '60%',
-                      maxWidth: '800px',
-                      height: 'auto',
-                      overflow: 'hidden',
-                    },
-                  }}
-                >
-                  {/* 닫기 버튼 */}
-                  {/* <button
-                    onClick={handleCloseModal}
-                    style={{
-                      position: 'absolute',
-                      top: '5px',
-                      right: '0px',
-                      background: 'transparent',
-                      border: 'none',
-                      color: '#fff',
-                      fontSize: '56px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    &times;
-                  </button> */}
-
-                  {/* React Player로 유튜브 영상 삽입 */}
-                  <ReactPlayer
-                    url="https://www.youtube.com/watch?v=cfXHhfNy7tU"
-                    controls
-                    playing={isModalOpen}
-                    width="100%"
-                    height="450px"
-                  />
-                </Modal>
-              </div>
-            </section>
           </div>
         </div>
       </section>

@@ -35,16 +35,16 @@ const BridgePage = () => {
       <section className="top-space-margin big-section">
         <div className="container text-decoration-line-bottom position-relative">
           <span className="divider-text">Or</span>
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center overflow-hidden pb-100px">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center overflow-hidden pb-100px md-pb-0">
             <div
               className="col"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <div className="mt-20 py-5 text-center ">
+              <div className="mt-20 py-5 md-pt-0 text-center ">
                 <h4 className="fs- fw-600 text-dark-gray mb-5 ls-minus-1px">
                   에버링크가 아직 연결되지 않았습니다.
                 </h4>
-                <h6 className="fw-600 text-dark-gray mb-15 ls-minus-1px">
+                <h6 className="fw-600 text-dark-gray mb-15 md-mb-5 ls-minus-1px">
                   QR코드를 스캔하여 추모페이지 계정을 생성하세요.
                 </h6>
                 <form>
@@ -77,7 +77,7 @@ const BridgePage = () => {
                 <h4 className="fw-600 text-dark-gray mb-5 ls-minus-1px">
                   아직 에버링크QR 구매 전이신가요?
                 </h4>
-                <h6 className="fw-600 text-dark-gray mb-15 ls-minus-1px">
+                <h6 className="fw-600 text-dark-gray mb-15 md-mb-5 ls-minus-1px">
                   지금 구매하고 추모페이지 계정을 생성하세요.
                 </h6>
                 <form>

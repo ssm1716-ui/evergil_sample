@@ -40,6 +40,7 @@ const ShopPage = () => {
       try {
         let { status, data } = await getProductDetailSelected(id); // API 호출
         if (status !== 200) throw new Error('제품 정보를 불러올 수 없습니다.');
+        console.log(data);
 
         setProduct(data.data);
       } catch (err) {
@@ -188,10 +189,10 @@ const ShopPage = () => {
         </div>
       </section>
 
-      <section className="py-0 md-pt-30px">
+      <section className="py-0">
         <div className="container">
           <div className="row">
-            <div className="col-lg-7 pe-50px md-pe-15px md-mb-40px">
+            <div className="col-lg-7 pe-50px md-pe-15px md-mb-40px sm-mb-0">
               <div className="row overflow-hidden position-relative">
                 {/* Main Swiper for product images */}
                 <div className="col-12 col-lg-10 position-relative order-lg-2 product-image ps-30px md-ps-15px">
@@ -271,17 +272,26 @@ const ShopPage = () => {
             </div>
 
             <div className="col-12 col-lg-5 product-info">
-              <span className="fw-500 text-dark-gray d-block">배송비 무료</span>
-              <h5 className="text-dark-gray fw-500 mb-5px">
+              <span className="fw-500 text-dark-gray d-block">
+                {product.deliveryFee > 0 ? (
+                  `배송비 ${Number(product.deliveryFee).toLocaleString()}원`
+                ) : (
+                  <span className="free_btn">
+                    <span className="free_txt">무료배송</span>
+                  </span>
+                )}
+              </span>
+
+              <h5 className="text-dark-gray fw-500 mb-5px sm-mb-0 fs-26 sm-fs-23">
                 {product.productName}
               </h5>
-              <div className="d-block d-sm-flex align-items-center mb-15px">
+              <div className="d-block d-sm-flex align-items-center mb-15px sm-mb-0">
                 <div className="me-10px xs-me-0">
                   <a
                     href="#tab"
-                    className="d-block section-link icon-small me-25px text-dark-gray fw-500 section-link xs-me-0 w-100"
+                    className="d-block section-link me-25px text-dark-gray fw-500 section-link xs-me-0 w-100 fs-13"
                   >
-                    <i className="bi bi-star-fill text-golden-yellow pe-1"></i>
+                    <i className="bi bi-star-fill text-golden-yellow pe-1 fs-14"></i>
                     리뷰 {product.totalReviewCount}건
                   </a>
                 </div>
@@ -289,14 +299,14 @@ const ShopPage = () => {
                 <div></div>
               </div>
               <div className="product-price mb-10px">
-                <span className="text-dark-gray fs-28 xs-fs-24 fw-700">
-                  <del className="text-medium-gray me-10px fw-400">
+                <span className="text-dark-gray fs-20 xs-fs-24 fw-700">
+                  <del className="text-medium-gray me-10px fw-400 fs-20">
                     {Number(product.price).toLocaleString()}원
                   </del>
                   {Number(product.discountedPrice).toLocaleString()}원
                 </span>
               </div>
-              <p className="mb-30px fs-14" style={{ whiteSpace: 'pre-line' }}>
+              <p className="mb-30px fs-18" style={{ whiteSpace: 'pre-line' }}>
                 {product.description}
               </p>
               <div className="d-flex align-items-baseline flex-row flex-sm-row mb-20px position-relative">
@@ -326,7 +336,7 @@ const ShopPage = () => {
                   </button>
                 </div>
                 <Link
-                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-3 order-sm w-45 d-none d-md-block"
+                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-2 order-sm w-40 d-lg-block d-md-none"
                   onClick={handleCartAdd}
                 >
                   <span>
@@ -343,13 +353,13 @@ const ShopPage = () => {
                 </Link>
                 <a
                   href="#"
-                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 md-w-50"
+                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 w-20 sm-w-30"
                 >
                   <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
                 </a>
               </div>
 
-              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-none d-md-block">
+              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-lg-block d-md-none">
                 <Link
                   className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2 w-100"
                   onClick={handleBuyNow}
@@ -373,7 +383,7 @@ const ShopPage = () => {
       <section id="tab" className="pt-4 md-pt-0">
         <div className="container">
           <div className="row">
-            <div className="col-12 tab-style-09">
+            <div className="col-12 tab-style-09 md-pt-30px">
               <ul className="nav nav-tabs border-0 fs-19">
                 <li className="nav-item">
                   <a
@@ -480,11 +490,11 @@ const ShopPage = () => {
                 <div className="tab-pane fade in" id="tab_five3">
                   <div className="row">
                     <div className="col-12 col-md-6 last-paragraph-no-margin sm-mb-30px">
-                      <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-0 fw-500">
+                      <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-10px fw-500">
                         배송 기간 안내
                       </div>
 
-                      <p className="w-80 md-w-100 md-fs-12">
+                      <p className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28">
                         에버링크 쇼핑몰의 배송기간은 주문 결제 완료 후
                         평균적으로 2~5일 이내에 이루어집니다. (공휴일 및 주말
                         제외) <br /> 기본적으로 국내 배송은 평균 3일 이내
@@ -499,10 +509,10 @@ const ShopPage = () => {
                       </p>
                     </div>
                     <div className="col-12 col-md-6 last-paragraph-no-margin">
-                      <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-0 fw-500">
+                      <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-10px fw-500">
                         교환 및 환불 정책
                       </div>
-                      <p className="w-80  md-w-100 md-fs-12">
+                      <p className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28">
                         상품 수령 후 7일 이내에 교환 신청이 가능합니다. 단,
                         제품의 훼손, 사용 흔적, 라벨 제거 등의 경우 교환이
                         제한될 수 있습니다.
@@ -514,7 +524,7 @@ const ShopPage = () => {
                         빠른 처리를 위해 교환 신청 시 제품 상태를 촬영하여
                         첨부해 주시면 더욱 원활한 처리가 가능합니다.
                       </p>
-                      <p className="w-80  md-w-100 md-fs-12">
+                      <p className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28">
                         구매하신 상품은 수령 후 7일 이내에 환불 신청이
                         가능합니다.
                         <br /> 단순 변심으로 인한 환불 요청 시 왕복 배송비가
@@ -735,13 +745,13 @@ const ShopPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge w-45 sm-w-100 me-1 mb-3"
                         onClick={() => nextCartPage()}
                       >
                         장바구니로 넘어가기
                       </button>
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge w-45 sm-w-100 me-1 mb-3"
                         onClick={() => setIsModalOpen(false)}
                       >
                         닫기

@@ -760,16 +760,14 @@ const EditProfilePage = () => {
                 <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                   {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                   <div
-                    className="xs-mt-25px d-flex flex-row flex-md-column gap-4 gap-md-0 md-ps-25px md-pe-25px"
+                    className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 md-ps-25px md-pe-25p py-lg-0  py-md-4"
                     style={{
-                      textAlign: 'center',
-                      position: 'relative',
                       display: 'inline-block',
                     }}
                   >
                     <WebShareButton />
                     <Link
-                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5"
+                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-30 mb-5 md-mb-2"
                       to={`/profile/manage-profile/${profileId}`}
                     >
                       <span>
@@ -803,12 +801,12 @@ const EditProfilePage = () => {
                 onBlur={handleBlur}
                 modules={modules}
                 formats={formats}
-                className="w-700px md-w-95 lh-initial"
+                className="w-700px md-w-95 md-h-450px lh-initial"
               />
             </div>
             <div className="mt-80px md-mt-0 d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
-                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
+                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
                 onClick={handleNavigate}
               >
                 <span>
@@ -837,14 +835,14 @@ const EditProfilePage = () => {
           <div className="container">
             <div className="row">
               <div className="col-12 tab-style-04">
-                <ul className="nav nav-tabs border-0 justify-content-center fs-19">
+                <ul className="nav nav-tabs border-0 justify-content-center fs-20">
                   {['이미지', '하늘편지', '가족관계도'].map((tab) => (
                     <li key={tab} className="nav-item text-center">
                       <button
                         className={`nav-link ${
                           activeTab === tab
                             ? 'active text-base-color d-inline-block'
-                            : ''
+                            : 'd-inline-block'
                         }`}
                         onClick={() => setActiveTab(tab)}
                       >
@@ -884,7 +882,9 @@ const EditProfilePage = () => {
                               border: '2px dashed #ccc',
                               // marginBottom: '10px',
                             }}
-                            className="gallery-grid-item"
+                            className={`gallery-grid-item ${
+                              !images.length ? 'gallery-item-frist' : ''
+                            }`}
                           >
                             <MdAddPhotoAlternate size={70} color="#888" />
                             <input
@@ -933,12 +933,13 @@ const EditProfilePage = () => {
                                     {letter.displayName}
                                   </span>
                                 </div>
-                                <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
-                                  <p className="sm-w-85">{letter.content}</p>
-                                </div>
                                 <div className="col-lg-2 col-md-3 align-self-center text-md-end">
                                   <span>{letter.createdAt}</span>
                                 </div>
+                                <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
+                                  <p className="sm-w-85">{letter.content}</p>
+                                </div>
+
                                 <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
                                   <Link
                                     onClick={(e) => {
@@ -968,7 +969,7 @@ const EditProfilePage = () => {
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <div className="row">
                         <div className="row align-items-center">
-                          <div className="col-xl-12 col-lg-10 col-sm-5 form-results d-block mt-20px mb-mt-0  mb-0 text-center">
+                          <div className="col-xl-12 col-lg-10 col-md-12 col-sm-5 form-results d-block mt-20px mb-mt-0  mb-0 text-center">
                             <p className="text-black fs-18 md-fs-14">
                               가족 관계도
                               <br />
@@ -977,12 +978,13 @@ const EditProfilePage = () => {
                           </div>
                         </div>
                         <div className="row  align-items-center">
-                          <div className="col-xl-10 col-lg-10 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
+                          <div className="col-xl-10 col-lg-10 col-md-12 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
                             <Button
-                              className="btn btn-black btn-large btn-round-edge btn-box-shadow text-uppercase px-3"
+                              className="btn btn-black btn-round-edge btn-box-shadow text-uppercase px-3 pt-5px pb-5px"
+                              size="small"
                               onClick={handleAddItem}
                             >
-                              <i className="feather icon-feather-plus align-bottom text-white icon-extra-medium"></i>
+                              <i className="feather icon-feather-plus align-sub text-white icon-extra-medium"></i>
                               가족 추가하기
                             </Button>
                           </div>
@@ -1059,9 +1061,9 @@ const EditProfilePage = () => {
                                           </div>
 
                                           {/* 이름 입력 필드 */}
-                                          <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-25px sm-pt-15px sm-pb-15px sm-px-0">
+                                          <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-10px sm-pt-15px sm-pb-15px sm-px-0">
                                             <input
-                                              className="mb-20px md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
+                                              className="md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
                                               type="text"
                                               placeholder="이름"
                                               value={f.displayName}
