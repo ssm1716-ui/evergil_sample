@@ -15666,6 +15666,18 @@ yx-axis
   transition-property: transform, opacity;
 }
 
+@media (max-width: 768px) {
+  .text-md-start {
+    text-align: left !important;
+  }
+  .text-md-end {
+    text-align: right !important;
+  }
+  .text-md-center {
+    text-align: center !important;
+  }
+}
+
 @media (max-width: 320px) {
   .text-sm-start {
     text-align: left !important;
@@ -15679,16 +15691,10 @@ yx-axis
   .d-sm-none {
     display: none !important;
   }
-}
-
-@media (max-width: 768px) {
-  .text-md-start {
-    text-align: left !important;
+  .d-sm-block {
+    display: block !important;
   }
-  .text-md-end {
-    text-align: right !important;
-  }
-  .text-md-center {
-    text-align: center !important;
+  .gap-sm-5 {
+    gap: 10px !important;
   }
 }

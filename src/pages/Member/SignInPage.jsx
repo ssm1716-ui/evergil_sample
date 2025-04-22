@@ -81,6 +81,7 @@ const SignInPage = () => {
 
       const redirectPath =
         localStorage.getItem('redirectAfterLogin') || '/profile';
+
       localStorage.removeItem('redirectAfterLogin');
       navigate(redirectPath);
     } catch (error) {

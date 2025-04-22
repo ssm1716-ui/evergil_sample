@@ -222,4 +222,11 @@ footer .elements-social li {
     .btn.btn-switch-text.btn-medium > span {
         padding: 10px 18px;
     }
+    .icon-extra-large {
+        font-size: 32px;
+    }
+    .btn.btn-switch-text.btn-extra-large > span {
+        font-size: 14px;
+        padding:5px 0px !important;
+    }
 }

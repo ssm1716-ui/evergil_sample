@@ -141,9 +141,9 @@ const SettingProfilePage = () => {
                     언제든지 이 정보는 수정할 수 있습니다.
                   </p>
                   {/* 사람/동물 버튼 */}
-                  <div className="me-15px xs-mb-15px pt-50px md-pt-0 d-flex justify-content-around ">
+                  <div className="xs-mb-15px pt-50px md-pt-0 d-flex justify-content-around ">
                     <Button
-                      className={`btn w-30 lg-mb-15px me-10px border border-1 btn-box-shadow btn-round-edge ${
+                      className={`btn w-30 lg-mb-15px border border-1 btn-box-shadow btn-round-edge ${
                         formProfile.memorialType === 'HUMAN'
                           ? 'btn-black'
                           : 'btn-white'
@@ -153,7 +153,7 @@ const SettingProfilePage = () => {
                       사람
                     </Button>
                     <Button
-                      className={`btn w-30 lg-mb-15px me-10px border border-1 btn-box-shadow btn-round-edge ${
+                      className={`btn w-30 lg-mb-15px border border-1 btn-box-shadow btn-round-edge ${
                         formProfile.memorialType === 'ANIMAL'
                           ? 'btn-black'
                           : 'btn-white'
@@ -215,8 +215,6 @@ const SettingProfilePage = () => {
                     className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
                     type="date"
                     name="deathDate"
-                    min="2024-02-01"
-                    max="2099-12-31"
                     value={formProfile.deathDate}
                     onChange={handleChange}
                   />
@@ -287,11 +285,11 @@ const SettingProfilePage = () => {
         onClose={() => setIsModalOpen(false)}
         title="Slide up animation"
       >
-        <div className="row justify-content-center overflow-hidden w-40 md-w-70 bg-white">
+        <div className="row justify-content-center overflow-hidden w-40 md-w-70 sm-w-90 bg-white">
           <div className="col contact-form-style-04">
             <div className="py-5 text-center">
-              <img src={checkCircle} alt="" />
-              <h4 className="fw-800 text-dark-gray mt-2 mb-2 ls-minus-1px">
+              <img src={checkCircle} alt="" className="sm-w-30" />
+              <h4 className="fw-800 text-dark-gray mt-2 mb-2 ls-minus-1px sm-fs-18">
                 추모페이지 {profileId ? '변경 완료' : '생성 완료'}
               </h4>
               <Link to={'/profile'}>

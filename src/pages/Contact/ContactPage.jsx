@@ -125,8 +125,10 @@ const ContactPage = () => {
               className="col-lg-12 md-mb-50px"
               data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <h4 className="text-dark-gray ls-minus-2px mb-5px">문의사항</h4>
-              <span className="d-block text-base-color fw-500 mb-25px">
+              <h4 className="text-dark-gray ls-minus-2px mb-5px sm-fs-29">
+                문의사항
+              </h4>
+              <span className="d-block text-base-color fw-500 mb-25px sm-fs-14">
                 문의사항은 메세지로 남겨주세요
               </span>
               <ContactComponents

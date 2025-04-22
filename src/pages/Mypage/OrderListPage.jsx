@@ -143,7 +143,7 @@ const OrderListPage = () => {
           className="toolbar-wrapper border-color-extra-medium-gray d-flex flex-column flex-md-row flex-wrap align-items-center w-100 mb-10px"
           data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
-          <div className="sm-mb-10px fs-18px tab-style-04">
+          <div className="sm-mb-10px fs-18px tab-style-11">
             <ul className="nav nav-tabs border-0 justify-content-start fw-500 fs-19 md-fs-16">
               <li className="nav-item">
                 <a
@@ -321,14 +321,14 @@ const OrderListPage = () => {
                   </span>
                 </Link>
               </div>
-              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+              <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
                 <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
               <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">
-                <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
-                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start ">
+                  <div className="feature-box-content text-sm-center ps-0 md-ps-25px sm-ps-0">
                     <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
                       QR Code
                     </span>
@@ -338,7 +338,7 @@ const OrderListPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6 text-center text-md-end">
+              <div className="col-md-6 text-center text-md-end text-sm-center">
                 <div>
                   <Link
                     to="/mypage/exchage"
@@ -397,14 +397,14 @@ const OrderListPage = () => {
                   </span>
                 </Link>
               </div>
-              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+              <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
                 <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
               <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px ">
                 <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
-                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                  <div className="feature-box-content text-sm-center ps-0 md-ps-25px sm-ps-0">
                     <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
                       QR Code
                     </span>
@@ -414,7 +414,7 @@ const OrderListPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6 text-center text-md-end">
+              <div className="col-md-6 text-center text-md-end text-sm-center">
                 <div>
                   <a
                     href="#"
@@ -450,14 +450,14 @@ const OrderListPage = () => {
                   </span>
                 </Link>
               </div>
-              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+              <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
                 <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
               <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px ">
                 <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
-                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                  <div className="feature-box-content text-sm-center ps-0 md-ps-25px sm-ps-0">
                     <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
                       QR Code
                     </span>
@@ -467,7 +467,7 @@ const OrderListPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6 text-center text-md-end">
+              <div className="col-md-6 text-center text-md-end text-sm-center">
                 <div>
                   <a
                     href="#"
@@ -504,14 +504,14 @@ const OrderListPage = () => {
                   </span>
                 </Link>
               </div>
-              <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+              <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
                 <div className="w-300px md-w-250px sm-mb-10px">
                   <img src={ShopDetailImage3} className="w-120px" alt="" />
                 </div>
               </div>
               <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px ">
                 <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
-                  <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                  <div className="feature-box-content text-sm-center ps-0 md-ps-25px sm-ps-0">
                     <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
                       QR Code
                     </span>
@@ -521,7 +521,7 @@ const OrderListPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6 text-center text-md-end">
+              <div className="col-md-6 text-center text-md-end text-sm-center">
                 <div>
                   <a
                     href="#"

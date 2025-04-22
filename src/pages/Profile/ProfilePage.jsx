@@ -203,11 +203,11 @@ const ProfilePage = () => {
         <div className="container">
           <div className="row">
             <div className="col-12 tab-style-10">
-              <ul className="nav nav-tabs border-0 justify-content-center fw-700 fs-26 md-fs-13 text-center">
+              <ul className="nav nav-tabs border-0 justify-content-center fw-700 fs-26 md-fs-13 sm-fs-12 text-center">
                 {['My Everlinks', 'View', 'Bookmark'].map((tab) => (
-                  <li key={tab} className="nav-item">
+                  <li key={tab} className="nav-item sm-p-0">
                     <button
-                      className={`w-100 nav-link text-center md-fs-20 ${
+                      className={`w-100 nav-link text-center md-fs-20 sm-fs-16 ${
                         activeTab === tab ? 'active text-base-color' : ''
                       }`}
                       onClick={() => setActiveTab(tab)}
@@ -231,7 +231,7 @@ const ProfilePage = () => {
                               variant="primary"
                               color="base-color"
                               size="large"
-                              className="w-20 md-w-30 border-radius-20px"
+                              className="w-20 md-w-30 sm-w-60 border-radius-20px"
                             >
                               <i className="feather icon-feather-plus align-top icon-small text-white"></i>
                               새로운 프로필 생성
@@ -271,7 +271,7 @@ const ProfilePage = () => {
                               </Link>
                             </div>
                             <div className="card-body p-12 md-p-5">
-                              <a className="card-title mb-15px fw-600 fs-18 lh-26 text-dark-gray text-dark-gray-hover d-block position-relative">
+                              <a className="card-title mb-15px sm-mb-5px fw-600 fs-18 lh-26 text-dark-gray text-dark-gray-hover d-block position-relative">
                                 {profile.displayName}
 
                                 {profile.permission === 'OWNER' ? (
@@ -287,8 +287,12 @@ const ProfilePage = () => {
                                   </span>
                                 )}
                               </a>
-                              <p className="fw-600 fs-16 md-fs-18">
-                                {`${profile.birthday} ~ ${profile.deathDate}`}
+                              <p className="fw-600 fs-16 md-fs-18 sm-fs-16 text-sm-start">
+                                {`${profile.birthday}`}
+                                <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
+                                  ~
+                                </span>
+                                {`${profile.deathDate}`}
                               </p>
                             </div>
                           </div>
@@ -320,8 +324,8 @@ const ProfilePage = () => {
                     {activeTab === 'View' && (
                       <>
                         <div className="pb-2 fs-24">
-                          <i className="fa-regular fa-circle-user align-middle icon-extra-large text-light-gray pb-1"></i>
-                          <p className="md-pt-20px">
+                          <i className="fa-regular fa-circle-user align-middle icon-extra-large sm-icon-extra-large text-light-gray pb-1"></i>
+                          <p className="md-pt-20px sm-fs-16">
                             View 권한을 가진 프로필이 없습니다.
                           </p>
                         </div>
@@ -331,9 +335,9 @@ const ProfilePage = () => {
                     {activeTab === 'Bookmark' && (
                       <>
                         <div className="pb-2 fs-24">
-                          <i className="fa-regular fa-circle-user align-middle icon-extra-large text-light-gray pb-1"></i>
-                          <p className="md-pt-20px">
-                            hjhjgh북마크한 프로필이 없습니다.
+                          <i className="fa-regular fa-bookmark align-middle icon-extra-large sm-icon-extra-large text-light-gray pb-1"></i>
+                          <p className="md-pt-20px sm-fs-16">
+                            북마크한 프로필이 없습니다.
                           </p>
                         </div>
                       </>
@@ -346,14 +350,14 @@ const ProfilePage = () => {
         </div>
       </section>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-40 md-w-70 sm-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 fs-18 mb-15px">
+                      <h6 className="text-dark-gray fw-500 fs-18 sm-fs-14 mb-15px">
                         해당 프로필
                         {activeTab === 'My Everlinks'
                           ? ' 편집 권한이 사라집니다.'

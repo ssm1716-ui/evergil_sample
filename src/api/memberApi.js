@@ -53,6 +53,7 @@ export const getVerificationCodeVerify = async (param) => {
             },
         });
 
+        console.log(res);
         localStorage.removeItem('dev_emailVerificationCode'); // emailVerificationCode 삭제
         return res.status;
     } catch (err) {
@@ -96,6 +97,8 @@ export const getVerificationEmailResend = async (param) => {
 export const getAccessToken = async () => {
     try {
         const res = await axiosInstance.get('/api/access-tokens.refresh');
+
+        console.log(res);
 
         const newAccessToken = res.headers['authorization'];
 

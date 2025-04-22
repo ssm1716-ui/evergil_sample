@@ -19,14 +19,14 @@ const MyPage = () => {
               // data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
               <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
-                <div className="col-md-1 text-center text-lx-start text-md-start md-mb-15px">
+                <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
                   <div className="w-300px md-w-250px sm-mb-10px">
                     <img src={ShopDetailImage3} className="w-120px" alt="" />
                   </div>
                 </div>
                 <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">
                   <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
-                    <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
+                    <div className="feature-box-content text-sm-center ps-0 md-ps-25px sm-ps-0">
                       <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
                         QR Code
                       </span>
@@ -36,7 +36,7 @@ const MyPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 text-center text-md-end">
+                <div className="col-md-6 text-center text-md-end text-sm-center">
                   <div>
                     <Link
                       to="/mypage/exchage"
@@ -88,30 +88,31 @@ const MyPage = () => {
 
             <div className="col pt-1">
               <div className="bg-very-light-gray border-radius-6px p-20px lg-p-25px your-order-box">
-                <span className="fs-26 fw-600 text-dark-gray mb-5px d-block text-center py-3">
+                <span className="fs-26 sm-fs-20 fw-600 text-dark-gray mb-5px d-block text-center py-3">
                   <span className="text-base-color">2024.12.06 23:59</span>
-                  까지 입금을 완료해주세요.
+                  까지 <br />
+                  입금을 완료해주세요.
                 </span>
 
-                <div className="p-40px lg-p-25px bg-white border-radius-6px box-shadow-large mt-10px mb-30px sm-mb-25px checkout-accordion">
+                <div className="p-40px lg-p-25px sm-p-10px bg-white border-radius-6px box-shadow-large mt-10px mb-30px sm-mb-25px checkout-accordion">
                   <div className="w-100" id="accordion-style-05">
-                    <div className="row pb-1 border-bottom fs-20">
+                    <div className="row pb-1 border-bottom fs-20 sm-fs-16">
                       <label className="col-6 mb-5px">
                         <span className="d-inline-block text-dark-gray">
                           입금 금액
                         </span>
                       </label>
-                      <h6 className="col-6 mb-0 fs-20 text-end text-base-color">
+                      <h6 className="col-6 mb-0 fs-20 sm-fs-16 text-end text-base-color">
                         80,000원
                       </h6>
                     </div>
-                    <div className="row pt-1 fs-20">
+                    <div className="row pt-1 fs-20 sm-fs-16">
                       <label className="col-6 mb-5px">
                         <span className="d-inline-block text-dark-gray">
                           가상 계좌 정보
                         </span>
                       </label>
-                      <h6 className="col-6 mb-0 fs-20 text-dark-gray text-end text-decoration-underline link-offset-1">
+                      <h6 className="col-6 mb-0 fs-20 sm-fs-14 text-dark-gray text-end text-decoration-underline link-offset-1">
                         신한은행 403123440444
                         <i
                           className="feather icon-feather-copy icon-small text-dark-gray ps-2"
@@ -124,8 +125,8 @@ const MyPage = () => {
                       className="collapse show"
                       data-bs-parent="#accordion-style-05"
                     >
-                      <div className="p-25px bg-very-light-gray mt-20px mb-20px fs-14 lh-24">
-                        <ul className="mb-0">
+                      <div className="p-25px bg-very-light-gray mt-20px mb-20px sm-mt-0 fs-12 lh-24">
+                        <ul className="mb-0 sm-ps-0">
                           <li>
                             입금이 완료되어야 주문이 확인되고 출고가 진행됩니다.
                           </li>

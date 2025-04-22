@@ -409,7 +409,7 @@ const CheckOutPage = () => {
                   <label>이름</label>
                   <span className="text-red">*</span>
                   <input
-                    className="border-radius-4px input-large md-py-0 text-black"
+                    className="border-radius-4px input-large md-py-0 text-black sm-fs-14"
                     type="text"
                     name="buyerName"
                     value={payment.buyerName}
@@ -425,7 +425,7 @@ const CheckOutPage = () => {
                   <label>휴대폰</label>
                   <span className="text-red">*</span>
                   <input
-                    className="border-radius-4px input-large md-py-0 text-black"
+                    className="border-radius-4px input-large md-py-0 text-black sm-fs-14"
                     type="text"
                     name="buyerPhone"
                     value={payment.buyerPhone}
@@ -442,7 +442,7 @@ const CheckOutPage = () => {
                   <label>이메일</label>
                   <span className="text-red">*</span>
                   <input
-                    className="border-radius-4px input-large md-py-0 text-black"
+                    className="border-radius-4px input-large md-py-0 text-black sm-fs-14"
                     type="text"
                     name="buyerEmail"
                     value={payment.buyerEmail}
@@ -493,7 +493,7 @@ const CheckOutPage = () => {
                   <div className="col-12 mb-20px md-mb-10px">
                     <label>배송지 이름</label>
                     <input
-                      className="border-radius-4px input-large md-py-0 text-black"
+                      className="border-radius-4px input-large md-py-0 text-black sm-fs-14"
                       type="text"
                       name="deliveryName"
                       aria-label="first-name"
@@ -511,7 +511,7 @@ const CheckOutPage = () => {
                     <label>받는분 이름</label>
                     <span className="text-red">*</span>
                     <input
-                      className="border-radius-4px input-large md-py-0 text-black"
+                      className="border-radius-4px input-large md-py-0 text-black sm-fs-14"
                       type="text"
                       aria-label="first-name"
                       name="recipientName"
@@ -529,7 +529,7 @@ const CheckOutPage = () => {
                     <label>휴대폰번호</label>
                     <span className="text-red">*</span>
                     <input
-                      className="border-radius-4px input-large md-py-0 text-black"
+                      className="border-radius-4px input-large md-py-0 text-black sm-fs-14"
                       type="text"
                       aria-label="first-name"
                       name="phoneNumber"
@@ -549,7 +549,7 @@ const CheckOutPage = () => {
                     <span className="text-red">*</span>
                     <div className="row d-flex justify-content-between flex-sm-wrap-reverse m-0">
                       <input
-                        className="col-7 col-md-7 border-radius-4px input-large md-py-0 text-black"
+                        className="col-7 col-md-7 border-radius-4px input-large md-py-0 text-black sm-fs-14"
                         type="text"
                         aria-label="first-name"
                         name="zipcode"
@@ -570,7 +570,7 @@ const CheckOutPage = () => {
                       </AddressSearch>
                     </div>
                     <input
-                      className="col-12 border-radius-4px input-large md-py-0 mt-1 text-black"
+                      className="col-12 border-radius-4px input-large md-py-0 mt-1 text-black sm-fs-14"
                       type="text"
                       aria-label="first-name"
                       name="address1"
@@ -586,7 +586,7 @@ const CheckOutPage = () => {
                       </p>
                     )}
                     <input
-                      className="col-12 border-radius-4px input-large md-py-0 mt-1 text-black"
+                      className="col-12 border-radius-4px input-large md-py-0 mt-1 text-black sm-fs-14"
                       type="text"
                       aria-label="first-name"
                       name="address2"
@@ -605,7 +605,7 @@ const CheckOutPage = () => {
                           value="1"
                           className="check-box align-middle text-black"
                         />
-                        <span className="box">기본 배송지로 저장</span>
+                        <span className="box sm-fs-14">기본 배송지로 저장</span>
                         <a
                           className="accordion-toggle"
                           data-bs-toggle="collapse"
@@ -619,7 +619,7 @@ const CheckOutPage = () => {
                   <div className="col-12">
                     <label>배송메시지</label>
                     <textarea
-                      className="border-radius-4px textarea-large text-black"
+                      className="border-radius-4px textarea-large text-black sm-fs-14"
                       rows="3"
                       cols="5"
                       placeholder=""
@@ -641,7 +641,7 @@ const CheckOutPage = () => {
             {paymentMethods.map((method) => (
               <div
                 key={method.id}
-                className="col icon-with-text-style-07 transition-inner-all md-w-25"
+                className="col icon-with-text-style-07 transition-inner-all md-w-25 sm-p-2"
               >
                 <div
                   className={`feature-box h-100 justify-content-start text-center p-17 md-p-0 border border-1 border-radius-10px ${
@@ -737,7 +737,7 @@ const CheckOutPage = () => {
         onClose={() => setIsModalDeliveryOpen(false)}
         title="Slide up animation"
       >
-        <div className="w-60 md-w-90 md-h-100">
+        <div className="w-40 md-w-80 sm-w-100 md-h-600px">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row align-items-center justify-content-center pricing-table-style-07 bg-gradient-very-light-gray">
               <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
@@ -754,7 +754,7 @@ const CheckOutPage = () => {
                               onClick={() => setFocusAddress(address.id)}
                             >
                               <div className="flex-column flex-sm-row d-flex align-items-center">
-                                <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
+                                <div className="col-1 align-items-center d-flex me-auto xs-w-auto mx-auto xs-mb-20px">
                                   <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
                                     <i className="fa-solid fa-check"></i>
                                   </div>
@@ -793,7 +793,7 @@ const CheckOutPage = () => {
                   <div className="text-center">
                     <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                       <Button
-                        className="btn w-10 mt-10px d-inline w-40"
+                        className="btn w-10 mt-10px d-inline w-40 fs-16"
                         onClick={handleDeliveryAddressChage}
                       >
                         배송지 변경
@@ -802,7 +802,7 @@ const CheckOutPage = () => {
                     <Link to="#" className="fw-500 d-inline lh-initial ps-2">
                       <Button
                         color="black"
-                        className="btn w-10 mt-10px d-inline w-40"
+                        className="btn w-10 mt-10px d-inline w-40 fs-16"
                         onClick={() => setIsModalDeliveryOpen(false)}
                       >
                         닫기

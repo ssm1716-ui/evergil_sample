@@ -41,10 +41,10 @@ const BridgePage = () => {
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <div className="mt-20 py-5 md-pt-0 text-center ">
-                <h4 className="fs- fw-600 text-dark-gray mb-5 ls-minus-1px">
+                <h4 className="sm-fs-20 fw-600 text-dark-gray mb-5 ls-minus-1px">
                   에버링크가 아직 연결되지 않았습니다.
                 </h4>
-                <h6 className="fw-600 text-dark-gray mb-15 md-mb-5 ls-minus-1px">
+                <h6 className="sm-fs-14 fw-600 text-dark-gray mb-15 md-mb-5 ls-minus-1px">
                   QR코드를 스캔하여 추모페이지 계정을 생성하세요.
                 </h6>
                 <form>
@@ -74,10 +74,10 @@ const BridgePage = () => {
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <div className="py-5 text-center ">
-                <h4 className="fw-600 text-dark-gray mb-5 ls-minus-1px">
+                <h4 className="sm-fs-20 fw-600 text-dark-gray mb-5 ls-minus-1px">
                   아직 에버링크QR 구매 전이신가요?
                 </h4>
-                <h6 className="fw-600 text-dark-gray mb-15 md-mb-5 ls-minus-1px">
+                <h6 className="sm-fs-14 fw-600 text-dark-gray mb-15 md-mb-5 ls-minus-1px">
                   지금 구매하고 추모페이지 계정을 생성하세요.
                 </h6>
                 <form>

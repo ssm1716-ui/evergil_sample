@@ -336,7 +336,7 @@ const ShopPage = () => {
                   </button>
                 </div>
                 <Link
-                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-2 order-sm w-40 d-lg-block d-md-none"
+                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-2 order-sm w-40 d-lg-block d-md-none d-sm-none"
                   onClick={handleCartAdd}
                 >
                   <span>
@@ -353,13 +353,13 @@ const ShopPage = () => {
                 </Link>
                 <a
                   href="#"
-                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 w-20 sm-w-30"
+                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 w-20 sm-w-40"
                 >
                   <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
                 </a>
               </div>
 
-              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-lg-block d-md-none">
+              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-lg-block d-md-none d-sm-none">
                 <Link
                   className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2 w-100"
                   onClick={handleBuyNow}
@@ -745,13 +745,13 @@ const ShopPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-black w-45 sm-w-100 me-1 mb-3"
                         onClick={() => nextCartPage()}
                       >
                         장바구니로 넘어가기
                       </button>
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-black w-45 sm-w-100 me-1 mb-3"
                         onClick={() => setIsModalOpen(false)}
                       >
                         닫기

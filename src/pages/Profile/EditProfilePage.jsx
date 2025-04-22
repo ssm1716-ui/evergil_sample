@@ -43,7 +43,6 @@ const modules = {
     ['bold', 'italic', 'underline', 'strike'],
     [{ list: 'ordered' }, { list: 'bullet' }],
     ['blockquote'],
-    [{ script: 'sub' }, { script: 'super' }],
     [{ indent: '-1' }, { indent: '+1' }],
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
@@ -676,9 +675,9 @@ const EditProfilePage = () => {
               data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
             ></div>
             <div className="col-lg-7 col-md-6 position-relative d-md-block">
-              <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-0px bottom-minus-70px mt-10 translate-middle-y">
+              <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-0px bottom-minus-70px sm-bottom-minus-80px mt-10 translate-middle-y">
                 <div
-                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
+                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px sm-w-40px sm-h-40px  rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
                   style={{ backgroundColor: '#CDCDCD' }}
                 >
                   <span>
@@ -718,7 +717,7 @@ const EditProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px md-start-0 cursor-pointer">
+                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer">
                     <img
                       src={
                         profile.profileImageUrl
@@ -748,11 +747,11 @@ const EditProfilePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-9 offset-3 ps-2 md-ps-30px">
-                <h5 className="text-dark-gray mb-5px fw-600">
+              <div className="col-9 offset-3 ps-2 md-ps-30px sm-ps-20px">
+                <h5 className="text-dark-gray mb-5px fw-600 sm-fs-20">
                   {profile.displayName}
                 </h5>
-                <h6 className="mb-0">
+                <h6 className="mb-0 sm-fs-18">
                   {profile.birthday}~{profile.deathDate}
                 </h6>
               </div>
@@ -760,14 +759,14 @@ const EditProfilePage = () => {
                 <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                   {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                   <div
-                    className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 md-ps-25px md-pe-25p py-lg-0  py-md-4"
+                    className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 gap-sm-5 md-ps-30px md-pe-20px sm-px-20px py-lg-0 py-md-4"
                     style={{
                       display: 'inline-block',
                     }}
                   >
                     <WebShareButton />
                     <Link
-                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-30 mb-5 md-mb-2"
+                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
                       to={`/profile/manage-profile/${profileId}`}
                     >
                       <span>
@@ -804,7 +803,7 @@ const EditProfilePage = () => {
                 className="w-700px md-w-95 md-h-450px lh-initial"
               />
             </div>
-            <div className="mt-80px md-mt-0 d-flex justify-content-evenly justify-content-md-center gap-3">
+            <div className="mt-80px md-mt-0 sm-mt-50px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
                 className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
                 onClick={handleNavigate}
@@ -844,7 +843,10 @@ const EditProfilePage = () => {
                             ? 'active text-base-color d-inline-block'
                             : 'd-inline-block'
                         }`}
-                        onClick={() => setActiveTab(tab)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setActiveTab(tab);
+                        }}
                       >
                         {tab}
                         <span className="tab-border bg-base-color"></span>
@@ -900,6 +902,7 @@ const EditProfilePage = () => {
                           {images.map((image, index) => (
                             <a
                               href={image.url}
+                              h
                               key={index}
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
@@ -928,12 +931,12 @@ const EditProfilePage = () => {
                                 }`}
                                 key={letter.letterId}
                               >
-                                <div className="col-12 col-md-1 text-md-center align-self-center">
+                                <div className="col-12 col-md-1 text-md-center text-sm-start align-self-center">
                                   <span className="text-dark-gray fs-14 fw-600">
                                     {letter.displayName}
                                   </span>
                                 </div>
-                                <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                                <div className="col-lg-2 col-md-3 align-self-center text-md-end text-sm-start">
                                   <span>{letter.createdAt}</span>
                                 </div>
                                 <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
@@ -968,9 +971,9 @@ const EditProfilePage = () => {
                   {activeTab === '가족관계도' && (
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <div className="row">
-                        <div className="row align-items-center">
-                          <div className="col-xl-12 col-lg-10 col-md-12 col-sm-5 form-results d-block mt-20px mb-mt-0  mb-0 text-center">
-                            <p className="text-black fs-18 md-fs-14">
+                        <div className="row align-items-center m-0">
+                          <div className="col-xl-12 col-lg-10 col-md-12 col-sm-5 form-results d-block mt-20px mb-mt-0 sm-mt-0 mb-0 text-center">
+                            <p className="text-black fs-18 md-fs-14 sm-fs-12">
                               가족 관계도
                               <br />
                               아래 가족을 추가하고 드래그로 순서를 바꿔보세요.
@@ -978,7 +981,7 @@ const EditProfilePage = () => {
                           </div>
                         </div>
                         <div className="row  align-items-center">
-                          <div className="col-xl-10 col-lg-10 col-md-12 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
+                          <div className="col-xl-10 col-lg-10 col-md-12 col-sm-5 text-end text-sm-center text-lg-end mb-25px pe-0">
                             <Button
                               className="btn btn-black btn-round-edge btn-box-shadow text-uppercase px-3 pt-5px pb-5px"
                               size="small"

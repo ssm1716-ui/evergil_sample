@@ -8,24 +8,36 @@ const Modal = ({ isOpen, onClose, children }) => {
       }
     };
 
-    const preventScroll = (e) => {
-      e.preventDefault();
-    };
+    let scrollY = 0;
 
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      // 현재 스크롤 위치 저장
+      scrollY = window.scrollY;
 
-      // 스크롤 방지 이벤트 추가 (휠 & 터치)
-      window.addEventListener('wheel', preventScroll, { passive: false });
-      window.addEventListener('touchmove', preventScroll, { passive: false });
+      // 스크롤 방지 + 고정 위치 유지
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+      document.body.style.overflowY = 'scroll';
+
       window.addEventListener('keydown', handleEsc);
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
+      // 기존 스크롤 위치로 복원
+      const y = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
 
-      window.removeEventListener('wheel', preventScroll);
-      window.removeEventListener('touchmove', preventScroll);
+      // 스크롤 복원
+      window.scrollTo(0, parseInt(y || '0') * -1);
+
       window.removeEventListener('keydown', handleEsc);
     };
   }, [isOpen, onClose]);
