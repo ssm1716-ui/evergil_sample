@@ -426,7 +426,12 @@ const ViewProfilePage = () => {
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <LightGallery
                         speed={500}
+                        closable={true}
                         download={false}
+                        mobileSettings={{
+                          controls: true,
+                          showCloseIcon: true,
+                        }}
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"

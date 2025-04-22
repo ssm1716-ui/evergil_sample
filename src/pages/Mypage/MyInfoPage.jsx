@@ -127,7 +127,6 @@ const MyInfoPage = () => {
 
   // 비밀번호 변경
   const handlePasswordChange = async () => {
-    console.log(password, newPassword, confirmPassword);
     if (!password.trim() || !newPassword.trim() || !confirmPassword.trim()) {
       setErrors((prev) => ({
         ...prev,
@@ -156,6 +155,15 @@ const MyInfoPage = () => {
 
     if (res.status === 200) {
       setIsFirstModalOpen(true);
+      setPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setErrors((prev) => ({
+        ...prev,
+        password: '',
+        newPassword: '',
+        confirmPassword: '',
+      }));
     }
   };
 
@@ -256,40 +264,47 @@ const MyInfoPage = () => {
     <>
       {currentView === 'passwordConfirm' && (
         <div className="col-xxl-10 col-lg-9 md-ps-15px">
-          <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-            <h6 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h6>
-          </div>
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center">
-            <div className="row pt-5 text-center">
-              <label className="text-dark-gray fw-500 d-block text-start">
-                비밀번호
-              </label>
-              <input
-                className="mb-5px bg-very-light-white form-control required w-100"
-                type="password"
-                value={fristPassword}
-                onChange={(e) => setFristPassword(e.target.value)}
-                placeholder="비밀번호를 입력하세요"
-              />
-              {errors.fristPassword && (
-                <p className="text-danger text-start">
-                  비밀번호를 다시 입력 해주세요
-                </p>
-              )}
-              {/* 오류 메시지 출력 */}
-              <div className="col-12 text-center md-pt-40px">
-                <Button
-                  name="eventSection"
-                  size="extra-large"
-                  radiusOn="radius-on"
-                  className="btn-large w-40 mt-60px md-mt-10px mb-5px d-inline-block"
-                  onClick={handlePasswordConfirm}
-                >
-                  확인
-                </Button>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault(); // 기본 submit 동작 방지 (새로고침 방지)
+              handlePasswordConfirm(); // 확인 로직 실행
+            }}
+          >
+            <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+              <h6 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h6>
+            </div>
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center">
+              <div className="row pt-5 text-center">
+                <label className="text-dark-gray fw-500 d-block text-start">
+                  비밀번호
+                </label>
+                <input
+                  className="mb-5px bg-very-light-white form-control required w-100 sm-input"
+                  type="password"
+                  value={fristPassword}
+                  onChange={(e) => setFristPassword(e.target.value)}
+                  placeholder="비밀번호를 입력하세요"
+                />
+                {errors.fristPassword && (
+                  <p className="text-danger text-start">
+                    비밀번호를 다시 입력 해주세요
+                  </p>
+                )}
+                {/* 오류 메시지 출력 */}
+                <div className="col-12 text-center md-pt-40px sm-pt-10">
+                  <Button
+                    name="eventSection"
+                    size="extra-large"
+                    radiusOn="radius-on"
+                    type="submit"
+                    className="btn-large w-40 mt-60px md-mt-10px mb-5px d-inline-block"
+                  >
+                    확인
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       )}
 
@@ -308,7 +323,7 @@ const MyInfoPage = () => {
                         {!isPlatform && (
                           <tr className="pb-2 info-row">
                             <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
-                              <h6 className="m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
+                              <h6 className="m-0 fw-600 ls-minus-1px fs-22 md-fs-20 sm-fs-16">
                                 비밀번호
                               </h6>
                             </td>
@@ -330,12 +345,12 @@ const MyInfoPage = () => {
 
                         <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2  w-20 md-w-30">
-                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
+                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20 sm-fs-16">
                               이름
                             </h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-20 md-fs-18 m-0 fw-400 ls-minus-1px text-gray">
+                            <h6 className="fs-20 md-fs-18 sm-fs-16 m-0 fw-400 ls-minus-1px text-gray">
                               {userInfo.maskedDisplayName}
                             </h6>
                           </td>
@@ -355,12 +370,12 @@ const MyInfoPage = () => {
 
                         <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
-                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
+                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20 sm-fs-16">
                               휴대폰
                             </h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-20 md-fs-18 m-0 fw-400 ls-minus-1px text-gray">
+                            <h6 className="fs-20 md-fs-18 sm-fs-16 m-0 fw-400 ls-minus-1px text-gray">
                               {userInfo.maskedPhoneNumber}
                             </h6>
                           </td>
@@ -380,12 +395,12 @@ const MyInfoPage = () => {
 
                         <tr className="pb-2 info-row">
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2 w-20 md-w-30">
-                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20">
+                            <h6 className="fs-22 m-0 fw-600 ls-minus-1px fs-22 md-fs-20 sm-fs-16">
                               이메일
                             </h6>
                           </td>
                           <td className="product-name border-bottom-2 border-gray fw-600 text-black ps-2">
-                            <h6 className="fs-20 md-fs-18 m-0 fw-400 ls-minus-1px text-gray">
+                            <h6 className="fs-20 md-fs-18 sm-fs-16 m-0 fw-400 ls-minus-1px text-gray">
                               {userInfo.maskedEmail}
                             </h6>
                           </td>
@@ -429,7 +444,7 @@ const MyInfoPage = () => {
                   </label>
                   <div className="position-relative">
                     <input
-                      className="mb-5px bg-very-light-white form-control w-100 md-fs-12 text-black pe-40px"
+                      className="mb-5px bg-very-light-white form-control w-100 md-fs-14 text-black pe-40px sm-input"
                       type={showPassword.password ? 'text' : 'password'}
                       name="password"
                       value={password}
@@ -455,12 +470,12 @@ const MyInfoPage = () => {
                   </label>
                   <div className="position-relative">
                     <input
-                      className="mb-5px bg-very-light-white form-control w-100 md-fs-12 text-black pe-40px"
+                      className="mb-5px bg-very-light-white form-control w-100 md-fs-14 text-black pe-40px sm-input"
                       type={showPassword.newPassword ? 'text' : 'password'}
                       name="newPassword"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      placeholder="비밀번호 영문,숫자,특수문자 포함 8자 이상 입력해 주세요."
+                      placeholder="영문, 숫자, 특수문자 포함 8자이상 입력"
                     />
                     <i
                       className={`fa-regular ${
@@ -481,12 +496,12 @@ const MyInfoPage = () => {
                   </label>
                   <div className="position-relative">
                     <input
-                      className="mb-5px bg-very-light-white form-control w-100 md-fs-12 text-black pe-40px"
+                      className="mb-5px bg-very-light-white form-control w-100 md-fs-14 text-black pe-40px sm-input"
                       type={showPassword.confirmPassword ? 'text' : 'password'}
                       name="confirmPassword"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="비밀번호 영문,숫자,특수문자 포함 8자 이상 입력해 주세요."
+                      placeholder="영문, 숫자, 특수문자 포함 8자이상 입력"
                     />
                     <i
                       className={`fa-regular ${
@@ -502,7 +517,7 @@ const MyInfoPage = () => {
                   )}
 
                   {/* 버튼 */}
-                  <div className="col-12 text-center md-pt-40px">
+                  <div className="col-12 text-center md-pt-40px sm-pt-10px">
                     <Button
                       size="extra-large"
                       radiusOn="radius-on"
@@ -531,7 +546,7 @@ const MyInfoPage = () => {
                 이름 변경
               </label>
               <input
-                className="mb-5px bg-very-light-white form-control required w-100 md-fs-12"
+                className="mb-5px bg-very-light-white form-control required w-100 md-fs-14 sm-input"
                 type="text"
                 name="displayName"
                 value={displayName}
@@ -542,7 +557,7 @@ const MyInfoPage = () => {
                 <p className="text-danger text-start">이름을 입력해주세요.</p>
               )}
 
-              <div className="col-12 text-center md-pt-40px">
+              <div className="col-12 text-center md-pt-40px sm-pt-10px">
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
@@ -570,7 +585,7 @@ const MyInfoPage = () => {
               </label>
               <div className="row d-flex align-items-baseline justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75"
+                  className="mb-5px bg-very-light-white form-control required w-75 sm-w-65 sm-input"
                   type="text"
                   name="phoneNumber"
                   value={phoneNumber}
@@ -580,7 +595,6 @@ const MyInfoPage = () => {
 
                 <Button
                   size="extra-large"
-                  radiusOn="radius-on"
                   className="btn btn-large w-20 md-w-auto"
                   onClick={handlePhoneAuthRequest}
                 >
@@ -592,7 +606,7 @@ const MyInfoPage = () => {
                   </p>
                 )}
                 <input
-                  className="mt-20px bg-very-light-white form-control required w-75"
+                  className="mt-20px sm-mt-10px bg-very-light-white form-control required w-75 w-100 sm-input"
                   type="text"
                   name="phoneAuthCode"
                   value={phoneAuthCode}
@@ -606,7 +620,7 @@ const MyInfoPage = () => {
                 )}
               </div>
 
-              <div className="col-12 text-center md-pt-40px">
+              <div className="col-12 text-center md-pt-40px sm-pt-10px">
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
@@ -634,15 +648,15 @@ const MyInfoPage = () => {
               </label>
               <div className="row d-flex align-items-baseline justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75"
+                  className="mb-5px bg-very-light-white form-control required w-75 sm-w-60 sm-input"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="이메일"
                 />
+
                 <Button
                   size="extra-large"
-                  radiusOn="radius-on"
                   className="btn btn-large w-20 md-w-auto"
                   onClick={handleEmailChange}
                 >
@@ -654,7 +668,7 @@ const MyInfoPage = () => {
                   </p>
                 )}
                 <input
-                  className="mt-20px bg-very-light-white form-control required w-75"
+                  className="mt-20px sm-mt-10px bg-very-light-white form-control required w-75 w-100 sm-input"
                   type="text"
                   value={emailAuthCode}
                   onChange={(e) => setEmailAuthCode(e.target.value)}
@@ -667,7 +681,7 @@ const MyInfoPage = () => {
                 )}
               </div>
 
-              <div className="col-12 text-center md-pt-40px">
+              <div className="col-12 text-center md-pt-40px sm-pt-10px">
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
@@ -685,14 +699,14 @@ const MyInfoPage = () => {
         isOpen={isFirstModalOpen}
         onClose={() => setIsFirstModalOpen(false)}
       >
-        <div className="w-40">
+        <div className="w-40 sm-w-80">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
                         변경되었습니다.
                       </h6>
                     </div>
@@ -720,14 +734,14 @@ const MyInfoPage = () => {
         isOpen={isSecondModalOpen}
         onClose={() => setIsSecondModalOpen(false)}
       >
-        <div className="w-40 md-w-70">
+        <div className="w-40 md-w-80">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
                         인증번호를 전송하였습니다.
                       </h6>
                     </div>

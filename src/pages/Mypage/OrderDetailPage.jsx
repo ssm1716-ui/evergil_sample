@@ -87,7 +87,7 @@ const MyPage = () => {
             </div>
 
             <div className="col pt-1">
-              <div className="bg-very-light-gray border-radius-6px p-20px lg-p-25px your-order-box">
+              <div className="bg-very-light-gray border-radius-6px p-20px lg-p-25px sm-p-10px your-order-box">
                 <span className="fs-26 sm-fs-20 fw-600 text-dark-gray mb-5px d-block text-center py-3">
                   <span className="text-base-color">2024.12.06 23:59</span>
                   까지 <br />
@@ -125,7 +125,7 @@ const MyPage = () => {
                       className="collapse show"
                       data-bs-parent="#accordion-style-05"
                     >
-                      <div className="p-25px bg-very-light-gray mt-20px mb-20px sm-mt-0 fs-12 lh-24">
+                      <div className="p-25px sm-p-10px bg-very-light-gray mt-20px mb-20px sm-mt-0 fs-12 lh-24">
                         <ul className="mb-0 sm-ps-0">
                           <li>
                             입금이 완료되어야 주문이 확인되고 출고가 진행됩니다.
@@ -153,20 +153,20 @@ const MyPage = () => {
         </section>
         <section className="p-0">
           <div className="pt-4  border-bottom border-2 border-black">
-            <h6 className="fs-27 md-fs-29 fw-400 border-black text-start text-black m-0">
+            <h6 className="fs-27 md-fs-29 sm-fs-27 fw-400 border-black text-start text-black m-0">
               배송지
             </h6>
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">
               <div className="col contact-form-style-04">
                 <div className="text-center">
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25">
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35">
                       받는분
                     </label>
                     <span className="text-black flex-1 text-start">손성민</span>
                   </div>
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25">
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35">
                       주소
                     </label>
                     <span className="text-black flex-1 text-start">
@@ -174,8 +174,8 @@ const MyPage = () => {
                     </span>
                   </div>
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25">
-                      배송 메시지
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35">
+                      배송메시지
                     </label>
                     <span className="text-black flex-1 text-start">
                       문앞에 두고 가주세요.
@@ -189,32 +189,32 @@ const MyPage = () => {
 
         <section className="p-0">
           <div className="pt-4 mb-4 border-bottom border-2 border-black">
-            <h6 className="fs-27 md-fs-29 fw-400 border-black text-start text-black m-0">
+            <h6 className="fs-27 md-fs-29 sm-fs-27 fw-400 border-black text-start text-black m-0">
               최종 결제 정보
             </h6>
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">
               <div className="col w-100">
                 <div className="text-center">
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25">
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35">
                       상품 합계
                     </label>
                     <span className="flex-1 text-black text-end">80,000원</span>
                   </div>
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25">
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35">
                       배송비
                     </label>
                     <span className="flex-1 text-black text-end">3,000원</span>
                   </div>
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25">
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35">
                       할인 합계
                     </label>
                     <span className="flex-1 text-black text-end">0원</span>
                   </div>
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25 fw-600 text-black">
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35 fw-600 text-black">
                       결제 금액
                     </label>
                     <span className="flex-1 text-end text-base-color">
@@ -222,7 +222,7 @@ const MyPage = () => {
                     </span>
                   </div>
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-25">
+                    <label className="mb-10px fw-500 text-start w-25 sm-w-35">
                       결제 수단
                     </label>
                     <span className="flex-1 text-black text-end text-black fw-600">

@@ -1006,6 +1006,9 @@
     font-size: 26px;
     line-height: 38px;
   }
+  .sm-fs-27 {
+    font-size: 1.5rem;
+  }
   .sm-fs-28 {
     font-size: 1.75rem;
     line-height: 2.6rem;
@@ -20915,7 +20918,8 @@
   }
   .btn.btn-extra-medium {
     font-size: 14px;
-    padding: 7px 27px;
+    /* padding: 7px 27px; */
+    padding: 7px 20px;
   }
   .btn.btn-medium {
     font-size: 14px;
@@ -21872,5 +21876,8 @@
 @media (max-width: 360px) {
   .sm-w-100 {
     width: 100% !important;
+  }
+  .sm-mt-10px{
+    margin-top: 10px;
   }
 }

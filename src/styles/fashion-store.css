@@ -212,3 +212,9 @@ footer .elements-social.social-icon-style-02 li {
     .navbar.center-logo .navbar-nav .nav-link, header.sticky .center-logo .navbar-nav .nav-link { padding-left: 14px; padding-right: 14px; font-size: 17px; }
     .btn.btn-switch-text.btn-large>span { padding: 16px 28px; }
 }
+
+@media (max-width: 360px)  {
+    .input-small, .textarea-small, .select-small {
+        font-size: 14px;
+}
+}

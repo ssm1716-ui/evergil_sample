@@ -862,7 +862,12 @@ const EditProfilePage = () => {
                       <LightGallery
                         key={galleryKey}
                         speed={500}
+                        closable={true}
                         download={false}
+                        mobileSettings={{
+                          controls: true,
+                          showCloseIcon: true,
+                        }}
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"

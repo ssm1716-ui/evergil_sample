@@ -7,7 +7,6 @@
 .footer {
   background-color: #EFEFE7 !important;
 }
-
 .blur-overlay {
 position: absolute;
 top: 0;
@@ -350,7 +349,6 @@ height: 1297px;
   height: 350px !important;
   object-fit: cover; /* 이미지 비율 유지하면서 자르기 */
 }
-
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -510,8 +508,11 @@ height: 1297px;
   }
   .terms-view::after {
     content: unset;
-    }
-    
+  }
+  .sm-input{
+    padding: 7px 25px;
+    font-size: 14px;
+  }
 }
 
 
@@ -696,4 +697,26 @@ height: 1297px;
   overflow: hidden;
   position: fixed;
   width: 100%;
+}
+
+.lg-custom-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  margin-left: 8px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .lg-custom-wrapper {
+    top: 40px !important;
+    right: 10px !important;
+    flex-direction: column;
+  }
+  .lg-custom-btn {
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
 }
