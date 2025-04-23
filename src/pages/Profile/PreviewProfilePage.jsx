@@ -426,12 +426,7 @@ const ViewProfilePage = () => {
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <LightGallery
                         speed={500}
-                        closable={true}
                         download={false}
-                        mobileSettings={{
-                          controls: true,
-                          showCloseIcon: true,
-                        }}
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"
@@ -504,7 +499,7 @@ const ViewProfilePage = () => {
                   )}
 
                   {activeTab === '가족관계도' && (
-                    <div className="w-100 sm-mt-10px xs-mb-8 my-5 sm-ps-20px">
+                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <div
                         className="container"
                         // data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'

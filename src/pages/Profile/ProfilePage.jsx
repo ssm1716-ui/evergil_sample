@@ -231,7 +231,7 @@ const ProfilePage = () => {
                               variant="primary"
                               color="base-color"
                               size="large"
-                              className="w-20 md-w-30 sm-w-60 border-radius-20px"
+                              className="w-20 md-w-30 sm-w-50 border-radius-20px"
                             >
                               <i className="feather icon-feather-plus align-top icon-small text-white"></i>
                               새로운 프로필 생성

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
 import useAuth from '@/hooks/useAuth';
+import useDeviceType from '@/hooks/useDeviceType';
 import AddressSearch from '@/components/AddressSearch';
 
 import {
@@ -21,9 +22,9 @@ import { isValidPhoneNumber } from '@/utils/validators';
 import { removeHyphens } from '@/utils/utils';
 
 const paymentMethods = [
-  { id: 'credit', label: '신용카드', icon: 'line-icon-Credit-Card2' },
-  { id: 'bank', label: '계좌이체', icon: 'line-icon-Bank' },
-  { id: 'deposit', label: '무통장입금', icon: 'line-icon-Money-2' },
+  { id: 'CARD', label: '신용카드', icon: 'line-icon-Credit-Card2' },
+  { id: 'BANK', label: '계좌이체', icon: 'line-icon-Bank' },
+  { id: 'VBANK', label: '무통장입금', icon: 'line-icon-Money-2' },
   { id: 'mobile', label: '휴대폰결제', icon: 'line-icon-Smartphone-3' },
 ];
 
@@ -35,6 +36,7 @@ const CheckOutPage = () => {
   const [focusAddress, setFocusAddress] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeliveryOpen, setIsModalDeliveryOpen] = useState(false);
+  const [isNotAddressModalOpen, setIsNotAddressModalOpen] = useState(false);
   const [orderProductData, setOrderProductData] = useState([]);
   const [orderAddressData, setOrderAddressData] = useState({
     id: '',
@@ -44,7 +46,8 @@ const CheckOutPage = () => {
     address1: '',
     address2: '',
     zipcode: '',
-    isDefault: '',
+    isDefault: true,
+    deliveryMessage: '',
   });
   const [errors, setErrors] = useState({});
   const [selectedAddress, setSelectedAddress] = useState({});
@@ -54,8 +57,10 @@ const CheckOutPage = () => {
     buyerName: '',
     buyerEmail: '',
     buyerPhone: '',
+    deliveryAddressInfo: {},
     orderItems: [],
   });
+  const deviceType = useDeviceType();
 
   //바로 주문, 장바구니 경로로 분기 처리
   useEffect(() => {
@@ -129,37 +134,66 @@ const CheckOutPage = () => {
   // 유효성 검사 함수
   const validate = () => {
     let newErrors = {};
+    let isFocused = false;
 
-    //구매자 정보
+    const focusIfFirst = (selector) => {
+      if (!isFocused) {
+        const el = document.querySelector(selector);
+        if (el) el.focus();
+        isFocused = true;
+      }
+    };
+
     if (!payment.buyerName) {
-      newErrors.buyerName = '구매자 이름을 입력 해주세요.';
-    }
-    if (!payment.buyerPhone) {
-      newErrors.buyerPhone = '구매자 휴대폰번호를 입력 해주세요.';
-    }
-    if (!payment.buyerEmail) {
-      newErrors.buyerEmail = '구매자 이메일을 입력 해주세요.';
+      newErrors.buyerName = '이름을 입력해주세요.';
+      focusIfFirst('input[name="buyerName"]');
     }
 
-    //배송지 정보
+    if (!payment.buyerPhone) {
+      newErrors.buyerPhone = '휴대폰 번호를 입력해주세요.';
+      focusIfFirst('input[name="buyerPhone"]');
+    }
+
+    if (!payment.buyerEmail) {
+      newErrors.buyerEmail = '이메일을 입력해주세요.';
+      focusIfFirst('input[name="buyerEmail"]');
+    }
+
     if (!orderAddressData.deliveryName) {
-      newErrors.deliveryName = '배송지 이름을 입력 해주세요.';
+      newErrors.deliveryName = '배송지 이름을 입력해주세요.';
+      focusIfFirst('input[name="deliveryName"]');
     }
+
     if (!orderAddressData.recipientName) {
-      newErrors.recipientName = '받는분 이름을 입력 해주세요.';
+      newErrors.recipientName = '받는분 이름을 입력해주세요.';
+      focusIfFirst('input[name="recipientName"]');
     }
+
     if (!orderAddressData.phoneNumber) {
-      newErrors.phoneNumber = '휴대폰 번호를 입력해주세요.';
-    } else if (!isValidPhoneNumber(orderAddressData.phoneNumber)) {
-      newErrors.phoneNumber = '올바른 휴대폰 번호를 입력해주세요.';
+      newErrors.phoneNumber = '배송지 연락처를 입력해주세요.';
+      focusIfFirst('input[name="phoneNumber"]');
     }
+
     if (!orderAddressData.zipcode) {
-      SetIsAddresOpen(true);
-      newErrors.zipcode = '주소찾기로 주소를 추가 해주세요.';
+      newErrors.zipcode = '우편번호를 입력해주세요.';
+      focusIfFirst('input[name="zipcode"]');
     }
+
     if (!orderAddressData.address1) {
-      SetIsAddresOpen(true);
-      newErrors.address1 = '주소찾기로 주소를 추가 해주세요.';
+      newErrors.address1 = '기본 주소를 입력해주세요.';
+      focusIfFirst('input[name="address1"]');
+    }
+
+    if (!orderAddressData.address2) {
+      newErrors.address2 = '상세 주소를 입력해주세요.';
+      focusIfFirst('input[name="address2"]');
+    }
+
+    if (!selectedMethod) {
+      alert('결제 수단을 선택해주세요.');
+      const methodSection = document.querySelector('.icon-with-text-style-07');
+      methodSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      isFocused = true;
     }
 
     setErrors(newErrors);
@@ -227,12 +261,10 @@ const CheckOutPage = () => {
     totalAmount,
   } = calculateOrderTotal();
 
-  const handlePaymentConfirm = (e) => {
+  const handlePaymentConfirm = async (e) => {
     e.preventDefault();
-
-    if (validate()) {
-      setIsModalOpen(true);
-    }
+    if (!validate()) return;
+    setIsModalOpen(true);
   };
 
   //결제하기 이벤트 핸들러
@@ -241,11 +273,30 @@ const CheckOutPage = () => {
 
     try {
       // 1. 주문 폼 데이터 요청
-      console.log(payment);
-      const res = await postInicisPaymentForm(payment);
+
+      const convertedAddress = {
+        name: orderAddressData.deliveryName,
+        recipient: orderAddressData.recipientName,
+        phoneNumber: orderAddressData.phoneNumber,
+        zipcode: orderAddressData.zipcode,
+        address1: orderAddressData.address1,
+        address2: orderAddressData.address2,
+        saveDefaultDelivery: orderAddressData.isDefault,
+        deliveryMessage: orderAddressData.deliveryMessage,
+      };
+
+      const updatedPayment = {
+        ...payment,
+        deliveryAddressInfo: convertedAddress,
+      };
+
+      console.log(updatedPayment);
+
+      const res = await postInicisPaymentForm(updatedPayment);
       if (res.status !== 200) throw new Error('결제 정보 요청 실패');
       const paymentReqObj = res.data.data;
-      paymentReqObj.P_PAY_TYPE = 'CARD';
+      paymentReqObj.P_PAY_TYPE = selectedMethod; //"CARD:BANK:VBANK",
+      paymentReqObj.P_DEVICE_TYPE = deviceType;
 
       // // 2. 결제 form 동적 생성
       // const form = document.createElement('form');
@@ -281,6 +332,11 @@ const CheckOutPage = () => {
 
   const handleDeliveryModalOpen = async () => {
     const { data } = await getMembersAddressList();
+    const address = data.data;
+    if (address.length <= 0) {
+      setIsNotAddressModalOpen(true);
+      return;
+    }
     setAddressList(data.data);
     setIsModalDeliveryOpen(true);
   };
@@ -602,7 +658,7 @@ const CheckOutPage = () => {
                         <input
                           type="checkbox"
                           name="terms_condition"
-                          value="1"
+                          value={orderAddressData.isDefault}
                           className="check-box align-middle text-black"
                         />
                         <span className="box sm-fs-14">기본 배송지로 저장</span>
@@ -622,6 +678,9 @@ const CheckOutPage = () => {
                       className="border-radius-4px textarea-large text-black sm-fs-14"
                       rows="3"
                       cols="5"
+                      name="deliveryMessage"
+                      value={orderAddressData.deliveryMessage}
+                      onChange={handleAddressChange}
                       placeholder=""
                     ></textarea>
                   </div>
@@ -808,6 +867,40 @@ const CheckOutPage = () => {
                         닫기
                       </Button>
                     </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 결제하기 모달 */}
+      <Modal
+        isOpen={isNotAddressModalOpen}
+        onClose={() => setIsNotAddressModalOpen(false)}
+      >
+        <div className="w-60 md-w-90">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
+                        등록된 배송지 정보가 없습니다.
+                        <br />
+                        배송지 정보를 입력 해주세요.
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => setIsNotAddressModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

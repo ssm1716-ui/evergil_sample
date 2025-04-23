@@ -353,7 +353,7 @@ const ShopPage = () => {
                 </Link>
                 <a
                   href="#"
-                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 w-20 sm-w-40"
+                  className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 w-20 sm-w-30"
                 >
                   <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
                 </a>

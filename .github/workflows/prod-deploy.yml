@@ -2,7 +2,7 @@ name: Deployment for keywords front production
 on:
   push:
     branches:
-      - main
+      - release
 
 jobs:
   run:

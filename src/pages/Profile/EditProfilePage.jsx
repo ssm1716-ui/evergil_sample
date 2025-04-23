@@ -677,7 +677,7 @@ const EditProfilePage = () => {
             <div className="col-lg-7 col-md-6 position-relative d-md-block">
               <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-0px bottom-minus-70px sm-bottom-minus-80px mt-10 translate-middle-y">
                 <div
-                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px sm-w-40px sm-h-40px  rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
+                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px h-65px md-w-50px md-h-50px sm-w-40px sm-h-40px  rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
                   style={{ backgroundColor: '#CDCDCD' }}
                 >
                   <span>
@@ -717,7 +717,7 @@ const EditProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer">
+                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-20px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer">
                     <img
                       src={
                         profile.profileImageUrl

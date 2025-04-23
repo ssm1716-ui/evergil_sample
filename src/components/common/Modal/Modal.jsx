@@ -36,7 +36,7 @@ const Modal = ({ isOpen, onClose, children }) => {
       document.body.style.overflowY = '';
 
       // 스크롤 복원
-      window.scrollTo(0, parseInt(y || '0') * -1);
+      // window.scrollTo(0, parseInt(y || '0') * -1);
 
       window.removeEventListener('keydown', handleEsc);
     };

@@ -1,16 +1,39 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
-import PaymentDue from '@/components/Order/PaymentDue';
-import OrderEmptyComponents from '@/components/Order/OrderEmptyComponents';
-import OrderListComponents from '@/components/Order/OrderListComponents';
-import AnimatedSection from '@/components/AnimatedSection';
-
-import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
-
-import { useState } from 'react';
+import { postInicisPaymentResult } from '@/api/payment/paymentApi';
 
 const CompletePage = () => {
-  const [order, setOrder] = useState(true);
+  const [paymentResult, setPaymentResult] = useState({});
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const key = searchParams.get('key'); // ✅ URL에서 key 값 가져오기
+
+  useEffect(() => {
+    if (!key) {
+      navigate(
+        `/error?desc=${'접근 할 수 없는 페이지 입니다.'}&pageUrl=${'/checkout'}`
+      );
+      return;
+    }
+
+    const fetcInicisPaymentResult = async () => {
+      try {
+        const res = await postInicisPaymentResult(key);
+
+        if (!res || res.status !== 200) {
+          navigate(
+            `/error?desc=${'유효기간이 만료되었습니다.'}&pageUrl=${'/checkout'}`
+          );
+          return;
+        }
+        setPaymentResult(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetcInicisPaymentResult();
+  }, []);
 
   return (
     <>

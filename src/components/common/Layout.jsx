@@ -17,7 +17,6 @@ const Layout = ({ children }) => {
     '/test',
     '/qr',
     '/qr-confirm',
-    '/payment/result',
   ].includes(location.pathname);
 
   return (

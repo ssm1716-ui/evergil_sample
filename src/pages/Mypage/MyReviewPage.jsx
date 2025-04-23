@@ -354,11 +354,11 @@ const MyReviewPage = () => {
                   </div>
 
                   {/* 리뷰 이미지 */}
-                  <div className="w-250px md-w-250px sm-mb-10px text-center">
+                  <div className="w-250px md-w-250px sm-w-100 text-center">
                     {review.image1 && (
                       <img
                         src={review.image1}
-                        className="w-120px mb-10px"
+                        className="w-120px md-w-100px md-h-100px mb-10px"
                         alt="리뷰 이미지"
                       />
                     )}
@@ -368,7 +368,7 @@ const MyReviewPage = () => {
                   </div>
 
                   {/* 리뷰 내용 */}
-                  <div className="w-100 ps-50px  md-ps-20px last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start">
+                  <div className="w-100 ps-50px  md-ps-20px last-paragraph-no-margin sm-ps-0 position-relative text-center text-md-start text-sm-center">
                     {/* ⭐ 별점 표시 */}
                     <span className="text-golden-yellow ls-minus-1px mb-5px sm-me-10px sm-mb-0 d-block">
                       {Array.from({ length: 5 }, (_, i) => (
@@ -381,37 +381,37 @@ const MyReviewPage = () => {
                       ))}
                     </span>
                     {review.image2 && (
-                      <span className="w-80px md-w-80px pe-1">
+                      <span className="w-80px pe-1">
                         <img
                           src={review.image2}
-                          className="w-80px mb-10px"
+                          className="w-80px md-w-60px md-h-60px mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>
                     )}
                     {review.image3 && (
-                      <span className="w-80px md-w-80px pe-1">
+                      <span className="w-80px pe-1">
                         <img
                           src={review.image3}
-                          className="w-80px mb-10px"
+                          className="w-80px md-w-60px md-h-60px  mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>
                     )}
                     {review.image4 && (
-                      <span className="w-80px md-w-80px pe-1">
+                      <span className="w-80px pe-1">
                         <img
                           src={review.image4}
-                          className="w-80px mb-10px"
+                          className="w-80px md-w-60px md-h-60px  mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>
                     )}
                     {review.image5 && (
-                      <span className="w-80px md-w-80px pe-1">
+                      <span className="w-80px pe-1">
                         <img
                           src={review.image5}
-                          className="w-80px mb-10px"
+                          className="w-80px md-w-60px md-h-60px mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>

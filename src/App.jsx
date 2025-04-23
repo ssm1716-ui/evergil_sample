@@ -36,6 +36,7 @@ import MyInfoPage from '@/pages/Mypage/MyInfoPage';
 import AddressPage from '@/pages/Mypage/AddressPage';
 import CheckOutPage from '@/pages/Order/CheckOutPage';
 import PaymentResultPage from '@/pages/Order/PaymentResultPage';
+import PaymentErrorPage from '@/pages/Order/PaymentErrorPage';
 import CompletePage from '@/pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
@@ -68,6 +69,7 @@ const App = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckOutPage />} />
             <Route path="/payment/result" element={<PaymentResultPage />} />
+            <Route path="/payment/error" element={<PaymentErrorPage />} />
             <Route path="/complete" element={<CompletePage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

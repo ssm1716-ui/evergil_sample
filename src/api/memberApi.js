@@ -30,6 +30,7 @@ export const postSignIn = async (param) => {
         return { status: res.status, token: newAccessToken };
     } catch (err) {
         console.error(err);
+        return { status: err.status };
     }
 };
 
