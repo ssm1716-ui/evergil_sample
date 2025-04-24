@@ -9,6 +9,8 @@ import {
   getAccessToken,
 } from '@/api/memberApi';
 
+import { getPolicySelected } from '@/api/policy/policyApi';
+
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
@@ -44,6 +46,7 @@ const SignUpPage = () => {
   const [otp, setOtp] = useState(['', '', '', '', '']);
   const checkboxGroupRef = useRef([]);
   const [invitationKey, setInvitationKey] = useState('');
+  const [policyContent, setPolicyContent] = useState({});
 
   useEffect(() => {
     setInvitationKey(localStorage.getItem('dev_invitation'));
@@ -240,8 +243,12 @@ const SignUpPage = () => {
     setIsFirstModalOpen(true);
   };
 
-  const handleTermsView = async () => {
+  const handleTermsView = async (id) => {
     setIsModalTermsOpen(true);
+
+    const res = await getPolicySelected(id);
+    const policyDate = res.data.data;
+    setPolicyContent(policyDate);
   };
 
   return (
@@ -294,7 +301,7 @@ const SignUpPage = () => {
                     <span className="lg-fs-25 md-fs-18 sm-fs-14 terms-view">
                       <Link
                         className="text-base-color"
-                        onClick={handleTermsView}
+                        onClick={() => handleTermsView('service')}
                       >
                         자세히
                       </Link>
@@ -309,12 +316,12 @@ const SignUpPage = () => {
                         id="marketing_consent"
                         className="terms-condition check-box align-middle"
                       />
-                      <span className="box">개인정보수집,이용동의(선택)</span>
+                      <span className="box">개인정보 수집·이용 동의(선택)</span>
                     </div>
                     <span className="lg-fs-25 md-fs-18 sm-fs-14 terms-view">
                       <Link
                         className="text-base-color"
-                        onClick={handleTermsView}
+                        onClick={() => handleTermsView('personal')}
                       >
                         자세히
                       </Link>
@@ -334,7 +341,7 @@ const SignUpPage = () => {
                     <span className="lg-fs-25 md-fs-18 sm-fs-14 terms-view">
                       <Link
                         className="text-base-color"
-                        onClick={handleTermsView}
+                        onClick={() => handleTermsView('advertisement')}
                       >
                         자세히
                       </Link>
@@ -609,8 +616,20 @@ const SignUpPage = () => {
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
                       <h6 className="text-dark-gray fw-500 mb-15px md-fs-18 sm-fs-16">
-                        약관 동의서
+                        {policyContent.type === 'service'
+                          ? '이용약관'
+                          : policyContent.type === 'personal'
+                          ? '개인정보 수집·이용 동의'
+                          : '광고성 정보 수신 동의'}
                       </h6>
+                    </div>
+                    <div className="scroll_wrapper">
+                      <div
+                        className="terms_view"
+                        dangerouslySetInnerHTML={{
+                          __html: policyContent.content,
+                        }}
+                      />
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <button

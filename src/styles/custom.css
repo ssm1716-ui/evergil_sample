@@ -635,6 +635,13 @@ height: 1297px;
   padding: 0 12px;
 }
 
+.scroll_wrapper{
+  padding: 0px 30px;
+  overflow-y: auto;
+  max-height: 464px;
+}
+
+
 #inicisModalDiv {
   opacity: 1 !important;
   display: block !important;
