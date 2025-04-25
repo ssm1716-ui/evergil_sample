@@ -745,13 +745,13 @@ const ShopPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow border-1 border-black w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default w-45 sm-w-100 me-1 mb-3"
                         onClick={() => nextCartPage()}
                       >
                         장바구니로 넘어가기
                       </button>
                       <button
-                        className="btn btn-white btn-large btn-box-shadow border-1 border-black w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default w-45 sm-w-100 me-1 mb-3"
                         onClick={() => setIsModalOpen(false)}
                       >
                         닫기

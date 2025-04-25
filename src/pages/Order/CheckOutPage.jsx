@@ -796,7 +796,7 @@ const CheckOutPage = () => {
         onClose={() => setIsModalDeliveryOpen(false)}
         title="Slide up animation"
       >
-        <div className="w-40 md-w-80 sm-w-100 md-h-600px">
+        <div className="w-40 md-w-80 sm-w-100 md-h-600px sm-h-auto">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row align-items-center justify-content-center pricing-table-style-07 bg-gradient-very-light-gray">
               <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">

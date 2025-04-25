@@ -120,7 +120,7 @@ const ForgotPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow border-1 border-black me-1"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsModalOpen(false)}
                       >
                         확인

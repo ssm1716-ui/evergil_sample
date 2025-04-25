@@ -40,8 +40,8 @@ const MobileBuyPanel = ({
         </div>
         <div className="panel-content fs-13">
           <div className="panel-info">
-            <p className="mb-2">{productName}</p>
-            <div className="d-flex justify-content-between align-items-baseline">
+            <p className="mb-2 fw-600 sm-fs-18">{productName}</p>
+            <div className="d-flex justify-content-between align-items-baseline mt-10px">
               <div className="quantity me-10px xs-mb-15px order-1">
                 <button
                   type="button"

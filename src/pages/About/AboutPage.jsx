@@ -66,7 +66,7 @@ const AboutPage = () => {
               <img
                 src={AboutImage2}
                 alt=""
-                className="w-100 about-img1 md-w-50 "
+                className="w-100 about-img1 md-w-50 sm-w-100"
               />
             </div>
             <div

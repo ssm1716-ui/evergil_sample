@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { getOrdersDetail } from '@/api/orders/ordersApi';
 import { formatNumber } from '@/utils/utils';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 
@@ -8,7 +9,10 @@ import ShopDetailImage3 from '@/assets/images/shop-detail-image3.png';
 const MyPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [vbankData, setVbankData] = useState({});
+  const [delivery, setDelivery] = useState({});
+  const [payment, setPayment] = useState({});
+  const [product, setProduct] = useState({});
+  const [vBankData, setVBankData] = useState({});
   const orderNumber = searchParams.get('orderNumber'); // ✅ URL에서 key 값 가져오기
   const copyToClipboard = useCopyToClipboard();
 
@@ -20,26 +24,26 @@ const MyPage = () => {
       return;
     }
 
-    // const fetcInicisPaymentResult = async () => {
-    //   try {
-    //     const { status, data } = await postInicisPaymentResult(key);
+    const fetchOrder = async () => {
+      try {
+        const { status, data } = await getOrdersDetail(orderNumber);
 
-    //     if (status !== 200) {
-    //       navigate(
-    //         `/error?desc=${'결제 처리시 에러가 발생하였습니다.'}&pageUrl=${'/checkout'}`
-    //       );
-    //       return;
-    //     }
-    //     setPaymentResult(data.data);
+        if (status !== 200) {
+          alert('통신 에러가 발생했습니다.');
+          return;
+        }
+        const order = data.data;
+        console.log(order);
+        setDelivery(order.delivery);
+        setPayment(order.payment);
+        setProduct(order.product);
+        setVBankData(order.vBankData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    //     if (data.data.paymentType === 'VBANK') {
-    //       setVbankData(data.data.vBankData);
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-    // fetcInicisPaymentResult();
+    fetchOrder();
   }, []);
 
   return (
@@ -52,8 +56,11 @@ const MyPage = () => {
           <div>
             <div
               className="col-12"
-              // data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
+              data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
+              <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
+                {product.deliveryStatus}
+              </span>
               <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
                 <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
                   <div className="w-300px md-w-250px sm-mb-10px">
@@ -64,10 +71,10 @@ const MyPage = () => {
                   <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
                     <div className="feature-box-content text-sm-center ps-0 md-ps-25px sm-ps-0">
                       <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
-                        QR Code
+                        {product.productName}
                       </span>
                       <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
-                        80,000원
+                        {formatNumber(product.amount + product.deliveryFee)}원
                       </p>
                     </div>
                   </div>
@@ -122,12 +129,12 @@ const MyPage = () => {
               </div>
             </div>
 
-            {paymentResult.paymentType === 'VBANK' && (
+            {payment.paymentType === 'VBANK' && (
               <div className="col pt-1">
                 <div className="bg-very-light-gray border-radius-6px p-20px lg-p-25px your-order-box">
                   <span className="fs-26 fw-600 text-dark-gray mb-5px d-block text-center py-3">
                     <span className="text-base-color">
-                      {vbankData.expiresAt}
+                      {vBankData.expiresAt}
                     </span>
                     까지 입금을 완료해주세요.
                   </span>
@@ -141,7 +148,7 @@ const MyPage = () => {
                           </span>
                         </label>
                         <h6 className="col-6 mb-0 fs-20 text-end text-base-color">
-                          {formatNumber(vbankData.amount)}원
+                          {formatNumber(vBankData.amount)}원
                         </h6>
                       </div>
                       <div className="row pt-1 fs-20">
@@ -151,12 +158,12 @@ const MyPage = () => {
                           </span>
                         </label>
                         <h6 className="col-6 mb-0 fs-20 text-dark-gray text-end text-decoration-underline link-offset-1">
-                          {vbankData.bankName} {vbankData.accountNumber}
+                          {vBankData.bankName} {vBankData.accountNumber}
                           <i
                             className="feather icon-feather-copy icon-small text-dark-gray ps-2"
                             role="button"
                             onClick={() =>
-                              copyToClipboard(vbankData.accountNumber)
+                              copyToClipboard(vBankData.accountNumber)
                             }
                           ></i>
                         </h6>
@@ -210,7 +217,7 @@ const MyPage = () => {
                       받는분
                     </label>
                     <span className="text-black flex-1 text-start">
-                      {paymentResult.recipient}
+                      {delivery.recipient}
                     </span>
                   </div>
                   <div className="row ">
@@ -218,17 +225,18 @@ const MyPage = () => {
                       주소
                     </label>
                     <span className="text-black flex-1 text-start">
-                      {paymentResult.recipientZipcode}
-                      {paymentResult.recipientAddress1}
-                      {paymentResult.recipientAddress2}
+                      {delivery.recipientZipcode}
+                      {delivery.recipientAddress1}
+                      {delivery.recipientAddress2}
                     </span>
                   </div>
                   <div className="row d-flex align-items-baseline">
                     <label className="mb-10px fw-500 text-start w-15">
                       배송 메시지
                     </label>
+
                     <span className="text-black flex-1 text-start">
-                      {paymentResult.deliveryMessage}
+                      {delivery.deliveryMessage}
                     </span>
                   </div>
                 </div>
@@ -253,15 +261,16 @@ const MyPage = () => {
                       상품 합계
                     </label>
                     <span className="flex-1 text-black text-end">
-                      {formatNumber(paymentResult.totalPrice)}원
+                      {formatNumber(payment.amount)}원
                     </span>
                   </div>
                   <div className="row d-flex align-items-baseline">
                     <label className="mb-10px fw-500 text-start w-15">
                       배송비
                     </label>
+                    `
                     <span className="flex-1 text-black text-end">
-                      {formatNumber(paymentResult.totalDeliveryFee)}원
+                      {formatNumber(payment.deliveryFee)}원
                     </span>
                   </div>
                   {/* <div className="row d-flex align-items-baseline">
@@ -275,11 +284,7 @@ const MyPage = () => {
                       결제 금액
                     </label>
                     <span className="flex-1 text-end text-base-color">
-                      {formatNumber(
-                        paymentResult.totalPrice +
-                          paymentResult.totalDeliveryFee
-                      )}
-                      원
+                      {formatNumber(payment.amount + payment.deliveryFee)}원
                     </span>
                   </div>
                   <div className="row d-flex align-items-baseline">
@@ -287,7 +292,7 @@ const MyPage = () => {
                       결제 수단
                     </label>
                     <span className="flex-1 text-black text-end text-black fw-600">
-                      {paymentResult.bankName}
+                      {payment.bankName}
                     </span>
                   </div>
                 </div>

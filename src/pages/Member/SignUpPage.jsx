@@ -303,7 +303,7 @@ const SignUpPage = () => {
                         className="text-base-color"
                         onClick={() => handleTermsView('service')}
                       >
-                        자세히
+                        보기
                       </Link>
                     </span>
                   </label>
@@ -323,7 +323,7 @@ const SignUpPage = () => {
                         className="text-base-color"
                         onClick={() => handleTermsView('personal')}
                       >
-                        자세히
+                        보기
                       </Link>
                     </span>
                   </label>
@@ -343,7 +343,7 @@ const SignUpPage = () => {
                         className="text-base-color"
                         onClick={() => handleTermsView('advertisement')}
                       >
-                        자세히
+                        보기
                       </Link>
                     </span>
                   </label>
@@ -499,7 +499,7 @@ const SignUpPage = () => {
                     <Button
                       size="extra-large"
                       color="white"
-                      className="btn-large border-1 border-black btn-box-shadow w-80 mt-20px mb-20px sm-mb-0"
+                      className="btn-large border-1 border-default btn-box-shadow w-80 mt-20px mb-20px sm-mb-0"
                       onClick={thirdStep}
                     >
                       인증하기
@@ -589,7 +589,7 @@ const SignUpPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow border-1 border-black me-1"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => {
                           setIsFirstModalOpen(false);
                         }}
@@ -633,7 +633,7 @@ const SignUpPage = () => {
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <button
-                        className="btn btn-white btn-large btn-box-shadow border-1 border-black me-1"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsModalTermsOpen(false)}
                       >
                         닫기
