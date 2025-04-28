@@ -27,6 +27,7 @@ const paymentMethods = [
 
 const BridgePage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isAddresOpen, SetIsAddresOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -53,6 +54,7 @@ const BridgePage = () => {
                     size="extra-large"
                     radiusOn="radius-on"
                     className="btn btn-extra-large btn-round-edge btn-black btn-box-shadow submit w-40 md-w-70 text-transform-none me-10px md-mb-10px"
+                    onClick={() => navigate('/qr-scanner')}
                   >
                     <i className="feather icon-feather-camera icon-small text-white pe-3"></i>
                     스캔하기

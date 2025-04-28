@@ -197,6 +197,7 @@ const ViewProfilePage = () => {
     }
   };
 
+  //하늘편지 검색
   const handleSearchLetters = async (e) => {
     const value = e.target.value;
 
@@ -369,7 +370,7 @@ const ViewProfilePage = () => {
                 <h5 className="text-dark-gray mb-5px fw-600 fs-32 md-fs-28 sm-fs-24">
                   {profile.displayName}
                 </h5>
-                <h6 className="mb-0 fs-22 md-fs-18 sm-fs-14 ">
+                <h6 className="mb-0 sm-fs-18">
                   {profile.birthday}~{profile.deathDate}
                 </h6>
               </div>
@@ -601,11 +602,11 @@ const ViewProfilePage = () => {
                             className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-1 text-center"
                             key={index}
                           >
-                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin">
+                            <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
                                 <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-50 sm-w-90 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start justify-content-sm-center  align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
                                   <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                                     <span className="number position-relative z-index-1 fw-600">
                                       <i className="feather icon-feather-user align-middle icon-large text-white"></i>
@@ -619,11 +620,11 @@ const ViewProfilePage = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin">
+                            <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
-                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 sm-w-70 fs-18 rounded-circle text-dark-gray fw-500">
                                   <span className="number position-relative z-index-1 fw-600">
-                                    {f.displayName}{' '}
+                                    {f.displayName}
                                   </span>
                                   <div className="box-overlay rounded-circle"></div>
                                 </div>

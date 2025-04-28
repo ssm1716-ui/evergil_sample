@@ -22,5 +22,37 @@ export const getOrdersDetail = async (param) => {
     }
 };
 
+//구매확정
+export const putOrdersPurchasesConfirm = async (param) => {
+    try {
+        const res = await axiosInstance.put(`/orders/${param}/purchases.confirm`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//반품신청
+export const postOrdersRefundRequest = async (param) => {
+    try {
+        const res = await axiosInstance.post(`/orders/${param}/refund.request`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//교환신청
+export const postOrdersExchangeRequest = async (id, param) => {
+    try {
+        const res = await axiosInstance.post(`/orders/${id}/exchange.request?buyerExchangeReason=${param.buyerExchangeReason}&sellerExchangeReason=${param.sellerExchangeReason}&exchangeRequestDetails=${param.exchangeRequestDetails}`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 
 

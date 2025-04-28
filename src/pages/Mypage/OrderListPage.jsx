@@ -6,7 +6,11 @@ import Modal from '@/components/common/Modal/Modal';
 import { FaStar } from 'react-icons/fa'; // FontAwesome 별 아이콘 사용
 
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
-import { getOrdersList } from '@/api/orders/ordersApi';
+import {
+  getOrdersList,
+  putOrdersPurchasesConfirm,
+} from '@/api/orders/ordersApi';
+import { postReviewRegister } from '@/api/products/reviewsApi';
 
 import { getFileType, formatNumber } from '@/utils/utils';
 
@@ -38,18 +42,22 @@ const OrderListPage = () => {
   const [orders, setOrders] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmPurchaseModalOpen, setIsConfirmPurchaseModalOpen] =
+    useState(false);
+
   const [reviews, setReviews] = useState({
     rate: 0,
     content: '',
     images: [],
   });
   const [files, setFiles] = useState([]);
+  const [orderTarget, setOrderTarget] = useState('');
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const { status, data } = await getOrdersList();
-        console.log(status, data);
+        console.log(data);
         if (status !== 200) {
           alert('통신 에러가 발생했습니다.');
           return;
@@ -141,13 +149,24 @@ const OrderListPage = () => {
     }
 
     // 이후 로직 (예: 업로드된 파일 URL을 백엔드에 전송)
-    const res = await postReviewRegister(
-      '88888888-8888-8888-8888-888888888888',
-      { ...reviews, images: completedUrls }
-    );
+    const res = await postReviewRegister(orderTarget, {
+      ...reviews,
+      images: completedUrls,
+    });
     if (res.status === 200) {
       setIsModalOpen(false);
       setReviews(initialForm);
+    }
+  };
+
+  const handlePurchasesConfirm = async (orderNumber) => {
+    const confirmed = window.confirm('구매 확정을 하시겠습니까?');
+    if (!confirmed) return;
+
+    const res = await putOrdersPurchasesConfirm(orderNumber);
+
+    if (res.status === 200) {
+      setIsConfirmPurchaseModalOpen(true);
     }
   };
 
@@ -169,7 +188,8 @@ const OrderListPage = () => {
                   href="#tab_five1"
                   className="nav-link active"
                 >
-                  전체 4<span className="tab-border bg-base-color"></span>
+                  전체 {orders.length}
+                  <span className="tab-border bg-base-color"></span>
                 </a>
               </li>
               <li className="nav-item">
@@ -208,37 +228,6 @@ const OrderListPage = () => {
                 </a>
               </li>
             </ul>
-            {/* <a href="#" className="me-10px">
-              전체 4
-            </a>
-            <span className="me-10px">|</span>
-            <a href="#" className="me-10px">
-              입금/결제 0
-            </a>
-            <span className="me-10px">|</span>
-            <a href="#" className="me-10px">
-              배송중 0
-            </a>
-            <span className="me-10px">|</span>
-            <a href="#" className="me-10px">
-              배송 완료 0
-            </a>
-            <span className="me-10px">|</span>
-            <a href="#" className="me-10px">
-              구매 확정 0
-            </a>
-            <span className="me-10px">|</span>
-            <a href="#" className="me-10px">
-              교환 0
-            </a>
-            <span className="me-10px">|</span>
-            <a href="#" className="me-10px">
-              환불 0
-            </a>
-            <span className="me-10px">|</span>
-            <a href="#" className="me-10px">
-              취소 0
-            </a> */}
           </div>
         </div>
         <div
@@ -246,7 +235,7 @@ const OrderListPage = () => {
           // data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
           <div className="mx-auto me-md-0 col tab-style-01">
-            <ul className="nav nav-tabs justify-content-start border-0 text-center fs-18 md-fs-12 fw-600 mb-3">
+            <ul className="nav nav-tabs justify-content-start border-0 text-center fs-18 md-fs-12 sm-fs-11 fw-600 mb-3">
               <li className="nav-item mt-10px">
                 <a
                   className="nav-link active"
@@ -345,7 +334,7 @@ const OrderListPage = () => {
                   </div>
 
                   <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
-                    <div className="w-300px md-w-250px sm-mb-10px">
+                    <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
                       <img src={ShopDetailImage3} className="w-120px" alt="" />
                     </div>
                   </div>
@@ -368,55 +357,128 @@ const OrderListPage = () => {
 
                   <div className="col-md-6 text-center text-md-end text-sm-center">
                     <div>
-                      <Link
-                        to={`/mypage/exchange?orderNumber=${order.orderNumber}`}
-                        className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
-                      >
-                        <span>
-                          <span className="btn-double-text" data-text="교환">
-                            교환
+                      {/* actions 속성값에 교환이 있으면 표시 */}
+                      {order.product.nextActions.canExchange && (
+                        <Link
+                          to={`/mypage/exchange?orderNumber=${order.orderNumber}`}
+                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                        >
+                          <span>
+                            <span className="btn-double-text" data-text="교환">
+                              교환
+                            </span>
                           </span>
-                        </span>
-                      </Link>
-                      <Link
-                        to={`/mypage/return?orderNumber=${order.orderNumber}`}
-                        className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
-                      >
-                        <span>
-                          <span className="btn-double-text" data-text="환불">
-                            환불
+                        </Link>
+                      )}
+
+                      {/* nextActions 속성값에 환불이 있으면 표시 */}
+                      {order.product.nextActions.canRefund && (
+                        <Link
+                          to={`/mypage/return?orderNumber=${order.orderNumber}`}
+                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                        >
+                          <span>
+                            <span className="btn-double-text" data-text="환불">
+                              환불
+                            </span>
                           </span>
-                        </span>
-                      </Link>
+                        </Link>
+                      )}
                     </div>
 
                     <div>
-                      <a
-                        href="#"
-                        className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
-                      >
-                        <span>
-                          <span
-                            className="btn-double-text"
-                            data-text="배송조회"
-                          >
-                            배송조회
+                      {/* nextActions 속성값에 배송조회가 있으면 표시 */}
+                      {order.product.nextActions.findDeliveryInfo && (
+                        <Link
+                          to="#"
+                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                        >
+                          <span>
+                            <span
+                              className="btn-double-text"
+                              data-text="배송조회"
+                            >
+                              배송조회
+                            </span>
                           </span>
-                        </span>
-                      </a>
-                      <a
-                        href="#"
-                        className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
-                      >
-                        <span>
-                          <span
-                            className="btn-double-text"
-                            data-text="구매확정"
-                          >
-                            구매확정
+                        </Link>
+                      )}
+
+                      {/* nextActions 속성값에 구매확정이 있으면 표시 */}
+                      {order.product.nextActions.canConfirmPurchase && (
+                        <Link
+                          to="#"
+                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                          onClick={() =>
+                            handlePurchasesConfirm(order.orderNumber)
+                          }
+                        >
+                          <span>
+                            <span
+                              className="btn-double-text"
+                              data-text="구매확정"
+                            >
+                              구매확정
+                            </span>
                           </span>
-                        </span>
-                      </a>
+                        </Link>
+                      )}
+
+                      {/* nextActions 속성값에 리뷰쓰기가 있으면 표시 */}
+                      {order.product.nextActions.canWriteReview && (
+                        <Link
+                          href="#"
+                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                          onClick={() => {
+                            setOrderTarget(order.orderNumber);
+                            setIsModalOpen(true);
+                          }}
+                        >
+                          <span>
+                            <span
+                              className="btn-double-text"
+                              data-text="리뷰쓰기"
+                            >
+                              리뷰쓰기
+                            </span>
+                          </span>
+                        </Link>
+                      )}
+                      {/* nextActions 속성값에 리뷰보기가 있으면 표시 */}
+                      {order.product.nextActions.canViewReview && (
+                        <Link
+                          href="#"
+                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                          onClick={() => setIsModalOpen(true)}
+                        >
+                          <span>
+                            <span
+                              className="btn-double-text"
+                              data-text="리뷰보기"
+                            >
+                              리뷰보기
+                            </span>
+                          </span>
+                        </Link>
+                      )}
+
+                      {/* nextActions 속성값에 결제취소가 있으면 표시 */}
+                      {order.product.nextActions.canCancelPayment && (
+                        <Link
+                          href="#"
+                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                          // onClick={() => setIsModalOpen(true)}
+                        >
+                          <span>
+                            <span
+                              className="btn-double-text"
+                              data-text="결제취소"
+                            >
+                              결제취소
+                            </span>
+                          </span>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -613,7 +675,7 @@ const OrderListPage = () => {
             </div> */}
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-70">
+        <div className="w-40 md-w-70 sm-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -636,7 +698,7 @@ const OrderListPage = () => {
                           {[...Array(5)].map((_, index) => (
                             <FaStar
                               key={index}
-                              size={50}
+                              size={35}
                               style={{ cursor: 'pointer', marginRight: '5px' }}
                               color={
                                 index < reviews.rate ? '#FFD700' : '#E0E0E0'
@@ -751,6 +813,38 @@ const OrderListPage = () => {
                       <div className="form-results mt-20px d-none"></div>
                     </div>
                   </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isConfirmPurchaseModalOpen}
+        onClose={() => setIsConfirmPurchaseModalOpen(false)}
+      >
+        <div className="w-40 md-w-70">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-18">
+                        구매확정 처리되었습니다.
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
+                        onClick={() => setIsConfirmPurchaseModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

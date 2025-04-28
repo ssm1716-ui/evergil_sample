@@ -51,6 +51,7 @@ const InvitationPage = () => {
   };
 
   const handleConfirmInvitation = async (isAggree) => {
+    console.log(invitationKey, isAggree);
     if (!invitationKey) {
       setErrDesc('유효한 접근이 아닙니다.');
       setIsErr(true);
@@ -61,6 +62,9 @@ const InvitationPage = () => {
       invitationToken: invitationKey,
       isConfirmed: isAggree,
     });
+
+    console.log(res);
+    return;
 
     if (res.status === 200) {
       navigate('/profile');

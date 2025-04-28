@@ -2168,8 +2168,8 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   }
   100% {
     opacity: 0;
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
   }
 }
 @keyframes video-icon-sonar {
@@ -2180,8 +2180,8 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   }
   100% {
     opacity: 0;
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
   }
 }
 .video-icon-box {
@@ -16479,7 +16479,7 @@ canvas {
 }
 
 .tab-style-04 .nav-tabs .nav-item:nth-child(even) {
-  /* padding: 0 20px 0 40px; */
+  padding: 0 20px 0 40px;
 }
 
 
@@ -16686,7 +16686,8 @@ canvas {
   transform: translate3d(0, -3px, 0);
 }
 .tab-style-08 .nav-tabs > li.nav-item {
-  padding: 0 4px;
+  /* padding: 0 4px; */
+  padding: 0px;
   width: inherit;
 }
 
@@ -19184,8 +19185,8 @@ canvas {
 .shop-image .lable {
   padding: 0 8px;
   position: absolute;
-  left: 17px;
-  top: 17px;
+  left: 5px;
+  top: 5px;
   color: var(--white);
   font-size: 9px;
   line-height: 21px;

@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
     '/profile/invitation',
     '/error',
     '/test',
-    '/qr',
+    '/qr-scanner',
     '/qr-confirm',
   ].includes(location.pathname);
 

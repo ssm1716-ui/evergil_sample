@@ -297,7 +297,7 @@ const CartPage = () => {
                                 className="product-price text-center"
                                 data-title="배송비"
                               >
-                                {product.deliveryFee}원
+                                {product.deliveryFee.toLocaleString()}원
                               </td>
                               <td
                                 className="product-price text-center"

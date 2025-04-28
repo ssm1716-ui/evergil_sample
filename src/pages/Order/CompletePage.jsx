@@ -52,12 +52,12 @@ const CompletePage = () => {
         >
           <div className="row align-items-center justify-content-center">
             <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
-              <h1 className="fw-600 text-dark-gray mb-10px">
+              <h6 className="fw-600 text-dark-gray mb-10px">
                 주문이 정상적으로 완료되었습니다.
-              </h1>
-              <h6 className="mb-2 fs-32 fw-400 pb-1 text-center text-black">
+              </h6>
+              <h6 className="mb-2 fs-26 md-fs-18 fw-400 pb-1 text-center text-black">
                 주문번호 :
-                <span className="text-base-color">
+                <span className="ms-10px text-base-color text-keep-all">
                   {paymentResult.orderNumber}
                 </span>
               </h6>
@@ -70,7 +70,7 @@ const CompletePage = () => {
                   size="large"
                   color="black"
                   radiusOn="radius-on"
-                  className="btn btn-extra-large btn-white border-1 border-color-light-gray  d-table d-lg-inline-block lg-mb-15px me-10px"
+                  className="btn btn-white border-1 border-color-light-gray  d-table d-lg-inline-block lg-mb-15px me-10px"
                 >
                   주문 상세보기
                 </Button>
@@ -79,7 +79,7 @@ const CompletePage = () => {
                 <Button
                   size="large"
                   radiusOn="radius-on"
-                  className="btn btn-extra-large btn-base-color d-table d-lg-inline-block lg-mb-15px"
+                  className="btn btn-base-color d-table d-lg-inline-block lg-mb-15px"
                 >
                   My EverLinks
                 </Button>
@@ -196,7 +196,7 @@ const CompletePage = () => {
             <div className="col contact-form-style-04">
               <div className="text-center">
                 <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15">
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
                     받는분
                   </label>
                   <span className="text-black flex-1 text-start">
@@ -204,7 +204,9 @@ const CompletePage = () => {
                   </span>
                 </div>
                 <div className="row ">
-                  <label className="mb-10px fw-500 text-start w-15">주소</label>
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
+                    주소
+                  </label>
                   <span className="text-black flex-1 text-start">
                     {paymentResult.recipientZipcode}
                     {paymentResult.recipientAddress1}
@@ -212,7 +214,7 @@ const CompletePage = () => {
                   </span>
                 </div>
                 <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15">
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
                     배송 메시지
                   </label>
                   <span className="text-black flex-1 text-start">
@@ -237,7 +239,7 @@ const CompletePage = () => {
             <div className="col w-100">
               <div className="text-center">
                 <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15">
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
                     상품 합계
                   </label>
                   <span className="flex-1 text-black text-end">
@@ -245,7 +247,7 @@ const CompletePage = () => {
                   </span>
                 </div>
                 <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15">
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
                     배송비
                   </label>
                   <span className="flex-1 text-black text-end">
@@ -253,13 +255,13 @@ const CompletePage = () => {
                   </span>
                 </div>
                 {/* <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15">
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
                     할인 합계
                   </label>
                   <span className="flex-1 text-black text-end">0원</span>
                 </div> */}
                 <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15 fw-600 text-black">
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40 fw-600 text-black">
                     결제 금액
                   </label>
                   <span className="flex-1 text-end text-base-color">
@@ -270,7 +272,7 @@ const CompletePage = () => {
                   </span>
                 </div>
                 <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15">
+                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
                     결제 수단
                   </label>
                   <span className="flex-1 text-black text-end text-black fw-600">

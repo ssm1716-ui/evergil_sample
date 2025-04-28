@@ -8826,6 +8826,12 @@ textarea.form-control-lg {
   word-break: break-word !important;
 }
 
+.text-keep-all {
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+
 /* rtl:end:remove */
 .text-primary {
   --bs-text-opacity: 1;
@@ -15696,5 +15702,23 @@ yx-axis
   }
   .gap-sm-5 {
     gap: 10px !important;
+  }
+  .justify-content-sm-start {
+    justify-content: flex-start !important;
+  }
+  .justify-content-sm-end {
+    justify-content: flex-end !important;
+  }
+  .justify-content-sm-center {
+    justify-content: center !important;
+  }
+  .justify-content-sm-between {
+    justify-content: space-between !important;
+  }
+  .justify-content-sm-around {
+    justify-content: space-around !important;
+  }
+  .justify-content-sm-evenly {
+    justify-content: space-evenly !important;
   }
 }

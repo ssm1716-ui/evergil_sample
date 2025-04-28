@@ -15,13 +15,7 @@ import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 
-import {
-  isValidEmail,
-  isValidPassword,
-  isValidName,
-  isValidPhoneNumber,
-  isInteger,
-} from '@/utils/validators';
+import { isValidEmail, isInteger } from '@/utils/validators';
 
 import { removeHyphens } from '@/utils/utils';
 
@@ -219,17 +213,17 @@ const SignUpPage = () => {
     const resEmailStats = await getVerificationCodeVerify(concatCode);
 
     if (resEmailStats !== 200) {
-      alert('resEmailStats 이메일 인증번호 통신에러가 발생하였습니다');
+      alert('인증번호가 맞지 않습니다.');
       return;
     }
 
-    //accessToken 가져오기
-    const { status, token } = await getAccessToken();
-    if (status !== 200) {
-      alert('restokenStats 이메일 인증번호 통신에러가 발생하였습니다');
-      return;
-    }
-    dispatch(loginSuccess({ token }));
+    // //accessToken 가져오기
+    // const { status, token } = await getAccessToken();
+    // if (status !== 200) {
+    //   alert('restokenStats 이메일 인증번호 통신에러가 발생하였습니다');
+    //   return;
+    // }
+    // dispatch(loginSuccess({ token }));
     nextStep(step + 1);
   };
 

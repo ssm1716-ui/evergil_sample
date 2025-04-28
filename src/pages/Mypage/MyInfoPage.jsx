@@ -264,40 +264,47 @@ const MyInfoPage = () => {
     <>
       {currentView === 'passwordConfirm' && (
         <div className="col-xxl-10 col-lg-9 md-ps-15px">
-          <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-            <h6 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h6>
-          </div>
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center">
-            <div className="row pt-5 text-center">
-              <label className="text-dark-gray fw-500 d-block text-start">
-                비밀번호
-              </label>
-              <input
-                className="mb-5px bg-very-light-white form-control required w-100 sm-input"
-                type="password"
-                value={fristPassword}
-                onChange={(e) => setFristPassword(e.target.value)}
-                placeholder="비밀번호를 입력하세요"
-              />
-              {errors.fristPassword && (
-                <p className="text-danger text-start">
-                  비밀번호를 다시 입력 해주세요
-                </p>
-              )}
-              {/* 오류 메시지 출력 */}
-              <div className="col-12 text-center md-pt-40px sm-pt-10">
-                <Button
-                  name="eventSection"
-                  size="extra-large"
-                  radiusOn="radius-on"
-                  type="submit"
-                  className="btn-large w-40 mt-60px md-mt-10px mb-5px d-inline-block"
-                >
-                  확인
-                </Button>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault(); // 기본 submit 동작 방지 (새로고침 방지)
+              handlePasswordConfirm(); // 확인 로직 실행
+            }}
+          >
+            <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
+              <h6 className="fw-600 text-dark-gray mb-10px">내 정보 변경</h6>
+            </div>
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center">
+              <div className="row pt-5 text-center">
+                <label className="text-dark-gray fw-500 d-block text-start">
+                  비밀번호
+                </label>
+                <input
+                  className="mb-5px bg-very-light-white form-control required w-100 sm-input"
+                  type="password"
+                  value={fristPassword}
+                  onChange={(e) => setFristPassword(e.target.value)}
+                  placeholder="비밀번호를 입력하세요"
+                />
+                {errors.fristPassword && (
+                  <p className="text-danger text-start">
+                    비밀번호를 다시 입력 해주세요
+                  </p>
+                )}
+                {/* 오류 메시지 출력 */}
+                <div className="col-12 text-center md-pt-40px sm-pt-10px">
+                  <Button
+                    name="eventSection"
+                    size="extra-large"
+                    radiusOn="radius-on"
+                    type="submit"
+                    className="btn-large w-40 mt-60px md-mt-10px mb-5px d-inline-block"
+                  >
+                    확인
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       )}
 

@@ -29,7 +29,9 @@ const ForgotPage = () => {
   };
 
   //이메일유효성 검사체크 로직
-  const handleEmailCheck = async () => {
+  const handleEmailCheck = async (e) => {
+    e.preventDefault();
+
     if (!isValidEmail(email)) {
       setErrors('올바른 이메일 주소를 입력해 주세요.');
       return;

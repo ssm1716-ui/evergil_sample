@@ -178,6 +178,7 @@ const ManagePage = () => {
     if (res.status === 201) {
       setIsModalOpen(true);
       setReceiverEmail('');
+      fetchAllData(profileId);
     }
   };
 
@@ -412,7 +413,7 @@ const ManagePage = () => {
                                 <td>
                                   <div className="d-flex">
                                     <Link
-                                      className="btn btn-black btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                                      className="btn btn-black btn-very-small w-50 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
                                       onClick={(e) =>
                                         handlePrivateRequests(p, 'ALLOW')
                                       }
@@ -420,7 +421,7 @@ const ManagePage = () => {
                                       허용
                                     </Link>
                                     <Link
-                                      className="btn btn-white btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                                      className="btn btn-white btn-very-small w-50 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
                                       onClick={(e) =>
                                         handlePrivateRequests(p, 'DENY')
                                       }

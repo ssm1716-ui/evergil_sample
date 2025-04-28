@@ -201,8 +201,8 @@ const AddressPage = () => {
                             </div>
                             <div className="col-md-7 col-sm-6 icon-with-text-style-01 md-mb-25px">
                               <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
-                                <div className="feature-box-content">
-                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px vertical-align-top">
+                                <div className="sm-feature-box-content feature-box-content">
+                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px align-sub">
                                     {address.deliveryName}
                                   </span>
                                   {address.isDefault && (

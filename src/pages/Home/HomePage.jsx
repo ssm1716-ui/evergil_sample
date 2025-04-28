@@ -94,7 +94,7 @@ const HomeSubPage = () => {
                 에버링크 추모페이지
               </h6>
 
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14">
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14 text-keep-all">
                 Everlink 는 가족과 추억을 공유하고, 편지를 남기며,
                 <br /> 고인을 평생 기억할 수 있도록 만들어주는 추모페이지
                 입니다.

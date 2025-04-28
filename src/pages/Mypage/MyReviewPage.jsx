@@ -222,12 +222,11 @@ const MyReviewPage = () => {
           // data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":50, "staggervalue": 150, "easing": "easeOutQuad" }'
         >
           <div className="mx-auto me-md-0 col tab-style-01">
-            <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-12 fw-600 mb-3">
+            <ul className="nav nav-tabs justify-content-center border-0 text-center fs-18 md-fs-12 sm-fs-11 fw-600 mb-3">
               <li className="nav-item mt-10px">
                 <a
                   className="nav-link active"
                   data-bs-toggle="tab"
-                  href="#tab_sec1"
                   onClick={() => {
                     setViewSelect((prev) => ({
                       ...prev,
@@ -242,7 +241,6 @@ const MyReviewPage = () => {
                 <a
                   className="nav-link"
                   data-bs-toggle="tab"
-                  href="#tab_sec2"
                   onClick={() => handleUpdateFromDate(7)}
                 >
                   1주일
@@ -252,7 +250,6 @@ const MyReviewPage = () => {
                 <a
                   className="nav-link"
                   data-bs-toggle="tab"
-                  href="#tab_sec3"
                   onClick={() => handleUpdateFromDate(30)}
                 >
                   1개월
@@ -262,7 +259,6 @@ const MyReviewPage = () => {
                 <a
                   className="nav-link"
                   data-bs-toggle="tab"
-                  href="#tab_sec4"
                   onClick={() => handleUpdateFromDate(90)}
                 >
                   3개월
@@ -326,13 +322,12 @@ const MyReviewPage = () => {
                         onClick={() => handleDrodownOpen(review.id)}
                         onMouseLeave={() => setSelectedId(0)}
                       >
-                        <a href="#" className="text-dark-gray">
+                        <a className="text-dark-gray">
                           <i className="feather icon-feather-more-vertical- align-middle icon-small text-black ps-20px"></i>
                         </a>
                         <ul className="language-dropdown text-center">
                           <li>
                             <a
-                              href="#"
                               className="fs-18"
                               onClick={() => handleReviewsModify(review.id)}
                             >
@@ -341,7 +336,6 @@ const MyReviewPage = () => {
                           </li>
                           <li>
                             <a
-                              href="#"
                               className="fs-18"
                               onClick={() => handleReviewsRemove(review.id)}
                             >
@@ -384,7 +378,7 @@ const MyReviewPage = () => {
                       <span className="w-80px pe-1">
                         <img
                           src={review.image2}
-                          className="w-80px md-w-60px md-h-60px mb-10px"
+                          className="w-80px h-80px md-w-60px md-h-60px mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>
@@ -393,7 +387,7 @@ const MyReviewPage = () => {
                       <span className="w-80px pe-1">
                         <img
                           src={review.image3}
-                          className="w-80px md-w-60px md-h-60px  mb-10px"
+                          className="w-80px h-80px md-w-60px md-h-60px  mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>
@@ -402,7 +396,7 @@ const MyReviewPage = () => {
                       <span className="w-80px pe-1">
                         <img
                           src={review.image4}
-                          className="w-80px md-w-60px md-h-60px  mb-10px"
+                          className="w-80px h-80px md-w-60px md-h-60px  mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>
@@ -411,7 +405,7 @@ const MyReviewPage = () => {
                       <span className="w-80px pe-1">
                         <img
                           src={review.image5}
-                          className="w-80px md-w-60px md-h-60px mb-10px"
+                          className="w-80px h-80px md-w-60px md-h-60px mb-10px"
                           alt="리뷰 이미지"
                         />
                       </span>
@@ -431,143 +425,149 @@ const MyReviewPage = () => {
         </div>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-12 col-md-8">
-              <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
-                <div className="row justify-content-center mb-30px sm-mb-10px">
-                  <div className="col-md-9 text-center">
-                    <h4 className="text-dark-gray fw-500 mb-15px">리뷰 수정</h4>
-                    <button
-                      type="button"
-                      className="btn-close position-absolute top-10px right-10px"
-                      onClick={() => setIsModalOpen(false)}
-                    ></button>
-                  </div>
-                </div>
-                <form className="row contact-form-style-02">
-                  <div className="col-lg-12 mb-20px text-center">
-                    <h6 className="text-dark-gray fw-500 mb-15px">
-                      상품 만족도
-                    </h6>
-
-                    <div>
-                      <span className="ls-minus-1px icon-large d-block mt-20px md-mt-0">
-                        {[...Array(5)].map((_, index) => (
-                          <FaStar
-                            key={index}
-                            size={50}
-                            style={{ cursor: 'pointer', marginRight: '5px' }}
-                            color={index < reviews.rate ? '#FFD700' : '#E0E0E0'} // 채워진 별은 노란색, 비어있는 별은 회색
-                            onClick={() => handleStarClick(index)}
-                          />
-                        ))}
-                      </span>
+        <div className="w-40 md-w-70 sm-w-90 sm-h-90">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
+                  <div className="row justify-content-center mb-30px sm-mb-10px">
+                    <div className="col-md-9 text-center">
+                      <h4 className="text-dark-gray fw-500 mb-15px">
+                        리뷰 수정
+                      </h4>
+                      <button
+                        type="button"
+                        className="btn-close position-absolute top-10px right-10px"
+                        onClick={() => setIsModalOpen(false)}
+                      ></button>
                     </div>
                   </div>
-                  <div className="col-md-12 mb-20px">
-                    <label className="form-label mb-5px fw-700 text-black">
-                      리뷰 작성
-                    </label>
-                    <textarea
-                      className="border-radius-4px form-control"
-                      cols="40"
-                      rows="4"
-                      name="content"
-                      value={reviews.content}
-                      onChange={handleContentChange}
-                      placeholder="리뷰를 남겨주세요."
-                    ></textarea>
-                  </div>
+                  <form className="row contact-form-style-02">
+                    <div className="col-lg-12 mb-20px text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px">
+                        상품 만족도
+                      </h6>
 
-                  <div className="col-md-12 mb-20px">
-                    {/* 파일 업로드 버튼 스타일링 */}
-                    <div
-                      className="border-1 border-dashed rounded mt-1 mb-3 p-1 position-relative text-center "
-                      style={{ cursor: 'pointer' }}
-                    >
-                      {/* 클릭 가능한 영역 */}
-                      <label
-                        htmlFor="file-upload"
-                        style={{ cursor: 'pointer' }}
-                        className="w-50"
-                      >
-                        <i className="bi bi-camera fs-5 me-2"></i>
-                        사진 첨부하기
+                      <div>
+                        <span className="ls-minus-1px icon-large d-block mt-20px md-mt-0">
+                          {[...Array(5)].map((_, index) => (
+                            <FaStar
+                              key={index}
+                              size={35}
+                              style={{ cursor: 'pointer', marginRight: '5px' }}
+                              color={
+                                index < reviews.rate ? '#FFD700' : '#E0E0E0'
+                              } // 채워진 별은 노란색, 비어있는 별은 회색
+                              onClick={() => handleStarClick(index)}
+                            />
+                          ))}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-md-12 mb-20px">
+                      <label className="form-label mb-5px fw-700 text-black">
+                        리뷰 작성
                       </label>
-
-                      {/* 숨겨진 파일 업로드 input */}
-                      <input
-                        id="file-upload"
-                        type="file"
-                        multiple
-                        accept="image/*,"
-                        onChange={handleFileChange}
-                        className="input-file-upload"
-                      />
+                      <textarea
+                        className="border-radius-4px form-control"
+                        cols="40"
+                        rows="4"
+                        name="content"
+                        value={reviews.content}
+                        onChange={handleContentChange}
+                        placeholder="리뷰를 남겨주세요."
+                      ></textarea>
                     </div>
-                    {/* 업로드 제한 메시지 */}
-                    {files.length > 5 && (
-                      <p className="text-red text-sm mt-1 text-center mb-1">
-                        최대 5개의 이미지만 업로드 가능합니다.
-                      </p>
-                    )}
-                    {/* 미리보기 리스트 (가로형) */}
-                    <div className="d-flex justify-conten-start mt-4 gap-2">
-                      {files.map((fileObj, index) => (
-                        <div
-                          key={index}
-                          className="position-relative w-20 h-20"
+
+                    <div className="col-md-12 mb-20px">
+                      {/* 파일 업로드 버튼 스타일링 */}
+                      <div
+                        className="border-1 border-dashed rounded mt-1 mb-3 p-1 position-relative text-center "
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {/* 클릭 가능한 영역 */}
+                        <label
+                          htmlFor="file-upload"
+                          style={{ cursor: 'pointer' }}
+                          className="w-50"
                         >
-                          {/* 삭제 버튼 */}
-                          <Button
-                            onClick={() => handleRemoveFile(index)}
-                            size="extra-small"
-                            className="position-absolute top-0 end-0 bg-black text-white text-sm border-0 md-p-5"
-                          >
-                            ✕
-                          </Button>
+                          <i className="bi bi-camera fs-5 me-2"></i>
+                          사진 첨부하기
+                        </label>
 
-                          {/* 이미지 미리보기 */}
-                          <img
-                            src={fileObj.preview || fileObj}
-                            alt="미리보기"
-                            className="w-100 h-100"
-                          />
-                        </div>
-                      ))}
+                        {/* 숨겨진 파일 업로드 input */}
+                        <input
+                          id="file-upload"
+                          type="file"
+                          multiple
+                          accept="image/*,"
+                          onChange={handleFileChange}
+                          className="input-file-upload"
+                        />
+                      </div>
+                      {/* 업로드 제한 메시지 */}
+                      {files.length > 5 && (
+                        <p className="text-red text-sm mt-1 text-center mb-1">
+                          최대 5개의 이미지만 업로드 가능합니다.
+                        </p>
+                      )}
+                      {/* 미리보기 리스트 (가로형) */}
+                      <div className="d-flex justify-conten-start mt-4 gap-2">
+                        {files.map((fileObj, index) => (
+                          <div
+                            key={index}
+                            className="position-relative w-20 h-20"
+                          >
+                            {/* 삭제 버튼 */}
+                            <Button
+                              onClick={() => handleRemoveFile(index)}
+                              size="extra-small"
+                              className="position-absolute top-0 end-0 bg-black text-white text-sm border-0 md-p-5"
+                            >
+                              ✕
+                            </Button>
+
+                            {/* 이미지 미리보기 */}
+                            <img
+                              src={fileObj.preview || fileObj}
+                              alt="미리보기"
+                              className="w-100 h-100 sm-h-50px "
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* 업로드된 파일 수 표시 */}
+                      {files.length > 0 && (
+                        <p className="text-center mt-2">
+                          {files.length} / 5 파일 업로드됨
+                        </p>
+                      )}
                     </div>
 
-                    {/* 업로드된 파일 수 표시 */}
-                    {files.length > 0 && (
-                      <p className="text-center mt-2">
-                        {files.length} / 5 파일 업로드됨
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-lg-112 text-center text-lg-center">
-                    <input type="hidden" name="redirect" value="" />
-                    <Button
-                      className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
-                      onClick={handleGetFileUploadPath}
-                    >
-                      리뷰수정
-                    </Button>
-                    <Button
-                      className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
-                      onClick={() => {
-                        setIsModalOpen(false);
-                        // setReviews(initialForm);
-                      }}
-                    >
-                      닫기
-                    </Button>
-                  </div>
-                  <div className="col-12">
-                    <div className="form-results mt-20px d-none"></div>
-                  </div>
-                </form>
+                    <div className="col-lg-112 text-center text-lg-center">
+                      <input type="hidden" name="redirect" value="" />
+                      <Button
+                        className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                        onClick={handleGetFileUploadPath}
+                      >
+                        리뷰수정
+                      </Button>
+                      <Button
+                        className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => {
+                          setIsModalOpen(false);
+                          // setReviews(initialForm);
+                        }}
+                      >
+                        닫기
+                      </Button>
+                    </div>
+                    <div className="col-12">
+                      <div className="form-results mt-20px d-none"></div>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
