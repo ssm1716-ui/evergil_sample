@@ -67,7 +67,7 @@ const ShopPage = () => {
           pageSize
         );
         if (status !== 200) throw new Error('리뷰 정보를 불러올 수 없습니다.');
-        console.log(data.data.length);
+        console.log(data);
         data.data.length > 0 ? setMore(true) : setMore(false);
 
         setReviews((prevReviews) => [...prevReviews, ...data.data]);
@@ -464,7 +464,15 @@ const ShopPage = () => {
                     <div className="col-lg-12 md-mb-40px">
                       <div className="d-flex align-items-center justify-content-center mb-5px">
                         <div className="col fw-500 text-dark-gray w-100 text-center">
-                          <img src={product.productDetails} alt="detail" />
+                          {Array.isArray(product.productDetails) &&
+                            product.productDetails.map((detail, idx) => (
+                              <img
+                                key={idx}
+                                src={detail}
+                                alt={`detail-${idx}`}
+                                className="me-2"
+                              />
+                            ))}
                         </div>
                       </div>
                     </div>
@@ -473,45 +481,18 @@ const ShopPage = () => {
 
                 <div className="tab-pane fade in" id="tab_five2">
                   <div className="row m-0">
-                    <div className="col-12">
-                      <div className="row">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Color:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          Black, yellow
-                        </div>
-                      </div>
-                      <div className="row bg-very-light-gray">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Style/Type:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          Sports, Formal
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Lining:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          100% polyester taffeta with a DWR finish
-                        </div>
-                      </div>
-                      <div className="row bg-very-light-gray">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Material:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          Lather, Cotton, Silk
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Free shipping:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          On all orders over $50
+                    <div className="col-lg-12 md-mb-40px">
+                      <div className="d-flex align-items-center justify-content-center mb-5px">
+                        <div className="col fw-500 text-dark-gray w-100 text-center">
+                          {Array.isArray(product.productAttributes) &&
+                            product.productAttributes.map((attribute, idx) => (
+                              <img
+                                key={idx}
+                                src={attribute}
+                                alt={`attribute-${idx}`}
+                                className="me-2"
+                              />
+                            ))}
                         </div>
                       </div>
                     </div>

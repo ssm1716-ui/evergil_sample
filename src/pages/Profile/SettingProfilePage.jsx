@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { postSignIn, getAccessToken } from '@/api/memberApi';
-import { loginSuccess } from '@/state/slices/authSlices.js';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
@@ -16,15 +13,16 @@ import {
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SettingProfilePage = () => {
+  const location = useLocation();
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formProfile, setFormProfile] = useState({
-    qrKey: 'RUcPvIvjo5bfdEtg',
+    qrKey: '', //QR key
     memorialType: '', // 사람 or 동물
-    displayName: '',
-    birthday: '',
-    deathDate: '',
-    nickname: '',
+    displayName: '', //이름
+    birthday: '', //생일
+    deathDate: '', //기일
+    nickname: '', //닉네임
     scope: '', //공개 or 비공개
   });
 
@@ -51,7 +49,11 @@ const SettingProfilePage = () => {
         console.error(error);
       }
     };
-    if (profileId) fetchProfile();
+    if (profileId) {
+      fetchProfile();
+      return;
+    }
+    setFormProfile({ ...formProfile, qrKey: location.state?.qrKey });
   }, []);
 
   // memorialType 버튼 선택 핸들러

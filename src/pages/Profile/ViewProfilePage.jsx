@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Modal from '@/components/common/Modal/Modal';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
@@ -412,10 +413,17 @@ const ViewProfilePage = () => {
           <div className="bottom-minus-60px end-0 z-index-1 pe-1">
             {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
             <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
-              <p
+              {/* <p
                 className="w-60 sm-w-100 mx-center profile-desc"
                 dangerouslySetInnerHTML={{ __html: profile.description }}
-              ></p>
+              ></p> */}
+              <ReactQuill
+                className="w-60 sm-w-100 mx-center"
+                value={profile.description}
+                readOnly={true}
+                theme="snow"
+                modules={{ toolbar: false }} // 툴바 제거
+              />
             </div>
           </div>
         </div>
@@ -527,6 +535,7 @@ const ViewProfilePage = () => {
                                     <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
                                     add comment
                                   </a>
+                                  ``
                                 </li>
                               </ul>
                             </div>
@@ -554,7 +563,7 @@ const ViewProfilePage = () => {
                                     <p className="sm-w-85">{letter.content}</p>
                                   </div>
                                   {letter.hasPermission && (
-                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px md-w-70px">
+                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-10px md-w-70px">
                                       <span
                                         className="cursor-pointer me-5"
                                         onClick={() =>

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Modal from '@/components/common/Modal/Modal';
-import { postSignIn, getAccessToken } from '@/api/memberApi';
 import { isValidEmail } from '@/utils/validators';
 import { loginSuccess } from '@/state/slices/authSlices';
 
@@ -10,8 +9,10 @@ import { postAddCart } from '@/api/member/cartApi';
 
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
-import { getCart, removeLocalStorageCart } from '@/api/memberApi';
+import { postSignIn, getCart, removeLocalStorageCart } from '@/api/memberApi';
 import { getTransformedCartData } from '@/utils/utils';
+
+import { API_BASE_URL } from '@/config';
 
 if (localStorage.getItem('persist:root') === null) {
   console.log('스토리지 초기화 방지');
@@ -95,13 +96,13 @@ const SignInPage = () => {
     const value = e.target.dataset.value || e.currentTarget.dataset.value;
     switch (value) {
       case 'kakao':
-        url = 'https://dev-api.everlink.kr/oauth2/authorization/kakao';
+        url = `${API_BASE_URL}/oauth2/authorization/kakao`;
         break;
       case 'naver':
-        url = 'https://dev-api.everlink.kr/oauth2/authorization/naver';
+        url = `${API_BASE_URL}/oauth2/authorization/naver`;
         break;
       case 'google':
-        url = 'https://dev-api.everlink.kr/oauth2/authorization/google';
+        url = `${API_BASE_URL}/oauth2/authorization/google`;
         break;
       default:
         break;
