@@ -162,6 +162,7 @@ const ManagePage = () => {
     if (res.status !== 200) {
       alert('일반 액세스 변경하는데 에러가 발생했습니다.');
     }
+    fetchAllData(profileId);
   };
 
   //초대하기 발송

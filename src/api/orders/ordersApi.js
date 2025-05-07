@@ -3,9 +3,16 @@ import axiosInstance from '@/api/axiosInstance';
 //주문 API
 
 //주문 리스트
-export const getOrdersList = async (param, page = 0, pageSize = 1) => {
+export const getOrdersList = async (param = {}, page = 0, pageSize = 10) => {
     try {
-        const res = await axiosInstance.get(`/orders?page=${page}&pageSize=${pageSize}`);
+
+        // 기본 페이지 정보 포함한 쿼리 파라미터 객체 생성
+        const queryParams = new URLSearchParams({
+            ...param,
+            page,
+            pageSize
+        });
+        const res = await axiosInstance.get(`/orders?${queryParams.toString()}`);
         return res;
     } catch (err) {
         console.error(err);
@@ -26,6 +33,26 @@ export const getOrdersDetail = async (param) => {
 export const putOrdersPurchasesConfirm = async (param) => {
     try {
         const res = await axiosInstance.put(`/orders/${param}/purchases.confirm`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//결제 취소(카드결제 / 계좌이체 취소)
+export const putOrdersPurchasesCancel = async (param) => {
+    try {
+        const res = await axiosInstance.put(`/orders/${param}/purchases.cancel`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+//결제 취소(가상계좌 환불 신청)
+export const putOrdersVbankCancel = async (param) => {
+    try {
+        const res = await axiosInstance.put(`/orders/${param}/vbank.cancel`);
         return res;
     } catch (err) {
         console.error(err);

@@ -28,8 +28,20 @@ const paymentMethods = [
 const BridgePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isAddresOpen, SetIsAddresOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // ✅ 모바일 환경 체크 함수
+  const isMobile = () => {
+    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  };
+
+  const handelIsMobile = () => {
+    if (isMobile()) {
+      navigate('/qr-scanner');
+    } else {
+      setIsModalOpen(true);
+    }
+  };
 
   return (
     <>
@@ -54,7 +66,7 @@ const BridgePage = () => {
                     size="extra-large"
                     radiusOn="radius-on"
                     className="btn btn-extra-large btn-round-edge btn-black btn-box-shadow submit w-40 md-w-70 text-transform-none me-10px md-mb-10px"
-                    onClick={() => navigate('/qr-scanner')}
+                    onClick={() => handelIsMobile()}
                   >
                     <i className="feather icon-feather-camera icon-small text-white pe-3"></i>
                     스캔하기
@@ -104,27 +116,24 @@ const BridgePage = () => {
       </section>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-40 md-w-70">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
-                        결제를 진행 하겠습니다.
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-14">
+                        모바일에서만 스캔이 가능합니다.
                       </h6>
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
-                      <button className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1">
-                        결제 진행
-                      </button>
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsModalOpen(false)}
                       >
-                        취소
+                        확인
                       </button>
                     </div>
                   </div>

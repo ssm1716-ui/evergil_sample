@@ -6,7 +6,6 @@ import {
   getVerificationCodeVerify,
   getVerificationEmailVerify,
   getVerificationEmailResend,
-  getAccessToken,
 } from '@/api/memberApi';
 
 import { getPolicySelected } from '@/api/policy/policyApi';

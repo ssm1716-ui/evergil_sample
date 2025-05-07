@@ -44,7 +44,6 @@ const modules = {
     [{ header: [1, 2, 3, false] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ list: 'ordered' }, { list: 'bullet' }],
-    ['blockquote'],
     [{ indent: '-1' }, { indent: '+1' }],
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
@@ -57,7 +56,6 @@ const formats = [
   'italic',
   'underline',
   'strike',
-  'blockquote',
   'list',
   'bullet',
   'script',
@@ -1058,7 +1056,7 @@ const EditProfilePage = () => {
                                 <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                   <p className="sm-w-85">{letter.content}</p>
                                 </div>
-                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-10px">
                                   <Link
                                     to="#"
                                     onClick={(e) => {
