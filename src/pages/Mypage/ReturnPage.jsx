@@ -177,7 +177,7 @@ const ReturnPage = () => {
                   className="border-radius-4px form-control"
                   cols="40"
                   rows="4"
-                  name="refundRequestDetails" // ✅ name 설정
+                  name="exchangeRequestDetails" // ✅ name 설정
                   value={refund.exchangeRequestDetails}
                   onChange={handleRefundChange}
                   placeholder="반품 사유를 남겨주세요."

@@ -415,49 +415,20 @@ height: 1297px;
 
 /* 프로필 설명란 */
 .profile-desc{
-  border: 1px solid #CDCDCD;
+  /* border: 1px solid #CDCDCD; */
   padding: 10px;
   overflow-y: auto;
   max-height: 220px;
   font-size: 20px;
 }
 
-.profile-desc p, .profile-desc ul, .profile-desc ol  {
-  margin: 0;
+.ql-container.ql-snow {
+  overflow-y: auto;
+  max-height: 220px;
+  font-size: 20px;
 }
 
-.profile-desc ul  {
-  list-style-type: disc; /* 점 */
-  padding-left: 1.5em;
-}
 
-.profile-desc li {
-  list-style-type: inherit; 
-}
-
-.profile-desc p {
-  margin: 0 0 1em;
-}
-
-.profile-desc blockquote {
-  margin: 0 0 1em;
-  padding-left: 1em;
-  border-left: 4px solid #ccc;
-  color: #666;
-}
-
-.profile-desc ul, .profile-desc ol {
-  padding-left: 2em;
-  list-style-position: outside;
-}
-
-.profile-desc li {
-  margin-bottom: 4px;
-}
-
-.profile-desc span[style*="color"] {
-  /* 색상은 인라인 style로 저장되니 따로 조정할 필요 없음 */
-}
 
 /* 모바일 화면 (최대 768px)에서만 가로 3개씩 */
 @media (max-width: 768px) {

@@ -29,9 +29,13 @@ const MyReviewPage = () => {
   };
   const [selectedId, setSelectedId] = useState(0);
   const [viewSelect, setViewSelect] = useState(initData);
+  const [fullReviewDt, setFullReviewDt] = useState([]);
   const [meReviews, setMeReviews] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [focusReviewid, setFocusReviewid] = useState('');
+  const [focusReviewid, setFocusReviewid] = useState({
+    productId: '',
+    reviewId: '',
+  });
   const [reviews, setReviews] = useState({
     rate: 0,
     content: '',
@@ -43,16 +47,17 @@ const MyReviewPage = () => {
   useEffect(() => {
     const getMeReviews = async () => {
       try {
-        console.log(viewSelect);
         const { status, data } = await postMeReviews(viewSelect);
         if (status !== 200) {
           alert('통신 에러가 발생했습니다.');
           return;
         }
         const arr = data.data;
+        console.log(arr);
         // review만 추출하여 상태 업데이트
         const extractedReviews = arr.map((item) => item.review);
         setMeReviews(extractedReviews);
+        setFullReviewDt(arr);
       } catch (error) {
         console.error(error);
       }
@@ -94,7 +99,12 @@ const MyReviewPage = () => {
 
     setFiles(images.filter((image) => image));
     setReviews(data.data);
-    setFocusReviewid(id);
+
+    const targetReview = fullReviewDt.find((item) => item.review.id === id);
+    setFocusReviewid({
+      productId: targetReview.product.id,
+      reviewId: id,
+    });
     setIsModalOpen(true);
   };
 
@@ -181,12 +191,10 @@ const MyReviewPage = () => {
       }
     }
 
-    console.log(completedUrls);
-
     // 이후 로직 업로드된 파일 URL을 백엔드에 전송
     const res = await postReviewModify(
-      '99999999-9999-9999-9999-999999999999',
-      focusReviewid,
+      focusReviewid.productId,
+      focusReviewid.reviewId,
       {
         ...reviews,
         images: completedUrls,
@@ -295,6 +303,7 @@ const MyReviewPage = () => {
                     type="text"
                     name="keyword"
                     placeholder="검색어를 입력 해주세요."
+                    // value={viewSelect.keyword}
                     onChange={handleInputChangeDate}
                   />
                   <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
@@ -548,13 +557,15 @@ const MyReviewPage = () => {
                     <div className="col-lg-112 text-center text-lg-center">
                       <input type="hidden" name="redirect" value="" />
                       <Button
-                        className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                        size="large"
+                        className="btn btn-black btn-box-shadow btn-round-edge submit sm-me-2"
                         onClick={handleGetFileUploadPath}
                       >
                         리뷰수정
                       </Button>
                       <Button
-                        className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                        size="large"
+                        className="btn btn-white btn-box-shadow btn-round-edge submit ms-2 sm-ms-2"
                         onClick={() => {
                           setIsModalOpen(false);
                           // setReviews(initialForm);

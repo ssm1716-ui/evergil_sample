@@ -470,6 +470,7 @@ export const putConfirmInvitation = async (params) => {
         return res;
     } catch (err) {
         console.error(err);
+        return err.response ? err.response : { status: 500, data: 'Unknown error' };
     }
 };
 

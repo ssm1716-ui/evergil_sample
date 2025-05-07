@@ -1,28 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
+import { useVerifyQrKey } from '@/hooks/useVerifyQrKey';
+import { getLastPathSegment } from '@/utils/utils';
 import defaultLogo from '@/assets/images/header-logo.png';
 
 const QRScanner = () => {
   const [scanResult, setScanResult] = useState(null);
   const scannerRef = useRef(null);
+  const qrCodeInstanceRef = useRef(null);
+  const isScanningRef = useRef(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    let lastErrorTime = 0;
     const html5QrCode = new Html5Qrcode('qr-reader');
+    qrCodeInstanceRef.current = html5QrCode;
+    isScanningRef.current = true;
 
     const config = {
       fps: 10,
-      // qrbox를 제거하거나 null로 설정하면 전체 카메라 화면 사용
-      qrbox: (viewfinderWidth, viewfinderHeight) => {
-        const minEdgePercentage = 0.6; // 화면의 60% 차지
-        const edgeSize = Math.floor(
-          Math.min(viewfinderWidth, viewfinderHeight) * minEdgePercentage
-        );
-        return {
-          width: edgeSize,
-          height: edgeSize,
-        };
+      qrbox: (vw, vh) => {
+        const size = Math.floor(Math.min(vw, vh) * 0.6);
+        return { width: size, height: size };
       },
       rememberLastUsedCamera: true,
     };
@@ -31,18 +31,30 @@ const QRScanner = () => {
       .start(
         { facingMode: 'environment' },
         config,
-        (decodedText) => {
-          setScanResult(decodedText);
-          html5QrCode.stop();
-          if (
-            decodedText.startsWith('http://') ||
-            decodedText.startsWith('https://')
-          ) {
-            window.location.href = decodedText;
+        async (key) => {
+          setScanResult(key);
+          if (isScanningRef.current) {
+            await html5QrCode.stop();
+            isScanningRef.current = false;
           }
+          console.log(key);
+
+          const isPathKey = getLastPathSegment(key);
+          console.log(isPathKey);
+          if (!isPathKey) {
+            navigate(
+              `/error?desc=${'유효한 QR코드 아닙니다.'}&pageUrl=${'/profile'}`
+            );
+          }
+          window.location.href = key;
+          // navigate(`${key}`);
         },
         (errorMessage) => {
-          console.log('QR Code Scan Error: ', errorMessage);
+          const now = Date.now();
+          if (now - lastErrorTime > 3000) {
+            console.log('QR Code Scan Error: ', errorMessage);
+            lastErrorTime = now;
+          }
         }
       )
       .catch((err) => {
@@ -50,9 +62,26 @@ const QRScanner = () => {
       });
 
     return () => {
-      html5QrCode.stop().catch((err) => console.error(err));
+      if (isScanningRef.current && qrCodeInstanceRef.current) {
+        qrCodeInstanceRef.current
+          .stop()
+          .then(() => {
+            isScanningRef.current = false;
+          })
+          .catch((err) => {
+            console.warn('QR 스캐너 종료 중 에러 (무시 가능):', err);
+          });
+      }
     };
   }, []);
+
+  const handleBack = async () => {
+    if (isScanningRef.current && qrCodeInstanceRef.current) {
+      await qrCodeInstanceRef.current.stop().catch(() => {});
+      isScanningRef.current = false;
+    }
+    navigate('/profile');
+  };
 
   return (
     <>
@@ -76,9 +105,8 @@ const QRScanner = () => {
                   <img src={defaultLogo} alt="" className="mobile-logo" />
                 </Link>
               </div>
-              {/* 우측 돌아가기 버튼 */}
               <button
-                onClick={() => navigate(-1)}
+                onClick={handleBack}
                 style={{
                   border: 'none',
                   background: 'none',
@@ -95,7 +123,7 @@ const QRScanner = () => {
           id="qr-reader"
           ref={scannerRef}
           style={{
-            height: 'calc(100vh - 63px)', // 헤더 높이 제외한 영역 전체 사용
+            height: 'calc(100vh - 63px)',
             width: '100%',
             backgroundColor: 'black',
           }}

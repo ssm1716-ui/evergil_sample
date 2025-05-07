@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
@@ -372,10 +373,17 @@ const ViewProfilePage = () => {
           <div className="bottom-minus-60px end-0 z-index-1 pe-1">
             {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
             <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
-              <div
-                className="w-60 sm-w-100 mx-center profile-desc"
-                dangerouslySetInnerHTML={{ __html: profile.description }}
-              ></div>
+              {/* <p
+                              className="w-60 sm-w-100 mx-center profile-desc"
+                              dangerouslySetInnerHTML={{ __html: profile.description }}
+                            ></p> */}
+              <ReactQuill
+                className="w-60 sm-w-100 mx-center"
+                value={profile.description}
+                readOnly={true}
+                theme="snow"
+                modules={{ toolbar: false }} // 툴바 제거
+              />
             </div>
             <div className="mt-80px md-mt-100px sm-mt-30px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link

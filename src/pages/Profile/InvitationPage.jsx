@@ -64,11 +64,17 @@ const InvitationPage = () => {
     });
 
     console.log(res);
-    return;
 
-    if (res.status === 200) {
+    const { status, data } = res;
+
+    if (status === 200) {
       navigate('/profile');
+      return;
     }
+
+    //상태코드가 200이 아니면 서버에서 받은 메시지로 출력
+    setErrDesc(data.message);
+    setIsErr(true);
   };
 
   return (

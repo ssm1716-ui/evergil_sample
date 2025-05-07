@@ -80,7 +80,7 @@ const App = () => {
             {/* <Route path="/qr-scanner" element={<QRScanner />} /> */}
             {/*<Route path="/qr-confirm" element={<QRCofirm />} /> */}
 
-            {/* qr 테스트*/}
+            {/* QR스캐너*/}
             <Route
               path="/qr-scanner"
               element={
@@ -90,9 +90,9 @@ const App = () => {
               }
             />
 
-            {/* 프로필 영역 start*/}
+            {/* QR 검증*/}
             <Route
-              path="/qr-confirm"
+              path="/qr-confirm/:key"
               element={
                 <ProtectedRoute>
                   <QRCofirm />

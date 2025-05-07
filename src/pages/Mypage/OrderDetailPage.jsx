@@ -4,6 +4,8 @@ import Button from '@/components/common/Button/Button';
 import {
   getOrdersDetail,
   putOrdersPurchasesConfirm,
+  putOrdersPurchasesCancel,
+  putOrdersVbankCancel,
 } from '@/api/orders/ordersApi';
 import { getFileType, formatNumber } from '@/utils/utils';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
@@ -29,6 +31,10 @@ const MyPage = () => {
     content: '',
     images: [],
   });
+  const [isConfirmPurchaseTitle, setIsConfirmPurchaseTitle] = useState('');
+  const [isConfirmPurchaseModalOpen, setIsConfirmPurchaseModalOpen] =
+    useState(false);
+
   const [files, setFiles] = useState([]);
   const orderNumber = searchParams.get('orderNumber'); // ✅ URL에서 key 값 가져오기
   const copyToClipboard = useCopyToClipboard();
@@ -50,13 +56,13 @@ const MyPage = () => {
     const fetchOrder = async () => {
       try {
         const { status, data } = await getOrdersDetail(orderNumber);
+        console.log(data);
 
         if (status !== 200) {
           alert('통신 에러가 발생했습니다.');
           return;
         }
         const order = data.data;
-        console.log(order);
         setDelivery(order.delivery);
         setPayment(order.payment);
         setProduct(order.product);
@@ -157,6 +163,42 @@ const MyPage = () => {
     }
   };
 
+  //구매확정
+  const handlePurchasesConfirm = async () => {
+    const confirmed = window.confirm('구매 확정을 하시겠습니까?');
+    if (!confirmed) return;
+
+    const res = await putOrdersPurchasesConfirm(orderNumber);
+
+    if (res.status === 200) {
+      setIsConfirmPurchaseTitle('구매 확정 처리 되었습니다.');
+      setIsConfirmPurchaseModalOpen(true);
+    }
+  };
+
+  //결제 취소(paymentMethod값으로 api 분기 처리 됨)
+  const handlePaymentCancel = async (product) => {
+    const confirmed = window.confirm('결제 취소를 하시겠습니까?');
+    if (!confirmed) return;
+
+    let res;
+    //if-CARD:BANK, else-VBANK
+    if (['CARD', 'BANK'].includes(product.paymentMethod)) {
+      // 카드, 계좌이체
+      res = await putOrdersPurchasesCancel(orderNumber);
+    } else if (product.paymentMethod === 'VBANK') {
+      // 가상계좌 환불
+      res = await putOrdersVbankCancel(orderNumber);
+    } else {
+      alert('결제 취소가 불가능');
+    }
+
+    if (res.status === 200) {
+      setIsConfirmPurchaseTitle('결제 취소 처리 되었습니다.');
+      setIsConfirmPurchaseModalOpen(true);
+    }
+  };
+
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px">
@@ -169,13 +211,15 @@ const MyPage = () => {
               className="col-12"
               data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
-              <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
-                {product.deliveryStatusName}
-              </span>
               <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
+                <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
+                  {product.deliveryStatusName}
+                </span>
                 <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
                   <div className="w-300px md-w-250px sm-w-100 sm-mb-10px">
-                    <img src={ShopDetailImage3} className="w-120px" alt="" />
+                    {product.images?.[0] && (
+                      <img src={product.images[0]} className="w-120px" alt="" />
+                    )}
                   </div>
                 </div>
                 <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">
@@ -244,6 +288,7 @@ const MyPage = () => {
                       <Link
                         to="#"
                         className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                        onClick={() => handlePurchasesConfirm()}
                       >
                         <span>
                           <span
@@ -296,7 +341,7 @@ const MyPage = () => {
                       <Link
                         href="#"
                         className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
-                        // onClick={() => setIsModalOpen(true)}
+                        onClick={() => handlePaymentCancel(product)}
                       >
                         <span>
                           <span
@@ -624,6 +669,38 @@ const MyPage = () => {
                       <div className="form-results mt-20px d-none"></div>
                     </div>
                   </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isConfirmPurchaseModalOpen}
+        onClose={() => setIsConfirmPurchaseModalOpen(false)}
+      >
+        <div className="w-40 md-w-70">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-18">
+                        {isConfirmPurchaseTitle}
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
+                        onClick={() => setIsConfirmPurchaseModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
