@@ -100,7 +100,7 @@ const StorePage = () => {
                 <li className="grid-sizer"></li>
                 {products.map((product, index) => (
                   <li className="grid-item new" key={index}>
-                    <div className="shop-box mb-10px">
+                    <div className="shop-image-wrapper">
                       <div className="shop-image mb-20px">
                         <Link to={`/shop/${product.productId}`}>
                           <img
@@ -120,7 +120,9 @@ const StorePage = () => {
                           {product.productName}
                         </a>
                         <div className="price lh-22 md-lh-40 fs-18 md-fs-20 sm-fs-12">
-                          <del>{product.price.toLocaleString()}원</del>
+                          <del className="me-10px">
+                            {product.price.toLocaleString()}원
+                          </del>
                           {product.discountedPrice.toLocaleString()}원
                         </div>
                       </div>

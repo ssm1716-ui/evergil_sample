@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Modal from '@/components/common/Modal/Modal';
-import { postSignIn, getAccessToken } from '@/api/memberApi';
 import { isValidEmail } from '@/utils/validators';
 import { loginSuccess } from '@/state/slices/authSlices';
 
@@ -10,8 +9,10 @@ import { postAddCart } from '@/api/member/cartApi';
 
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
-import { getCart, removeLocalStorageCart } from '@/api/memberApi';
+import { postSignIn, getCart, removeLocalStorageCart } from '@/api/memberApi';
 import { getTransformedCartData } from '@/utils/utils';
+
+import { API_BASE_URL } from '@/config';
 
 if (localStorage.getItem('persist:root') === null) {
   console.log('스토리지 초기화 방지');
@@ -81,6 +82,7 @@ const SignInPage = () => {
 
       const redirectPath =
         localStorage.getItem('redirectAfterLogin') || '/profile';
+
       localStorage.removeItem('redirectAfterLogin');
       navigate(redirectPath);
     } catch (error) {
@@ -94,13 +96,13 @@ const SignInPage = () => {
     const value = e.target.dataset.value || e.currentTarget.dataset.value;
     switch (value) {
       case 'kakao':
-        url = 'https://dev-api.everlink.kr/oauth2/authorization/kakao';
+        url = `${API_BASE_URL}/oauth2/authorization/kakao`;
         break;
       case 'naver':
-        url = 'https://dev-api.everlink.kr/oauth2/authorization/naver';
+        url = `${API_BASE_URL}/oauth2/authorization/naver`;
         break;
       case 'google':
-        url = 'https://dev-api.everlink.kr/oauth2/authorization/google';
+        url = `${API_BASE_URL}/oauth2/authorization/google`;
         break;
       default:
         break;
@@ -179,7 +181,7 @@ const SignInPage = () => {
                   비밀번호<span className="text-red">*</span>
                 </label>
                 <input
-                  className="mb-20px bg-very-light-white form-control required"
+                  className="mb-10px bg-very-light-white form-control required"
                   type="password"
                   name="password"
                   value={member.password}
@@ -345,14 +347,14 @@ const SignInPage = () => {
       </section>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-40 md-w-70 sm-w-80">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-24 md-fs-16">
                         이메일, 비밀번호를 확인 해주세요.
                       </h6>
                     </div>

@@ -84,7 +84,7 @@ const HomeSubPage = () => {
         <div className="container">
           <div className="row align-items-center mb-12 md-mb-17 xs-mb-25">
             <div
-              className="col-lg-5 col-sm-12 md-mb-50px p-0 xs-p-2 text-lg-start text-sm-center"
+              className="col-lg-5 col-sm-12 md-mb-50px p-0 xs-p-2 text-lg-start text-md-center text-sm-center"
               data-anime='{ "el": "childs", "opacity": [0, 1], "rotateY": [-90, 0], "rotateZ": [-10, 0], "translateY": [80, 0], "translateZ": [50, 0], "staggervalue": 200, "duration": 800, "delay": 200, "easing": "easeOutCirc" }'
             >
               <span className="mb-10px text-base-color fw-500 md-mb-0 d-block">
@@ -94,7 +94,7 @@ const HomeSubPage = () => {
                 에버링크 추모페이지
               </h6>
 
-              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14">
+              <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14 text-keep-all">
                 Everlink 는 가족과 추억을 공유하고, 편지를 남기며,
                 <br /> 고인을 평생 기억할 수 있도록 만들어주는 추모페이지
                 입니다.
@@ -143,7 +143,7 @@ const HomeSubPage = () => {
                 </div> */}
               </div>
             </div>
-            <div className="col-lg-7 col-sm-12 position-relative ">
+            <div className="col-lg-7 col-sm-12 position-relative md-px-0">
               <div className="w-100 position-relative md-w-100 border-radius-4px float-end ">
                 <img className="w-100" src={mainSubImage1} alt="" />
               </div>

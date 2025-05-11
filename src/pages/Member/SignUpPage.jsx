@@ -6,20 +6,15 @@ import {
   getVerificationCodeVerify,
   getVerificationEmailVerify,
   getVerificationEmailResend,
-  getAccessToken,
 } from '@/api/memberApi';
+
+import { getPolicySelected } from '@/api/policy/policyApi';
 
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 
-import {
-  isValidEmail,
-  isValidPassword,
-  isValidName,
-  isValidPhoneNumber,
-  isInteger,
-} from '@/utils/validators';
+import { isValidEmail, isInteger } from '@/utils/validators';
 
 import { removeHyphens } from '@/utils/utils';
 
@@ -44,6 +39,7 @@ const SignUpPage = () => {
   const [otp, setOtp] = useState(['', '', '', '', '']);
   const checkboxGroupRef = useRef([]);
   const [invitationKey, setInvitationKey] = useState('');
+  const [policyContent, setPolicyContent] = useState({});
 
   useEffect(() => {
     setInvitationKey(localStorage.getItem('dev_invitation'));
@@ -159,19 +155,21 @@ const SignUpPage = () => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    console.log(typeof Object.keys(newErrors).length);
+    return Object.keys(newErrors).length;
   };
 
   const secondStep = async (e) => {
     e.preventDefault();
-    let newErrors = {};
+
     let res;
-    if (validate()) {
+    const errorLength = await validate(); // ✅ 여기 await 추가
+
+    if (errorLength === 0) {
       res = await getVerificationEmailVerify(member.loginEmail);
 
       if (res.status !== 200) {
-        newErrors.loginEmail = res.data.message;
-        setErrors(newErrors);
+        setErrors({ loginEmail: res.data.message });
         return;
       }
 
@@ -184,14 +182,6 @@ const SignUpPage = () => {
       setErrors({});
       nextStep(step + 1);
     }
-
-    // const res = await postSignUp(member);
-    // if (res !== 201) {
-    //   alert('회원가입 시 통신 에러가 발생하였습니다.');
-    //   return;
-    // }
-
-    // nextStep(step + 1);
   };
 
   //3스텝- 이메일 검증번호 체크
@@ -222,17 +212,17 @@ const SignUpPage = () => {
     const resEmailStats = await getVerificationCodeVerify(concatCode);
 
     if (resEmailStats !== 200) {
-      alert('resEmailStats 이메일 인증번호 통신에러가 발생하였습니다');
+      alert('인증번호가 맞지 않습니다.');
       return;
     }
 
-    //accessToken 가져오기
-    const { status, token } = await getAccessToken();
-    if (status !== 200) {
-      alert('restokenStats 이메일 인증번호 통신에러가 발생하였습니다');
-      return;
-    }
-    dispatch(loginSuccess({ token }));
+    // //accessToken 가져오기
+    // const { status, token } = await getAccessToken();
+    // if (status !== 200) {
+    //   alert('restokenStats 이메일 인증번호 통신에러가 발생하였습니다');
+    //   return;
+    // }
+    // dispatch(loginSuccess({ token }));
     nextStep(step + 1);
   };
 
@@ -246,8 +236,12 @@ const SignUpPage = () => {
     setIsFirstModalOpen(true);
   };
 
-  const handleTermsView = async () => {
+  const handleTermsView = async (id) => {
     setIsModalTermsOpen(true);
+
+    const res = await getPolicySelected(id);
+    const policyDate = res.data.data;
+    setPolicyContent(policyDate);
   };
 
   return (
@@ -257,7 +251,7 @@ const SignUpPage = () => {
           {step === 0 && (
             <div className="col contact-form-style-04 text-center bg-white">
               <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden pt-10 md-p-10 md-pb-0 text-center md-fs-14">
-                <div className="position-relative terms-condition-box text-start d-inline-block mb-20px fs-18">
+                <div className="position-relative terms-condition-box text-start d-inline-block mb-20px fs-18 sm-fs-14">
                   <label className="pb-3">
                     <input
                       ref={(el) => (checkboxGroupRef.current[0] = el)}
@@ -267,16 +261,16 @@ const SignUpPage = () => {
                       className="terms-condition check-box align-middle required"
                       onClick={() => handleGroupCheck('terms_condition')}
                     />
-                    <span className="box fs-25 md-mb-20px">
+                    <span className="box fs-25 sm-fs-14 md-mb-20px sm-mb-0">
                       약관 전체 동의하기(선택 동의 포함)
                       <br />
-                      <p className="fs-16 md-mt-10px">
+                      <p className="fs-16 sm-fs-13 md-mt-10px sm-mt-0 sm-pb-0">
                         선택 사항에 대한 동의를 거부하는 경우에도 서비스는
                         이용이 가능합니다.
                       </p>
                     </span>
                   </label>
-                  <label className="ps-5 pb-2 md-mb-20px">
+                  <label className="ps-5 pb-2 sm-ps-0 md-mb-20px sm-mb-0">
                     <input
                       ref={(el) => (checkboxGroupRef.current[1] = el)}
                       type="checkbox"
@@ -286,7 +280,7 @@ const SignUpPage = () => {
                     />
                     <span className="box">만 14세 이상입니다.(필수)</span>
                   </label>
-                  <label className="ps-5 pb-2 md-mb-20px d-flex justify-content-between align-items-center">
+                  <label className="ps-5 pb-2 sm-ps-0 md-mb-20px sm-mb-0 d-flex justify-content-between align-items-center">
                     <div>
                       <input
                         ref={(el) => (checkboxGroupRef.current[2] = el)}
@@ -297,16 +291,16 @@ const SignUpPage = () => {
                       />
                       <span className="box">Everlink 이용 약관(필수)</span>
                     </div>
-                    <span className="fs-25 terms-view">
+                    <span className="lg-fs-25 md-fs-18 sm-fs-14 terms-view">
                       <Link
                         className="text-base-color"
-                        onClick={handleTermsView}
+                        onClick={() => handleTermsView('service')}
                       >
-                        자세히
+                        보기
                       </Link>
                     </span>
                   </label>
-                  <label className="ps-5 pb-2 md-mb-20px d-flex justify-content-between align-items-center">
+                  <label className="ps-5 pb-2 sm-ps-0 md-mb-20px sm-mb-0 d-flex justify-content-between align-items-center">
                     <div>
                       <input
                         ref={(el) => (checkboxGroupRef.current[3] = el)}
@@ -315,18 +309,18 @@ const SignUpPage = () => {
                         id="marketing_consent"
                         className="terms-condition check-box align-middle"
                       />
-                      <span className="box">개인정보수집,이용동의(선택)</span>
+                      <span className="box">개인정보 수집·이용 동의(선택)</span>
                     </div>
-                    <span className="fs-25 terms-view">
+                    <span className="lg-fs-25 md-fs-18 sm-fs-14 terms-view">
                       <Link
                         className="text-base-color"
-                        onClick={handleTermsView}
+                        onClick={() => handleTermsView('personal')}
                       >
-                        자세히
+                        보기
                       </Link>
                     </span>
                   </label>
-                  <label className="ps-5 pb-2 md-mb-20px d-flex justify-content-between align-items-center">
+                  <label className="ps-5 pb-2 sm-ps-0 md-mb-20px sm-mb-0 d-flex justify-content-between align-items-center">
                     <div>
                       <input
                         ref={(el) => (checkboxGroupRef.current[4] = el)}
@@ -337,12 +331,12 @@ const SignUpPage = () => {
                       />
                       <span className="box">광고성 정보 수신 동의(선택)</span>
                     </div>
-                    <span className="fs-25 terms-view">
+                    <span className="lg-fs-25 md-fs-18 sm-fs-14 terms-view">
                       <Link
                         className="text-base-color"
-                        onClick={handleTermsView}
+                        onClick={() => handleTermsView('advertisement')}
                       >
-                        자세히
+                        보기
                       </Link>
                     </span>
                   </label>
@@ -365,12 +359,12 @@ const SignUpPage = () => {
               <div className="col contact-form-style-04">
                 <div className="py-5 md-p-5 text-center">
                   <img src={signup} alt="" className="default-logo" />
-                  <form className="mt-50px">
+                  <form className="mt-50px sm-mt-10px ">
                     <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       이메일<span className="text-red">*</span>
                     </label>
                     <input
-                      className="mb-5px bg-very-light-white form-control signup-input required "
+                      className="mb-5px bg-very-light-white form-control signup-input required"
                       type="email"
                       name="loginEmail"
                       value={member.loginEmail}
@@ -379,7 +373,7 @@ const SignUpPage = () => {
                       placeholder="이메일을 입력해 주세요."
                     />
                     {errors.loginEmail && (
-                      <p className="text-danger text-start">
+                      <p className="text-danger text-start sm-mb-0">
                         {errors.loginEmail}
                       </p>
                     )}
@@ -392,10 +386,10 @@ const SignUpPage = () => {
                       name="password"
                       value={member.password}
                       onChange={handleMemberInfoChange}
-                      placeholder="비밀번호 영문, 숫자, 특수문자 포함 8자 이상 입력해 주세요."
+                      placeholder="영문, 숫자, 특수문자 포함8자 이상 입력해 주세요."
                     />
                     {errors.password && (
-                      <p className="text-danger text-start">
+                      <p className="text-danger text-start sm-mb-0">
                         {errors.password}
                       </p>
                     )}
@@ -408,10 +402,10 @@ const SignUpPage = () => {
                       name="passwordConfirm"
                       value={member.passwordConfirm}
                       onChange={handleMemberInfoChange}
-                      placeholder="비밀번호 영문, 숫자, 특수문자 포함 8자 이상 입력해 주세요."
+                      placeholder="영문 ,숫자, 특수문자 포함8자 이상 입력해 주세요."
                     />
                     {errors.passwordConfirm && (
-                      <p className="text-danger text-start">
+                      <p className="text-danger text-start sm-mb-0">
                         {errors.passwordConfirm}
                       </p>
                     )}
@@ -427,11 +421,11 @@ const SignUpPage = () => {
                       placeholder="이름을 입력해 주세요."
                     />
                     {errors.displayName && (
-                      <p className="text-danger text-start">
+                      <p className="text-danger text-start sm-mb-0">
                         {errors.displayName}
                       </p>
                     )}
-                    <label className="text-dark-gray mb-10px fw-500 d-block text-start signup-label">
+                    <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       핸드폰 번호<span className="text-red">*</span>
                     </label>
                     <input
@@ -443,7 +437,7 @@ const SignUpPage = () => {
                       placeholder="핸드폰 번호를 입력해주세요."
                     />
                     {errors.phoneNumber && (
-                      <p className="text-danger text-start">
+                      <p className="text-danger text-start sm-mb-0">
                         {errors.phoneNumber}
                       </p>
                     )}
@@ -453,7 +447,7 @@ const SignUpPage = () => {
                       type="button"
                       size="extra-large"
                       radiusOn="radius-on"
-                      className="btn-large w-50 mt-60px mb-20px "
+                      className="btn-large w-50 mt-60px sm-mt-20px mb-20px"
                       onClick={secondStep}
                     >
                       회원가입 완료
@@ -469,11 +463,11 @@ const SignUpPage = () => {
               <div className="col contact-form-style-04">
                 <div className="mt-10 md-mt-0 py-4_5 text-center ">
                   <img src={signup} alt="" className="default-logo pb-10px" />
-                  <form method="post" className="mt-40px md-mt-50px">
-                    <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px md-fs-40">
+                  <form method="post" className="mt-40px md-mt-50px sm-mt-10px">
+                    <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px md-fs-40 sm-fs-24">
                       이메일 인증하기
                     </h3>
-                    <h6 className="fw-400 fs-16 md-fs-18 text-dark-gray mb-8 ls-minus-1px">
+                    <h6 className="fw-400 fs-16 md-fs-18 sm-fs-14 text-dark-gray mb-8 sm-mb-2 ls-minus-1px">
                       귀하의 이메일 계정으로 승인 메일을 보냈습니다.
                       <br /> 링크를 열어 인증 코드를 확인하세요
                     </h6>
@@ -481,7 +475,7 @@ const SignUpPage = () => {
                       {otp.map((value, index) => (
                         <input
                           key={index}
-                          className="mb-20px bg-everlink-default-color form-control w-10 fw-700 text-center p-2"
+                          className="mb-20px sm-mb-10px bg-everlink-default-color form-control w-10 fw-700 text-center p-2 sm-p-1"
                           type="text"
                           name="first_code"
                           maxLength="1"
@@ -498,7 +492,7 @@ const SignUpPage = () => {
                     <Button
                       size="extra-large"
                       color="white"
-                      className="btn-large border-1 border-black btn-box-shadow w-80 mt-20px mb-20px"
+                      className="btn-large border-1 border-default btn-box-shadow w-80 mt-20px mb-20px sm-mb-0"
                       onClick={thirdStep}
                     >
                       인증하기
@@ -513,7 +507,7 @@ const SignUpPage = () => {
                     <Button
                       size="extra-large"
                       color="black"
-                      className="btn-large w-80 btn-box-shadow mt-60px mb-20px"
+                      className="btn-large w-80 btn-box-shadow mt-40px sm-mt-20px mb-20px"
                       onClick={verificationCodeResetSend}
                     >
                       인증번호 재전송
@@ -526,11 +520,11 @@ const SignUpPage = () => {
           {step === 3 && (
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
               <div className="col contact-form-style-04">
-                <div className="mt-20 md-mt-0 py-5 text-center ">
+                <div className="mt-20 md-mt-0 py-5 sm-py-0 text-center ">
                   <a className="navbar-brand" href="demo-hotel-and-resort.html">
                     <img src={checkCircle} alt="" />
                   </a>
-                  <h4 className="fw-800 text-dark-gray mt-15 mb-2 ls-minus-1px">
+                  <h4 className="fw-800 text-dark-gray mt-15 sm-mt-5 mb-2 ls-minus-1px">
                     회원가입 완료
                   </h4>
                   {!invitationKey ? (
@@ -574,21 +568,21 @@ const SignUpPage = () => {
         isOpen={isFirstModalOpen}
         onClose={() => setIsFirstModalOpen(false)}
       >
-        <div className="w-40 md-w-70">
+        <div className="w-40 md-w-70 sm-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-18">
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-18 sm-fs-16">
                         이메일로 인증번호를 재전송하였습니다.
                       </h6>
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => {
                           setIsFirstModalOpen(false);
                         }}
@@ -607,20 +601,32 @@ const SignUpPage = () => {
         isOpen={isModalTermsOpen}
         onClose={() => setIsModalTermsOpen(false)}
       >
-        <div className="w-30">
+        <div className="w-40 md-w-70 sm-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
-                        약관 동의서
+                      <h6 className="text-dark-gray fw-500 mb-15px md-fs-18 sm-fs-16">
+                        {policyContent.type === 'service'
+                          ? '이용약관'
+                          : policyContent.type === 'personal'
+                          ? '개인정보 수집·이용 동의'
+                          : '광고성 정보 수신 동의'}
                       </h6>
+                    </div>
+                    <div className="scroll_wrapper">
+                      <div
+                        className="terms_view"
+                        dangerouslySetInnerHTML={{
+                          __html: policyContent.content,
+                        }}
+                      />
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsModalTermsOpen(false)}
                       >
                         닫기

@@ -149,6 +149,12 @@ const ManagePage = () => {
 
   const handleOptionChange = async (selectedOption) => {
     console.log('선택한 값:', selectedOption.value);
+
+    let seletedText = selectedOption.value === 'PUBLIC' ? '전체공개' : '비공개';
+
+    const confirmed = window.confirm(`${seletedText}로 변경 하시겠습니까?`);
+    if (!confirmed) return;
+
     const optionVal = selectedOption.value;
     setScope(optionVal);
 
@@ -172,6 +178,7 @@ const ManagePage = () => {
     if (res.status === 201) {
       setIsModalOpen(true);
       setReceiverEmail('');
+      fetchAllData(profileId);
     }
   };
 
@@ -186,11 +193,11 @@ const ManagePage = () => {
   const handleInvitationsPermissionChange = async (invitationId, value) => {
     // let updatedItems;
     let res;
-
     if (!value) return;
-
     if (value === 'DELETE') {
       // updatedItems = invitations.filter((item) => item.id === invitationId);
+      const confirmed = window.confirm('정말로 삭제하시겠습니까?');
+      if (!confirmed) return;
       res = await deleteInvitationPermissions(profileId, invitationId);
     } else if (value && (value === 'EDITOR' || value === 'VIEWER')) {
       // updatedItems = invitations.map((item, i) =>
@@ -240,7 +247,7 @@ const ManagePage = () => {
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-12 col-xl-7 col-lg-8 col-md-10 text-center">
-                  <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-2  md-mb-5">
+                  <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-2 md-mb-5 sm-fs-18">
                     초대 및 사용자 관리 페이지
                   </h5>
                   <Link onClick={handleCopylink}>
@@ -279,7 +286,7 @@ const ManagePage = () => {
                 <div className="col-lg-12 pe-50px md-pe-15px">
                   <div className="row align-items-center">
                     <div className="col-12">
-                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
+                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1 sm-fs-16">
                         초대된 계정
                       </h6>
 
@@ -377,7 +384,7 @@ const ManagePage = () => {
                 <div className="col-lg-12 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
                   <div className="row align-items-center">
                     <div className="col-12">
-                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1">
+                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1 sm-fs-16">
                         비공개 계정 보기 요청
                       </h6>
 
@@ -406,7 +413,7 @@ const ManagePage = () => {
                                 <td>
                                   <div className="d-flex">
                                     <Link
-                                      className="btn btn-black btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                                      className="btn btn-black btn-very-small w-50 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
                                       onClick={(e) =>
                                         handlePrivateRequests(p, 'ALLOW')
                                       }
@@ -414,7 +421,7 @@ const ManagePage = () => {
                                       허용
                                     </Link>
                                     <Link
-                                      className="btn btn-white btn-very-small w-30 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
+                                      className="btn btn-white btn-very-small w-50 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-5px me-5"
                                       onClick={(e) =>
                                         handlePrivateRequests(p, 'DENY')
                                       }
@@ -472,7 +479,7 @@ const ManagePage = () => {
         </>
       )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-70">
+        <div className="w-40 md-w-70 sm-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -508,14 +515,14 @@ const ManagePage = () => {
         isOpen={isModalCopyLinkOpen}
         onClose={() => setIsModalCopyLinkOpen(false)}
       >
-        <div className="w-35">
+        <div className="w-40 sm-w-90">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
                         프로필 링크가 복사 되었습니다.
                       </h6>
                     </div>

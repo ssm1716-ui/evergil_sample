@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Modal from '@/components/common/Modal/Modal';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
@@ -197,6 +198,7 @@ const ViewProfilePage = () => {
     }
   };
 
+  //하늘편지 검색
   const handleSearchLetters = async (e) => {
     const value = e.target.value;
 
@@ -353,7 +355,7 @@ const ViewProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px md-start-0">
+                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer">
                     <img
                       src={
                         profile.profileImageUrl
@@ -362,44 +364,24 @@ const ViewProfilePage = () => {
                       }
                       alt=""
                     />
-                    {/* <div
-                      className="box-overlay"
-                      style={{ backgroundColor: '#CDCDCD' }}
-                    ></div>
-                    <span className="number icon-extra-large text-text absolute-middle-center">
-                      <i className="feather icon-feather-edit-1 icon-icon-extra-medium text-white"></i>
-                    </span> */}
                   </div>
                 </div>
               </div>
               <div className="col-9 offset-3 ps-2 md-ps-30px">
-                <h5 className="text-dark-gray mb-5px fw-600">
+                <h5 className="text-dark-gray mb-5px fw-600 fs-32 md-fs-28 sm-fs-24">
                   {profile.displayName}
                 </h5>
-                <h6 className="mb-0">
+                <h6 className="mb-0 sm-fs-18">
                   {profile.birthday}~{profile.deathDate}
                 </h6>
               </div>
               {showScreen && (
                 <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                   {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-                  <div className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 md-ps-25px md-pe-25p py-lg-0 py-md-4">
+                  <div className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 gap-sm-5 py-lg-0 py-md-4">
                     <WebShareButton />
-                    {/* <Link className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 mb-5">
-                    <span>
-                      <span>
-                        <i className="feather icon-feather-share-2"></i>
-                      </span>
-                      <span
-                        className="btn-double-text ls-0px"
-                        data-text="공유하기"
-                      >
-                        공유하기
-                      </span>
-                    </span>
-                  </Link> */}
                     <Link
-                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-30 mb-5 md-mb-2"
+                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
                       onClick={handleBookmarkToggle}
                     >
                       <span>
@@ -426,12 +408,22 @@ const ViewProfilePage = () => {
           </div>
         </div>
       </section>
-      <section className="pt-50px md-pt-0 pb-0">
+      <section className="pt-50px md-pt-0 pb-2">
         <div className="container">
-          <div className="row bottom-minus-60px end-0 z-index-1 pe-1 ">
+          <div className="bottom-minus-60px end-0 z-index-1 pe-1">
             {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-            <div className="col-xl-7 col-lg-9 offset-0 offset-md-0 xs-mt-25px text-left fs-20 md-ps-25px">
-              <p dangerouslySetInnerHTML={{ __html: profile.description }}></p>
+            <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
+              {/* <p
+                className="w-60 sm-w-100 mx-center profile-desc"
+                dangerouslySetInnerHTML={{ __html: profile.description }}
+              ></p> */}
+              <ReactQuill
+                className="w-60 sm-w-100 mx-center"
+                value={profile.description}
+                readOnly={true}
+                theme="snow"
+                modules={{ toolbar: false }} // 툴바 제거
+              />
             </div>
           </div>
         </div>
@@ -442,14 +434,14 @@ const ViewProfilePage = () => {
           <div className="container">
             <div className="row">
               <div className="col-12 tab-style-04">
-                <ul className="nav nav-tabs border-0 justify-content-center fs-19">
+                <ul className="nav nav-tabs border-0 justify-content-center fs-20">
                   {tabList.map((tab) => (
                     <li key={tab} className="nav-item text-center">
                       <button
                         className={`nav-link ${
                           activeTab === tab
                             ? 'active text-base-color d-inline-block'
-                            : ''
+                            : 'd-inline-block'
                         }`}
                         onClick={() => setActiveTab(tab)}
                       >
@@ -465,7 +457,12 @@ const ViewProfilePage = () => {
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <LightGallery
                         speed={500}
+                        closable={true}
                         download={false}
+                        mobileSettings={{
+                          controls: true,
+                          showCloseIcon: true,
+                        }}
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"
@@ -538,6 +535,7 @@ const ViewProfilePage = () => {
                                     <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
                                     add comment
                                   </a>
+                                  ``
                                 </li>
                               </ul>
                             </div>
@@ -565,7 +563,7 @@ const ViewProfilePage = () => {
                                     <p className="sm-w-85">{letter.content}</p>
                                   </div>
                                   {letter.hasPermission && (
-                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px md-w-70px">
+                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-10px md-w-70px">
                                       <span
                                         className="cursor-pointer me-5"
                                         onClick={() =>
@@ -613,11 +611,11 @@ const ViewProfilePage = () => {
                             className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-1 text-center"
                             key={index}
                           >
-                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin">
+                            <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
                                 <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-50 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start justify-content-sm-center  align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
                                   <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                                     <span className="number position-relative z-index-1 fw-600">
                                       <i className="feather icon-feather-user align-middle icon-large text-white"></i>
@@ -631,11 +629,11 @@ const ViewProfilePage = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="col text-center process-step-style-02 hover-box last-paragraph-no-margin">
+                            <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
-                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 sm-w-70 fs-18 rounded-circle text-dark-gray fw-500">
                                   <span className="number position-relative z-index-1 fw-600">
-                                    {f.displayName}{' '}
+                                    {f.displayName}
                                   </span>
                                   <div className="box-overlay rounded-circle"></div>
                                 </div>

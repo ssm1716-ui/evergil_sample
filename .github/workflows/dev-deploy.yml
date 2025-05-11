@@ -17,8 +17,8 @@ jobs:
       - name: Install packages
         run: npm install
 
-      - name: Build
-        run: npm run build
+      - name: Build with development mode
+        run: npm run build -- --mode development
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2

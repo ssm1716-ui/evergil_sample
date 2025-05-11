@@ -14,6 +14,7 @@ import {
 } from '@/api/products/productsApi';
 
 import { postAddCart } from '@/api/member/cartApi';
+import { getPolicySelected } from '@/api/policy/policyApi';
 
 import useAuth from '@/hooks/useAuth';
 import { formatDate, getTransformedCartData } from '@/utils/utils';
@@ -31,6 +32,10 @@ const ShopPage = () => {
   const [sortType, setSortType] = useState('BEST');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [policyContent, setPolicyContent] = useState({
+    deliveryDesc: '',
+    refundDesc: '',
+  });
   const [more, setMore] = useState(false);
   const navigate = useNavigate();
 
@@ -62,7 +67,7 @@ const ShopPage = () => {
           pageSize
         );
         if (status !== 200) throw new Error('리뷰 정보를 불러올 수 없습니다.');
-        console.log(data.data.length);
+        console.log(data);
         data.data.length > 0 ? setMore(true) : setMore(false);
 
         setReviews((prevReviews) => [...prevReviews, ...data.data]);
@@ -171,6 +176,31 @@ const ShopPage = () => {
   const handleChangePageNumber = async () => {
     setPageNumber((prevPageNumber) => prevPageNumber + 1);
     setPageSize((prevPageSize) => pageNumber * prevPageSize);
+  };
+
+  const handlePolicySelected = async () => {
+    try {
+      const [getPolicyDelivery, getPolicyRefund] = await Promise.all([
+        getPolicySelected('delivery'),
+        getPolicySelected('refund'),
+      ]);
+
+      const updatedContent = { ...policyContent };
+
+      if (getPolicyDelivery.status === 201) {
+        const policyDeliveryContent = getPolicyDelivery.data.data;
+        updatedContent.deliveryDesc = policyDeliveryContent.content || '';
+      }
+
+      if (getPolicyRefund.status === 201) {
+        const policyRefundContent = getPolicyRefund.data.data;
+        updatedContent.refundDesc = policyRefundContent.content || '';
+      }
+
+      setPolicyContent(updatedContent);
+    } catch (error) {
+      console.error('정책 정보를 가져오는 중 오류 발생:', error);
+    }
   };
 
   return (
@@ -336,7 +366,7 @@ const ShopPage = () => {
                   </button>
                 </div>
                 <Link
-                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-2 order-sm w-40 d-lg-block d-md-none"
+                  className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-dark-gray left-icon btn-round-edge border-0 me-5px xs-me-0 order-2 order-sm w-40 d-lg-block d-md-none d-sm-none"
                   onClick={handleCartAdd}
                 >
                   <span>
@@ -359,7 +389,7 @@ const ShopPage = () => {
                 </a>
               </div>
 
-              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-lg-block d-md-none">
+              <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-lg-block d-md-none d-sm-none">
                 <Link
                   className="btn btn-cart btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-15px xs-me-0 order-3 order-sm-2 w-100"
                   onClick={handleBuyNow}
@@ -409,6 +439,7 @@ const ShopPage = () => {
                     className="nav-link"
                     data-bs-toggle="tab"
                     href="#tab_five3"
+                    onClick={handlePolicySelected}
                   >
                     배송 및 반품
                     <span className="tab-border bg-dark-gray"></span>
@@ -433,7 +464,15 @@ const ShopPage = () => {
                     <div className="col-lg-12 md-mb-40px">
                       <div className="d-flex align-items-center justify-content-center mb-5px">
                         <div className="col fw-500 text-dark-gray w-100 text-center">
-                          <img src={product.productDetails} alt="detail" />
+                          {Array.isArray(product.productDetails) &&
+                            product.productDetails.map((detail, idx) => (
+                              <img
+                                key={idx}
+                                src={detail}
+                                alt={`detail-${idx}`}
+                                className="me-2"
+                              />
+                            ))}
                         </div>
                       </div>
                     </div>
@@ -442,45 +481,18 @@ const ShopPage = () => {
 
                 <div className="tab-pane fade in" id="tab_five2">
                   <div className="row m-0">
-                    <div className="col-12">
-                      <div className="row">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Color:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          Black, yellow
-                        </div>
-                      </div>
-                      <div className="row bg-very-light-gray">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Style/Type:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          Sports, Formal
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Lining:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          100% polyester taffeta with a DWR finish
-                        </div>
-                      </div>
-                      <div className="row bg-very-light-gray">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Material:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          Lather, Cotton, Silk
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-lg-2 col-md-3 col-sm-4 pt-10px pb-10px xs-pb-0 text-dark-gray fw-500">
-                          Free shipping:
-                        </div>
-                        <div className="col-lg-10 col-md-9 col-sm-8 pt-10px pb-10px xs-pt-0">
-                          On all orders over $50
+                    <div className="col-lg-12 md-mb-40px">
+                      <div className="d-flex align-items-center justify-content-center mb-5px">
+                        <div className="col fw-500 text-dark-gray w-100 text-center">
+                          {Array.isArray(product.productAttributes) &&
+                            product.productAttributes.map((attribute, idx) => (
+                              <img
+                                key={idx}
+                                src={attribute}
+                                alt={`attribute-${idx}`}
+                                className="me-2"
+                              />
+                            ))}
                         </div>
                       </div>
                     </div>
@@ -494,49 +506,23 @@ const ShopPage = () => {
                         배송 기간 안내
                       </div>
 
-                      <p className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28">
-                        에버링크 쇼핑몰의 배송기간은 주문 결제 완료 후
-                        평균적으로 2~5일 이내에 이루어집니다. (공휴일 및 주말
-                        제외) <br /> 기본적으로 국내 배송은 평균 3일 이내
-                        소요되며, 도서산간 지역 및 특정 지역의 경우 최대 7일까지
-                        소요될 수 있습니다. 주문량 증가, 택배사 사정, 천재지변
-                        등으로 인해 배송이 지연될 수 있으며, 이러한 경우
-                        고객센터에서 별도로 안내드립니다.
-                        <br /> 주문하신 상품은 실시간으로 배송 조회가 가능하며,
-                        배송 출발 후에는 주문 변경 및 취소가 불가능하므로 신중한
-                        구매를 부탁드립니다. 빠르고 안전한 배송을 위해 최선을
-                        다하겠습니다.
-                      </p>
+                      <p
+                        className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28"
+                        dangerouslySetInnerHTML={{
+                          __html: policyContent.deliveryDesc,
+                        }}
+                      ></p>
                     </div>
                     <div className="col-12 col-md-6 last-paragraph-no-margin">
                       <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-10px fw-500">
                         교환 및 환불 정책
                       </div>
-                      <p className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28">
-                        상품 수령 후 7일 이내에 교환 신청이 가능합니다. 단,
-                        제품의 훼손, 사용 흔적, 라벨 제거 등의 경우 교환이
-                        제한될 수 있습니다.
-                        <br /> 제품 불량, 오배송 등의 사유로 인한 교환은
-                        배송비가 무료이며, 단순 변심에 의한 교환은 왕복 배송비가
-                        부과됩니다. 교환을 원하시는 경우, 고객센터 또는
-                        마이페이지에서 교환 신청 후 안내에 따라 상품을 포장하여
-                        반송해 주시면 됩니다. <br />
-                        빠른 처리를 위해 교환 신청 시 제품 상태를 촬영하여
-                        첨부해 주시면 더욱 원활한 처리가 가능합니다.
-                      </p>
-                      <p className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28">
-                        구매하신 상품은 수령 후 7일 이내에 환불 신청이
-                        가능합니다.
-                        <br /> 단순 변심으로 인한 환불 요청 시 왕복 배송비가
-                        부과될 수 있으며, 제품이 사용되지 않은 상태여야 합니다.
-                        불량 및 오배송의 경우 전액 환불이 가능하며, 추가 비용
-                        없이 반품 처리가 진행됩니다. <br />
-                        환불 신청 후 제품이 정상적으로 반송되면 검수 과정을 거쳐
-                        영업일 기준 3~5일 이내 환불 처리가 완료됩니다. 결제
-                        수단에 따라 환불 기간이 다를 수 있으며, 신용카드 결제의
-                        경우 카드사 정책에 따라 최대 7~10일이 소요될 수
-                        있습니다.
-                      </p>
+                      <p
+                        className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28"
+                        dangerouslySetInnerHTML={{
+                          __html: policyContent.refundDesc,
+                        }}
+                      ></p>
                     </div>
                   </div>
                 </div>
@@ -745,13 +731,13 @@ const ShopPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default w-45 sm-w-100 me-1 mb-3"
                         onClick={() => nextCartPage()}
                       >
                         장바구니로 넘어가기
                       </button>
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default w-45 sm-w-100 me-1 mb-3"
                         onClick={() => setIsModalOpen(false)}
                       >
                         닫기

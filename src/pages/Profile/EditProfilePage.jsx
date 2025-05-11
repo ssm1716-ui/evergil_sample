@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
@@ -30,6 +31,7 @@ import {
   putPhotoModify,
   deletePhotoRemove,
   getLetters,
+  postLetters,
   getFamilyProfile,
   putFamilyProfile,
   deleteLetters,
@@ -42,8 +44,6 @@ const modules = {
     [{ header: [1, 2, 3, false] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ list: 'ordered' }, { list: 'bullet' }],
-    ['blockquote'],
-    [{ script: 'sub' }, { script: 'super' }],
     [{ indent: '-1' }, { indent: '+1' }],
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
@@ -56,7 +56,6 @@ const formats = [
   'italic',
   'underline',
   'strike',
-  'blockquote',
   'list',
   'bullet',
   'script',
@@ -73,6 +72,7 @@ const initFormPrivateProfile = {
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
   const lgRef = useRef(null);
   const [content, setContent] = useState('');
@@ -81,7 +81,10 @@ const EditProfilePage = () => {
   const [items, setItems] = useState([
     { displayName: '', familyTitle: '', isCustomInput: false },
   ]);
-
+  const initLetter = {
+    displayName: '',
+    content: '',
+  };
   //탭 - 이미지
   const [images, setImages] = useState([]);
   const [letterId, setLetterId] = useState('');
@@ -95,11 +98,14 @@ const EditProfilePage = () => {
   const [imagesId, setImagesId] = useState('');
   const [activeTab, setActiveTab] = useState('이미지');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [galleryKey, setGalleryKey] = useState(0);
+  const [postLetter, setPostLetter] = useState(initLetter);
 
   // const lgRef = useRef(null);
   const imagesRef = useRef(images);
   const fileInputRef = useRef(null);
+  const backImageInputRef = useRef(null);
 
   const [url, setUrl] = useState('');
   // const [isAuthorized, setIsAuthorized] = useState(false);
@@ -128,6 +134,11 @@ const EditProfilePage = () => {
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
   const handleUploadClick = () => {
     fileInputRef.current.click();
+  };
+
+  // 프로필 배경 파일 업로드 시 창 열기
+  const handleBackUploadClick = () => {
+    backImageInputRef.current.click();
   };
 
   useEffect(() => {
@@ -652,6 +663,55 @@ const EditProfilePage = () => {
     }
   };
 
+  //하늘편지 검색
+  const handleSearchLetters = async (e) => {
+    const value = e.target.value;
+
+    if (value.length > 1 || value.length === 0) {
+      const res = await getLetters(profileId, value);
+      if (res.status !== 200) {
+        alert('하늘편지 검색 에러 발생');
+      }
+      const { data } = res.data;
+      setLetters(data);
+    }
+  };
+
+  const handleLettersChange = (e) => {
+    const { name, value } = e.target;
+    setPostLetter({
+      ...postLetter,
+      [name]: value,
+    });
+  };
+
+  const handleSendLetter = async (e) => {
+    e.preventDefault();
+    let res = await postLetters(profileId, postLetter);
+
+    if (res.status === 201) {
+      setIsRegisterModalOpen(false);
+      setPostLetter(initLetter);
+      res = await getLetters(profileId);
+      if (res.status === 200) {
+        const { data } = res.data;
+        setLetters(data);
+      }
+      letterInit();
+    }
+  };
+
+  const letterInit = () => {
+    setPostLetter(initLetter);
+  };
+
+  const hasAuthenticated = () => {
+    if (!isAuthenticated) {
+      setIsModalOpen(true);
+      return;
+    }
+  };
+
   return (
     <>
       {!showScreen && <div className="blur-overlay"></div>}
@@ -676,9 +736,9 @@ const EditProfilePage = () => {
               data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
             ></div>
             <div className="col-lg-7 col-md-6 position-relative d-md-block">
-              <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-0px bottom-minus-70px mt-10 translate-middle-y">
+              <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-10px sm-right-5px bottom-minus-70px sm-bottom-minus-80px mt-10 translate-middle-y">
                 <div
-                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px md-w-50px h-65px md-h-50px rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
+                  className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px h-65px md-w-50px md-h-50px sm-w-40px sm-h-40px  rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
                   style={{ backgroundColor: '#CDCDCD' }}
                 >
                   <span>
@@ -695,7 +755,7 @@ const EditProfilePage = () => {
                         multiple
                         accept="image/*,"
                         onChange={handleFileChange}
-                        className="input-file-upload"
+                        className="input-file-background-upload"
                       />
                     </span>
                   </span>
@@ -718,7 +778,7 @@ const EditProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image w-180px md-w-120px h-180px md-h-120px top-minus-90px md-start-0 cursor-pointer">
+                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer">
                     <img
                       src={
                         profile.profileImageUrl
@@ -748,11 +808,11 @@ const EditProfilePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-9 offset-3 ps-2 md-ps-30px">
-                <h5 className="text-dark-gray mb-5px fw-600">
+              <div className="col-9 offset-3 ps-2 md-ps-30px sm-ps-20px">
+                <h5 className="text-dark-gray mb-5px fw-600 sm-fs-20">
                   {profile.displayName}
                 </h5>
-                <h6 className="mb-0">
+                <h6 className="mb-0 sm-fs-18">
                   {profile.birthday}~{profile.deathDate}
                 </h6>
               </div>
@@ -760,14 +820,14 @@ const EditProfilePage = () => {
                 <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
                   {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                   <div
-                    className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 md-ps-25px md-pe-25p py-lg-0  py-md-4"
+                    className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 gap-sm-5 sm-px-20px py-lg-0 py-md-4"
                     style={{
                       display: 'inline-block',
                     }}
                   >
                     <WebShareButton />
                     <Link
-                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-30 mb-5 md-mb-2"
+                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
                       to={`/profile/manage-profile/${profileId}`}
                     >
                       <span>
@@ -804,7 +864,20 @@ const EditProfilePage = () => {
                 className="w-700px md-w-95 md-h-450px lh-initial"
               />
             </div>
-            <div className="mt-80px md-mt-0 d-flex justify-content-evenly justify-content-md-center gap-3">
+            <div className="mt-80px md-mt-0 sm-mt-30px text-center">
+              <Link
+                className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon xs-me-0 w-40 sm-w-95 border-radius-15px"
+                onClick={handleBlur}
+              >
+                <span>
+                  <span className="btn-double-text ls-0px" data-text="저장">
+                    저장
+                  </span>
+                </span>
+              </Link>
+            </div>
+
+            <div className="mt-30px md-mt-20px sm-mt-20px d-flex justify-content-evenly justify-content-md-center gap-2">
               <Link
                 className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
                 onClick={handleNavigate}
@@ -844,7 +917,10 @@ const EditProfilePage = () => {
                             ? 'active text-base-color d-inline-block'
                             : 'd-inline-block'
                         }`}
-                        onClick={() => setActiveTab(tab)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setActiveTab(tab);
+                        }}
                       >
                         {tab}
                         <span className="tab-border bg-base-color"></span>
@@ -860,7 +936,12 @@ const EditProfilePage = () => {
                       <LightGallery
                         key={galleryKey}
                         speed={500}
+                        closable={true}
                         download={false}
+                        mobileSettings={{
+                          controls: true,
+                          showCloseIcon: true,
+                        }}
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"
@@ -900,6 +981,7 @@ const EditProfilePage = () => {
                           {images.map((image, index) => (
                             <a
                               href={image.url}
+                              h
                               key={index}
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
@@ -914,34 +996,69 @@ const EditProfilePage = () => {
                   {activeTab === '하늘편지' && (
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <div className="row m-0">
-                        {letters.length > 0 ? (
-                          <div
-                            className="col-12 p-0"
-                            // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay":0, "staggervalue": 300, "easing": "easeOutQuad" }'
-                          >
-                            {letters.map((letter, index) => (
+                        <div className="col-12 p-0">
+                          {/* 검색창 + 추가 버튼 */}
+                          <div className="toolbar-wrapper w-100 mb-40px md-mb-30px">
+                            <div className="mx-auto me-md-0 col tab-style-08">
+                              <ul className="nav nav-tabs d-flex justify-content-between border-0 fs-18 fw-600 gap-2">
+                                <li className="nav-item">
+                                  <div className="position-relative">
+                                    <input
+                                      className="border-1 nav-link w-400px md-w-100"
+                                      type="text"
+                                      name="keyword"
+                                      onChange={handleSearchLetters}
+                                      placeholder="검색어를 입력 해주세요."
+                                    />
+                                    <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                                  </div>
+                                </li>
+                                <li className="nav-item">
+                                  <a
+                                    className="nav-link"
+                                    data-bs-toggle="tab"
+                                    href="#tab_sec2"
+                                    onClick={() => {
+                                      if (isAuthenticated) {
+                                        setIsRegisterModalOpen(true);
+                                      } else {
+                                        hasAuthenticated();
+                                      }
+                                    }}
+                                  >
+                                    <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
+                                    add comment
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+
+                          {/* 하늘편지 리스트 */}
+                          {letters.length > 0 ? (
+                            letters.map((letter, index) => (
                               <div
-                                className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-p-5  ${
+                                key={letter.letterId}
+                                className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-p-5 ${
                                   index % 2
                                     ? 'paper-note-odd'
                                     : 'paper-note-even'
                                 }`}
-                                key={letter.letterId}
                               >
-                                <div className="col-12 col-md-1 text-md-center align-self-center">
+                                <div className="col-12 col-md-1 text-md-center text-sm-start align-self-center">
                                   <span className="text-dark-gray fs-14 fw-600">
                                     {letter.displayName}
                                   </span>
                                 </div>
-                                <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                                <div className="col-lg-2 col-md-3 align-self-center text-md-end text-sm-start">
                                   <span>{letter.createdAt}</span>
                                 </div>
                                 <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                   <p className="sm-w-85">{letter.content}</p>
                                 </div>
-
-                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-5px">
+                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-10px">
                                   <Link
+                                    to="#"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       handleRemoveLetterConfirm(
@@ -953,14 +1070,14 @@ const EditProfilePage = () => {
                                   </Link>
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="col-12 text-center mt-100px pb-2 fs-24">
-                            <i className="line-icon-Letter-Open align-middle icon-extra-large text-light-gray pb-1"></i>
-                            <p>등록된 하늘편지가 없습니다.</p>
-                          </div>
-                        )}
+                            ))
+                          ) : (
+                            <div className="col-12 text-center mt-100px pb-2 fs-24">
+                              <i className="line-icon-Letter-Open align-middle icon-extra-large text-light-gray pb-1"></i>
+                              <p>등록된 하늘편지가 없습니다.</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -968,9 +1085,9 @@ const EditProfilePage = () => {
                   {activeTab === '가족관계도' && (
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5">
                       <div className="row">
-                        <div className="row align-items-center">
-                          <div className="col-xl-12 col-lg-10 col-md-12 col-sm-5 form-results d-block mt-20px mb-mt-0  mb-0 text-center">
-                            <p className="text-black fs-18 md-fs-14">
+                        <div className="row align-items-center m-0">
+                          <div className="col-xl-12 col-lg-10 col-md-12 col-sm-5 form-results d-block mt-20px mb-mt-0 sm-mt-0 mb-0 text-center">
+                            <p className="text-black fs-18 md-fs-14 sm-fs-12">
                               가족 관계도
                               <br />
                               아래 가족을 추가하고 드래그로 순서를 바꿔보세요.
@@ -978,7 +1095,7 @@ const EditProfilePage = () => {
                           </div>
                         </div>
                         <div className="row  align-items-center">
-                          <div className="col-xl-10 col-lg-10 col-md-12 col-sm-5 text-end text-sm-center text-lg-end xs-mt-25px mb-25px pe-0">
+                          <div className="col-xl-10 col-lg-10 col-md-12 col-sm-5 text-end text-sm-center text-lg-end mb-25px pe-0">
                             <Button
                               className="btn btn-black btn-round-edge btn-box-shadow text-uppercase px-3 pt-5px pb-5px"
                               size="small"
@@ -1286,6 +1403,89 @@ const EditProfilePage = () => {
                       </Button>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+      >
+        <div className="w-30 md-w-90">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+                  <div className="row justify-content-center mb-30px sm-mb-10px">
+                    <div className="col-md-9 text-center">
+                      <h4 className="text-dark-gray fw-500 mb-15px">
+                        하늘편지 남기기
+                      </h4>
+                    </div>
+                  </div>
+                  <form className="row">
+                    <div className="col-12 mb-20px ">
+                      <label className="mb-10px">이름</label>
+                      <input
+                        className="border-radius-4px input-large mb-5px"
+                        type="text"
+                        name="displayName"
+                        value={postLetter.displayName}
+                        onChange={handleLettersChange}
+                        required
+                      />
+                      {/* {errors.deliveryName && (
+                    <p className="text-danger text-start">
+                      배송지 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                    </div>
+                    <div className="col-12 mb-20px ">
+                      <label className="mb-10px">내용</label>
+                      <textarea
+                        className="border-radius-4px textarea-small"
+                        name="content"
+                        rows="5"
+                        cols="5"
+                        value={postLetter.content}
+                        onChange={handleLettersChange}
+                        placeholder=""
+                      ></textarea>
+                      {/* {errors.recipientName && (
+                    <p className="text-danger text-start">
+                      받는분 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                    </div>
+
+                    <div className="col-lg-112 text-center text-lg-center">
+                      <input type="hidden" name="redirect" value="" />
+
+                      <Button
+                        className="btn btn-black btn-box-shadow btn-round-edge border-0  me-1"
+                        onClick={handleSendLetter}
+                      >
+                        남기기
+                      </Button>
+
+                      <Button
+                        className="btn btn-white btn-box-shadow btn-round-edge border-1  me-1"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setIsRegisterModalOpen(false);
+                          letterInit();
+                        }}
+                      >
+                        닫기
+                      </Button>
+                    </div>
+
+                    {/* <AddressSearch onComplete={setSelectedAddress} />
+                          <p>선택된 주소: {selectedAddress}</p> */}
+                  </form>
                 </div>
               </div>
             </div>

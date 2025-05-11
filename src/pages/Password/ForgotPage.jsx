@@ -29,7 +29,9 @@ const ForgotPage = () => {
   };
 
   //이메일유효성 검사체크 로직
-  const handleEmailCheck = async () => {
+  const handleEmailCheck = async (e) => {
+    e.preventDefault();
+
     if (!isValidEmail(email)) {
       setErrors('올바른 이메일 주소를 입력해 주세요.');
       return;
@@ -54,35 +56,39 @@ const ForgotPage = () => {
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <div className="mt-20px py-5 text-center ">
-                <a className="navbar-brand" href="demo-hotel-and-resort.html">
+                <a className="navbar-brand">
                   <img
                     src={forgotImage}
                     alt=""
                     className="default-logo md-w-100px md-h-100px"
                   />
                 </a>
-                <h3 className="fs-30 md-fs-40 fw-600 text-dark-gray mb-20px md-mb-30px ls-minus-1px">
+                <h3 className="fs-30 sm-fs-32 md-fs-40 fw-600 text-dark-gray mb-20px md-mb-30px sm-mb-0 ls-minus-1px">
                   비밀번호 찾기
                 </h3>
-                <h6 className="fs-25 fw-400 text-dark-gray mb-10 ls-minus-1px">
+                <h6 className="fs-25 sm-fs-16 fw-400 text-dark-gray mb-10 sm-mb-5 ls-minus-1px">
                   이메일을 통해 비밀번호 수정 링크가 전송됩니다.
                 </h6>
                 <form className="text-center">
                   <input
-                    className="md-w-80 d-md-inline-block mb-20px md-mb-40px bg-very-light-white form-control required"
+                    className="md-w-80 sm-w-90 d-md-inline-block mb-20px md-mb-10px sm-mb-10px bg-very-light-white mx-center text-black form-control required"
                     type="text"
                     name="loginEmail"
                     value={email}
                     onChange={handleEmailChange}
                     placeholder="이메일을 입력 하세요"
                   />
-                  {errors && <p className="text-danger text-start">{errors}</p>}
+                  {errors && (
+                    <p className="text-danger text-start md-ms-40px sm-ms-20px">
+                      {errors}
+                    </p>
+                  )}
 
                   <Button
                     type="submit"
                     size="extra-large"
                     radiusOn="radius-on"
-                    className="btn btn-medium btn-round-edge btn-base-color btn-box-shadow submit w-50 text-transform-none"
+                    className="btn btn-medium btn-round-edge btn-base-color btn-box-shadow w-50 sm-w-40 text-transform-none px-0"
                     onClick={handleEmailCheck}
                   >
                     이메일 전송
@@ -92,7 +98,7 @@ const ForgotPage = () => {
                 </form>
                 <Link
                   to="/signin"
-                  className="d-block pt-5 pe-5 fw-800 fs-18 login-text-icon"
+                  className="d-block pt-5 pe-5 fw-800 fs-18 sm-fs-16 login-text-icon"
                 >
                   로그인
                 </Link>
@@ -116,7 +122,7 @@ const ForgotPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsModalOpen(false)}
                       >
                         확인

@@ -23,6 +23,7 @@ const Header = () => {
     await signLogout();
     dispatch(logout());
     navigate('/signin'); // 로그아웃 후 로그인 페이지로 이동
+    closeMenu();
   };
 
   //메뉴 닫기 함수

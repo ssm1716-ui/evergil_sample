@@ -2168,8 +2168,8 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   }
   100% {
     opacity: 0;
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
   }
 }
 @keyframes video-icon-sonar {
@@ -2180,8 +2180,8 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   }
   100% {
     opacity: 0;
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
   }
 }
 .video-icon-box {
@@ -9977,7 +9977,7 @@ blockquote footer {
 }
 .btn {
   display: inline-block;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -10004,11 +10004,12 @@ blockquote footer {
 }
 .btn.btn-large {
   font-size: 14px;
-  padding: 18px 34px;
+  /* padding: 18px 34px; */
+  padding: 18px 28px;
 }
 .btn.btn-medium {
   /* font-size: 13px; */
-  font-size: 16px;
+  font-size: 14px;
   padding: 16px 30px;
 }
 .btn.btn-extra-medium {
@@ -10474,9 +10475,11 @@ blockquote footer {
   color: var(--white);
 }
 .btn.btn-base-color:hover, .btn.btn-base-color:active {
-  background-color: transparent;
+  /* background-color: transparent;
   border-color: var(--white);
-  color: var(--black);
+  color: var(--black); */
+  background-color: var(--base-color);
+  color: var(--white);
 }
 .btn.btn-dark-gray {
   background-color: var(--dark-gray);
@@ -10634,9 +10637,12 @@ blockquote footer {
   color: var(--dark-gray);
 }
 .btn.btn-transparent-light-gray:hover, .btn.btn-transparent-light-gray:active {
-  background-color: var(--dark-gray);
+  /* background-color: var(--dark-gray);
   border-color: var(--dark-gray);
-  color: var(--white);
+  color: var(--white); */
+  background-color: transparent;
+  border-color: var(--extra-medium-gray);
+  color: var(--dark-gray);
 }
 .btn.btn-double-border.btn-extra-large {
   padding: 0;
@@ -10873,9 +10879,9 @@ blockquote footer {
 }
 
 .btn.btn-box-shadow.btn-base-color:hover, .btn.btn-box-shadow.btn-base-color:active {
-  background: var(--white);
+  /* background: var(--white);
   color: var(--black);
-  border: 1px solid #BFBFBF;
+  border: 1px solid #BFBFBF; */
 }
 .btn.btn-box-shadow.btn-white:hover, .btn.btn-box-shadow.btn-white:active {
   background: var(--white);
@@ -11186,7 +11192,7 @@ blockquote footer {
 }
 .terms-condition-box .box {
   position: relative;
-  padding-left: 30px;
+  padding-left: 28px;
   cursor: pointer;
   display: inline-block;
 }
@@ -16680,7 +16686,8 @@ canvas {
   transform: translate3d(0, -3px, 0);
 }
 .tab-style-08 .nav-tabs > li.nav-item {
-  padding: 0 4px;
+  /* padding: 0 4px; */
+  padding: 0px;
   width: inherit;
 }
 
@@ -16744,6 +16751,53 @@ canvas {
   color: var(--base-color);
 }
 .tab-style-10 .nav-tabs .nav-item .nav-link.active .tab-border, .tab-style-10 .nav-tabs .nav-item .nav-link.show .tab-border, .tab-style-10 .nav-tabs .nav-item .nav-link:hover .tab-border {
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
+/* Tab style 11 */
+.tab-style-11 .nav-tabs {
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center;
+  /* gap: 40px;  */
+  padding: 0;
+  margin: 0 auto;
+  list-style: none;
+}
+.tab-style-11 .nav-tabs .nav-item {
+  display: flex;
+  justify-content: center;
+}
+
+.tab-style-11 .nav-tabs .nav-item .nav-link {
+  padding: 0;
+  border: none;
+  background: transparent;
+  position: relative;
+  color: var(--medium-gray);
+}
+ 
+.tab-style-11 .nav-tabs .nav-item:nth-child(even) {
+  padding: 0 20px 0 40px;
+}
+.tab-style-11 .nav-tabs .nav-item .nav-link .tab-border {
+  width: 100%;
+  height: 2px;
+  display: block;
+  -wekit-transform: scaleX(0);
+  -moz-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: transform 0.5s ease;
+  transition: transform 0.5s ease;
+}
+.tab-style-11 .nav-tabs .nav-item .nav-link.active, .tab-style-11 .nav-tabs .nav-item .nav-link.show, .tab-style-11 .nav-tabs .nav-item .nav-link:hover {
+  /* color: var(--dark-gray); */
+  color: var(--base-color);
+  font-weight: bold;
+}
+.tab-style-11 .nav-tabs .nav-item .nav-link.active .tab-border, .tab-style-11 .nav-tabs .nav-item .nav-link.show .tab-border, .tab-style-11 .nav-tabs .nav-item .nav-link:hover .tab-border {
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
 }
@@ -19131,8 +19185,8 @@ canvas {
 .shop-image .lable {
   padding: 0 8px;
   position: absolute;
-  left: 17px;
-  top: 17px;
+  left: 5px;
+  top: 5px;
   color: var(--white);
   font-size: 9px;
   line-height: 21px;

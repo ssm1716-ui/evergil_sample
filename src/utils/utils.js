@@ -6,6 +6,12 @@ export const removeHyphens = (input) => {
     return input.replace(/-/g, '');
 };
 
+//단위 콤마
+export const formatNumber = (number, locale = 'ko-KR') => {
+    if (typeof number !== 'number') return '0';
+    return new Intl.NumberFormat(locale).format(number);
+};
+
 
 export const formatDate = (dateString) => {
     if (!dateString) return ''; // dateString이 없을 경우 빈 문자열 반환

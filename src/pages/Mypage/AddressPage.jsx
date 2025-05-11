@@ -190,19 +190,19 @@ const AddressPage = () => {
                         <a
                           data-bs-toggle="tab"
                           href="#tab_four1"
-                          className="nav-link box-shadow-extra-large ps-45px pe-45px pt-35px pb-35px lg-p-5 xs-p-8 border-radius-8px"
+                          className="nav-link box-shadow-extra-large ps-45px pe-45px pt-35px pb-35px lg-p-5 xs-p-4 border-radius-8px"
                           onClick={() => setFocusAddress(address.id)}
                         >
                           <div className="flex-column flex-sm-row d-flex align-items-center">
-                            <div className="col-1 align-items-center d-flex me-auto w-150px lg-w-120px xs-w-auto mx-auto xs-mb-20px">
-                              <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100 me-10px">
+                            <div className="col-1 align-items-center d-flex  xs-w-auto mx-auto xs-mb-20px">
+                              <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100">
                                 <i className="fa-solid fa-check"></i>
                               </div>
                             </div>
-                            <div className="col-md-7 icon-with-text-style-01 md-mb-25px">
+                            <div className="col-md-7 col-sm-6 icon-with-text-style-01 md-mb-25px">
                               <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
-                                <div className="feature-box-content">
-                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px vertical-align-top">
+                                <div className="sm-feature-box-content feature-box-content">
+                                  <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px me-15px align-sub">
                                     {address.deliveryName}
                                   </span>
                                   {address.isDefault && (
@@ -223,9 +223,9 @@ const AddressPage = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-3  text-md-end text-sm-center text-center">
+                            <div className="col-lg-3 col-md-3 col-sm-6 text-md-center text-sm-center text-center pt-20px md-pt-0 sm-w-100">
                               <Link
-                                className="btn btn-white btn-box-shadow btn-large btn-switch-text btn-rounded ms-3 mb-10px w-75"
+                                className="btn btn-white btn-box-shadow btn-large btn-switch-text btn-rounded ms-3 sm-ms-0 mb-10px"
                                 onClick={() =>
                                   handleUpdateModalOpen(address.id)
                                 }
@@ -240,7 +240,7 @@ const AddressPage = () => {
                                 </span>
                               </Link>
                               <Link
-                                className="btn btn-dark-gray btn-box-shadow btn-large btn-switch-text btn-rounded ms-3 mb-10px w-75"
+                                className="btn btn-dark-gray btn-box-shadow btn-large btn-switch-text btn-rounded ms-3 mb-10px"
                                 onClick={() => handleDeleteAddress(address.id)}
                               >
                                 <span>
@@ -291,7 +291,7 @@ const AddressPage = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-70 h-50 md-h-50">
+        <div className="w-40 md-w-70 sm-w-100 h-50 md-h-50 sm-h-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -320,7 +320,7 @@ const AddressPage = () => {
                         required
                       />
                       {errors.deliveryName && (
-                        <p className="text-danger text-start mb-1">
+                        <p className="text-danger text-start mb-1 sm-fs-14">
                           배송지 이름을 추가 해주세요.
                         </p>
                       )}
@@ -336,7 +336,7 @@ const AddressPage = () => {
                         required
                       />
                       {errors.recipientName && (
-                        <p className="text-danger text-start mb-1">
+                        <p className="text-danger text-start mb-1 sm-fs-14">
                           받는분 이름을 추가 해주세요.
                         </p>
                       )}
@@ -352,7 +352,7 @@ const AddressPage = () => {
                         required
                       />
                       {errors.phoneNumber && (
-                        <p className="text-danger text-start mb-1">
+                        <p className="text-danger text-start mb-1 sm-fs-14">
                           핸드폰번호를 추가 해주세요.
                         </p>
                       )}
@@ -375,7 +375,7 @@ const AddressPage = () => {
                         </AddressSearch>
                       </div>
                       {errors.zipcode && (
-                        <p className="text-danger text-start mb-1">
+                        <p className="text-danger text-start mb-1 sm-fs-14">
                           주소 찾기로 우편번호를 추가 해주세요.
                         </p>
                       )}
@@ -389,7 +389,7 @@ const AddressPage = () => {
                           required
                         />
                         {errors.address1 && (
-                          <p className="text-danger text-start mb-1">
+                          <p className="text-danger text-start mb-1 sm-fs-14px">
                             주소 찾기로 주소를 추가 해주세요.
                           </p>
                         )}
@@ -405,17 +405,16 @@ const AddressPage = () => {
                       </>
                     </div>
                     <div className="col-lg-12 text-center text-lg-center mt-5">
-                      <input type="hidden" name="redirect" value="" />
                       {updateFlag ? (
                         <Button
-                          className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
+                          className="btn btn-base-color btn-box-shadow btn-round-edge me-3"
                           onClick={handleUpdateAddress}
                         >
                           수정
                         </Button>
                       ) : (
                         <Button
-                          className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
+                          className="btn btn-base-color btn-box-shadow btn-round-edge me-3"
                           onClick={handleAddAddress}
                         >
                           추가

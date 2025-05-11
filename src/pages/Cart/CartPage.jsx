@@ -74,6 +74,8 @@ const CartPage = () => {
       selectedProducts.includes(index)
     );
 
+    if (removeProduct.length <= 0) alert('상품 선택을 해주세요.');
+
     setCartProducts([...updatedCart]);
 
     if (!isAuthenticated) {
@@ -179,23 +181,23 @@ const CartPage = () => {
         <section className="pt-0">
           <div className="container">
             <div className="row align-items-start">
-              <div className="col-lg-8 pe-15px md-pe-15px xs-mb-35px">
+              <div className="col-lg-8 pe-15px md-pe-15px sm-mb-10px">
                 <div className="row mb-20px">
                   <div className="col-12 text-center text-md-end sm-mt-15px d-flex justify-content-between">
-                    <a
+                    <Link
                       className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none me-15px lg-me-5px"
                       onClick={handleAllChecked}
                     >
                       {selectedProducts.length === cartProducts.length
                         ? '전체 해제'
                         : '전체 선택'}
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none"
                       onClick={handleSelectRemove}
                     >
                       선택 삭제
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="row align-items-center">
@@ -233,7 +235,7 @@ const CartPage = () => {
                                   id="terms_condition"
                                   checked={selectedProducts.includes(index)}
                                   onChange={() => handleCheckboxChange(index)}
-                                  className="terms-condition check-box align-middle required"
+                                  className="terms-condition check-box align-top required"
                                 />
                               </td>
                               <td className="product-thumbnail text-center">
@@ -248,7 +250,7 @@ const CartPage = () => {
                                   />
                                 </Link>
                               </td>
-                              <td className="product-name text-center p-0">
+                              <td className="product-name text-center p-0 sm-pe-25px">
                                 <Link
                                   to={`/shop/${product.productId}`}
                                   className="text-dark-gray fw-500 d-block lh-initial md-fs-12"
@@ -295,7 +297,7 @@ const CartPage = () => {
                                 className="product-price text-center"
                                 data-title="배송비"
                               >
-                                {product.deliveryFee}원
+                                {product.deliveryFee.toLocaleString()}원
                               </td>
                               <td
                                 className="product-price text-center"

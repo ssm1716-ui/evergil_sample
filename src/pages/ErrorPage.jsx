@@ -11,7 +11,6 @@ const ErrorPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const desc = queryParams.get('desc');
   const pageUrl = queryParams.get('pageUrl');
-  console.log(desc, pageUrl);
   return (
     <>
       <header>

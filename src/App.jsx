@@ -28,7 +28,7 @@ import MyPage from '@/pages/Mypage/MyPage';
 import OrderListPage from '@/pages/Mypage/OrderListPage';
 import OrderDetailPage from '@/pages/Mypage/OrderDetailPage';
 import MyReviewPage from '@/pages/Mypage/MyReviewPage';
-import ExchagePage from '@/pages/Mypage/ExchagePage';
+import ExchangePage from '@/pages/Mypage/ExchangePage';
 import ReturnPage from '@/pages/Mypage/ReturnPage';
 import MyContactPage from '@/pages/Mypage/MyContactPage';
 import FaqPage from '@/pages/Mypage/FaqPage';
@@ -36,6 +36,7 @@ import MyInfoPage from '@/pages/Mypage/MyInfoPage';
 import AddressPage from '@/pages/Mypage/AddressPage';
 import CheckOutPage from '@/pages/Order/CheckOutPage';
 import PaymentResultPage from '@/pages/Order/PaymentResultPage';
+import PaymentErrorPage from '@/pages/Order/PaymentErrorPage';
 import CompletePage from '@/pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
@@ -68,6 +69,7 @@ const App = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckOutPage />} />
             <Route path="/payment/result" element={<PaymentResultPage />} />
+            <Route path="/payment/error" element={<PaymentErrorPage />} />
             <Route path="/complete" element={<CompletePage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
@@ -75,12 +77,12 @@ const App = () => {
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/test" element={<TestPage />} />
 
-            {/* <Route path="/qr" element={<QRScanner />} />
-            <Route path="/qr-confirm" element={<QRCofirm />} /> */}
+            {/* <Route path="/qr-scanner" element={<QRScanner />} /> */}
+            {/*<Route path="/qr-confirm" element={<QRCofirm />} /> */}
 
             {/* qr 테스트*/}
             <Route
-              path="/qr"
+              path="/qr-scanner"
               element={
                 <ProtectedRoute>
                   <QRScanner />
@@ -173,7 +175,7 @@ const App = () => {
               <Route path="order-list" element={<OrderListPage />} />
               <Route path="order-detail" element={<OrderDetailPage />} />
               <Route path="my-review" element={<MyReviewPage />} />
-              <Route path="exchage" element={<ExchagePage />} />
+              <Route path="exchange" element={<ExchangePage />} />
               <Route path="return" element={<ReturnPage />} />
               <Route path="my-contact" element={<MyContactPage />} />
               <Route path="faq" element={<FaqPage />} />

@@ -1,24 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import { postInicisPaymentResult } from '@/api/payment/paymentApi';
+import { isValidPassword } from '@/utils/validators';
 
-const PaymentResultPage = () => {
+const PaymentErrorPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const key = searchParams.get('key'); // ✅ URL에서 key 값 가져오기
 
   useEffect(() => {
-    if (!key) {
-      navigate(
-        `/error?desc=${'결제가 실패 되었습니다.'}&pageUrl=${'/checkout'}`
-      );
-      return;
-    }
-
-    navigate(`/complete?key=${key}`);
+    navigate(`/error?desc=${'결제가 실패 되었습니다.'}&pageUrl=${'/checkout'}`);
   }, []);
 
   return (
@@ -81,4 +72,4 @@ const PaymentResultPage = () => {
   );
 };
 
-export default PaymentResultPage;
+export default PaymentErrorPage;
