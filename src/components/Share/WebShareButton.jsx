@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaLink, FaShareAlt } from 'react-icons/fa';
 
-const WebShareButton = () => {
+const WebShareButton = ({ triggerElement }) => {
   const [showShareBox, setShowShareBox] = useState(false); // ✅ 공유 박스 상태
   const [copied, setCopied] = useState(false); // ✅ URL 복사 상태
   const buttonRef = useRef(null); // ✅ 버튼 참조
@@ -62,26 +62,35 @@ const WebShareButton = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showShareBox]);
 
+  const defaultTrigger = (
+    <Link
+      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
+      onClick={handleShare}
+      ref={buttonRef}
+    >
+      <span>
+        <span>
+          <i className="feather icon-feather-share-2"></i>
+        </span>
+        <span
+          className="btn-double-text ls-0px position-relative"
+          data-text="공유하기"
+        >
+          공유하기
+        </span>
+      </span>
+    </Link>
+  );
+
   return (
     <>
-      {/* ✅ 공유 버튼 */}
-      <Link
-        className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
-        onClick={handleShare}
-        ref={buttonRef} // ✅ 버튼 위치 참조
-      >
-        <span>
-          <span>
-            <i className="feather icon-feather-share-2"></i>
-          </span>
-          <span
-            className="btn-double-text ls-0px position-relative"
-            data-text="공유하기"
-          >
-            공유하기
-          </span>
-        </span>
-      </Link>
+      {/* ✅ 버튼: props로 받은 게 있으면 그걸, 없으면 기본 버튼 */}
+      {triggerElement
+        ? React.cloneElement(triggerElement, {
+            onClick: handleShare,
+            ref: buttonRef,
+          })
+        : defaultTrigger}
 
       {/* ✅ 공유 박스 (데스크톱에서만 버튼 아래 표시) */}
       {showShareBox && (

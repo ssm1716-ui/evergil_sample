@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import LoginModal from '@/components/common/Modal/LoginModal';
 import MobileBuyPanel from '@/components/Shop/MobileBuyPanel';
+import WebShareButton from '@/components/Share/WebShareButton';
 import { getCart, addCart } from '@/api/memberApi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, Autoplay } from 'swiper/modules';
@@ -381,12 +382,22 @@ const ShopPage = () => {
                     </span>
                   </span>
                 </Link>
-                <a
+                <WebShareButton
+                  triggerElement={
+                    <a
+                      href="#"
+                      className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 w-20 sm-w-30"
+                    >
+                      <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
+                    </a>
+                  }
+                />
+                {/* <a
                   href="#"
                   className="wishlist d-flex align-items-center justify-content-center border border-radius-5px border-color-extra-medium-gray order-2 order-sm-3 w-20 sm-w-30"
                 >
                   <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
-                </a>
+                </a> */}
               </div>
 
               <div className="d-flex align-items-center flex-column flex-sm-row mb-20px position-relative d-lg-block d-md-none d-sm-none">
