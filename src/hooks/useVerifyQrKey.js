@@ -26,7 +26,9 @@ export const useVerifyQrKey = () => {
                     navigate('/profile');
                     break;
                 default:
-                    `/error?desc=${'유효하지 않습니다.'}&pageUrl=${'/profile'}`;
+                    navigate(
+                        `/error?desc=${'유효하지 않습니다.'}&pageUrl=${'/profile'}`
+                    );
                     break;
             }
         } catch (err) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
@@ -33,6 +33,9 @@ const SettingProfilePage = () => {
     nickname: false,
     scope: false,
   });
+  const navigate = useNavigate();
+
+  console.log(location.state?.qrKey);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -49,6 +52,11 @@ const SettingProfilePage = () => {
     if (profileId) {
       fetchProfile();
       return;
+    }
+    if (!location.state?.qrKey) {
+      navigate(
+        `/error?desc=${'유효한 접근이 아닙니다.'}&pageUrl=${'/profile'}`
+      );
     }
     setFormProfile({ ...formProfile, qrKey: location.state?.qrKey });
   }, []);

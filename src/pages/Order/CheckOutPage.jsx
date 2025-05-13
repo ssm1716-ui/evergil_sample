@@ -194,6 +194,7 @@ const CheckOutPage = () => {
       const methodSection = document.querySelector('.icon-with-text-style-07');
       methodSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       isFocused = true;
+      newErrors.selectedMethod = '결제 수단을 선택해주세요.';
     }
 
     setErrors(newErrors);
@@ -294,31 +295,10 @@ const CheckOutPage = () => {
       console.log('결제제 정보 요청 -', res);
       if (res.status !== 200) throw new Error('결제 정보 요청 실패');
       const paymentReqObj = res.data.data;
-      paymentReqObj.P_PAY_TYPE = selectedMethod; //"CARD:BANK:VBANK",
+      paymentReqObj.P_PAY_TYPE = selectedMethod; //"CARD:BANK:VBANK"
       paymentReqObj.P_DEVICE_TYPE = deviceType;
 
-      // // 2. 결제 form 동적 생성
-      // const form = document.createElement('form');
-      // form.setAttribute('id', 'SendPayForm_id');
-      // form.setAttribute('method', 'post');
-
-      // Object.entries(formData).forEach(([key, value]) => {
-      //   const input = document.createElement('input');
-      //   input.type = 'hidden';
-      //   input.name = key;
-      //   input.value = key === 'P_PAY_TYPE' ? 'CARD' : value; // 테스트 고정
-      //   form.appendChild(input);
-      // });
-
-      // const inputVersion = document.createElement('input');
-      // inputVersion.type = 'hidden';
-      // inputVersion.name = 'version';
-      // inputVersion.value = '1.0';
-      // form.appendChild(inputVersion);
-
-      // document.body.appendChild(form);
       console.log('결제창 뜨기전 파라미터들 -', paymentReqObj);
-      // return;
 
       if (window.INIPayPro) {
         window.INIPayPro.requestPayment(paymentReqObj);
