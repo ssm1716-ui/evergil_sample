@@ -35,3 +35,11 @@ export const getTransformedCartData = (storedCart) => {
     }
     return transformedData;
 };
+
+
+//QR URL 마지막 path 가져오기
+export const getLastPathSegment = (url) => {
+    const path = new URL(url).pathname;
+    const segments = path.split('/').filter(Boolean);
+    return segments.length > 0 ? segments.pop() : null;
+};

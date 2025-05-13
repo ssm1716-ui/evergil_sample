@@ -16,7 +16,7 @@ export const useVerifyQrKey = () => {
                     break;
                 case 'ERROR_PAGE':
                     navigate(
-                        `/error?desc=${'유효하지 않습니다.'}&pageUrl=${'/profile'}`
+                        `/error?desc=${'유효한 QR코드 아닙니다.'}&pageUrl=${'/profile'}`
                     );
                     break;
                 case 'CREATE_PROFILE_PAGE':

@@ -290,8 +290,6 @@ const CheckOutPage = () => {
         deliveryAddressInfo: convertedAddress,
       };
 
-      console.log(updatedPayment);
-
       const res = await postInicisPaymentForm(updatedPayment);
       if (res.status !== 200) throw new Error('결제 정보 요청 실패');
       const paymentReqObj = res.data.data;

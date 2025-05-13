@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
-import { useVerifyQrKey } from '@/hooks/useVerifyQrKey';
-
+import { getLastPathSegment } from '@/utils/utils';
 import defaultLogo from '@/assets/images/header-logo.png';
 
 const QRScanner = () => {
   const [scanResult, setScanResult] = useState(null);
   const scannerRef = useRef(null);
-  const qrCodeInstanceRef = useRef(null); // ← 인스턴스 저장용
-  const isScanningRef = useRef(false); // ← 상태 추적용
+  const qrCodeInstanceRef = useRef(null);
+  const isScanningRef = useRef(false);
   const navigate = useNavigate();
-  const { verify } = useVerifyQrKey();
 
   useEffect(() => {
     let lastErrorTime = 0;
@@ -38,8 +36,14 @@ const QRScanner = () => {
             await html5QrCode.stop();
             isScanningRef.current = false;
           }
-
-          onQrScanned(key);
+          const isPathKey = getLastPathSegment(key);
+          if (!isPathKey) {
+            navigate(
+              `/error?desc=${'유효한 QR코드 아닙니다.'}&pageUrl=${'/profile'}`
+            );
+          }
+          window.location.href = key;
+          // navigate(`${key}`);
         },
         (errorMessage) => {
           const now = Date.now();
@@ -73,12 +77,6 @@ const QRScanner = () => {
       isScanningRef.current = false;
     }
     navigate('/profile');
-  };
-
-  // QR코드 스캔 후
-  const onQrScanned = async (qrKey) => {
-    console.log('Scanned:', qrKey);
-    await verify(qrKey);
   };
 
   return (

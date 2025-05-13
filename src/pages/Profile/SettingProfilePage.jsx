@@ -3,7 +3,6 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
-import { isValidEmail } from '@/utils/validators';
 import {
   postRegisterProfile,
   getSelectProfile,
@@ -38,9 +37,7 @@ const SettingProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        console.log(profileId);
         const res = await getSelectProfile(profileId);
-        console.log(res);
         if (res.status === 200) {
           const { data } = res.data;
           setFormProfile(data.profile);
