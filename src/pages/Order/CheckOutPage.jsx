@@ -318,7 +318,7 @@ const CheckOutPage = () => {
 
       // document.body.appendChild(form);
       console.log('결제창 뜨기전 파라미터들 -', paymentReqObj);
-      return;
+      // return;
 
       if (window.INIPayPro) {
         window.INIPayPro.requestPayment(paymentReqObj);
