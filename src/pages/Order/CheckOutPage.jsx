@@ -291,6 +291,7 @@ const CheckOutPage = () => {
       };
 
       const res = await postInicisPaymentForm(updatedPayment);
+      console.log('결제제 정보 요청 -', res);
       if (res.status !== 200) throw new Error('결제 정보 요청 실패');
       const paymentReqObj = res.data.data;
       paymentReqObj.P_PAY_TYPE = selectedMethod; //"CARD:BANK:VBANK",
@@ -316,6 +317,8 @@ const CheckOutPage = () => {
       // form.appendChild(inputVersion);
 
       // document.body.appendChild(form);
+      console.log('결제창 뜨기전 파라미터들 -', paymentReqObj);
+      return;
 
       if (window.INIPayPro) {
         window.INIPayPro.requestPayment(paymentReqObj);
