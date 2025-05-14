@@ -4,13 +4,8 @@ import Modal from 'react-modal';
 import ReactPlayer from 'react-player/youtube';
 
 import FaqComponents from '@/components/Faq/FaqComponents';
-import mainBannerImage from '@/assets/images/main-banner.png';
-import mainSubImage1 from '@/assets/images/main-sub-image1.png';
-import mainSubImage2 from '@/assets/images/main-sub-image2.png';
-import mainSubImage3 from '@/assets/images/demo-travel-agency-about-02.jpg';
-import mainSubImage4 from '@/assets/images/demo-travel-agency-about-03.jpg';
-import mainSubImage5 from '@/assets/images/demo-travel-agency-about-04.jpg';
-import mainSubBgImage from '@/assets/images/demo-branding-agency-pattern.svg';
+import mainBannerImage from '@/assets/images/main-banner.jpg';
+import mainSubImage1 from '@/assets/images/main-sub-image1.jpg';
 
 import mainLogoPc from '@/assets/images/main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/main_logo_mobile.png';
