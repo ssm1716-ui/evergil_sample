@@ -535,7 +535,6 @@ const ViewProfilePage = () => {
                                     <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
                                     add comment
                                   </a>
-                                  ``
                                 </li>
                               </ul>
                             </div>
@@ -556,14 +555,14 @@ const ViewProfilePage = () => {
                                       {letter.displayName}
                                     </span>
                                   </div>
-                                  <div className="col-lg-2 col-md-3 align-self-center text-md-end">
+                                  <div className="col-lg-2 col-md-3 align-self-center">
                                     <span>{letter.createdAt}</span>
                                   </div>
                                   <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
-                                    <p className="sm-w-85">{letter.content}</p>
+                                    <p className="sm-w-75">{letter.content}</p>
                                   </div>
                                   {letter.hasPermission && (
-                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-10px md-w-70px">
+                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
                                       <span
                                         className="cursor-pointer me-5"
                                         onClick={() =>

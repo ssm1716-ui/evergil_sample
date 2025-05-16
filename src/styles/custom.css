@@ -447,8 +447,9 @@ height: 1297px;
 
   .gallery-grid-item img {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    height:auto;
+    height: -webkit-fill-available;
+    object-fit: fill;
     /* border-radius: 6px; */
   }
 }
