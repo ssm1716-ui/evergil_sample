@@ -85,7 +85,7 @@ const App = () => {
               path="/qr-scanner"
               element={
                 <ProtectedRoute>
-                  <QRScanner />
+                  <QRScanner key={Date.now()} />
                 </ProtectedRoute>
               }
             />

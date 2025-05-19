@@ -25,8 +25,9 @@ const Footer = () => {
 
             <div className="col-xl-4 col-sm-4 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-14 md-fs-12 sm-fs-10">
-                주소: (우)14441 경기 부천시 오정구 오정로211번길 35-24 <br />
-                에버링크(everlink) / 대표자명:전경아 <br />
+                주소: (우)14313 경기도 광명시 하안로 198, 210동 1401호 <br />
+                (소하동, 동양2차아파트)
+                <br /> 에버링크(everlink) / 대표자명:전경아 <br />
                 사업자 등록번호: 136-04-69494 <br />
                 통신판매업신고: 2024-경기광명-1086 <br />
                 {/* <p className="xl-w-hidden sm-w-block fs-16">
