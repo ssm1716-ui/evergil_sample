@@ -151,14 +151,14 @@ const SignInPage = () => {
               data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
             >
               <div className="col-12 text-center position-relative page-title-extra-large">
-                <h4 className="fw-600 text-dark-gray mb-10px py-4_5 md-pb-0">
+                <h4 className="fw-600 text-dark-gray mb-0 py-4_5 md-pb-0">
                   로그인
                 </h4>
               </div>
               <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
             </div>
             <div
-              className="col-lg-8 col-md-10 p-5"
+              className="col-lg-8 col-md-10 p-5 pt-1"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <form>
@@ -211,7 +211,7 @@ const SignInPage = () => {
                   <span className="px-5">|</span>
                   <Link to="/password-forgot">비밀번호찾기</Link>
                 </div>
-                <div className="pt-40px md-pt-2 text-center d-flex flex-row align-items-center">
+                <div className="pt-20px md-pt-2 text-center d-flex flex-row align-items-center">
                   <Button
                     data-value="google"
                     name="google"

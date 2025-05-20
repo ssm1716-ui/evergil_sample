@@ -279,13 +279,16 @@ export const getLetter = async (profileId, letterId) => {
 
 //추모 하늘편지 등록
 export const postLetters = async (profileId, params) => {
-
     try {
         const res = await axiosInstance.post(`/memorial-profiles/${profileId}/letters`, params);
-        console.log(res);
         return res;
     } catch (err) {
-        console.error(err);
+        // 에러 응답이 있을 경우 메시지 전달
+        const message =
+            err.response?.data?.message ||
+            err.response?.data?.error ||
+            '알 수 없는 오류가 발생했습니다.';
+        throw new Error(message);
     }
 };
 

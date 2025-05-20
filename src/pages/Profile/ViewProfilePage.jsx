@@ -567,21 +567,23 @@ const ViewProfilePage = () => {
                                     <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
                                       <span
                                         className="cursor-pointer me-5"
-                                        onClick={() =>
+                                        onClick={(e) => {
+                                          e.preventDefault();
                                           handleRemoveLetterConfirm(
                                             letter.letterId
-                                          )
-                                        }
+                                          );
+                                        }}
                                       >
                                         <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
                                       </span>
                                       <span
                                         className="cursor-pointer"
-                                        onClick={() =>
+                                        onClick={(e) => {
+                                          e.preventDefault();
                                           handleModifyLetterConfirm(
                                             letter.letterId
-                                          )
-                                        }
+                                          );
+                                        }}
                                       >
                                         <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
                                       </span>
@@ -616,14 +618,14 @@ const ViewProfilePage = () => {
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
                                 <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                                <div className="process-step-icon d-flex justify-content-start justify-content-sm-center  align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
                                   <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                                     <span className="number position-relative z-index-1 fw-600">
                                       <i className="feather icon-feather-user align-middle icon-large text-white"></i>
                                     </span>
                                     <div className="box-overlay bg-black rounded-circle"></div>
                                   </div>
-                                  <span className="number position-relative z-index-1 fw-600">
+                                  <span className="number position-relative z-index-1 fw-600 sm-w-100">
                                     {f.familyTitle}
                                   </span>
                                   <div className="box-overlay rounded-circle"></div>
@@ -632,7 +634,7 @@ const ViewProfilePage = () => {
                             </div>
                             <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
-                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 sm-w-70 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 sm-w-60 fs-18 rounded-circle text-dark-gray fw-500">
                                   <span className="number position-relative z-index-1 fw-600">
                                     {f.displayName}
                                   </span>

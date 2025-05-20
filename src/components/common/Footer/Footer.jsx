@@ -73,29 +73,41 @@ const Footer = () => {
             <div className="col-xl-3 col-sm-3 position-relative text-center text-sm-end elements-social social-text-style-01 order-2 order-xl-3 xs-mb-10px ">
               <ul className="fs-16 dark fw-600 d-flex justify-content-center align-items-center">
                 <li>
-                  <Link className="facebook">
+                  <a
+                    className="facebook"
+                    href="https://m.youtube.com/@everlinkqr"
+                    target="_blank"
+                  >
                     <img src={footerIconYoutube} alt="" />
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link className="dribbble">
+                  <a
+                    className="dribbble"
+                    href="https://www.instagram.com/everlink.qr"
+                    target="_blank"
+                  >
                     <img src={footerIconInstagram} alt="" />
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link className="twitter">
+                  <a className="twitter">
                     <img src={footerIconNaver} alt="" />
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link className="behance">
+                  <a
+                    className="behance"
+                    href="http://pf.kakao.com/_jXMxfn"
+                    target="_blank"
+                  >
                     <img src={footerIconKakao} alt="" />
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link className="behance">
+                  <a className="behance">
                     <img src={footerIconShare} alt="" />
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </div>

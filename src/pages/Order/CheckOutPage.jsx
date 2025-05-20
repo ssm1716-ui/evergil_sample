@@ -18,8 +18,8 @@ import {
   postInicisPaymentResult,
 } from '@/api/payment/paymentApi';
 
-import { isValidPhoneNumber } from '@/utils/validators';
-import { removeHyphens } from '@/utils/utils';
+import { isValidEmail, isValidPhoneNumber } from '@/utils/validators';
+import { removeHyphens, formatPhoneNumberInput } from '@/utils/utils';
 
 const paymentMethods = [
   { id: 'CARD', label: '신용카드', icon: 'line-icon-Credit-Card2' },
@@ -64,53 +64,64 @@ const CheckOutPage = () => {
 
   //바로 주문, 장바구니 경로로 분기 처리
   useEffect(() => {
-    //주문페이지는 로그인 유저만 접근 가능
-    if (!isAuthenticated) navigate('/signin');
+    if (!isAuthenticated) {
+      navigate('/signin');
+      return;
+    }
 
-    let storedOrder = sessionStorage.getItem('order_product');
-    let storedCartProduct;
+    const stateOrderType = location.state?.orderType;
+    const stateProduct = location.state?.product;
 
-    // if (storedOrder) {
-    //   // ✅ 로컬스토리지에서 데이터 복구
-    //   setOrderProductData([JSON.parse(storedOrder)]);
-    // } else if (location.state?.orderType === 'direct') {
-    //   console.log(location.state);
-    //   setOrderProductData([location.state.product]); // 직접 구매
-    // } else {
-    //   const fetchOrder = async () => {
-    //     const res = await getSelectCart();
-    //     if (res.status === 200) {
-    //       const { data } = res.data;
-    //       setOrderProductData(data);
-    //     }
-    //   };
+    if (stateOrderType === 'direct' && stateProduct) {
+      // ✅ 직접 구매: 세션에도 저장
+      sessionStorage.setItem('orderType', 'direct');
+      sessionStorage.setItem('order_product', JSON.stringify(stateProduct));
 
-    //   // setOrderProductData(storedCartProduct);
-    //   fetchOrder();
-    // }
-
-    if (location.state?.orderType === 'direct') {
-      setOrderProductData([location.state.product]); // 직접 구매
+      setOrderProductData([stateProduct]);
       setPayment((prev) => ({
         ...prev,
-        orderItems: [location.state.product],
+        orderItems: [stateProduct],
       }));
-    } else {
-      const fetchOrder = async () => {
-        const res = await getSelectCart();
-        if (res.status === 200) {
-          const { data } = res.data;
-          setOrderProductData(data);
-          setPayment((prev) => ({
-            ...prev,
-            orderItems: data,
-          }));
-        }
-      };
-      fetchOrder();
-    }
-  }, [location.state]);
+    } else if (location.state == null) {
+      // ✅ location.state가 완전히 없을 때만 세션스토리지 fallback
+      const storedOrderType = sessionStorage.getItem('orderType');
+      const storedProduct = sessionStorage.getItem('order_product');
+      const parsedStoredProduct = storedProduct
+        ? JSON.parse(storedProduct)
+        : null;
 
+      if (storedOrderType === 'direct' && parsedStoredProduct) {
+        setOrderProductData([parsedStoredProduct]);
+        setPayment((prev) => ({
+          ...prev,
+          orderItems: [parsedStoredProduct],
+        }));
+        return;
+      }
+
+      // ✅ 세션에도 없으면 → 장바구니 요청
+      fetchOrderFromCart();
+    } else {
+      // ✅ 장바구니 접근이면 세션 지움
+      sessionStorage.removeItem('orderType');
+      sessionStorage.removeItem('order_product');
+
+      fetchOrderFromCart();
+    }
+
+    // 👉 장바구니 API 호출 함수
+    async function fetchOrderFromCart() {
+      const res = await getSelectCart();
+      if (res.status === 200) {
+        const { data } = res.data;
+        setOrderProductData(data);
+        setPayment((prev) => ({
+          ...prev,
+          orderItems: data,
+        }));
+      }
+    }
+  }, [location.state, isAuthenticated, navigate]);
   useEffect(() => {
     SetIsAddresOpen(false);
   }, [selectedAddress]);
@@ -153,9 +164,18 @@ const CheckOutPage = () => {
       newErrors.buyerPhone = '휴대폰 번호를 입력해주세요.';
       focusIfFirst('input[name="buyerPhone"]');
     }
+    if (!isValidPhoneNumber(payment.buyerPhone)) {
+      newErrors.buyerPhone = '휴대폰 번호를 올바르게 입력 해주세요.';
+      focusIfFirst('input[name="buyerPhone"]');
+    }
 
     if (!payment.buyerEmail) {
       newErrors.buyerEmail = '이메일을 입력해주세요.';
+      focusIfFirst('input[name="buyerEmail"]');
+    }
+
+    if (!isValidEmail(payment.buyerEmail)) {
+      newErrors.buyerEmail = '이메일 양식에 맞게 작성해주세요.';
       focusIfFirst('input[name="buyerEmail"]');
     }
 
@@ -189,13 +209,13 @@ const CheckOutPage = () => {
       focusIfFirst('input[name="address2"]');
     }
 
-    if (!selectedMethod) {
-      alert('결제 수단을 선택해주세요.');
-      const methodSection = document.querySelector('.icon-with-text-style-07');
-      methodSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      isFocused = true;
-      newErrors.selectedMethod = '결제 수단을 선택해주세요.';
-    }
+    // if (!selectedMethod) {
+    //   alert('결제 수단을 선택해주세요.');
+    //   const methodSection = document.querySelector('.icon-with-text-style-07');
+    //   methodSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //   isFocused = true;
+    //   newErrors.selectedMethod = '결제 수단을 선택해주세요.';
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -205,9 +225,14 @@ const CheckOutPage = () => {
   const handlePaymentChange = (e) => {
     const { name, value } = e.target;
 
+    let processedValue = value;
+    if (name === 'buyerPhone') {
+      processedValue = formatPhoneNumberInput(value);
+    }
+
     setPayment((prev) => ({
       ...prev,
-      [name]: value, // 입력된 name에 해당하는 속성만 변경
+      [name]: processedValue, // 입력된 name에 해당하는 속성만 변경
     }));
   };
 
@@ -217,14 +242,15 @@ const CheckOutPage = () => {
     let newErrors = {};
 
     //핸드폰번호는 하이픈 제거
-    let removeHyphensPhoneNumber;
+
+    let processedValue = value;
     if (name === 'phoneNumber') {
-      removeHyphensPhoneNumber = removeHyphens(value);
+      processedValue = formatPhoneNumberInput(value);
     }
 
     setOrderAddressData({
       ...orderAddressData,
-      [name]: name === 'phoneNumber' ? removeHyphensPhoneNumber : value,
+      [name]: processedValue,
     });
   };
 
@@ -264,7 +290,16 @@ const CheckOutPage = () => {
 
   const handlePaymentConfirm = async (e) => {
     e.preventDefault();
+
     if (!validate()) return;
+
+    if (!selectedMethod) {
+      alert('결제 수단을 선택해주세요.');
+      const methodSection = document.querySelector('.icon-with-text-style-07');
+      methodSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
     setIsModalOpen(true);
   };
 
@@ -274,11 +309,10 @@ const CheckOutPage = () => {
 
     try {
       // 1. 주문 폼 데이터 요청
-
       const convertedAddress = {
         name: orderAddressData.deliveryName,
         recipient: orderAddressData.recipientName,
-        phoneNumber: orderAddressData.phoneNumber,
+        phoneNumber: removeHyphens(orderAddressData.phoneNumber),
         zipcode: orderAddressData.zipcode,
         address1: orderAddressData.address1,
         address2: orderAddressData.address2,
@@ -288,6 +322,7 @@ const CheckOutPage = () => {
 
       const updatedPayment = {
         ...payment,
+        buyerPhone: removeHyphens(payment.buyerPhone),
         deliveryAddressInfo: convertedAddress,
       };
 
@@ -404,7 +439,7 @@ const CheckOutPage = () => {
                               className="product-price text-center"
                               data-title="배송비"
                             >
-                              {order.deliveryFee}원
+                              {order.deliveryFee.toLocaleString()}원
                             </td>
                             <td
                               className="product-price text-center"
@@ -777,7 +812,7 @@ const CheckOutPage = () => {
         onClose={() => setIsModalDeliveryOpen(false)}
         title="Slide up animation"
       >
-        <div className="w-40 md-w-80 sm-w-100 md-h-600px sm-h-auto">
+        <div className="md-w-80 sm-w-100 md-h-600px sm-h-auto">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row align-items-center justify-content-center pricing-table-style-07 bg-gradient-very-light-gray">
               <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
@@ -831,18 +866,18 @@ const CheckOutPage = () => {
                       ))}
                   </ul>
                   <div className="text-center">
-                    <Link to="#" className="fw-500 d-inline lh-initial ps-2">
+                    <Link className="fw-500 d-inline lh-initial ps-2">
                       <Button
-                        className="btn w-10 mt-10px d-inline w-40 fs-16"
+                        className="btn mt-10px d-inline fs-16"
                         onClick={handleDeliveryAddressChage}
                       >
                         배송지 변경
                       </Button>
                     </Link>
-                    <Link to="#" className="fw-500 d-inline lh-initial ps-2">
+                    <Link className="fw-500 d-inline lh-initial ps-2">
                       <Button
                         color="black"
-                        className="btn w-10 mt-10px d-inline w-40 fs-16"
+                        className="btn mt-10px d-inline fs-16"
                         onClick={() => setIsModalDeliveryOpen(false)}
                       >
                         닫기

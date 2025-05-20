@@ -315,7 +315,7 @@ const ProfilePage = () => {
                         <Button
                           color="profile"
                           radiusOn="radius-on"
-                          className="w-40 md-w-150px fs-24 mt-30px md-mt-10px mb-10px md-fs-16 md-p-0 md-h-25px"
+                          className="w-40 md-w-150px fs-24 mt-30px md-mt-10px mb-10px md-fs-16 md-p-0 md-h-28px"
                         >
                           새로운 프로필 생성
                         </Button>

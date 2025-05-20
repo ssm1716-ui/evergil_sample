@@ -31,7 +31,9 @@ import {
   putPhotoModify,
   deletePhotoRemove,
   getLetters,
+  getLetter,
   postLetters,
+  putLetters,
   getFamilyProfile,
   putFamilyProfile,
   deleteLetters,
@@ -99,6 +101,7 @@ const EditProfilePage = () => {
   const [activeTab, setActiveTab] = useState('이미지');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [galleryKey, setGalleryKey] = useState(0);
   const [postLetter, setPostLetter] = useState(initLetter);
 
@@ -615,6 +618,31 @@ const EditProfilePage = () => {
     }
   };
 
+  //하늘편지 수정 모달창
+  const handleModifyLetterConfirm = async (letterId) => {
+    setLetterId(letterId);
+
+    let res;
+    res = await getLetter(profileId, letterId);
+    if (res.status === 200) {
+      const { data } = res.data;
+      setPostLetter(data);
+    }
+
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateAndSendLetter = async () => {
+    let res = await putLetters(profileId, letterId, postLetter);
+    if (res.status === 200) {
+      res = await getLetters(profileId);
+      const { data } = res.data;
+      setIsEditModalOpen(false);
+      setLetters(data);
+    }
+    letterInit();
+  };
+
   //하늘편지 개별 삭제 확인
   const handleRemoveLetterConfirm = async (letterId) => {
     setLetterId(letterId);
@@ -687,17 +715,21 @@ const EditProfilePage = () => {
 
   const handleSendLetter = async (e) => {
     e.preventDefault();
-    let res = await postLetters(profileId, postLetter);
+    try {
+      let res = await postLetters(profileId, postLetter);
 
-    if (res.status === 201) {
-      setIsRegisterModalOpen(false);
-      setPostLetter(initLetter);
-      res = await getLetters(profileId);
-      if (res.status === 200) {
-        const { data } = res.data;
-        setLetters(data);
+      if (res.status === 201) {
+        setIsRegisterModalOpen(false);
+        setPostLetter(initLetter);
+        res = await getLetters(profileId);
+        if (res.status === 200) {
+          const { data } = res.data;
+          setLetters(data);
+        }
+        letterInit();
       }
-      letterInit();
+    } catch (err) {
+      alert(`에러 발생: ${err.message}`);
     }
   };
 
@@ -982,7 +1014,6 @@ const EditProfilePage = () => {
                           {images.map((image, index) => (
                             <a
                               href={image.url}
-                              h
                               key={index}
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
@@ -1057,19 +1088,32 @@ const EditProfilePage = () => {
                                 <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                   <p className="sm-w-85">{letter.content}</p>
                                 </div>
-                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-10px">
-                                  <Link
-                                    to="#"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      handleRemoveLetterConfirm(
-                                        letter.letterId
-                                      );
-                                    }}
-                                  >
-                                    <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                                  </Link>
-                                </div>
+                                {letter.hasPermission && (
+                                  <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
+                                    <span
+                                      className="cursor-pointer me-5"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleRemoveLetterConfirm(
+                                          letter.letterId
+                                        );
+                                      }}
+                                    >
+                                      <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                                    </span>
+                                    <span
+                                      className="cursor-pointer"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleModifyLetterConfirm(
+                                          letter.letterId
+                                        );
+                                      }}
+                                    >
+                                      <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             ))
                           ) : (
@@ -1489,6 +1533,81 @@ const EditProfilePage = () => {
                   </form>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
+        <div className="row justify-content-center">
+          <div className="col-12">
+            <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
+              <div className="row justify-content-center mb-30px sm-mb-10px">
+                <div className="col-md-9 text-center">
+                  <h4 className="text-dark-gray fw-500 mb-15px">
+                    하늘편지 수정하기
+                  </h4>
+                </div>
+              </div>
+              <form className="row">
+                <div className="col-12 mb-20px ">
+                  <label className="mb-10px">이름</label>
+                  <input
+                    className="border-radius-4px input-large mb-5px"
+                    type="text"
+                    name="displayName"
+                    value={postLetter.displayName}
+                    onChange={handleLettersChange}
+                    required
+                  />
+                  {/* {errors.deliveryName && (
+                    <p className="text-danger text-start">
+                      배송지 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                </div>
+                <div className="col-12 mb-20px ">
+                  <label className="mb-10px">내용</label>
+                  <textarea
+                    className="border-radius-4px textarea-small"
+                    name="content"
+                    rows="5"
+                    cols="5"
+                    value={postLetter.content}
+                    onChange={handleLettersChange}
+                    placeholder=""
+                  ></textarea>
+                  {/* {errors.recipientName && (
+                    <p className="text-danger text-start">
+                      받는분 이름을 추가 해주세요.
+                    </p>
+                  )} */}
+                </div>
+
+                <div className="col-lg-112 text-center text-lg-center">
+                  <input type="hidden" name="redirect" value="" />
+
+                  <Button
+                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                    onClick={handleUpdateAndSendLetter}
+                  >
+                    수정하기
+                  </Button>
+
+                  <Button
+                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    onClick={() => {
+                      setIsEditModalOpen(false);
+                      letterInit();
+                    }}
+                  >
+                    닫기
+                  </Button>
+                </div>
+
+                {/* <AddressSearch onComplete={setSelectedAddress} />
+                          <p>선택된 주소: {selectedAddress}</p> */}
+              </form>
             </div>
           </div>
         </div>

@@ -16,14 +16,14 @@ import Modal from '@/components/common/Modal/Modal';
 
 import { isValidEmail, isInteger } from '@/utils/validators';
 
-import { removeHyphens } from '@/utils/utils';
+import { isValidPassword, isValidPhoneNumber } from '@/utils/validators';
 
 import signup from '@/assets/images/signup.png';
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SignUpPage = () => {
   const inputRefs = useRef([]);
-  const [step, byStep] = useState(2);
+  const [step, byStep] = useState(0);
   const dispatch = useDispatch();
   const [member, setMember] = useState({
     loginEmail: '',
@@ -75,19 +75,19 @@ const SignUpPage = () => {
   //2스텝- 회원가입 정보 검사 및 필수 체크
   const handleMemberInfoChange = (e) => {
     const { name, value } = e.target;
+    1;
+    // 핸드폰번호는 숫자만 입력 허용하고 하이픈 제거
+    let processedValue = value;
 
-    //핸드폰번호는 하이픈 제거
-    let removeHyphensPhoneNumber;
     if (name === 'phoneNumber') {
-      removeHyphensPhoneNumber = removeHyphens(value);
+      processedValue = value.replace(/\D/g, ''); // \D = 숫자가 아닌 것 제거
     }
 
     setMember({
       ...member,
-      [name]: name === 'phoneNumber' ? removeHyphensPhoneNumber : value,
+      [name]: processedValue,
     });
   };
-
   // const verificationEmailVerify = async (email) => {
   //   if (!email) {
   //     alert('이메일을 입력 해주세요.');
@@ -134,8 +134,11 @@ const SignUpPage = () => {
 
     if (!member.password) {
       newErrors.password = '패스워드를 입력 해주세요.';
-    } else if (member.password.length < 8) {
-      newErrors.password = '비밀번호는 8자 이상이어합야 니다.';
+    }
+
+    if (!isValidPassword(member.password)) {
+      newErrors.password =
+        '비밀번호는 영문, 숫자, 특수문자 포함8자 이상 입력 해주세요.';
     }
 
     if (!member.passwordConfirm) {
@@ -150,12 +153,12 @@ const SignUpPage = () => {
 
     if (!member.phoneNumber) {
       newErrors.phoneNumber = '휴대폰 번호를 입력해주세요.';
-    } else if (!/^\d{10,11}$/.test(member.phoneNumber)) {
+    }
+    if (!isValidPhoneNumber(member.phoneNumber)) {
       newErrors.phoneNumber = '올바른 휴대폰 번호를 입력해주세요.';
     }
 
     setErrors(newErrors);
-    console.log(typeof Object.keys(newErrors).length);
     return Object.keys(newErrors).length;
   };
 
@@ -386,7 +389,7 @@ const SignUpPage = () => {
                       name="password"
                       value={member.password}
                       onChange={handleMemberInfoChange}
-                      placeholder="영문, 숫자, 특수문자 포함8자 이상 입력해 주세요."
+                      placeholder="영문, 숫자, 특수문자 포함8자 이상 입력해 주세요."
                     />
                     {errors.password && (
                       <p className="text-danger text-start sm-mb-0">
@@ -402,7 +405,7 @@ const SignUpPage = () => {
                       name="passwordConfirm"
                       value={member.passwordConfirm}
                       onChange={handleMemberInfoChange}
-                      placeholder="영문 ,숫자, 특수문자 포함8자 이상 입력해 주세요."
+                      placeholder="영문 ,숫자, 특수문자 포함8자 이상 입력해 주세요."
                     />
                     {errors.passwordConfirm && (
                       <p className="text-danger text-start sm-mb-0">

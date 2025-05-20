@@ -6,7 +6,7 @@ export const isValidEmail = (email) => {
 
 // 정규식: 영문, 숫자, 특수문자 포함 8자 이상
 export const isValidPassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()[\]{};:'",.<>/?\\|`~\-_=+]).{8,}$/;
     return passwordRegex.test(password);
 };
 

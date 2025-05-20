@@ -369,7 +369,7 @@ const HomeSubPage = () => {
               </div>
               <div className="d-inline-block align-middle text-white fs-20 md-fs-16  sm-fs-12 fw-500">
                 <span className="text-decoration-line-bottom fw-600">
-                  Open Get 20% discount
+                  open get 10% discount
                 </span>
               </div>
             </div>

@@ -6,6 +6,11 @@ export const removeHyphens = (input) => {
     return input.replace(/-/g, '');
 };
 
+//숫자와 하이픈만 허용
+export const formatPhoneNumberInput = (value) => {
+    return value.replace(/[^\d-]/g, '');
+};
+
 //단위 콤마
 export const formatNumber = (number, locale = 'ko-KR') => {
     if (typeof number !== 'number') return '0';

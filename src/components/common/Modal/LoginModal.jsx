@@ -15,7 +15,7 @@ const LoginModal = ({ onClose }) => {
               <div className="p-10 sm-p-7 bg-white">
                 <div className="row justify-content-center">
                   <div className="col-md-9 text-center">
-                    <h6 className="text-dark-gray fw-500 mb-15px fs-24 md-fs-16 sm-fs-14">
+                    <h6 className="text-dark-gray fw-500 mb-15px fs-22 md-fs-16 sm-fs-14">
                       회원가입 또는 로그인 해야 진행 가능합니다.
                     </h6>
                   </div>

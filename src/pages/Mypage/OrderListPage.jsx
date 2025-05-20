@@ -34,8 +34,8 @@ const OrderListPage = () => {
   };
 
   const initData = {
-    from: getFirstDayOfYear(), // 기본값: to 기준 90일 전
-    to: getTodayDate(), // 기본값: 오늘 날짜
+    startDate: getFirstDayOfYear(), // 기본값: to 기준 90일 전
+    endDate: getTodayDate(), // 기본값: 오늘 날짜
     keyword: '',
     status: 'ALL',
   };
@@ -87,8 +87,9 @@ const OrderListPage = () => {
       }
     };
 
+    const { keyword, ...others } = viewSelect;
     fetchOrders();
-  }, [viewSelect]);
+  }, [viewSelect.startDate, viewSelect.endDate, viewSelect.status]);
 
   // 별점 클릭 핸들러
   const handleStarClick = (index) => {
@@ -225,11 +226,11 @@ const OrderListPage = () => {
     return date.toISOString().split('T')[0];
   };
 
-  // from 값 변경 함수 (to 값 기준)
+  // startDate 값 변경 함수 (to 값 기준)
   const handleUpdateFromDate = (daysAgo) => {
     setViewSelect((prev) => ({
       ...prev,
-      from: getPastDate(prev.to, daysAgo), // to 기준 daysAgo 전 날짜로 변경
+      startDate: getPastDate(prev.endDate, daysAgo), // to 기준 daysAgo 전 날짜로 변경
     }));
   };
 
@@ -243,8 +244,8 @@ const OrderListPage = () => {
   const handleInputChangeDate = (e) => {
     const { name, value } = e.target;
 
-    // name이 "keyword"일 때, 길이가 2 이하이면 실행 안 하지만, 0이면 실행됨
-    if (name === 'keyword' && value.length > 0 && value.length <= 2) return;
+    // name이 "keyword"일 때, 길이가 1 이하이면 실행 안 하지만, 0이면 실행됨
+    if (name === 'keyword' && value.length > 0 && value.length <= 1) return;
 
     setViewSelect((prev) => ({
       ...prev,
@@ -275,6 +276,29 @@ const OrderListPage = () => {
     )?.review;
 
     setMeReviews([matchedReview]);
+  };
+
+  const handleSearchClick = async () => {
+    try {
+      const { status, data } = await getOrdersList(viewSelect);
+      console.log(data);
+      if (status !== 200) {
+        alert('통신 에러가 발생했습니다.');
+        return;
+      }
+      const { items, orderCounters } = data.data;
+      setOrders(items);
+      setorderCounters(orderCounters);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // ⌨ Enter 입력 시 검색 실행
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearchClick();
+    }
   };
 
   return (
@@ -398,7 +422,7 @@ const OrderListPage = () => {
                   onClick={() => {
                     setViewSelect((prev) => ({
                       ...prev,
-                      from: getFirstDayOfYear(), // to 기준 daysAgo 전 날짜로 변경
+                      startDate: getFirstDayOfYear(), // to 기준 daysAgo 전 날짜로 변경
                     }));
                   }}
                 >
@@ -437,10 +461,11 @@ const OrderListPage = () => {
               </li>
               <li className="nav-item mt-10px">
                 <input
-                  className="border-1 nav-link text-center"
+                  className="border-1 nav-link text-center date-button"
                   type="date"
-                  name="from"
-                  value={viewSelect.from}
+                  name="startDate"
+                  data-bs-toggle="tab"
+                  value={viewSelect.startDate}
                   min="2024-01-01"
                   max="2099-12-31"
                   aria-label="date"
@@ -449,10 +474,11 @@ const OrderListPage = () => {
               </li>
               <li className="nav-item mt-10px">
                 <input
-                  className="border-1 nav-link text-center"
+                  className="border-1 nav-link text-center date-button"
                   type="date"
-                  name="to"
-                  value={viewSelect.to}
+                  name="endDate"
+                  data-bs-toggle="tab"
+                  value={viewSelect.endDate}
                   min="2024-01-01"
                   max="2099-12-31"
                   aria-label="date"
@@ -462,14 +488,19 @@ const OrderListPage = () => {
               <li className="nav-item mt-10px flex-1">
                 <div className="position-relative">
                   <input
-                    className="border-1 nav-link "
+                    className="border-1 nav-link"
                     type="text"
                     name="keyword"
-                    placeholder="검색어를 입력 해주세요."
                     // value={viewSelect.keyword}
+                    placeholder="검색어를 입력 해주세요."
                     onChange={handleInputChangeDate}
+                    onKeyDown={handleKeyPress}
                   />
-                  <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                  <i
+                    className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"
+                    style={{ cursor: 'pointer' }}
+                    onClick={handleSearchClick}
+                  ></i>
                 </div>
               </li>
             </ul>

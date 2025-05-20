@@ -4,8 +4,12 @@ import { useLocation } from 'react-router-dom';
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' }); // 페이지 이동 시 맨 위로 스크롤
+  // }, [pathname]);
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // 페이지 이동 시 맨 위로 스크롤
+    // 페이지 이동 시 최상단으로 스크롤 이동
+    window.scrollTo(0, 0);
   }, [pathname]);
 
   return null;

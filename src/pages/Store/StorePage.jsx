@@ -108,7 +108,6 @@ const StorePage = () => {
                             alt="Product"
                             className="product-main-image"
                           />
-                          <span className="lable new">New</span>
                           <div className="shop-overlay"></div>
                         </Link>
                       </div>

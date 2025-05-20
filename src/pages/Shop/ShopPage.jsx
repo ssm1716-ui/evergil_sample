@@ -162,6 +162,10 @@ const ShopPage = () => {
     if (res.status !== 200) {
       console.log('not saved cart!');
     }
+
+    // ✅ 세션에도 저장
+    sessionStorage.setItem('orderType', 'direct');
+    sessionStorage.setItem('order_product', JSON.stringify(updatedProduct));
     navigate('/checkout', {
       state: { orderType: 'direct', product: updatedProduct },
     });
@@ -232,10 +236,10 @@ const ShopPage = () => {
                     spaceBetween={10}
                     loop={false} // ✅ 루프 설정
                     loopedSlides={6} // ✅ 루프된 슬라이드 갯수 설정
-                    autoplay={{
-                      delay: 2000,
-                      disableOnInteraction: false,
-                    }}
+                    // autoplay={{
+                    //   delay: 2000,
+                    //   disableOnInteraction: false,
+                    // }}
                     navigation={{
                       nextEl: '.slider-product-next',
                       prevEl: '.slider-product-prev',
@@ -728,7 +732,7 @@ const ShopPage = () => {
       />
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -742,13 +746,13 @@ const ShopPage = () => {
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow border-1 border-default w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default sm-w-100 me-1 mb-3"
                         onClick={() => nextCartPage()}
                       >
                         장바구니로 넘어가기
                       </button>
                       <button
-                        className="btn btn-white btn-large btn-box-shadow border-1 border-default w-45 sm-w-100 me-1 mb-3"
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default sm-w-100 me-1 mb-3"
                         onClick={() => setIsModalOpen(false)}
                       >
                         닫기
