@@ -13,7 +13,7 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Button from '@/components/common/Button/Button';
 import { MdAddPhotoAlternate } from 'react-icons/md';
-import { getFileType } from '@/utils/utils';
+import { getFileType, formatDateRelace } from '@/utils/utils';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
 import useProfilePermission from '@/hooks/useProfilePermission';
@@ -813,7 +813,8 @@ const EditProfilePage = () => {
                   {profile.displayName}
                 </h5>
                 <h6 className="mb-0 sm-fs-18">
-                  {profile.birthday}~{profile.deathDate}
+                  {formatDateRelace(profile.birthday)}~
+                  {formatDateRelace(profile.deathDate)}
                 </h6>
               </div>
               {showScreen && (

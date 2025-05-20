@@ -28,9 +28,20 @@ const Header = () => {
 
   //메뉴 닫기 함수
   const closeMenu = () => {
-    if (navbarTogglerRef.current && window.innerWidth < 992) {
+    const isMenuOpen = document.querySelector('.navbar-collapse.show');
+
+    if (navbarTogglerRef.current && window.innerWidth < 992 && isMenuOpen) {
+      // 메뉴가 열려 있는 경우에만 클릭으로 닫기
       navbarTogglerRef.current.click();
     }
+
+    // 스크롤 맨 위로 (약간의 지연 필요)
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }, 500); // 메뉴 애니메이션이 있을 수 있으므로 약간 지연
   };
 
   return (
@@ -41,7 +52,7 @@ const Header = () => {
             <Link
               to="/"
               className="navbar-brand ps-0 md-ps-15px"
-              // onClick={closeMenu}
+              onClick={closeMenu}
             >
               <img src={defaultLogo_pc} alt="" className="default-logo" />
 

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import Button from '@/components/common/Button/Button';
+import { formatDateRelace } from '@/utils/utils';
 import Isotope from 'isotope-layout';
 import imagesLoaded from 'imagesloaded';
 
@@ -288,11 +289,11 @@ const ProfilePage = () => {
                                 )}
                               </a>
                               <p className="fw-600 fs-16 md-fs-18 sm-fs-16 text-sm-start">
-                                {`${profile.birthday}`}
+                                {formatDateRelace(`${profile.birthday}`)}
                                 <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
                                   ~
                                 </span>
-                                {`${profile.deathDate}`}
+                                {formatDateRelace(`${profile.deathDate}`)}
                               </p>
                             </div>
                           </div>

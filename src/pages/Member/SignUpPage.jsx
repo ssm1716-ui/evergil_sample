@@ -23,7 +23,7 @@ import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SignUpPage = () => {
   const inputRefs = useRef([]);
-  const [step, byStep] = useState(0);
+  const [step, byStep] = useState(2);
   const dispatch = useDispatch();
   const [member, setMember] = useState({
     loginEmail: '',
@@ -204,7 +204,7 @@ const SignUpPage = () => {
     const concatCode = otp.join('');
 
     if (!isInteger(concatCode) || concatCode.length !== 5) {
-      alert('올바른 인증코드를 입력해주세요.');
+      alert('올바른 인증번호를 입력해주세요.');
       return;
     }
 
@@ -469,7 +469,12 @@ const SignUpPage = () => {
                     </h3>
                     <h6 className="fw-400 fs-16 md-fs-18 sm-fs-14 text-dark-gray mb-8 sm-mb-2 ls-minus-1px">
                       귀하의 이메일 계정으로 승인 메일을 보냈습니다.
-                      <br /> 링크를 열어 인증 코드를 확인하세요
+                      <br /> 링크를 열어 인증 코드를 확인하세요.
+                      <br />
+                      <span className="fs-14 md-fs-16 sm-fs-12">
+                        {' '}
+                        받은 메일이 없다면 스팸함을 확인해주세요.
+                      </span>
                     </h6>
                     <div className="d-flex justify-content-center gap-3">
                       {otp.map((value, index) => (

@@ -48,3 +48,9 @@ export const getLastPathSegment = (url) => {
         return null;
     }
 };
+
+// -를 .로 변경
+export const formatDateRelace = (dateString) => {
+    if (!dateString || typeof dateString !== 'string') return '';
+    return dateString.replace(/-/g, '.');
+};

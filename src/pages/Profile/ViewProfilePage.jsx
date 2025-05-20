@@ -13,6 +13,7 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import Button from '@/components/common/Button/Button';
 import WebShareButton from '@/components/Share/WebShareButton';
+import { formatDateRelace } from '@/utils/utils';
 
 import useProfilePermission from '@/hooks/useProfilePermission';
 import {
@@ -372,7 +373,8 @@ const ViewProfilePage = () => {
                   {profile.displayName}
                 </h5>
                 <h6 className="mb-0 sm-fs-18">
-                  {profile.birthday}~{profile.deathDate}
+                  {formatDateRelace(profile.birthday)}~
+                  {formatDateRelace(profile.deathDate)}
                 </h6>
               </div>
               {showScreen && (
