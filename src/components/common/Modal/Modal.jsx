@@ -54,6 +54,8 @@ const Modal = ({ isOpen, onClose, children }) => {
           borderRadius: '10px',
           maxHeight: '80vh',
           WebkitOverflowScrolling: 'touch',
+          overflowX: 'hidden',
+          overflowY: 'auto',
           width: '100%',
           maxWidth: '500px',
         }}

@@ -841,7 +841,10 @@ const EditProfilePage = () => {
                 </div>
               </div>
               <div className="col-9 offset-3 ps-2 md-ps-30px sm-ps-20px">
-                <h5 className="text-dark-gray mb-5px fw-600 sm-fs-20">
+                <h5
+                  className="text-dark-gray mb-5px fw-600 sm-fs-20 ellipsis-name"
+                  title={profile.displayName}
+                >
                   {profile.displayName}
                 </h5>
                 <h6 className="mb-0 sm-fs-18">

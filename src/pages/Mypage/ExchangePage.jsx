@@ -64,6 +64,7 @@ const ExchangePage = () => {
       return;
     }
     alert('교환 신청 되었습니다.');
+    navigate('/mypage/order-list');
   };
 
   return (

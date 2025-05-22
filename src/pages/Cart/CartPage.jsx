@@ -32,12 +32,12 @@ const CartPage = () => {
       } else {
         storedCartProduct = getCart(); // 로컬스토리지에서 가져오기
       }
-
       setCartProducts(storedCartProduct);
+      setSelectedProducts([]);
     };
 
     fetchCart();
-  }, [selectedProducts]);
+  }, []);
 
   const updateLocalStorageCart = () => {
     modifyCart(cartProducts);
@@ -66,30 +66,34 @@ const CartPage = () => {
   };
 
   const handleSelectRemove = async () => {
+    if (selectedProducts.length === 0) {
+      alert('상품을 선택해주세요.');
+      return;
+    }
+
+    const removeProducts = cartProducts.filter((_, index) =>
+      selectedProducts.includes(index)
+    );
+
     const updatedCart = cartProducts.filter(
       (_, index) => !selectedProducts.includes(index)
     );
 
-    const removeProduct = cartProducts.filter((_, index) =>
-      selectedProducts.includes(index)
-    );
-
-    if (removeProduct.length <= 0) alert('상품 선택을 해주세요.');
-
-    setCartProducts([...updatedCart]);
+    setCartProducts(updatedCart);
+    setSelectedProducts([]);
 
     if (!isAuthenticated) {
       deleteLocalStorageCart(updatedCart);
     } else {
       try {
         await Promise.all(
-          removeProduct.map((product) => deleteCart(product.cartItemId))
+          removeProducts.map((product) => deleteCart(product.cartItemId))
         );
       } catch (err) {
-        console.error('삭제 중 오류 발생:', err);
+        console.error('선택된 상품 삭제 중 오류 발생:', err);
+        alert('일부 상품 삭제에 실패했습니다.');
       }
     }
-    setSelectedProducts([]); // 선택 항목 초기화
   };
 
   const handleQuantityChange = async (type, index) => {
@@ -124,7 +128,10 @@ const CartPage = () => {
     let totalDiscount = 0;
     let totalDeliveryFee = 0;
 
-    cartProducts.forEach((product) => {
+    selectedProducts.forEach((index) => {
+      const product = cartProducts[index];
+      if (!product) return; // ✅ product가 없을 경우 무시
+
       totalQty += product.quantity;
       totalProductPrice += product.price * product.quantity;
       totalDiscount += product.discountedPrice * product.quantity;
@@ -153,12 +160,23 @@ const CartPage = () => {
 
   const handleCartCheckout = (e) => {
     if (!isAuthenticated) {
-      localStorage.setItem('redirectAfterLogin', '/cart'); // 현재 페이지 저장
+      localStorage.setItem('redirectAfterLogin', '/cart');
       setIsLoginModalOpen(true);
       return;
     }
+
+    if (selectedProducts.length === 0) {
+      alert('주문할 상품을 선택해주세요.');
+      return;
+    }
+
     e.preventDefault();
-    navigate('/checkout', { state: { orderType: 'cart' } });
+
+    const selectedItems = selectedProducts.map((index) => cartProducts[index]);
+    console.log(selectedItems);
+    navigate('/checkout', {
+      state: { orderType: 'cart', selectedItems },
+    });
   };
 
   return (

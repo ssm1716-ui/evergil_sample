@@ -25,7 +25,7 @@ const paymentMethods = [
   { id: 'CARD', label: '신용카드', icon: 'line-icon-Credit-Card2' },
   { id: 'BANK', label: '계좌이체', icon: 'line-icon-Bank' },
   { id: 'VBANK', label: '무통장입금', icon: 'line-icon-Money-2' },
-  { id: 'mobile', label: '휴대폰결제', icon: 'line-icon-Smartphone-3' },
+  // { id: 'mobile', label: '휴대폰결제', icon: 'line-icon-Smartphone-3' },
 ];
 
 const CheckOutPage = () => {
@@ -71,9 +71,10 @@ const CheckOutPage = () => {
 
     const stateOrderType = location.state?.orderType;
     const stateProduct = location.state?.product;
+    const selectedItemsFromCart = location.state?.selectedItems;
 
     if (stateOrderType === 'direct' && stateProduct) {
-      // ✅ 직접 구매: 세션에도 저장
+      // ✅ 직접 구매
       sessionStorage.setItem('orderType', 'direct');
       sessionStorage.setItem('order_product', JSON.stringify(stateProduct));
 
@@ -82,8 +83,18 @@ const CheckOutPage = () => {
         ...prev,
         orderItems: [stateProduct],
       }));
+    } else if (
+      stateOrderType === 'cart' &&
+      Array.isArray(selectedItemsFromCart)
+    ) {
+      // ✅ 장바구니 → 선택한 상품만 사용
+      setOrderProductData(selectedItemsFromCart);
+      setPayment((prev) => ({
+        ...prev,
+        orderItems: selectedItemsFromCart,
+      }));
     } else if (location.state == null) {
-      // ✅ location.state가 완전히 없을 때만 세션스토리지 fallback
+      // ✅ Fallback: 세션스토리지에서 복원
       const storedOrderType = sessionStorage.getItem('orderType');
       const storedProduct = sessionStorage.getItem('order_product');
       const parsedStoredProduct = storedProduct
@@ -99,17 +110,16 @@ const CheckOutPage = () => {
         return;
       }
 
-      // ✅ 세션에도 없으면 → 장바구니 요청
+      // ✅ 세션에도 없으면 전체 장바구니 불러오기
       fetchOrderFromCart();
     } else {
-      // ✅ 장바구니 접근이면 세션 지움
+      // ✅ 장바구니 진입이지만 상태 없음
       sessionStorage.removeItem('orderType');
       sessionStorage.removeItem('order_product');
-
       fetchOrderFromCart();
     }
 
-    // 👉 장바구니 API 호출 함수
+    // 🔁 장바구니 전체 API 호출
     async function fetchOrderFromCart() {
       const res = await getSelectCart();
       if (res.status === 200) {
@@ -122,6 +132,7 @@ const CheckOutPage = () => {
       }
     }
   }, [location.state, isAuthenticated, navigate]);
+
   useEffect(() => {
     SetIsAddresOpen(false);
   }, [selectedAddress]);
@@ -896,14 +907,14 @@ const CheckOutPage = () => {
         isOpen={isNotAddressModalOpen}
         onClose={() => setIsNotAddressModalOpen(false)}
       >
-        <div className="w-60 md-w-90">
+        <div className="">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
                         등록된 배송지 정보가 없습니다.
                         <br />
                         배송지 정보를 입력 해주세요.
@@ -927,7 +938,7 @@ const CheckOutPage = () => {
 
       {/* 결제하기 모달 */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-60 md-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

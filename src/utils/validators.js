@@ -16,10 +16,10 @@ export const isValidName = (name) => {
     return nameRegex.test(name);
 };
 
-// 정규식: 010으로 시작, 숫자 3~4자리, 숫자 4자리 (하이픈은 선택)
+// 정규식: 010으로 시작, 숫자 4자리, 숫자 4자리 (하이픈은 선택)
 export const isValidPhoneNumber = (phoneNumber) => {
 
-    const phoneRegex = /^010[-]?\d{3,4}[-]?\d{4}$/;
+    const phoneRegex = /^010[-]?\d{4}[-]?\d{4}$/;
     return phoneRegex.test(phoneNumber);
 };
 

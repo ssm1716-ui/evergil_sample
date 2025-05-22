@@ -45,7 +45,11 @@ export const putOrdersPurchasesCancel = async (param) => {
         const res = await axiosInstance.put(`/orders/${param}/purchases.cancel`);
         return res;
     } catch (err) {
-        console.error(err);
+        const message =
+            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+        alert(`[결제취소 실패] ${message}`);
+        // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
+        throw err;
     }
 };
 
@@ -55,7 +59,11 @@ export const putOrdersVbankCancel = async (param) => {
         const res = await axiosInstance.put(`/orders/${param}/vbank.cancel`);
         return res;
     } catch (err) {
-        console.error(err);
+        const message =
+            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+        alert(`[결제취소 실패] ${message}`);
+        // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
+        throw err;
     }
 };
 

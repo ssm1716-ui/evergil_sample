@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaLink, FaShareAlt } from 'react-icons/fa';
 
-const WebShareButton = ({ triggerElement }) => {
+const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
+  // 기본값 설정
+  const { left = '26%', bottom = '-100px' } = positionConfig;
+
   const [showShareBox, setShowShareBox] = useState(false); // ✅ 공유 박스 상태
   const [copied, setCopied] = useState(false); // ✅ URL 복사 상태
   const buttonRef = useRef(null); // ✅ 버튼 참조
@@ -14,7 +17,9 @@ const WebShareButton = ({ triggerElement }) => {
   };
 
   // ✅ 공유 버튼 클릭 핸들러
-  const handleShare = async () => {
+  const handleShare = async (e) => {
+    if (e?.preventDefault) e.preventDefault();
+
     if (isMobile() && navigator.share) {
       // ✅ 모바일 환경에서만 Web Share API 실행
       try {
@@ -98,8 +103,8 @@ const WebShareButton = ({ triggerElement }) => {
           ref={shareBoxRef} // ✅ 공유 박스 참조
           style={{
             position: 'absolute',
-            bottom: '-145px', // ✅ 버튼 바로 아래 위치
-            left: '26%', // ✅ 버튼 중앙 정렬
+            bottom, // ✅ 버튼 바로 아래 위치
+            left, // ✅ 버튼 중앙 정렬
             transform: 'translateX(-50%)',
             width: '240px', // ✅ 박스 크기 조정
             background: '#fff',

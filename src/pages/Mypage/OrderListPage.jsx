@@ -70,24 +70,24 @@ const OrderListPage = () => {
   const [productTargetId, setProductTargetId] = useState('');
   const [meReviews, setMeReviews] = useState({});
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const { status, data } = await getOrdersList(viewSelect);
-        console.log(data);
-        if (status !== 200) {
-          alert('통신 에러가 발생했습니다.');
-          return;
-        }
-        const { items, orderCounters } = data.data;
-        setOrders(items);
-        setorderCounters(orderCounters);
-      } catch (error) {
-        console.error(error);
+  // 👇 useEffect 바깥에서 선언
+  const fetchOrders = async () => {
+    try {
+      const { keyword, ...others } = viewSelect;
+      const { status, data } = await getOrdersList(viewSelect);
+      if (status !== 200) {
+        alert('통신 에러가 발생했습니다.');
+        return;
       }
-    };
+      const { items, orderCounters } = data.data;
+      setOrders(items);
+      setorderCounters(orderCounters);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const { keyword, ...others } = viewSelect;
+  useEffect(() => {
     fetchOrders();
   }, [viewSelect.startDate, viewSelect.endDate, viewSelect.status]);
 
@@ -183,7 +183,7 @@ const OrderListPage = () => {
     }
   };
 
-  //구매확정
+  // 구매확정 핸들러
   const handlePurchasesConfirm = async (orderNumber) => {
     const confirmed = window.confirm('구매 확정을 하시겠습니까?');
     if (!confirmed) return;
@@ -193,29 +193,29 @@ const OrderListPage = () => {
     if (res.status === 200) {
       setIsConfirmPurchaseTitle('구매 확정 처리 되었습니다.');
       setIsConfirmPurchaseModalOpen(true);
+      await fetchOrders(); // ✅ 리스트 새로고침
     }
   };
 
-  //결제 취소(paymentMethod값으로 api 분기 처리 됨)
+  // 결제취소 핸들러
   const handlePaymentCancel = async (order) => {
     const confirmed = window.confirm('결제 취소를 하시겠습니까?');
     if (!confirmed) return;
 
     let res;
-    //if-CARD:BANK, else-VBANK
     if (['CARD', 'BANK'].includes(order.product.paymentMethod)) {
-      // 카드, 계좌이체
       res = await putOrdersPurchasesCancel(order.orderNumber);
     } else if (order.product.paymentMethod === 'VBANK') {
-      // 가상계좌 환불
       res = await putOrdersVbankCancel(order.orderNumber);
     } else {
       alert('결제 취소가 불가능');
+      return;
     }
 
     if (res.status === 200) {
       setIsConfirmPurchaseTitle('결제 취소 처리 되었습니다.');
       setIsConfirmPurchaseModalOpen(true);
+      await fetchOrders(); // ✅ 리스트 새로고침
     }
   };
 
@@ -246,6 +246,15 @@ const OrderListPage = () => {
 
     // name이 "keyword"일 때, 길이가 1 이하이면 실행 안 하지만, 0이면 실행됨
     if (name === 'keyword' && value.length > 0 && value.length <= 1) return;
+
+    if (
+      name === 'endDate' &&
+      viewSelect.startDate &&
+      value < viewSelect.startDate
+    ) {
+      alert('종료일은 시작일보다 빠를 수 없습니다.');
+      return;
+    }
 
     setViewSelect((prev) => ({
       ...prev,
@@ -723,7 +732,7 @@ const OrderListPage = () => {
         isOpen={isReviewWriteModalOpen}
         onClose={() => setIsReviewWriteModalOpen(false)}
       >
-        <div className="w-40 md-w-70 sm-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -891,7 +900,7 @@ const OrderListPage = () => {
         isOpen={isReviewReadModalOpen}
         onClose={() => setIsReviewReadModalOpen(false)}
       >
-        <div className="w-40 md-w-70 sm-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -1032,7 +1041,7 @@ const OrderListPage = () => {
         isOpen={isConfirmPurchaseModalOpen}
         onClose={() => setIsConfirmPurchaseModalOpen(false)}
       >
-        <div className="w-40 md-w-70">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

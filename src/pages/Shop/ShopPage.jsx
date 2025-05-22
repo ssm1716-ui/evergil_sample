@@ -345,7 +345,9 @@ const ShopPage = () => {
                 {product.description}
               </p>
               <div className="d-flex align-items-baseline flex-row flex-sm-row mb-20px position-relative">
-                <label className="text-dark-gray me-10px fw-500">수량</label>
+                <label className="text-dark-gray me-10px fw-500 w-10">
+                  수량
+                </label>
                 <div className="quantity me-10px xs-mb-15px order-1">
                   <button
                     type="button"
@@ -395,6 +397,7 @@ const ShopPage = () => {
                       <i className="feather icon-feather-share-2 align-middle text-dark-gray"></i>
                     </a>
                   }
+                  positionConfig={{ bottom: '-120px', left: '70%' }}
                 />
                 {/* <a
                   href="#"

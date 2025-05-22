@@ -35,8 +35,6 @@ const SettingProfilePage = () => {
   });
   const navigate = useNavigate();
 
-  console.log(location.state?.qrKey);
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -53,11 +51,11 @@ const SettingProfilePage = () => {
       fetchProfile();
       return;
     }
-    if (!location.state?.qrKey) {
-      navigate(
-        `/error?desc=${'유효한 접근이 아닙니다.'}&pageUrl=${'/profile'}`
-      );
-    }
+    // if (!location.state?.qrKey) {
+    //   navigate(
+    //     `/error?desc=${'유효한 접근이 아닙니다.'}&pageUrl=${'/profile'}`
+    //   );
+    // }
     setFormProfile({ ...formProfile, qrKey: location.state?.qrKey });
   }, []);
 
@@ -113,7 +111,12 @@ const SettingProfilePage = () => {
       return;
     }
 
-    console.log(formProfile);
+    //테스트 프로필 생성
+    // const updateProfile = {
+    //   ...formProfile,
+    //   qrKey: 'RGeqBguSH28XpMJ3',
+    // };
+
     let res;
     if (profileId) {
       //추모 프로필 수정
@@ -292,8 +295,8 @@ const SettingProfilePage = () => {
         onClose={() => setIsModalOpen(false)}
         title="Slide up animation"
       >
-        <div className="row justify-content-center overflow-hidden w-40 md-w-70 sm-w-90 bg-white">
-          <div className="col contact-form-style-04">
+        <div className="row justify-content-center overflow-hidden bg-white">
+          <div className="contact-form-style-04">
             <div className="py-5 text-center">
               <img src={checkCircle} alt="" className="sm-w-30" />
               <h4 className="fw-800 text-dark-gray mt-2 mb-2 ls-minus-1px sm-fs-18">

@@ -19340,7 +19340,7 @@ position: absolute;
   color: var(--dark-gray);
 }
 .btn-cart.btn.btn-switch-text.btn-extra-large > span {
-  padding: 13px 48px;
+  padding: 13px 40px;
 }
 .wishlist {
   height: 54px;

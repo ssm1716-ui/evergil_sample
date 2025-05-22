@@ -64,6 +64,7 @@ const ReturnPage = () => {
       return;
     }
     alert('반품 신청 되었습니다.');
+    navigate('/mypage/order-list');
   };
 
   return (

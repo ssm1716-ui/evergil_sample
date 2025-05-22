@@ -272,25 +272,33 @@ const ProfilePage = () => {
                               </Link>
                             </div>
                             <div className="card-body p-12 md-p-5">
-                              <a className="card-title mb-15px sm-mb-5px fw-600 fs-18 lh-26 text-dark-gray text-dark-gray-hover d-block position-relative">
-                                {profile.displayName}
+                              <a
+                                className="card-title mb-15px sm-mb-5px fw-600 fs-18 lh-26 text-dark-gray text-dark-gray-hover d-flex align-items-center"
+                                style={{ gap: '6px' }}
+                              >
+                                <span
+                                  className="text-truncate"
+                                  style={{
+                                    maxWidth:
+                                      profile.displayName.length < 10
+                                        ? '100%'
+                                        : 'calc(100% - 24px)', // 길이에 따라
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    display: 'inline-block',
+                                  }}
+                                >
+                                  {profile.displayName}
+                                </span>
 
-                                {profile.permission === 'OWNER' ? (
-                                  <i className="fa-solid fa-crown align-center icon-medium text-yellow ps-3 md-fs-20"></i>
-                                ) : (
-                                  <span
-                                    className="cursor-pointer"
-                                    onClick={() =>
-                                      handleRemoveConfirm(profile.id)
-                                    }
-                                  >
-                                    <i className="feather icon-feather-trash-2 align-top text-dark-gray icon-extra-medium position-absolute right-0px"></i>
-                                  </span>
+                                {profile.permission === 'OWNER' && (
+                                  <i className="fa-solid fa-crown icon-medium text-yellow"></i>
                                 )}
                               </a>
                               <p className="fw-600 fs-16 md-fs-18 sm-fs-16 text-sm-start">
                                 {formatDateRelace(`${profile.birthday}`)}
-                                <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
+                                <span className="d-inline-block d-sm-block sm-ps-25 lh-10 sm-lh-5">
                                   ~
                                 </span>
                                 {formatDateRelace(`${profile.deathDate}`)}
