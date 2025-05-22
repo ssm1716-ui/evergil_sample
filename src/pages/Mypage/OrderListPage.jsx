@@ -75,6 +75,7 @@ const OrderListPage = () => {
     try {
       const { keyword, ...others } = viewSelect;
       const { status, data } = await getOrdersList(viewSelect);
+      console.log(data);
       if (status !== 200) {
         alert('통신 에러가 발생했습니다.');
         return;
@@ -199,7 +200,11 @@ const OrderListPage = () => {
 
   // 결제취소 핸들러
   const handlePaymentCancel = async (order) => {
-    const confirmed = window.confirm('결제 취소를 하시겠습니까?');
+    const confirmlMessage =
+      order.product.paymentMethod === 'VBANK'
+        ? '주문 취소를 하시겠습니까?'
+        : '결제 취소를 하시겠습니까?';
+    const confirmed = window.confirm(confirmlMessage);
     if (!confirmed) return;
 
     let res;
@@ -213,7 +218,11 @@ const OrderListPage = () => {
     }
 
     if (res.status === 200) {
-      setIsConfirmPurchaseTitle('결제 취소 처리 되었습니다.');
+      const completeMessage =
+        order.product.paymentMethod === 'VBANK'
+          ? '주문 취소 처리 되었습니다.'
+          : '결제 취소 처리 되었습니다.';
+      setIsConfirmPurchaseTitle(completeMessage);
       setIsConfirmPurchaseModalOpen(true);
       await fetchOrders(); // ✅ 리스트 새로고침
     }
@@ -702,24 +711,33 @@ const OrderListPage = () => {
                           </span>
                         </Link>
                       )}
+                      {/* nextActions 속성값에 결제취소 일경우*/}
+                      {(() => {
+                        const canCancel =
+                          order.product.nextActions.canCancelPayment;
+                        const isVbank = order.product.paymentMethod === 'VBANK';
 
-                      {/* nextActions 속성값에 결제취소가 있으면 표시 */}
-                      {order.product.nextActions.canCancelPayment && (
-                        <Link
-                          href="#"
-                          className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
-                          onClick={() => handlePaymentCancel(order)}
-                        >
-                          <span>
-                            <span
-                              className="btn-double-text"
-                              data-text="결제취소"
-                            >
-                              결제취소
+                        if (!canCancel) return null;
+
+                        const buttonText = isVbank ? '주문취소' : '결제취소';
+
+                        return (
+                          <Link
+                            to="#"
+                            className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                            onClick={() => handlePaymentCancel(order)}
+                          >
+                            <span>
+                              <span
+                                className="btn-double-text"
+                                data-text={buttonText}
+                              >
+                                {buttonText}
+                              </span>
                             </span>
-                          </span>
-                        </Link>
-                      )}
+                          </Link>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>

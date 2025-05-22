@@ -14,6 +14,7 @@ import {
   getInvitationsList,
   putInvitationPermissions,
   deleteInvitationPermissions,
+  deleteInvitationCancel,
   putProfileScope,
   getPrivateProfileAccessRequests,
   putPrivateAccessRequests,
@@ -91,7 +92,9 @@ const ManagePage = () => {
     try {
       const res = await getInvitationsList(id);
       if (res.status === 200) {
+        console.log(res.data);
         const { items } = res.data.data;
+
         console.log(items);
         setInvitations(items);
       }
@@ -211,6 +214,10 @@ const ManagePage = () => {
       // );
 
       res = await putInvitationPermissions(profileId, invitationId, value);
+    } else if (value === 'CANCEL') {
+      const confirmed = window.confirm('정말로 초대취소하시겠습니까?');
+      if (!confirmed) return;
+      res = await deleteInvitationCancel(profileId, invitationId);
     }
     fetchInvitations(profileId);
   };
@@ -337,7 +344,25 @@ const ManagePage = () => {
                                       </select>
                                     </div>
                                   ) : (
-                                    <span>초대수락 대기중</span>
+                                    // <span>초대수락 대기중</span>
+                                    <div className="select select-container">
+                                      <select
+                                        className="form-control select-invite"
+                                        name="scope"
+                                        value={invitation.permission}
+                                        onChange={(e) =>
+                                          handleInvitationsPermissionChange(
+                                            invitation.invitationId,
+                                            e.target.value
+                                          )
+                                        }
+                                      >
+                                        <option value="">
+                                          초대수락 대기중
+                                        </option>
+                                        <option value="CANCEL">초대취소</option>
+                                      </select>
+                                    </div>
                                   )}
                                 </td>
                               </tr>
@@ -480,14 +505,14 @@ const ManagePage = () => {
         </>
       )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-70 sm-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22">
                         {!isError
                           ? '초대 메일 발송 하였습니다.'
                           : '이메일 형식으로 다시 작성 해주세요.'}
@@ -516,14 +541,14 @@ const ManagePage = () => {
         isOpen={isModalCopyLinkOpen}
         onClose={() => setIsModalCopyLinkOpen(false)}
       >
-        <div className="w-40 sm-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
                         프로필 링크가 복사 되었습니다.
                       </h6>
                     </div>
@@ -549,14 +574,14 @@ const ManagePage = () => {
         isOpen={isRequestModalOpen}
         onClose={() => setIsRequestModalOpen(false)}
       >
-        <div className="w-30 md-w-90">
+        <div className="100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-5 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22">
                         접근 할 수 없습니다.
                       </h6>
                     </div>

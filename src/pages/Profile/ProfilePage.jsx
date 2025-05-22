@@ -292,13 +292,22 @@ const ProfilePage = () => {
                                   {profile.displayName}
                                 </span>
 
-                                {profile.permission === 'OWNER' && (
-                                  <i className="fa-solid fa-crown icon-medium text-yellow"></i>
+                                {profile.permission === 'OWNER' ? (
+                                  <i className="fa-solid fa-crown icon-medium text-yellow ms-2"></i>
+                                ) : (
+                                  <span
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                      handleRemoveConfirm(profile.id)
+                                    }
+                                  >
+                                    <i className="feather icon-feather-trash-2 text-dark-gray icon-extra-medium"></i>
+                                  </span>
                                 )}
                               </a>
                               <p className="fw-600 fs-16 md-fs-18 sm-fs-16 text-sm-start">
                                 {formatDateRelace(`${profile.birthday}`)}
-                                <span className="d-inline-block d-sm-block sm-ps-25 lh-10 sm-lh-5">
+                                <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
                                   ~
                                 </span>
                                 {formatDateRelace(`${profile.deathDate}`)}
@@ -359,7 +368,7 @@ const ProfilePage = () => {
         </div>
       </section>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-70 sm-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

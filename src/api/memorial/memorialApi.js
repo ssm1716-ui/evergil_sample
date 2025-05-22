@@ -392,7 +392,6 @@ export const putInvitationPermissions = async (profileId, invitationId, params) 
 export const deleteInvitationPermissions = async (profileId, invitationId, params) => {
 
     try {
-        console.log(profileId, invitationId, params);
 
         const res = await axiosInstance.delete(`/memorial-profiles/${profileId}/invitations/${invitationId}/permissions`);
         return res;
@@ -401,8 +400,17 @@ export const deleteInvitationPermissions = async (profileId, invitationId, param
     }
 };
 
+//추모 프로필 초대 취소하기
+export const deleteInvitationCancel = async (profileId, invitationId) => {
 
+    try {
 
+        const res = await axiosInstance.delete(`/memorial-profiles/${profileId}/invitations/${invitationId}`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
 
 //프로필 설정(공개/비공개) 변경
 export const putProfileScope = async (profileId, params) => {
@@ -428,7 +436,6 @@ export const getPrivateProfileAccessRequests = async (profileId, page = 1, pageS
                 profileId, page, pageSize
             },
         });
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
