@@ -1,3 +1,4 @@
+//하이픈 제거
 export const removeHyphens = (input) => {
     if (typeof input !== 'string') {
         throw new Error('Input must be a string');
@@ -18,16 +19,18 @@ export const formatNumber = (number, locale = 'ko-KR') => {
 };
 
 
+// 날짜 포맷
 export const formatDate = (dateString) => {
     if (!dateString) return ''; // dateString이 없을 경우 빈 문자열 반환
     return dateString.split(' ')[0]; // 공백을 기준으로 앞 부분(YYYY-MM-DD)만 반환
 };
 
+//파일 확장자 제거
 export const getFileType = (fileType) => {
     return fileType.replace('image/', '');
 };
 
-
+//장바구니 필터
 export const getTransformedCartData = (storedCart) => {
     let transformedData;
     if (storedCart.length > 0) {
@@ -58,4 +61,8 @@ export const getLastPathSegment = (url) => {
 export const formatDateRelace = (dateString) => {
     if (!dateString || typeof dateString !== 'string') return '';
     return dateString.replace(/-/g, '.');
+};
+
+export const allowOnlyAlphaNumeric = (input) => {
+    return input.replace(/[^a-zA-Z0-9]/g, '');
 };

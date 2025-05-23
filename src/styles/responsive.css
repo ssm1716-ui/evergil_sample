@@ -21913,6 +21913,11 @@
 }
 
 @media (min-width: 320px) and (max-width: 575px) {
+
+  .blog-grid .card .card-body{
+    height: 132px;
+  }
+
   .total-price-table th, .total-price-table td {
     border-bottom: 1px solid #e4e4e4;
     padding-top: 5px;
@@ -21957,5 +21962,7 @@
   .tab-style-11 .nav-tabs .nav-item:nth-child(even) {
     padding: 0px;
   }
+
+  
 }
 

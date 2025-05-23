@@ -47,8 +47,11 @@ export const postRegisterProfile = async (param) => {
         console.log(res);
         return res;
     } catch (err) {
-        console.error(err);
-        return err.response ? err.response : { status: 500, data: 'Unknown error' };
+        const message =
+            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+        alert(`[추모설정 등록] ${message}`);
+        // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
+        throw err;
     }
 };
 
@@ -70,7 +73,11 @@ export const putModifyProfile = async (id, param) => {
         const res = await axiosInstance.put(`/memorial-profiles/${id}`, param);
         return res;
     } catch (err) {
-        console.error(err);
+        const message =
+            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+        alert(`[추모설정 실패] ${message}`);
+        // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
+        throw err;
     }
 };
 
@@ -354,7 +361,11 @@ export const postEmailInvitations = async (profileId, params) => {
         console.log(res);
         return res;
     } catch (err) {
-        console.error(err);
+        const message =
+            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+        alert(`[초대하기 실패] ${message}`);
+        // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
+        throw err;
     }
 };
 

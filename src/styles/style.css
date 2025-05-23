@@ -6536,6 +6536,9 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 .bottom-minus-90px {
   bottom: -90px;
 }
+.bottom-minus-95px {
+  bottom: -95px;
+}
 .bottom-minus-100px {
   bottom: -100px;
 }
@@ -17367,6 +17370,7 @@ position: absolute;
 }
 .blog-grid .card .card-body {
   color: inherit;
+  height: 180px;
 }
 .blog-grid .card .card-body p {
   margin-bottom: 15px;

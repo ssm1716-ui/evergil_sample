@@ -253,15 +253,21 @@ const OrderListPage = () => {
   const handleInputChangeDate = (e) => {
     const { name, value } = e.target;
 
-    // name이 "keyword"일 때, 길이가 1 이하이면 실행 안 하지만, 0이면 실행됨
-    if (name === 'keyword' && value.length > 0 && value.length <= 1) return;
-
     if (
       name === 'endDate' &&
       viewSelect.startDate &&
       value < viewSelect.startDate
     ) {
       alert('종료일은 시작일보다 빠를 수 없습니다.');
+      return;
+    }
+
+    if (
+      name === 'startDate' &&
+      viewSelect.endDate &&
+      value > viewSelect.endDate
+    ) {
+      alert('시작일은 종료일보다 빠를 수 없습니다.');
       return;
     }
 

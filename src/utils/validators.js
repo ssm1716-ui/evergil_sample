@@ -16,7 +16,7 @@ export const isValidName = (name) => {
     return nameRegex.test(name);
 };
 
-// 정규식: 010으로 시작, 숫자 4자리, 숫자 4자리 (하이픈은 선택)
+// 정규식: 010으로 시작, 숫자 4자리, 숫자 4자리 (하이픈은 선택) - 총 11자리
 export const isValidPhoneNumber = (phoneNumber) => {
 
     const phoneRegex = /^010[-]?\d{4}[-]?\d{4}$/;

@@ -598,7 +598,6 @@ const EditProfilePage = () => {
   // ReactQuill 포커스 아웃 시 이벤트 핸들러
   const handleBlur = () => {
     if (content.trim() !== '') {
-      console.log('📢 포커스 아웃됨! API 호출 실행');
       saveDescription(content); // API 호출
     }
   };
@@ -848,12 +847,23 @@ const EditProfilePage = () => {
                   {profile.displayName}
                 </h5>
                 <h6 className="mb-0 sm-fs-18">
-                  {formatDateRelace(profile.birthday)}~
-                  {formatDateRelace(profile.deathDate)}
+                  {profile.birthday ? formatDateRelace(profile.birthday) : ''}
+                  {profile.birthday && profile.deathDate && (
+                    <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
+                      ~
+                    </span>
+                  )}
+                  {profile.deathDate ? formatDateRelace(profile.deathDate) : ''}
                 </h6>
               </div>
               {showScreen && (
-                <div className="row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1">
+                <div
+                  className={
+                    profile.birthday && profile.deathDate
+                      ? 'row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1'
+                      : 'row position-absolute md-position-initial bottom-minus-95px end-0 z-index-1 pe-1'
+                  }
+                >
                   {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                   <div
                     className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 gap-sm-5 sm-px-20px py-lg-0 py-md-4"
@@ -894,7 +904,7 @@ const EditProfilePage = () => {
                 theme="snow"
                 value={content}
                 onChange={setContent}
-                onBlur={handleBlur}
+                // onBlur={handleBlur}
                 modules={modules}
                 formats={formats}
                 className="w-700px md-w-95 md-h-450px lh-initial"

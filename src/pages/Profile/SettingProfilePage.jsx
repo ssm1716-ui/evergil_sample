@@ -9,6 +9,8 @@ import {
   putModifyProfile,
 } from '@/api/memorial/memorialApi';
 
+import { allowOnlyAlphaNumeric } from '@/utils/utils';
+
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SettingProfilePage = () => {
@@ -67,9 +69,16 @@ const SettingProfilePage = () => {
   // 값 입력 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    let processedValue = value;
+
+    if (name === 'nickname') {
+      processedValue = allowOnlyAlphaNumeric(value); //영문,숫자로만 입력
+    }
+
     setFormProfile({
       ...formProfile,
-      [name]: value,
+      [name]: processedValue,
     });
   };
 
@@ -94,18 +103,18 @@ const SettingProfilePage = () => {
       setErrors((prev) => ({ ...prev, displayName: true }));
       return;
     }
-    if (birthday.trim() === '') {
-      setErrors((prev) => ({ ...prev, birthday: true }));
-      return;
-    }
-    if (deathDate.trim() === '') {
-      setErrors((prev) => ({ ...prev, deathDate: true }));
-      return;
-    }
-    if (nickname.trim() === '') {
-      setErrors((prev) => ({ ...prev, nickname: true }));
-      return;
-    }
+    // if (birthday.trim() === '') {
+    //   setErrors((prev) => ({ ...prev, birthday: true }));
+    //   return;
+    // }
+    // if (deathDate.trim() === '') {
+    //   setErrors((prev) => ({ ...prev, deathDate: true }));
+    //   return;
+    // }
+    // if (nickname.trim() === '') {
+    //   setErrors((prev) => ({ ...prev, nickname: true }));
+    //   return;
+    // }
     if (scope.trim() === '') {
       setErrors((prev) => ({ ...prev, scope: true }));
       return;
@@ -242,7 +251,7 @@ const SettingProfilePage = () => {
                     className="mb-5px bg-very-light-white form-control md-input-small text-black"
                     type="text"
                     name="nickname"
-                    placeholder="https://everlink.kr/'닉네임'"
+                    placeholder="https://everlink.kr/'nickname'"
                     value={formProfile.nickname}
                     onChange={handleChange}
                   />
@@ -254,7 +263,7 @@ const SettingProfilePage = () => {
 
                   {/* 계정 공개 범위 */}
                   <label className="text-dark-gray fw-500 d-block text-start">
-                    계정 공개 범위
+                    <span className="text-red">*</span>계정 공개 범위
                   </label>
                   <div className="select">
                     <select

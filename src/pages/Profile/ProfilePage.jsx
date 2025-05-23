@@ -249,18 +249,14 @@ const ProfilePage = () => {
 
                       {profiles.map((profile, index) => (
                         <li className="grid-item cursor-pointer" key={index}>
-                          <div className="card border-0 border-radius-4px box-shadow-extra-large box-shadow-extra-large-hover">
+                          <div className="card border-0 border-radius-4px box-shadow-extra-large box-shadow-extra-large-hover h-100 d-flex flex-column">
                             <div
                               className="blog-image"
                               onClick={() => handleMovePageProfile(profile.id)}
                             >
                               <Link className="d-block">
                                 <img
-                                  src={
-                                    profile.profileImageUrl
-                                      ? profile.profileImageUrl
-                                      : avatarImage
-                                  }
+                                  src={profile.profileImageUrl || avatarImage}
                                   alt="Profile"
                                   style={{
                                     width: '100%',
@@ -271,7 +267,7 @@ const ProfilePage = () => {
                                 />
                               </Link>
                             </div>
-                            <div className="card-body p-12 md-p-5">
+                            <div className="card-body p-12 md-p-5 d-flex flex-column justify-content-between">
                               <a
                                 className="card-title mb-15px sm-mb-5px fw-600 fs-18 lh-26 text-dark-gray text-dark-gray-hover d-flex align-items-center"
                                 style={{ gap: '6px' }}
@@ -282,7 +278,7 @@ const ProfilePage = () => {
                                     maxWidth:
                                       profile.displayName.length < 10
                                         ? '100%'
-                                        : 'calc(100% - 24px)', // 길이에 따라
+                                        : 'calc(100% - 24px)',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                     whiteSpace: 'nowrap',
@@ -306,11 +302,17 @@ const ProfilePage = () => {
                                 )}
                               </a>
                               <p className="fw-600 fs-16 md-fs-18 sm-fs-16 text-sm-start">
-                                {formatDateRelace(`${profile.birthday}`)}
-                                <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
-                                  ~
-                                </span>
-                                {formatDateRelace(`${profile.deathDate}`)}
+                                {profile.birthday
+                                  ? formatDateRelace(profile.birthday)
+                                  : ''}
+                                {profile.birthday && profile.deathDate && (
+                                  <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
+                                    ~
+                                  </span>
+                                )}
+                                {profile.deathDate
+                                  ? formatDateRelace(profile.deathDate)
+                                  : ''}
                               </p>
                             </div>
                           </div>

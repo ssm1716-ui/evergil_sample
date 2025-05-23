@@ -205,6 +205,11 @@ const CheckOutPage = () => {
       focusIfFirst('input[name="phoneNumber"]');
     }
 
+    if (!isValidPhoneNumber(orderAddressData.phoneNumber)) {
+      newErrors.phoneNumber = '배송지 연락처를 올바르게 입력 해주세요.';
+      focusIfFirst('input[name="phoneNumber"]');
+    }
+
     if (!orderAddressData.zipcode) {
       newErrors.zipcode = '우편번호를 입력해주세요.';
       focusIfFirst('input[name="zipcode"]');
