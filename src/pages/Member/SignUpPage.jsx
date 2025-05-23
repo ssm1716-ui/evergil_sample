@@ -474,10 +474,6 @@ const SignUpPage = () => {
                       귀하의 이메일 계정으로 승인 메일을 보냈습니다.
                       <br /> 링크를 열어 인증 코드를 확인하세요.
                       <br />
-                      <span className="fs-14 md-fs-16 sm-fs-12">
-                        {' '}
-                        받은 메일이 없다면 스팸함을 확인해주세요.
-                      </span>
                     </h6>
                     <div className="d-flex justify-content-center gap-3">
                       {otp.map((value, index) => (
@@ -520,6 +516,11 @@ const SignUpPage = () => {
                     >
                       인증번호 재전송
                     </Button>
+
+                    <p className="text-dark-gray fs-14 md-fs-16 sm-fs-12">
+                      메일이 보이지 않나요? 스팸함을 확인하거나 인증번호를 다시
+                      받아보세요.
+                    </p>
                   </form>
                 </div>
               </div>
@@ -576,7 +577,7 @@ const SignUpPage = () => {
         isOpen={isFirstModalOpen}
         onClose={() => setIsFirstModalOpen(false)}
       >
-        <div className="w-40 md-w-70 sm-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -609,7 +610,7 @@ const SignUpPage = () => {
         isOpen={isModalTermsOpen}
         onClose={() => setIsModalTermsOpen(false)}
       >
-        <div className="w-40 md-w-70 sm-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

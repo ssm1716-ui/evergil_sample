@@ -306,7 +306,7 @@ const ProfilePage = () => {
                                   ? formatDateRelace(profile.birthday)
                                   : ''}
                                 {profile.birthday && profile.deathDate && (
-                                  <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
+                                  <span className="d-inline-block d-sm-block text-sm-left sm-ps-35px lh-10 sm-lh-5">
                                     ~
                                   </span>
                                 )}

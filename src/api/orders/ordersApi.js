@@ -3,14 +3,12 @@ import axiosInstance from '@/api/axiosInstance';
 //주문 API
 
 //주문 리스트
-export const getOrdersList = async (param = {}, page = 0, pageSize = 10) => {
+export const getOrdersList = async (param = {}) => {
     try {
 
         // 기본 페이지 정보 포함한 쿼리 파라미터 객체 생성
         const queryParams = new URLSearchParams({
             ...param,
-            page,
-            pageSize
         });
         const res = await axiosInstance.get(`/orders?${queryParams.toString()}`);
         return res;

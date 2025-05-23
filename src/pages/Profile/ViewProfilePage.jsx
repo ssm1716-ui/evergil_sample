@@ -374,11 +374,7 @@ const ViewProfilePage = () => {
                 </h5>
                 <h6 className="mb-0 sm-fs-18">
                   {profile.birthday ? formatDateRelace(profile.birthday) : ''}
-                  {profile.birthday && profile.deathDate && (
-                    <span className="d-inline-block d-sm-block text-sm-center sm-pe-30px lh-10 sm-lh-5">
-                      ~
-                    </span>
-                  )}
+                  {profile.birthday && profile.deathDate && ' ~ '}
                   {profile.deathDate ? formatDateRelace(profile.deathDate) : ''}
                 </h6>
               </div>
@@ -821,7 +817,7 @@ const ViewProfilePage = () => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
       >
-        <div className="w-40 md-w-70">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -857,7 +853,7 @@ const ViewProfilePage = () => {
       </Modal>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -909,7 +905,7 @@ const ViewProfilePage = () => {
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
       >
-        <div className="w-30 md-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -1023,7 +1019,7 @@ const ViewProfilePage = () => {
         isOpen={isRequestCompletedModalOpen}
         onClose={() => setIsRequestCompletedModalOpen(false)}
       >
-        <div className="w-30 md-w-90">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">

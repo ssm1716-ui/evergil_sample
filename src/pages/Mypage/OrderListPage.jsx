@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
@@ -38,6 +38,8 @@ const OrderListPage = () => {
     endDate: getTodayDate(), // 기본값: 오늘 날짜
     keyword: '',
     status: 'ALL',
+    page: 0,
+    pageSize: 10,
   };
   const [viewSelect, setViewSelect] = useState(initData);
 
@@ -69,28 +71,77 @@ const OrderListPage = () => {
   });
   const [productTargetId, setProductTargetId] = useState('');
   const [meReviews, setMeReviews] = useState({});
+  const [hasNext, setHasNext] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+  const containerRef = useRef(null); // 스크롤 감지할 영역 참조
 
-  // 👇 useEffect 바깥에서 선언
-  const fetchOrders = async () => {
+  // 👉 데이터 로드 함수
+  const fetchOrders = async (append = false) => {
     try {
-      const { keyword, ...others } = viewSelect;
       const { status, data } = await getOrdersList(viewSelect);
-      console.log(data);
       if (status !== 200) {
         alert('통신 에러가 발생했습니다.');
         return;
       }
+
       const { items, orderCounters } = data.data;
-      setOrders(items);
+
+      if (items.length < viewSelect.pageSize) {
+        setHasNext(false);
+      }
+
+      if (append) {
+        setOrders((prev) => [...prev, ...items]);
+      } else {
+        setOrders(items);
+      }
+
       setorderCounters(orderCounters);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsFetching(false); // 무조건 false
     }
   };
 
+  // 👉 조건 변경되면 page 초기화 & 데이터 초기 fetch
   useEffect(() => {
-    fetchOrders();
+    setOrders([]); // 기존 데이터 초기화
+    setViewSelect((prev) => ({
+      ...prev,
+      page: 0,
+    }));
+    setHasNext(true);
+    fetchOrders(false);
   }, [viewSelect.startDate, viewSelect.endDate, viewSelect.status]);
+
+  // 👉 page가 변경될 때마다 fetch
+  useEffect(() => {
+    setIsFetching(true);
+    fetchOrders(viewSelect.page !== 0); // 0이면 덮기, 아니면 추가
+  }, [viewSelect.page]);
+
+  // 👉 스크롤 이벤트
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isFetching || !hasNext) return;
+
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.body.scrollHeight;
+
+      if (scrollTop + windowHeight + 100 >= documentHeight) {
+        setIsFetching(true);
+        setViewSelect((prev) => ({
+          ...prev,
+          page: prev.page + 1,
+        }));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFetching, hasNext]);
 
   // 별점 클릭 핸들러
   const handleStarClick = (index) => {
@@ -302,20 +353,14 @@ const OrderListPage = () => {
     setMeReviews([matchedReview]);
   };
 
-  const handleSearchClick = async () => {
-    try {
-      const { status, data } = await getOrdersList(viewSelect);
-      console.log(data);
-      if (status !== 200) {
-        alert('통신 에러가 발생했습니다.');
-        return;
-      }
-      const { items, orderCounters } = data.data;
-      setOrders(items);
-      setorderCounters(orderCounters);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleSearchClick = () => {
+    setViewSelect((prev) => ({
+      ...prev,
+      page: 0,
+    }));
+
+    // 바로 호출
+    fetchOrders(false);
   };
 
   // ⌨ Enter 입력 시 검색 실행
@@ -547,7 +592,7 @@ const OrderListPage = () => {
             </div> */}
 
         {orders.length > 0 && (
-          <div className="row justify-content-center">
+          <div ref={containerRef} className="row justify-content-center">
             <div className="col-12">
               {orders.map((order, index) => (
                 <div
