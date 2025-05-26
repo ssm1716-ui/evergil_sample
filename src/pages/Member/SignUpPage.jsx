@@ -45,6 +45,11 @@ const SignUpPage = () => {
     setInvitationKey(localStorage.getItem('dev_invitation'));
   }, []);
 
+  useEffect(() => {
+    // 페이지 이동 시 최상단으로 스크롤 이동
+    window.scrollTo(0, 0);
+  }, [step]);
+
   // 약관 전체 동의하기 (전체 선택, 전체 해제)
   const handleGroupCheck = (name) => {
     let isChecked = checkboxGroupRef.current[0].checked;

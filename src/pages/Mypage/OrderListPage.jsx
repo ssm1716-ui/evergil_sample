@@ -770,7 +770,11 @@ const OrderListPage = () => {
 
                         if (!canCancel) return null;
 
-                        const buttonText = isVbank ? '주문취소' : '결제취소';
+                        const buttonText =
+                          isVbank &&
+                          order.product.deliveryStatus === 'WAITING_FOR_PAYMENT'
+                            ? '주문취소'
+                            : '결제취소';
 
                         return (
                           <Link

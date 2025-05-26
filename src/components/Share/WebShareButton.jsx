@@ -119,7 +119,7 @@ const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
           }}
         >
           <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
-            프로필 공유하기
+            공유하기
           </p>
 
           {/* ✅ 소셜 공유 버튼 */}

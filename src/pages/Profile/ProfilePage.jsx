@@ -274,6 +274,7 @@ const ProfilePage = () => {
                               >
                                 <span
                                   className="text-truncate"
+                                  title={profile.displayName}
                                   style={{
                                     maxWidth:
                                       profile.displayName.length < 10

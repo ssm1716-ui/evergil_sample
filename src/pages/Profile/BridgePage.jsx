@@ -1,32 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
-import PaymentDue from '@/components/Order/PaymentDue';
-import OrderEmptyComponents from '@/components/Order/OrderEmptyComponents';
-import OrderListComponents from '@/components/Order/OrderListComponents';
-import CartImage1 from '@/assets/images/sample/cart-image1.jpg';
-import AnimatedSection from '@/components/AnimatedSection';
-import AddressSearch from '@/components/AddressSearch';
-
-import {
-  isValidEmail,
-  isValidPassword,
-  isValidName,
-  isValidPhoneNumber,
-  isInteger,
-} from '@/utils/validators';
-import { removeHyphens } from '@/utils/utils';
-
-const paymentMethods = [
-  { id: 'credit', label: '신용카드', icon: 'line-icon-Credit-Card2' },
-  { id: 'bank', label: '계좌이체', icon: 'line-icon-Bank' },
-  { id: 'deposit', label: '무통장입금', icon: 'line-icon-Money-2' },
-  { id: 'mobile', label: '휴대폰결제', icon: 'line-icon-Smartphone-3' },
-];
 
 const BridgePage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -45,7 +22,7 @@ const BridgePage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section">
+      <section className="big-section pt-3 md-mt-60px">
         <div className="container text-decoration-line-bottom position-relative">
           <span className="divider-text">Or</span>
           <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 justify-content-center overflow-hidden pb-100px md-pb-0">
@@ -53,7 +30,7 @@ const BridgePage = () => {
               className="col"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <div className="mt-20 py-5 md-pt-0 text-center ">
+              <div className="mt-5 py-5 md-pt-0 text-center ">
                 <h4 className="sm-fs-20 fw-600 text-dark-gray mb-5 ls-minus-1px">
                   에버링크가 아직 연결되지 않았습니다.
                 </h4>

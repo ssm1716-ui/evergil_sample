@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { debounce } from 'lodash';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import LightGallery from 'lightgallery/react';
@@ -17,7 +18,6 @@ import { getFileType, formatDateRelace } from '@/utils/utils';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
 import useProfilePermission from '@/hooks/useProfilePermission';
-
 import WebShareButton from '@/components/Share/WebShareButton';
 
 import {
@@ -120,6 +120,7 @@ const EditProfilePage = () => {
   const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
     initFormPrivateProfile
   );
+  const hasMountedRef = useRef(false); // ✅ mount 여부 저장
 
   const {
     isLoginModalOpen,
@@ -242,19 +243,35 @@ const EditProfilePage = () => {
     if (showScreen) fetchTabDate();
   }, [activeTab, showScreen]);
 
-  useEffect(() => {
-    const fetchFamily = async () => {
+  // 디바운스된 저장 함수
+  const debouncedSaveFamily = useRef(
+    debounce(async (profileId, familyData) => {
+      const validFamily = familyData.filter(
+        (item) =>
+          item.familyTitle.trim() !== '' && item.displayName.trim() !== ''
+      );
+
+      // if (validFamily.length === 0) return; // 전송할 항목이 없으면 호출하지 않음
+
       try {
-        if (family.length <= 0) return;
-        const res = await putFamilyProfile(profileId, family);
+        const res = await putFamilyProfile(profileId, validFamily);
         if (res.status !== 200) {
           alert('가족관계 업데이트 시 에러 발생');
         }
       } catch (error) {
         console.error(error);
       }
-    };
-    fetchFamily();
+    }, 500)
+  ).current;
+
+  // 상태 변경 감지
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
+    debouncedSaveFamily(profileId, family);
   }, [family]);
 
   useEffect(() => {
@@ -1097,8 +1114,9 @@ const EditProfilePage = () => {
                                 <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                   <p className="sm-w-85">{letter.content}</p>
                                 </div>
-                                {letter.hasPermission && (
-                                  <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
+
+                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
+                                  {letter.hasDeletePermission && (
                                     <span
                                       className="cursor-pointer me-5"
                                       onClick={(e) => {
@@ -1110,6 +1128,8 @@ const EditProfilePage = () => {
                                     >
                                       <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
                                     </span>
+                                  )}
+                                  {letter.hasModifyPermission && (
                                     <span
                                       className="cursor-pointer"
                                       onClick={(e) => {
@@ -1121,8 +1141,8 @@ const EditProfilePage = () => {
                                     >
                                       <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
                                     </span>
-                                  </div>
-                                )}
+                                  )}
+                                </div>
                               </div>
                             ))
                           ) : (
@@ -1294,13 +1314,13 @@ const EditProfilePage = () => {
                       <input type="hidden" name="redirect" value="" />
 
                       <Button
-                        className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-black btn-medium btn-box-shadow btn-round-edge submit me-1"
                         onClick={handleLetterRemove}
                       >
                         삭제
                       </Button>
                       <Button
-                        className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-medium btn-box-shadow btn-round-edge submit me-1"
                         onClick={() => setIsModalOpen(false)}
                       >
                         닫기
@@ -1553,13 +1573,13 @@ const EditProfilePage = () => {
             <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
-                  <h4 className="text-dark-gray fw-500 mb-15px">
+                  <h4 className="text-dark-gray fw-500 mb-5px">
                     하늘편지 수정하기
                   </h4>
                 </div>
               </div>
               <form className="row">
-                <div className="col-12 mb-20px ">
+                <div className="col-12">
                   <label className="mb-10px">이름</label>
                   <input
                     className="border-radius-4px input-large mb-5px"
@@ -1575,7 +1595,7 @@ const EditProfilePage = () => {
                     </p>
                   )} */}
                 </div>
-                <div className="col-12 mb-20px ">
+                <div className="col-12">
                   <label className="mb-10px">내용</label>
                   <textarea
                     className="border-radius-4px textarea-small"
@@ -1593,18 +1613,18 @@ const EditProfilePage = () => {
                   )} */}
                 </div>
 
-                <div className="col-lg-112 text-center text-lg-center">
+                <div className="col-lg-12 text-center text-lg-center">
                   <input type="hidden" name="redirect" value="" />
 
                   <Button
-                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                    className="btn btn-black btn-medium btn-box-shadow btn-round-edge submit me-1"
                     onClick={handleUpdateAndSendLetter}
                   >
                     수정하기
                   </Button>
 
                   <Button
-                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    className="btn btn-white btn-medium btn-box-shadow btn-round-edge submit me-1"
                     onClick={() => {
                       setIsEditModalOpen(false);
                       letterInit();

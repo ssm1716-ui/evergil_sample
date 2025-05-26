@@ -101,7 +101,14 @@ const App = () => {
             />
 
             {/* 프로필 영역 start*/}
-            <Route path="/bridge-profile" element={<BridgePage />} />
+            <Route
+              path="/bridge-profile"
+              element={
+                <ProtectedRoute>
+                  <BridgePage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/profile/invitation" element={<InvitationPage />} />
 
             <Route

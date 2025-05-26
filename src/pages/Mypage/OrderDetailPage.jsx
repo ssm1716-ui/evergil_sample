@@ -233,7 +233,8 @@ const MyPage = () => {
   // 결제취소 핸들러
   const handlePaymentCancel = async (product) => {
     const confirmlMessage =
-      product.paymentMethod === 'VBANK'
+      product.paymentMethod === 'VBANK' &&
+      product.deliveryStatus === 'WAITING_FOR_PAYMENT'
         ? '주문 취소를 하시겠습니까?'
         : '결제 취소를 하시겠습니까?';
     const confirmed = window.confirm(confirmlMessage);
@@ -251,9 +252,10 @@ const MyPage = () => {
 
     if (res.status === 200) {
       const completeMessage =
-        product.paymentMethod === 'VBANK'
-          ? '주문 취소 처리 되었습니다.'
-          : '결제 취소 처리 되었습니다.';
+        product.paymentMethod === 'VBANK' &&
+        product.deliveryStatus === 'WAITING_FOR_PAYMENT'
+          ? '주문 취소가 처리 되었습니다.'
+          : '결제 취소가 처리 되었습니다.';
       setIsConfirmPurchaseTitle(completeMessage);
       setIsConfirmPurchaseModalOpen(true);
       navigate('/mypage/order-list');
@@ -455,7 +457,11 @@ const MyPage = () => {
 
                       if (!canCancel) return null;
 
-                      const buttonText = isVbank ? '주문취소' : '결제취소';
+                      const buttonText =
+                        isVbank &&
+                        product.deliveryStatus === 'WAITING_FOR_PAYMENT'
+                          ? '주문취소'
+                          : '결제취소';
 
                       return (
                         <Link
@@ -479,76 +485,77 @@ const MyPage = () => {
               </div>
             </div>
 
-            {payment.paymentType === 'VBANK' && (
-              <div className="col pt-1">
-                <div className="bg-very-light-gray border-radius-6px p-20px lg-p-25px your-order-box">
-                  <span className="fs-26 fw-600 text-dark-gray mb-5px d-block text-center py-3">
-                    <span className="text-base-color">
-                      {vBankData.expiresAt}
+            {payment.paymentType === 'VBANK' &&
+              product.deliveryStatus === 'WAITING_FOR_PAYMENT' && (
+                <div className="col pt-1">
+                  <div className="bg-very-light-gray border-radius-6px p-20px lg-p-25px your-order-box">
+                    <span className="fs-26 fw-600 text-dark-gray mb-5px d-block text-center py-3">
+                      <span className="text-base-color">
+                        {vBankData.expiresAt}
+                      </span>
+                      까지 입금을 완료해주세요.
                     </span>
-                    까지 입금을 완료해주세요.
-                  </span>
 
-                  <div className="p-40px bg-white border-radius-6px box-shadow-large mt-10px mb-30px sm-mb-25px checkout-accordion">
-                    <div className="w-100" id="accordion-style-05">
-                      <div className="row pb-1 border-bottom border-1 border-black fs-20">
-                        <label className="col-6 mb-5px">
-                          <span className="d-inline-block text-dark-gray">
-                            입금 금액
-                          </span>
-                        </label>
-                        <h6 className="col-6 mb-0 fs-20 text-end text-base-color">
-                          {formatNumber(vBankData.amount)}원
-                        </h6>
-                      </div>
-                      <div className="row pt-1 fs-20">
-                        <label className="col-6 mb-5px">
-                          <span className="d-inline-block text-dark-gray">
-                            가상 계좌 정보
-                          </span>
-                        </label>
-                        <h6 className="col-6 mb-0 fs-20 text-dark-gray text-end text-decoration-underline link-offset-1">
-                          {vBankData.bankName} {vBankData.accountNumber}
-                          <i
-                            className="feather icon-feather-copy icon-small text-dark-gray ps-2"
-                            role="button"
-                            onClick={() =>
-                              copyToClipboard(vBankData.accountNumber)
-                            }
-                          ></i>
-                        </h6>
-                      </div>
-                      <div
-                        id="style-5-collapse-1"
-                        className="collapse show"
-                        data-bs-parent="#accordion-style-05"
-                      >
-                        <div className="p-25px bg-very-light-gray mt-20px mb-20px fs-14 lh-24">
-                          <ul className="mb-0">
-                            <li>
-                              입금이 완료되어야 주문이 확인되고 출고가
-                              진행됩니다.
-                            </li>
+                    <div className="p-40px bg-white border-radius-6px box-shadow-large mt-10px mb-30px sm-mb-25px checkout-accordion">
+                      <div className="w-100" id="accordion-style-05">
+                        <div className="row pb-1 border-bottom border-1 border-black fs-20">
+                          <label className="col-6 mb-5px">
+                            <span className="d-inline-block text-dark-gray">
+                              입금 금액
+                            </span>
+                          </label>
+                          <h6 className="col-6 mb-0 fs-20 text-end text-base-color">
+                            {formatNumber(vBankData.amount)}원
+                          </h6>
+                        </div>
+                        <div className="row pt-1 fs-20">
+                          <label className="col-6 mb-5px">
+                            <span className="d-inline-block text-dark-gray">
+                              가상 계좌 정보
+                            </span>
+                          </label>
+                          <h6 className="col-6 mb-0 fs-20 text-dark-gray text-end text-decoration-underline link-offset-1">
+                            {vBankData.bankName} {vBankData.accountNumber}
+                            <i
+                              className="feather icon-feather-copy icon-small text-dark-gray ps-2"
+                              role="button"
+                              onClick={() =>
+                                copyToClipboard(vBankData.accountNumber)
+                              }
+                            ></i>
+                          </h6>
+                        </div>
+                        <div
+                          id="style-5-collapse-1"
+                          className="collapse show"
+                          data-bs-parent="#accordion-style-05"
+                        >
+                          <div className="p-25px bg-very-light-gray mt-20px mb-20px fs-14 lh-24">
+                            <ul className="mb-0">
+                              <li>
+                                입금이 완료되어야 주문이 확인되고 출고가
+                                진행됩니다.
+                              </li>
 
-                            <li>
-                              결제 금액은 1원 단위까지 정확히 입금해 주세요.
-                            </li>
-                            <li>
-                              입금 전에 상품이 품절될 경우, 정해진 시간 내에
-                              미입금 시 해당 주문은 자동으로 취소됩니다.
-                            </li>
-                            <li>
-                              입금 후 확인까지 시간이 소요될 수 있으니 양해
-                              부탁드립니다.
-                            </li>
-                          </ul>
+                              <li>
+                                결제 금액은 1원 단위까지 정확히 입금해 주세요.
+                              </li>
+                              <li>
+                                입금 전에 상품이 품절될 경우, 정해진 시간 내에
+                                미입금 시 해당 주문은 자동으로 취소됩니다.
+                              </li>
+                              <li>
+                                입금 후 확인까지 시간이 소요될 수 있으니 양해
+                                부탁드립니다.
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </section>
         <section className="p-0">

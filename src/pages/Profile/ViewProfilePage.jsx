@@ -30,7 +30,7 @@ import {
   putLetters,
 } from '@/api/memorial/memorialApi';
 
-import avatarImage from '@/assets/images/sample/3d_avatar_10.png';
+import avatarImage from '@/assets/images/base-profile-image.png';
 
 const initFormPrivateProfile = {
   name: '',
@@ -369,7 +369,10 @@ const ViewProfilePage = () => {
                 </div>
               </div>
               <div className="col-9 offset-3 ps-2 md-ps-30px">
-                <h5 className="text-dark-gray mb-5px fw-600 fs-32 md-fs-28 sm-fs-24">
+                <h5
+                  className="text-dark-gray mb-5px fw-600 sm-fs-20 ellipsis-name"
+                  title={profile.displayName}
+                >
                   {profile.displayName}
                 </h5>
                 <h6 className="mb-0 sm-fs-18">
@@ -419,22 +422,19 @@ const ViewProfilePage = () => {
       </section>
       <section className="pt-50px md-pt-0 pb-2">
         <div className="container">
-          <div className="bottom-minus-60px end-0 z-index-1 pe-1">
-            {/* <div className="col-xl-6 col-lg-6 col-sm-7 lg-mb-30px md-mb-0"></div> */}
-            <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
-              {/* <p
-                className="w-60 sm-w-100 mx-center profile-desc"
-                dangerouslySetInnerHTML={{ __html: profile.description }}
-              ></p> */}
-              <ReactQuill
-                className="w-60 sm-w-100 mx-center"
-                value={profile.description}
-                readOnly={true}
-                theme="snow"
-                modules={{ toolbar: false }} // 툴바 제거
-              />
+          {profile.description && (
+            <div className="bottom-minus-60px end-0 z-index-1 pe-1">
+              <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
+                <ReactQuill
+                  className="w-60 sm-w-100 mx-center"
+                  value={profile.description}
+                  readOnly={true}
+                  theme="snow"
+                  modules={{ toolbar: false }} // 툴바 제거
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -570,8 +570,9 @@ const ViewProfilePage = () => {
                                   <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                     <p className="sm-w-75">{letter.content}</p>
                                   </div>
-                                  {letter.hasPermission && (
-                                    <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
+
+                                  <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
+                                    {letter.hasDeletePermission && (
                                       <span
                                         className="cursor-pointer me-5"
                                         onClick={(e) => {
@@ -583,6 +584,8 @@ const ViewProfilePage = () => {
                                       >
                                         <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
                                       </span>
+                                    )}
+                                    {letter.hasModifyPermission && (
                                       <span
                                         className="cursor-pointer"
                                         onClick={(e) => {
@@ -594,8 +597,8 @@ const ViewProfilePage = () => {
                                       >
                                         <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
                                       </span>
-                                    </div>
-                                  )}
+                                    )}
+                                  </div>
                                 </div>
                               ))}
                             </>
@@ -675,7 +678,7 @@ const ViewProfilePage = () => {
                 </div>
               </div>
               <form className="row">
-                <div className="col-12 mb-20px ">
+                <div className="col-12">
                   <label className="mb-10px">이름</label>
                   <input
                     className="border-radius-4px input-large mb-5px"
@@ -691,7 +694,7 @@ const ViewProfilePage = () => {
                     </p>
                   )} */}
                 </div>
-                <div className="col-12 mb-20px ">
+                <div className="col-12 ">
                   <label className="mb-10px">내용</label>
                   <textarea
                     className="border-radius-4px textarea-small"
@@ -713,14 +716,14 @@ const ViewProfilePage = () => {
                   <input type="hidden" name="redirect" value="" />
 
                   <Button
-                    className="btn btn-black btn-box-shadow btn-round-edge border-0 submit me-1"
+                    className="btn btn-black btn-medium btn-box-shadow btn-round-edge border-0 submit me-1"
                     onClick={handleSendLetter}
                   >
                     남기기
                   </Button>
 
                   <Button
-                    className="btn btn-white btn-box-shadow btn-round-edge border-1 submit me-1"
+                    className="btn btn-white btn-medium btn-box-shadow btn-round-edge border-1 submit me-1"
                     onClick={() => {
                       setIsRegisterModalOpen(false);
                       letterInit();
@@ -750,7 +753,7 @@ const ViewProfilePage = () => {
                 </div>
               </div>
               <form className="row">
-                <div className="col-12 mb-20px ">
+                <div className="col-12">
                   <label className="mb-10px">이름</label>
                   <input
                     className="border-radius-4px input-large mb-5px"
@@ -766,7 +769,7 @@ const ViewProfilePage = () => {
                     </p>
                   )} */}
                 </div>
-                <div className="col-12 mb-20px ">
+                <div className="col-12">
                   <label className="mb-10px">내용</label>
                   <textarea
                     className="border-radius-4px textarea-small"
@@ -788,14 +791,14 @@ const ViewProfilePage = () => {
                   <input type="hidden" name="redirect" value="" />
 
                   <Button
-                    className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                    className="btn btn-black btn-medium btn-box-shadow btn-round-edge submit me-1"
                     onClick={handleUpdateAndSendLetter}
                   >
                     수정하기
                   </Button>
 
                   <Button
-                    className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                    className="btn btn-white btn-medium btn-box-shadow btn-round-edge submit me-1"
                     onClick={() => {
                       setIsEditModalOpen(false);
                       letterInit();
@@ -832,13 +835,13 @@ const ViewProfilePage = () => {
                       <input type="hidden" name="redirect" value="" />
 
                       <Button
-                        className="btn btn-black btn-small btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-black btn-medium btn-box-shadow btn-round-edge submit me-1"
                         onClick={handleLetterRemove}
                       >
                         삭제
                       </Button>
                       <Button
-                        className="btn btn-white btn-small btn-box-shadow btn-round-edge submit me-1"
+                        className="btn btn-white btn-medium btn-box-shadow btn-round-edge submit me-1"
                         onClick={() => setIsDeleteModalOpen(false)}
                       >
                         닫기

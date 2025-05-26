@@ -143,7 +143,7 @@ const SignInPage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section bg-very-light-gray pt-5">
+      <section className="big-section bg-very-light-gray pt-4 md-mt-60px">
         <div className="container">
           <div className="row g-0 justify-content-center bg-white">
             <div
@@ -151,7 +151,7 @@ const SignInPage = () => {
               data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
             >
               <div className="col-12 text-center position-relative page-title-extra-large">
-                <h4 className="fw-600 text-dark-gray mb-10px py-4_5 md-pb-0">
+                <h4 className="fw-600 text-dark-gray mb-0 py-4_5 md-pb-0">
                   로그인
                 </h4>
               </div>

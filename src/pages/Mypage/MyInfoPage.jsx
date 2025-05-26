@@ -635,7 +635,6 @@ const MyInfoPage = () => {
         </div>
       )}
       {currentView === 'emailChange' && (
-        // <ChangeEmail onBack={handleGoBackToList} errors={errors} />
         <div className="col-xxl-10 col-lg-9 md-ps-15px ">
           <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
             <h1 className="fw-600 text-dark-gray mb-10px">이메일 변경</h1>
@@ -699,14 +698,14 @@ const MyInfoPage = () => {
         isOpen={isFirstModalOpen}
         onClose={() => setIsFirstModalOpen(false)}
       >
-        <div className="w-40 sm-w-80">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
                         변경되었습니다.
                       </h6>
                     </div>
@@ -734,14 +733,14 @@ const MyInfoPage = () => {
         isOpen={isSecondModalOpen}
         onClose={() => setIsSecondModalOpen(false)}
       >
-        <div className="w-40 md-w-80">
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px sm-fs-16">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
                         인증번호를 전송하였습니다.
                       </h6>
                     </div>

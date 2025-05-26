@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import WebShareButton from '@/components/Share/WebShareButton';
 import defaultLogo_pc from '@/assets/images/logo_pc.png';
 import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
 import footerIconYoutube from '@/assets/images/footer-icon-youtube.png';
@@ -105,9 +106,14 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a className="behance">
-                    <img src={footerIconShare} alt="" />
-                  </a>
+                  <WebShareButton
+                    triggerElement={
+                      <a className="behance">
+                        <img src={footerIconShare} alt="" />
+                      </a>
+                    }
+                    positionConfig={{ bottom: '0px', left: '70%' }}
+                  />
                 </li>
               </ul>
             </div>
