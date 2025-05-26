@@ -66,20 +66,23 @@ export const putOrdersVbankCancel = async (param) => {
 };
 
 //반품신청
-export const postOrdersRefundRequest = async (param) => {
+export const postOrdersRefundRequest = async (orderNumber, refund) => {
     try {
-        const res = await axiosInstance.post(`/orders/${param}/refund.request`);
+        const res = await axiosInstance.post(
+            `/orders/${orderNumber}/refund.request?buyerExchangeReason=${encodeURIComponent(refund.buyerExchangeReason)}&sellerExchangeReason=${encodeURIComponent(refund.sellerExchangeReason)}&exchangeRequestDetails=${encodeURIComponent(refund.exchangeRequestDetails)}`
+        );
         return res;
     } catch (err) {
         console.error(err);
     }
 };
 
-
 //교환신청
 export const postOrdersExchangeRequest = async (id, param) => {
     try {
-        const res = await axiosInstance.post(`/orders/${id}/exchange.request?buyerExchangeReason=${param.buyerExchangeReason}&sellerExchangeReason=${param.sellerExchangeReason}&exchangeRequestDetails=${param.exchangeRequestDetails}`);
+        const res = await axiosInstance.post(
+            `/orders/${id}/exchange.request?buyerExchangeReason=${encodeURIComponent(param.buyerExchangeReason)}&sellerExchangeReason=${encodeURIComponent(param.sellerExchangeReason)}&exchangeRequestDetails=${encodeURIComponent(param.exchangeRequestDetails)}`
+        );
         return res;
     } catch (err) {
         console.error(err);
