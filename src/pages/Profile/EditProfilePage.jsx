@@ -15,6 +15,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Button from '@/components/common/Button/Button';
 import { MdAddPhotoAlternate } from 'react-icons/md';
 import { getFileType, formatDateRelace } from '@/utils/utils';
+import { compressImage } from '@/utils/imageCompressor';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
 import useProfilePermission from '@/hooks/useProfilePermission';
@@ -490,36 +491,63 @@ const EditProfilePage = () => {
   };
 
   // 파일 선택 핸들러
-  const handleFileChange = (e) => {
+  // const handleFileChange = (e) => {
+  //   const { files, name } = e.target;
+  //   console.log(files, name);
+  //   let imageFile;
+
+  //   if (!files[0]) return;
+
+  //   const file = files[0];
+  //   const imageUrl = URL.createObjectURL(file);
+  //   if (name === 'backgroundImageUrl') {
+  //     //배경 이미지
+  //     imageFile = {
+  //       originalFile: file, // 원본 File 객체 저장
+  //       preview: imageUrl,
+  //     };
+
+  //     setBackgroundImage(imageFile);
+  //   } else if (name === 'profileImageUrl') {
+  //     //프로필 이미지
+  //     imageFile = {
+  //       originalFile: file, // 원본 File 객체 저장
+  //       preview: imageUrl,
+  //     };
+  //     setProfileImage(imageFile);
+  //   } else {
+  //     imageFile = {
+  //       originalFile: file, // 원본 File 객체 저장
+  //       preview: imageUrl,
+  //     };
+  //     setPhoto(imageFile);
+  //   }
+  // };
+
+  const handleFileChange = async (e) => {
     const { files, name } = e.target;
-    console.log(files, name);
-    let imageFile;
+    if (!files || !files[0]) return;
 
-    if (!files[0]) return;
+    const originalFile = files[0];
 
-    const file = files[0];
-    const imageUrl = URL.createObjectURL(file);
-    if (name === 'backgroundImageUrl') {
-      //배경 이미지
-      imageFile = {
-        originalFile: file, // 원본 File 객체 저장
-        preview: imageUrl,
+    try {
+      const compressedFile = await compressImage(originalFile);
+      const preview = URL.createObjectURL(compressedFile);
+
+      const imageFile = {
+        originalFile: compressedFile,
+        preview,
       };
 
-      setBackgroundImage(imageFile);
-    } else if (name === 'profileImageUrl') {
-      //프로필 이미지
-      imageFile = {
-        originalFile: file, // 원본 File 객체 저장
-        preview: imageUrl,
-      };
-      setProfileImage(imageFile);
-    } else {
-      imageFile = {
-        originalFile: file, // 원본 File 객체 저장
-        preview: imageUrl,
-      };
-      setPhoto(imageFile);
+      // setState는 화면 preview 용
+      if (name === 'backgroundImageUrl') setBackgroundImage(imageFile);
+      else if (name === 'profileImageUrl') setProfileImage(imageFile);
+      else setPhoto(imageFile);
+
+      // 업로드는 즉시 수행
+      await handleGetFileUploadPath(name, imageFile);
+    } catch (error) {
+      console.error('압축 또는 업로드 실패:', error);
     }
   };
 
@@ -527,8 +555,13 @@ const EditProfilePage = () => {
   const handleGetFileUploadPath = async (imageType, file) => {
     let res, url, imageId;
     try {
-      if (!file || !(file.originalFile instanceof File)) {
-        console.error('🚨 유효한 파일이 없습니다.', file);
+      if (
+        !file ||
+        typeof file !== 'object' ||
+        !file.originalFile ||
+        !(file.originalFile instanceof Blob) // File도 Blob의 하위
+      ) {
+        console.error('유효하지 않은 파일 구조입니다.', file);
         return;
       }
       console.log(
@@ -804,6 +837,7 @@ const EditProfilePage = () => {
                         accept="image/*,"
                         onChange={handleFileChange}
                         className="input-file-background-upload"
+                        loading="lazy"
                       />
                     </span>
                   </span>
@@ -834,6 +868,7 @@ const EditProfilePage = () => {
                           : avatarImage
                       }
                       alt=""
+                      loading="lazy"
                     />
 
                     <div
@@ -1044,7 +1079,7 @@ const EditProfilePage = () => {
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
                             >
-                              <img src={image.url} />
+                              <img src={image.url} loading="lazy" />
                             </a>
                           ))}
                         </div>

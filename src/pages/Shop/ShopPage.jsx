@@ -477,6 +477,7 @@ const ShopPage = () => {
               </ul>
               <div className="mb-5 h-1px w-100 bg-extra-medium-gray xs-mb-8"></div>
               <div className="tab-content">
+                ㄹ
                 <div className="tab-pane fade in active show" id="tab_five1">
                   <div className="row align-items-center justify-content-center">
                     <div className="col-lg-12 md-mb-40px">
@@ -488,6 +489,9 @@ const ShopPage = () => {
                                 key={idx}
                                 src={detail}
                                 alt={`detail-${idx}`}
+                                loading="lazy"
+                                style="pointer-events: none;"
+                                onClick={(e) => e.preventDefault()}
                                 className="me-2"
                               />
                             ))}
@@ -496,7 +500,6 @@ const ShopPage = () => {
                     </div>
                   </div>
                 </div>
-
                 <div className="tab-pane fade in" id="tab_five2">
                   <div className="row m-0">
                     <div className="col-lg-12 md-mb-40px">
@@ -508,6 +511,9 @@ const ShopPage = () => {
                                 key={idx}
                                 src={attribute}
                                 alt={`attribute-${idx}`}
+                                loading="lazy"
+                                style="pointer-events: none;"
+                                onClick={(e) => e.preventDefault()}
                                 className="me-2"
                               />
                             ))}
@@ -516,7 +522,6 @@ const ShopPage = () => {
                     </div>
                   </div>
                 </div>
-
                 <div className="tab-pane fade in" id="tab_five3">
                   <div className="row">
                     <div className="col-12 col-md-6 last-paragraph-no-margin sm-mb-30px">
@@ -544,7 +549,6 @@ const ShopPage = () => {
                     </div>
                   </div>
                 </div>
-
                 <div className="tab-pane fade in" id="tab_five4">
                   <div className="row g-0 mb-4 md-mb-35px">
                     {reviews.length > 0 && (

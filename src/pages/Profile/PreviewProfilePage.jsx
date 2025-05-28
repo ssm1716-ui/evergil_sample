@@ -332,6 +332,7 @@ const ViewProfilePage = () => {
                           : avatarImage
                       }
                       alt=""
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -463,7 +464,7 @@ const ViewProfilePage = () => {
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
                             >
-                              <img src={image.url} />
+                              <img src={image.url} loading="lazy" />
                             </a>
                           ))}
                         </div>

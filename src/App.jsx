@@ -48,6 +48,7 @@ import CheckPointPage from '@/pages/CheckPointPage';
 import TestPage from '@/pages/TestPage';
 import QRScanner from '@/pages/QRScanner';
 import QRCofirm from '@/pages/QRCofirm';
+import ImageCompressor from '@/pages/ImageCompressor';
 
 const App = () => {
   return (
@@ -75,7 +76,7 @@ const App = () => {
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/check-point" element={<CheckPointPage />} />
             <Route path="/error" element={<ErrorPage />} />
-            <Route path="/test" element={<TestPage />} />
+            <Route path="/test" element={<ImageCompressor />} />
 
             {/* <Route path="/qr-scanner" element={<QRScanner />} /> */}
             {/*<Route path="/qr-confirm" element={<QRCofirm />} /> */}
