@@ -90,6 +90,7 @@ const EditProfilePage = () => {
   };
   //탭 - 이미지
   const [images, setImages] = useState([]);
+
   const [letterId, setLetterId] = useState('');
   const [letters, setLetters] = useState([]);
   const [family, setFamily] = useState([]);
@@ -121,7 +122,16 @@ const EditProfilePage = () => {
   const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
     initFormPrivateProfile
   );
-  const hasMountedRef = useRef(false); // ✅ mount 여부 저장
+  const hasMountedRef = useRef(false); // mount 여부 저장
+  const [isUploading, setIsUploading] = useState(false);
+
+  const [imageState, setImageState] = useState({
+    images: [],
+    page: 1,
+    hasNext: true,
+    initialized: false,
+  });
+  const [isFetching, setIsFetching] = useState(false);
 
   const {
     isLoginModalOpen,
@@ -176,44 +186,43 @@ const EditProfilePage = () => {
 
   //  상태 변경 감지 후 자동 업로드
   useEffect(() => {
-    if (backgroundImage) {
+    if (backgroundImage && backgroundImage.originalFile instanceof Blob) {
       handleGetFileUploadPath('backgroundImageUrl', backgroundImage);
     }
   }, [backgroundImage]); // backgroundImage 값이 변경될 때 실행
 
   useEffect(() => {
-    if (profileImage) {
+    if (profileImage && profileImage.originalFile instanceof Blob) {
       handleGetFileUploadPath('profileImageUrl', profileImage);
     }
   }, [profileImage]); // profileImage 값이 변경될 때 실행
 
   useEffect(() => {
-    if (photo) {
+    if (photo && photo.originalFile instanceof Blob) {
       handleGetFileUploadPath('photo', photo);
     }
   }, [photo]); // 컨텐츠 이미지 업로드 photo 값이 변경될 때 실행
 
   useEffect(() => {
-    if (updatePhoto) {
+    if (updatePhoto && updatePhoto.originalFile instanceof Blob) {
       handleGetFileUploadPath('updatePhoto', updatePhoto);
     }
   }, [updatePhoto]); // 컨텐츠 이미지 업로드 수정시 updatePhoto 값이 변경될 때 실행
 
-  // 📌 탭 변경 시 데이터 로드 및 레이아웃 조정
+  // 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {
     const fetchTabDate = async () => {
       try {
         let res;
-        if (!activeTab) return;
-        if (activeTab === '이미지') {
-          res = await getPhotoSeletct(profileId, 'edit');
-          console.log('이미지 : ', res);
-          if (res.status === 200) {
-            const { data } = res.data;
-            console.log(data);
-            setImages(data);
-          }
-        }
+        // if (activeTab === '이미지') {
+        //   res = await getPhotoSeletct(profileId, 'edit');
+        //   console.log('이미지 : ', res);
+        //   if (res.status === 200) {
+        //     const { data } = res.data;
+        //     console.log(data);
+        //     setImages(data);
+        //   }
+        // }
         if (activeTab === '하늘편지') {
           res = await getLetters(profileId);
           console.log('하늘편지 : ', res);
@@ -242,7 +251,73 @@ const EditProfilePage = () => {
     };
 
     if (showScreen) fetchTabDate();
+
+    if (showScreen && activeTab === '이미지' && !imageState.initialized) {
+      fetchImages(1, false);
+    }
   }, [activeTab, showScreen]);
+
+  // 이미지 탭 재진입 시 스크롤 및 렌더 보정
+  useEffect(() => {
+    if (activeTab === '이미지' && imageState.initialized) {
+      const checkHeight = () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = window.innerHeight;
+
+        if (scrollHeight <= clientHeight + 100 && imageState.hasNext) {
+          fetchImages(imageState.page + 1, true);
+        }
+      };
+      setTimeout(checkHeight, 100);
+    }
+  }, [activeTab, imageState.initialized]);
+
+  //이미지 탭일 때만 스크롤 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        !profileId ||
+        isFetching ||
+        !imageState.hasNext ||
+        activeTab !== '이미지'
+      )
+        return;
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+
+      const scrollPercent = (scrollY + viewportHeight) / fullHeight;
+
+      if (scrollPercent >= 0.8) {
+        setIsFetching(true);
+        fetchImages(imageState.page + 1, true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFetching, imageState.hasNext, imageState.page, activeTab]);
+
+  // 이미지 fetch 함수
+  const fetchImages = async (page = 1, append = false) => {
+    try {
+      const res = await getPhotoSeletct(profileId, 'edit', page);
+      if (res?.status === 200) {
+        const { data } = res.data;
+        setImageState((prev) => ({
+          images: append ? [...prev.images, ...data] : data,
+          page,
+          hasNext: data.length > 0,
+          initialized: true,
+        }));
+      }
+    } catch (error) {
+      console.error('이미지 로드 실패:', error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   // 디바운스된 저장 함수
   const debouncedSaveFamily = useRef(
@@ -562,12 +637,14 @@ const EditProfilePage = () => {
         !(file.originalFile instanceof Blob) // File도 Blob의 하위
       ) {
         console.error('유효하지 않은 파일 구조입니다.', file);
+        alert('유효하지 않은 파일');
         return;
       }
+
+      setIsUploading(true);
       console.log(
         `📂 파일 업로드 시작: ${file.originalFile.name} (${file.originalFile.type})`
       );
-
       // 1️⃣ Presigned URL 요청
       const type = getFileType(file.originalFile.type);
       const presignedResponse = await postRequestPresignedUrl(type);
@@ -590,8 +667,7 @@ const EditProfilePage = () => {
       if (!response.ok)
         throw new Error(`업로드 실패: ${file.originalFile.name}`);
 
-      console.log('✅ 업로드 성공:', url);
-      console.log(imageType);
+      console.log('업로드 성공:', url);
 
       // ✅ State 업데이트 전, 최신 profile 가져오기
       if (imageType !== 'photo' || imageType !== 'updatePhoto') {
@@ -621,27 +697,31 @@ const EditProfilePage = () => {
         });
 
         if (res.status === 200) {
-          res = await getPhotoSeletct(profileId);
-          const { data } = res.data;
-          console.log(data);
-          setImages(data);
+          // res = await getPhotoSeletct(profileId);
+          // const { data } = res.data;
+          // console.log(data);
+          // setImages(data);
+          await fetchImages(1, false);
         }
       } else if (imageType === 'updatePhoto') {
         res = await putPhotoModify(imageId, {
           imageUrl: url,
         });
-        console.log('updatePhoto -', res);
         if (res.status === 200) {
-          res = await getPhotoSeletct(profileId);
-          const { data } = res.data;
-          console.log(data);
-          setImages(data);
+          // res = await getPhotoSeletct(profileId);
+          // const { data } = res.data;
+          // setImages(data);
+          // setUpdatePhotoId('');
+          await fetchImages(1, false); // 리스트 새로 고침
           setUpdatePhotoId('');
         }
       }
       console.log(res);
     } catch (error) {
-      console.error('🚨 파일 업로드 중 오류 발생:', error);
+      console.error('파일 업로드 중 오류 발생:', error);
+      alert('파일 업로드 중 오류 발생');
+    } finally {
+      setIsUploading(false); // 업로드 완료 표시
     }
   };
 
@@ -1058,7 +1138,9 @@ const EditProfilePage = () => {
                               // marginBottom: '10px',
                             }}
                             className={`gallery-grid-item ${
-                              !images.length ? 'gallery-item-frist' : ''
+                              !imageState.images.length
+                                ? 'gallery-item-frist'
+                                : ''
                             }`}
                           >
                             <MdAddPhotoAlternate size={70} color="#888" />
@@ -1072,14 +1154,18 @@ const EditProfilePage = () => {
                           </div>
 
                           {/* 이미지 썸네일 */}
-                          {images.map((image, index) => (
+                          {imageState.images.map((image, index) => (
                             <a
                               href={image.url}
                               key={index}
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
                             >
-                              <img src={image.url} loading="lazy" />
+                              <img
+                                src={image.url}
+                                loading="lazy"
+                                alt="추모 이미지"
+                              />
                             </a>
                           ))}
                         </div>
@@ -1676,6 +1762,12 @@ const EditProfilePage = () => {
           </div>
         </div>
       </Modal>
+      {isUploading && (
+        <div className="uploading-overlay">
+          <div className="spinner" />
+          <p>이미지를 업로드 중입니다...</p>
+        </div>
+      )}
     </>
   );
 };

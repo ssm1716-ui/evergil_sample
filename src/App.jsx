@@ -76,7 +76,7 @@ const App = () => {
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/check-point" element={<CheckPointPage />} />
             <Route path="/error" element={<ErrorPage />} />
-            <Route path="/test" element={<ImageCompressor />} />
+            {/* <Route path="/test" element={<ImageCompressor />} /> */}
 
             {/* <Route path="/qr-scanner" element={<QRScanner />} /> */}
             {/*<Route path="/qr-confirm" element={<QRCofirm />} /> */}

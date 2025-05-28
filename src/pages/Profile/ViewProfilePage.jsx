@@ -62,7 +62,12 @@ const ViewProfilePage = () => {
   const [activeTab, setActiveTab] = useState('이미지');
   const [hasFamilyTree, setHasFamilyTree] = useState(false);
 
+  //탭 이미지
   const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasNext, setHasNext] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+
   const [letterId, setLetterId] = useState('');
   const [letters, setLetters] = useState([]);
   const [family, setFamily] = useState([]);
@@ -109,22 +114,20 @@ const ViewProfilePage = () => {
     fetchProfile();
   }, []);
 
-  // 📌 탭 변경 시 데이터 로드 및 레이아웃 조정
+  // 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {
     const fetchTabDate = async () => {
       try {
         let res;
-        console.log(activeTab);
-        if (!activeTab) return;
-        if (activeTab === '이미지') {
-          res = await getPhotoSeletct(profileId);
-          console.log('이미지 : ', res);
-          if (res.status === 200) {
-            const { data } = res.data;
-            console.log(data);
-            setImages(data);
-          }
-        }
+        // if (activeTab === '이미지') {
+        //   res = await getPhotoSeletct(profileId, 'edit');
+        //   console.log('이미지 : ', res);
+        //   if (res.status === 200) {
+        //     const { data } = res.data;
+        //     console.log(data);
+        //     setImages(data);
+        //   }
+        // }
         if (activeTab === '하늘편지') {
           res = await getLetters(profileId);
           console.log('하늘편지 : ', res);
@@ -142,13 +145,66 @@ const ViewProfilePage = () => {
             setFamily(items);
           }
         }
+
+        // if (res.status === 200) {
+        //   const { data } = res.data;
+        //   setProfiles(data);
+        // }
       } catch (error) {
         console.error(error);
       }
     };
 
     if (showScreen) fetchTabDate();
+
+    if (showScreen && activeTab === '이미지') {
+      setPage(1);
+      setHasNext(true);
+      fetchImages(1, false);
+    }
   }, [activeTab, showScreen]);
+
+  useEffect(() => {
+    if (page === 1) return; // 초기 fetch는 탭 전환에서 처리
+    fetchImages(page, true);
+  }, [page]);
+
+  const fetchImages = async (currentPage = 1, append = false) => {
+    try {
+      const res = await getPhotoSeletct(profileId, 'edit', currentPage);
+      if (res.status === 200) {
+        const { data } = res.data;
+        if (data.length < 11) setHasNext(false);
+
+        setImages((prev) => (append ? [...prev, ...data] : data));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isFetching || !hasNext) return;
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+
+      const scrollPercent = (scrollY + viewportHeight) / fullHeight;
+
+      if (scrollPercent >= 0.8) {
+        // 80% 도달했을 때
+        setIsFetching(true);
+        setPage((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFetching, hasNext]);
 
   //하늘편지 useEffect
   useEffect(() => {

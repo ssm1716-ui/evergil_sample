@@ -490,7 +490,7 @@ const ShopPage = () => {
                                 src={detail}
                                 alt={`detail-${idx}`}
                                 loading="lazy"
-                                style="pointer-events: none;"
+                                style={{ pointerEvents: 'none' }}
                                 onClick={(e) => e.preventDefault()}
                                 className="me-2"
                               />
@@ -512,7 +512,7 @@ const ShopPage = () => {
                                 src={attribute}
                                 alt={`attribute-${idx}`}
                                 loading="lazy"
-                                style="pointer-events: none;"
+                                style={{ pointerEvents: 'none' }}
                                 onClick={(e) => e.preventDefault()}
                                 className="me-2"
                               />
