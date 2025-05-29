@@ -913,7 +913,7 @@ const EditProfilePage = () => {
           <div className="row bottom-minus-60px end-0 z-index-1 pe-1 d-flex flex-column">
             {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
             <div className="xs-mt-25px d-flex justify-content-center h-200px md-h-300px">
-              <ReactQuill
+              {/* <ReactQuill
                 theme="snow"
                 value={content}
                 onChange={setContent}
@@ -921,7 +921,7 @@ const EditProfilePage = () => {
                 modules={modules}
                 formats={formats}
                 className="w-700px md-w-95 md-h-450px lh-initial"
-              />
+              /> */}
             </div>
             <div className="mt-80px md-mt-0 sm-mt-30px text-center">
               <Link

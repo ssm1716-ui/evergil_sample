@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Compressor from 'compressorjs';
-import heic2any from 'heic2any';
 
 const ImageCompressor = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -39,29 +38,7 @@ const ImageCompressor = () => {
       file.name.endsWith('.heic') ||
       file.name.endsWith('.HEIC');
 
-    if (isHeic) {
-      try {
-        const convertedBlob = await heic2any({
-          blob: file,
-          toType: 'image/jpeg',
-          quality: 1,
-        });
-
-        const jpegFile = new File(
-          [convertedBlob],
-          file.name.replace(/\.heic/i, '.jpg'),
-          {
-            type: 'image/jpeg',
-          }
-        );
-
-        compressImage(jpegFile);
-      } catch (error) {
-        console.error('🚨 HEIC 변환 실패:', error);
-      }
-    } else {
-      compressImage(file);
-    }
+    compressImage(file);
   };
 
   return (

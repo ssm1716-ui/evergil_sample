@@ -14,6 +14,9 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Echo .env.development
+        run: cat .env.development
+
       - name: Install packages
         run: npm install
 
