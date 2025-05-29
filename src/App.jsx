@@ -50,6 +50,12 @@ import QRScanner from '@/pages/QRScanner';
 import QRCofirm from '@/pages/QRCofirm';
 import ImageCompressor from '@/pages/ImageCompressor';
 
+import 'react-quill/dist/quill.snow.css';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-thumbnail.css';
+import 'lightgallery/css/lg-fullscreen.css';
+import 'lightgallery/css/lg-zoom.css';
+
 const App = () => {
   return (
     <ErrorBoundary>

@@ -1,10 +1,16 @@
 {
   "name": "everlink-frontend",
+  "sideEffects": [
+    "react-quill/dist/quill.snow.css",
+    "lightgallery/css/*"
+  ],
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build --mode production",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

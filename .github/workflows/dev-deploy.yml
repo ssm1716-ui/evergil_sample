@@ -14,9 +14,6 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Echo .env.development
-        run: cat .env.development
-
       - name: Install packages
         run: npm install
 
@@ -31,7 +28,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }} --delete
+        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }}
 
-      - name: Invalidate CloudFront Cache
+      - name: Invalidate CloudFront Cache For dev.everlink.kr
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
