@@ -8988,7 +8988,7 @@ header.sticky .left-sidebar-nav .navbar-nav .nav-link {
 .show-search-popup .search-form-wrapper {
   opacity: 1;
   visibility: visible;
-  cursor: url(../images/mfg-close.png), auto;
+  /* cursor: url(../images/mfg-close.png), auto; */
 }
 .show-search-popup .search-form-wrapper .search-form {
   height: 50%;
@@ -13127,7 +13127,7 @@ blockquote footer {
   opacity: 1;
 }
 .mfp-wrap {
-  cursor: url("../images/mfg-close.png"), auto;
+  /* cursor: url("../images/mfg-close.png"), auto; */
 }
 .mfp-wrap .mfp-container {
   cursor: auto;

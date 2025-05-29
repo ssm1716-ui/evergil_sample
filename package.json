@@ -1,9 +1,5 @@
 {
   "name": "everlink-frontend",
-  "sideEffects": [
-    "react-quill/dist/quill.snow.css",
-    "lightgallery/css/*"
-  ],
   "private": true,
   "version": "0.0.0",
   "type": "module",
