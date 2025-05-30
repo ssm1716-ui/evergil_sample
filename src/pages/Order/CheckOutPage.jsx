@@ -284,7 +284,7 @@ const CheckOutPage = () => {
       totalDeliveryFee += product.deliveryFee;
     });
 
-    const totalAmount = totalDiscount + totalDeliveryFee;
+    const totalAmount = totalProductPrice - totalDiscount + totalDeliveryFee;
 
     return {
       totalQty,
@@ -419,6 +419,9 @@ const CheckOutPage = () => {
                         <th scope="col" className="fw-600 text-center">
                           상품할인금액
                         </th>
+                        <th scope="col" className="fw-600 text-center">
+                          결제금액
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -469,9 +472,16 @@ const CheckOutPage = () => {
                               className="product-subtotal text-center"
                               data-title="상품할인금액"
                             >
-                              {(
+                              -{(
                                 order.discountedPrice * order.quantity
                               ).toLocaleString()}
+                              원
+                            </td>
+                            <td
+                              className="product-subtotal text-center"
+                              data-title="결제금액"
+                            >
+                              <strong>{((order.deliveryFee) + (order.price * order.quantity) - (order.discountedPrice * order.quantity)).toLocaleString()}</strong>
                               원
                             </td>
                           </tr>
@@ -779,20 +789,20 @@ const CheckOutPage = () => {
                   <tr>
                     <th className="w-45 fw-600 text-dark-gray">상품금액</th>
                     <td className="text-dark-gray fw-600">
-                      {totalProductPrice.toLocaleString()}
+                      {totalProductPrice.toLocaleString()}원
                     </td>
                   </tr>
                   <tr>
                     <th className="w-45 fw-600 text-dark-gray">상품할인금액</th>
                     <td className="text-dark-gray fw-600">
-                      {totalDiscount.toLocaleString()}원
+                      -{totalDiscount.toLocaleString()}원
                     </td>
                   </tr>
 
                   <tr>
                     <th className="w-45 fw-600 text-dark-gray">배송비</th>
                     <td className="text-dark-gray fw-600">
-                      {totalDeliveryFee.toLocaleString()}
+                      {totalDeliveryFee.toLocaleString()}원
                     </td>
                   </tr>
 

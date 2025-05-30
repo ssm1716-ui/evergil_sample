@@ -494,7 +494,6 @@ const ShopPage = () => {
               </ul>
               <div className="mb-5 h-1px w-100 bg-extra-medium-gray xs-mb-8"></div>
               <div className="tab-content">
-                ㄹ
                 <div className="tab-pane fade in active show" id="tab_five1">
                   <div className="row align-items-center justify-content-center">
                     <div className="col-lg-12 md-mb-40px">
