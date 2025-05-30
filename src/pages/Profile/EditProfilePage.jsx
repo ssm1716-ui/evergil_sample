@@ -1239,7 +1239,8 @@ const EditProfilePage = () => {
                                     : 'paper-note-even'
                                 }`}
                               >
-                                <div className="col-12 col-md-1 text-md-center text-sm-start align-self-center d-flex justify-content-between align-items-center">
+                                {/* 모바일 뷰 - 이름과 아이콘 */}
+                                <div className="col-12 col-md-1 text-md-center text-sm-start align-self-center d-flex justify-content-between align-items-center d-md-none">
                                   <span className="text-dark-gray fs-16 fw-600">
                                     {letter.displayName}
                                   </span>
@@ -1272,11 +1273,46 @@ const EditProfilePage = () => {
                                     )}
                                   </div>
                                 </div>
-                                <div className="col-lg-2 col-md-3 align-self-center text-md-end text-sm-start">
-                                  <span>{letter.createdAt}</span>
+
+                                {/* PC 뷰 */}
+                                <div className="col-12 col-md-1 text-md-center text-sm-start align-self-center d-none d-md-block">
+                                  <span className="text-dark-gray fs-16 fw-600">
+                                    {letter.displayName}
+                                  </span>
+                                </div>
+                                <div className="col-lg-2 col-md-3 align-self-center text-start">
+                                  <span className="text-dark-gray fs-14">{letter.createdAt}</span>
                                 </div>
                                 <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
                                   <p className="sm-w-85" dangerouslySetInnerHTML={{ __html: letter.content.replace(/\n/g, '<br />') }}></p>
+                                </div>
+                                <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px d-none d-md-block">
+                                  {letter.hasDeletePermission && (
+                                    <span
+                                      className="cursor-pointer me-4"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleRemoveLetterConfirm(
+                                          letter.letterId
+                                        );
+                                      }}
+                                    >
+                                      <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                                    </span>
+                                  )}
+                                  {letter.hasModifyPermission && (
+                                    <span
+                                      className="cursor-pointer"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleModifyLetterConfirm(
+                                          letter.letterId
+                                        );
+                                      }}
+                                    >
+                                      <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                             ))
