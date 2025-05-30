@@ -215,10 +215,14 @@ const ShopPage = () => {
         <title>{product.productName}</title>
         <meta property="og:title" content={product.productName} />
         <meta property="og:description" content={product.description} />
-        <meta property="og:image" content={product.productImages?.[0] || ''} />
+        <meta property="og:image" content={product.productImages?.[0]?.startsWith('http') ? product.productImages[0] : `${window.location.origin}${product.productImages?.[0]}`} />
         <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Everlink" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={product.productImages?.[0] || ''} />
+        <meta name="twitter:image" content={product.productImages?.[0]?.startsWith('http') ? product.productImages[0] : `${window.location.origin}${product.productImages?.[0]}`} />
+        <meta name="description" content={product.description} />
+        <meta name="keywords" content={product.productName} />
       </Helmet>
       <section>
         <div className="container">

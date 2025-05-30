@@ -25,7 +25,7 @@ const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
       try {
         await navigator.share({
           title: document.title,
-          text: '이 페이지를 공유해 보세요!',
+          //text: '이 페이지를 공유해 보세요!',
           url: window.location.href,
         });
         console.log('공유 성공!');
