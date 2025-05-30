@@ -24,7 +24,7 @@ import { removeHyphens, formatPhoneNumberInput } from '@/utils/utils';
 const paymentMethods = [
   { id: 'CARD', label: '신용카드', icon: 'line-icon-Credit-Card2' },
   { id: 'BANK', label: '계좌이체', icon: 'line-icon-Bank' },
-  { id: 'VBANK', label: '무통장입금', icon: 'line-icon-Money-2' },
+  // { id: 'VBANK', label: '무통장입금', icon: 'line-icon-Money-2' },
   // { id: 'mobile', label: '휴대폰결제', icon: 'line-icon-Smartphone-3' },
 ];
 
@@ -472,7 +472,8 @@ const CheckOutPage = () => {
                               className="product-subtotal text-center"
                               data-title="상품할인금액"
                             >
-                              -{(
+                              -
+                              {(
                                 order.discountedPrice * order.quantity
                               ).toLocaleString()}
                               원
@@ -481,7 +482,13 @@ const CheckOutPage = () => {
                               className="product-subtotal text-center"
                               data-title="결제금액"
                             >
-                              <strong>{((order.deliveryFee) + (order.price * order.quantity) - (order.discountedPrice * order.quantity)).toLocaleString()}</strong>
+                              <strong>
+                                {(
+                                  order.deliveryFee +
+                                  order.price * order.quantity -
+                                  order.discountedPrice * order.quantity
+                                ).toLocaleString()}
+                              </strong>
                               원
                             </td>
                           </tr>

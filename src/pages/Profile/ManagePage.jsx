@@ -73,7 +73,7 @@ const ManagePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
-  } = useProfilePermission(profileId);
+  } = useProfilePermission(profileId, { shouldRedirect: false });
 
   // 프로필 데이터 가져오기
   const fetchProfile = async (id) => {

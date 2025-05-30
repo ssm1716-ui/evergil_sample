@@ -77,7 +77,7 @@ const ViewProfilePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
-  } = useProfilePermission(profileId);
+  } = useProfilePermission(profileId, { shouldRedirect: false });
 
   useEffect(() => {
     // 스타일 추가
@@ -384,17 +384,18 @@ const ViewProfilePage = () => {
       <section className="pt-50px md-pt-0 pb-0">
         <div className="container">
           <div className="bottom-minus-60px end-0 z-index-1 pe-1">
-            {profile.description && (
-              <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
-                <ReactQuill
-                  className="w-60 sm-w-100 mx-center"
-                  value={profile.description}
-                  readOnly={true}
-                  theme="snow"
-                  modules={{ toolbar: false }} // 툴바 제거
-                />
-              </div>
-            )}
+            {profile.description &&
+              profile.description.replace(/<[^>]*>?/gm, '').trim() && (
+                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
+                  <ReactQuill
+                    className="w-60 sm-w-100 mx-center"
+                    value={profile.description}
+                    readOnly={true}
+                    theme="snow"
+                    modules={{ toolbar: false }} // 툴바 제거
+                  />
+                </div>
+              )}
             <div className="mt-80px md-mt-100px sm-mt-30px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
                 className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5"

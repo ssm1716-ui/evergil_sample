@@ -126,8 +126,12 @@ const AddressPage = () => {
     let hasError = false;
     const newErrors = {};
 
+    console.log(address);
+
     for (const key in address) {
-      if (key === 'address2') continue;
+      //상세주소, 기본배송지지정 제외
+      if (key === 'address2' || key === 'isDefault') continue;
+
       if (!address[key]) {
         newErrors[key] = true;
         hasError = true;
@@ -136,9 +140,11 @@ const AddressPage = () => {
       }
     }
 
+    console.log(newErrors);
+    console.log(hasError);
     setErrors(newErrors);
 
-    if (hasError) return; // ❌ 하나라도 비어있으면 조기 종료
+    if (hasError) return; // 하나라도 비어있으면 조기 종료
 
     const res = await putUpdateAddress(focusAddress, address);
     if (res.status === 200) {
@@ -163,9 +169,16 @@ const AddressPage = () => {
   };
 
   const handleDefaultAddress = async () => {
+    if (!focusAddress) {
+      alert('배송지를 선택 후 기본 배송지를 변경해주세요.');
+      return;
+    }
+
     const res = await putDefaultAddress(focusAddress);
     if (res.status === 200) {
       setRefreshKey((prevKey) => prevKey + 1);
+      setFocusAddress(null); // ✅ 체크 표시 초기화
+      alert('기본 배송지로 변경 되었습니다.');
     }
   };
 
@@ -195,9 +208,11 @@ const AddressPage = () => {
                         >
                           <div className="flex-column flex-sm-row d-flex align-items-center">
                             <div className="col-1 align-items-center d-flex  xs-w-auto mx-auto xs-mb-20px">
-                              <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100">
-                                <i className="fa-solid fa-check"></i>
-                              </div>
+                              {focusAddress === address.id && (
+                                <div className="icon w-30px h-30px d-flex flex-shrink-0 align-items-center justify-content-center fs-11 border border-2 border-radius-100">
+                                  <i className="fa-solid fa-check"></i>
+                                </div>
+                              )}
                             </div>
                             <div className="col-md-7 col-sm-6 icon-with-text-style-01 md-mb-25px">
                               <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
@@ -264,6 +279,7 @@ const AddressPage = () => {
                   <Button
                     className="btn w-10 mt-10px d-inline w-45"
                     onClick={() => {
+                      setFocusAddress(null);
                       setAddress(initialForm);
                       setSelectedAddress('');
                       setUpdateFlag(false);
@@ -278,7 +294,9 @@ const AddressPage = () => {
                     <Button
                       color="black"
                       className="btn w-10 mt-10px d-inline w-45"
-                      onClick={handleDefaultAddress}
+                      onClick={async () => {
+                        await handleDefaultAddress(); // 기본 지정 후
+                      }}
                     >
                       기본 배송지 지정
                     </Button>
@@ -291,7 +309,7 @@ const AddressPage = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40 md-w-70 sm-w-100 h-50 md-h-50 sm-h-100">
+        <div className="w-100 h-50 md-h-50 sm-h-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -398,6 +416,7 @@ const AddressPage = () => {
                           className="border-radius-4px input-small mb-5px text-black mt-1"
                           type="text"
                           name="address2"
+                          placeholder="상세주소를 작성 해주세요."
                           value={address.address2}
                           onChange={handleAddressChange}
                           required

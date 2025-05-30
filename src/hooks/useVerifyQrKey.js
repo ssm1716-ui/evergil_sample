@@ -8,7 +8,7 @@ export const useVerifyQrKey = () => {
     const verify = async (qrKey) => {
         try {
             const res = await getQrKeyVerify(qrKey);
-            const { route } = res.data.data;
+            const { route, profileId } = res.data.data;
 
             switch (route) {
                 case 'LOGIN_PAGE':
@@ -23,7 +23,8 @@ export const useVerifyQrKey = () => {
                     navigate('/profile/setting-profile', { state: { qrKey } });
                     break;
                 case 'PROFILE_PAGE':
-                    navigate('/profile');
+                    if (!profileId) { navigate('/profile'); return; }
+                    navigate(`/profile/view-profile/${profileId}`);
                     break;
                 default:
                     navigate(
@@ -39,3 +40,6 @@ export const useVerifyQrKey = () => {
 
     return { verify };
 };
+
+
+

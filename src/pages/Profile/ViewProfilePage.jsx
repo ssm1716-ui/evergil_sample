@@ -86,7 +86,7 @@ const ViewProfilePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
-  } = useProfilePermission(profileId);
+  } = useProfilePermission(profileId, { shouldRedirect: true });
 
   useEffect(() => {
     // 스타일 추가
@@ -479,19 +479,20 @@ const ViewProfilePage = () => {
       </section>
       <section className="pt-50px md-pt-0 pb-2">
         <div className="container">
-          {profile.description && (
-            <div className="bottom-minus-60px end-0 z-index-1 pe-1">
-              <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
-                <ReactQuill
-                  className="w-60 sm-w-100 mx-center"
-                  value={profile.description}
-                  readOnly={true}
-                  theme="snow"
-                  modules={{ toolbar: false }} // 툴바 제거
-                />
+          {profile.description &&
+            profile.description.replace(/<[^>]*>?/gm, '').trim() && (
+              <div className="bottom-minus-60px end-0 z-index-1 pe-1">
+                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
+                  <ReactQuill
+                    className="w-60 sm-w-100 mx-center"
+                    value={profile.description}
+                    readOnly={true}
+                    theme="snow"
+                    modules={{ toolbar: false }} // 툴바 제거
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </section>
 

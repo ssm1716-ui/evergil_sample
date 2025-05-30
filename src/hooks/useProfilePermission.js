@@ -2,18 +2,19 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSelectProfile } from '@/api/memorial/memorialApi';
 
-const useProfilePermission = (profileId) => {
+const useProfilePermission = (profileId, options = {}) => {
     const navigate = useNavigate();
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
     const [showScreen, setShowScreen] = useState(false);
     const [isAuthorized, setIsAuthorized] = useState(true);
 
+    const { shouldRedirect = true } = options; // 기본값 true
+
     useEffect(() => {
         const fetchPermission = async () => {
             try {
                 const res = await getSelectProfile(profileId);
-
                 const { result } = res.data.data;
                 console.log('프로필 권한 - ', result);
 
@@ -30,10 +31,12 @@ const useProfilePermission = (profileId) => {
                         setShowScreen(true);
                         break;
                     case 'PUBLIC_PROFILE_EDITOR':
-                    case 'PUBLIC_PROFILE_OWNER':
                     case 'YOU_HAVE_EDITOR_PERMISSION':
+                        if (shouldRedirect) navigate(`/profile/edit-profile/${profileId}`);
+                        setShowScreen(true);
+                        break;
+                    case 'PUBLIC_PROFILE_OWNER':
                     case 'YOU_HAVE_OWNER_PERMISSION':
-                        // navigate(`/profile/edit-profile/${profileId}`);
                         setShowScreen(true);
                         break;
                     default:
@@ -45,12 +48,8 @@ const useProfilePermission = (profileId) => {
             }
         };
 
-
-
-        if (profileId) {
-            fetchPermission();
-        }
-    }, [profileId, navigate]);
+        if (profileId) fetchPermission();
+    }, [profileId, navigate, shouldRedirect]);
 
     return {
         isLoginModalOpen,
@@ -60,7 +59,7 @@ const useProfilePermission = (profileId) => {
         showScreen,
         setShowScreen,
         isAuthorized,
-        setIsAuthorized
+        setIsAuthorized,
     };
 };
 
