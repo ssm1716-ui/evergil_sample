@@ -42,6 +42,25 @@ const SignUpPage = () => {
   const [policyContent, setPolicyContent] = useState({});
 
   useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  useEffect(() => {
     setInvitationKey(localStorage.getItem('dev_invitation'));
   }, []);
 
@@ -485,15 +504,48 @@ const SignUpPage = () => {
                         <input
                           key={index}
                           className="mb-20px sm-mb-10px bg-everlink-default-color form-control w-10 fw-700 text-center p-2 sm-p-1"
-                          type="text"
+                          type="number"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           name="first_code"
                           maxLength="1"
                           value={value}
-                          // onChange={handleVerificationCodeChange}
-                          onChange={(e) =>
-                            handleVerificationCodeChange(index, e)
-                          }
-                          // onKeyDown={(e) => handleKeyDown(index, e)}
+                          style={{
+                            WebkitAppearance: 'none',
+                            MozAppearance: 'textfield',
+                            appearance: 'none',
+                          }}
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            if (inputValue === '' || /^[0-9]$/.test(inputValue)) {
+                              handleVerificationCodeChange(index, e);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Backspace' && !value && index > 0) {
+                              e.preventDefault();
+                              inputRefs.current[index - 1].focus();
+                            }
+                          }}
+                          onPaste={(e) => {
+                            e.preventDefault();
+                            const pastedData = e.clipboardData.getData('text').trim();
+                            if (pastedData.length > 0) {
+                              const numbers = pastedData.split('').slice(0, otp.length);
+                              const newOtp = [...otp];
+                              numbers.forEach((num, idx) => {
+                                if (idx < otp.length && /^[0-9]$/.test(num)) {
+                                  newOtp[idx] = num;
+                                }
+                              });
+                              setOtp(newOtp);
+                              // 마지막 입력 후 다음 입력필드로 포커스
+                              const lastIndex = Math.min(numbers.length, otp.length - 1);
+                              if (inputRefs.current[lastIndex]) {
+                                inputRefs.current[lastIndex].focus();
+                              }
+                            }
+                          }}
                           ref={(el) => (inputRefs.current[index] = el)}
                         />
                       ))}
