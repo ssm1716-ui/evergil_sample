@@ -212,16 +212,19 @@ const ShopPage = () => {
   return (
     <>
       <Helmet>
-        <title>{product.productName}</title>
-        <meta property="og:title" content={product.productName} />
-        <meta property="og:description" content={product.description} />
+        <title>Everlink - {product.productName || '상품 상세'}</title>
+        <meta property="og:locale" content="ko_KR" />
+        <meta property="og:title" content={`Everlink - ${product.productName || '상품 상세'}`} />
+        <meta property="og:description" content={product.description?.substring(0, 100)} />
         <meta property="og:image" content={product.productImages?.[0]?.startsWith('http') ? product.productImages[0] : `${window.location.origin}${product.productImages?.[0]}`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Everlink" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={product.productImages?.[0]?.startsWith('http') ? product.productImages[0] : `${window.location.origin}${product.productImages?.[0]}`} />
-        <meta name="description" content={product.description} />
+        <meta name="description" content={product.description?.substring(0, 100)} />
         <meta name="keywords" content={product.productName} />
       </Helmet>
       <section>
