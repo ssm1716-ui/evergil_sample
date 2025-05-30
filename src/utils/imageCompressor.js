@@ -24,3 +24,13 @@ export const compressImage = (file, options = {}) => {
         });
     });
 };
+
+
+export const compressAndPreviewImage = async (file) => {
+    const compressedFile = await compressImage(file);
+    const preview = URL.createObjectURL(compressedFile);
+    return {
+        originalFile: compressedFile,
+        preview,
+    };
+};
