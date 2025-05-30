@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Modal from '@/components/common/Modal/Modal';
 import LoginModal from '@/components/common/Modal/LoginModal';
 import MobileBuyPanel from '@/components/Shop/MobileBuyPanel';
@@ -210,6 +211,15 @@ const ShopPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{product.productName}</title>
+        <meta property="og:title" content={product.productName} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.productImages?.[0] || ''} />
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={product.productImages?.[0] || ''} />
+      </Helmet>
       <section>
         <div className="container">
           <div
