@@ -40,6 +40,8 @@ const SignUpPage = () => {
   const checkboxGroupRef = useRef([]);
   const [invitationKey, setInvitationKey] = useState('');
   const [policyContent, setPolicyContent] = useState({});
+  const [timeLeft, setTimeLeft] = useState(180); // 3분 타이머
+  const [isTimerExpired, setIsTimerExpired] = useState(false);
 
   useEffect(() => {
     const style = document.createElement('style');
@@ -260,6 +262,15 @@ const SignUpPage = () => {
       alert('인증번호 재전송 통신에러가 발생하였습니다.');
       return;
     }
+    // 타이머 초기화 및 입력 필드 활성화
+    setTimeLeft(180);
+    setIsTimerExpired(false);
+    // 입력 필드 초기화
+    setOtp(['', '', '', '', '']);
+    // 첫 번째 입력 필드에 포커스
+    if (inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
     setIsFirstModalOpen(true);
   };
 
@@ -270,6 +281,32 @@ const SignUpPage = () => {
     const policyDate = res.data.data;
     setPolicyContent(policyDate);
   };
+
+  // 타이머 useEffect
+  useEffect(() => {
+    if (step === 2 && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setIsTimerExpired(true);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [step, timeLeft]);
+
+  // 스텝이 변경될 때 타이머 초기화
+  useEffect(() => {
+    if (step === 2) {
+      setTimeLeft(180);
+      setIsTimerExpired(false);
+    }
+  }, [step]);
 
   return (
     <>
@@ -510,10 +547,12 @@ const SignUpPage = () => {
                           name="first_code"
                           maxLength="1"
                           value={value}
+                          disabled={isTimerExpired}
                           style={{
                             WebkitAppearance: 'none',
                             MozAppearance: 'textfield',
                             appearance: 'none',
+                            opacity: isTimerExpired ? 0.6 : 1,
                           }}
                           onChange={(e) => {
                             const inputValue = e.target.value;
@@ -539,7 +578,6 @@ const SignUpPage = () => {
                                 }
                               });
                               setOtp(newOtp);
-                              // 마지막 입력 후 다음 입력필드로 포커스
                               const lastIndex = Math.min(numbers.length, otp.length - 1);
                               if (inputRefs.current[lastIndex]) {
                                 inputRefs.current[lastIndex].focus();
@@ -555,8 +593,10 @@ const SignUpPage = () => {
                       color="white"
                       className="btn-large border-1 border-default btn-box-shadow w-80 mt-20px mb-20px sm-mb-0"
                       onClick={thirdStep}
+                      disabled={isTimerExpired}
+                      style={{ opacity: isTimerExpired ? 0.6 : 1 }}
                     >
-                      인증하기
+                      {isTimerExpired ? '인증시간 만료' : `인증하기 (${timeLeft}초)`}
                     </Button>
 
                     <div className="d-flex justify-content-center">
