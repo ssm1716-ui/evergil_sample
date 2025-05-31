@@ -138,7 +138,7 @@ const CartPage = () => {
       totalDeliveryFee += product.deliveryFee;
     });
 
-    const totalAmount = totalDiscount + totalDeliveryFee;
+    const totalAmount = totalProductPrice - totalDiscount + totalDeliveryFee;
 
     return {
       totalQty,
@@ -238,7 +238,10 @@ const CartPage = () => {
                             상품금액
                           </th>
                           <th className="text-center" scope="col">
-                            상품할인금액
+                            할인금액
+                          </th>
+                          <th className="text-center" scope="col">
+                            결제금액
                           </th>
                         </tr>
                       </thead>
@@ -253,7 +256,7 @@ const CartPage = () => {
                                   id="terms_condition"
                                   checked={selectedProducts.includes(index)}
                                   onChange={() => handleCheckboxChange(index)}
-                                  className="terms-condition check-box align-top required"
+                                  className="terms-condition check-box align-middle required"
                                 />
                               </td>
                               <td className="product-thumbnail text-center">
@@ -319,7 +322,7 @@ const CartPage = () => {
                               </td>
                               <td
                                 className="product-price text-center"
-                                data-title="할인금액"
+                                data-title="상픔금액"
                               >
                                 {(
                                   product.price * product.quantity
@@ -329,10 +332,20 @@ const CartPage = () => {
 
                               <td
                                 className="product-subtotal text-center"
-                                data-title="금액"
+                                data-title="할인금액"
                               >
+                                {product.discountedPrice * product.quantity > 0 ? '-' : ''}
                                 {(
                                   product.discountedPrice * product.quantity
+                                ).toLocaleString()}
+                                원
+                              </td>
+                              <td
+                                className="product-subtotal text-center"
+                                data-title="결제금액"
+                              >
+                                {(
+                                  (product.price - product.discountedPrice) * product.quantity
                                 ).toLocaleString()}
                                 원
                               </td>
@@ -367,6 +380,7 @@ const CartPage = () => {
                           상품할인금액
                         </th>
                         <td className="text-dark-gray fw-600">
+                          {totalDiscount > 0 ? '-' : ''}
                           {totalDiscount.toLocaleString()}원
                         </td>
                       </tr>
