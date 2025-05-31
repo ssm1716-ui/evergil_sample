@@ -396,6 +396,8 @@ const ManagePage = () => {
                           value={options.find(
                             (option) => option.value === scope
                           )}
+                          isSearchable={false}
+                          menuPlacement="auto"
                         />
                       </div>
                     </form>
