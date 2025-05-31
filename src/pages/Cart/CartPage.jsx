@@ -203,7 +203,7 @@ const CartPage = () => {
                 <div className="row mb-20px">
                   <div className="col-12 text-center text-md-end sm-mt-15px d-flex justify-content-between">
                     <Link
-                      className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none me-15px lg-me-5px"
+                      className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none me-15px lg-me-5px sm-w-45"
                       onClick={handleAllChecked}
                     >
                       {selectedProducts.length === cartProducts.length
@@ -211,7 +211,7 @@ const CartPage = () => {
                         : '전체 선택'}
                     </Link>
                     <Link
-                      className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none"
+                      className="btn btn-medium border-1 btn-round-edge btn-transparent-light-gray text-transform-none sm-w-45"
                       onClick={handleSelectRemove}
                     >
                       선택 삭제
@@ -219,140 +219,189 @@ const CartPage = () => {
                   </div>
                 </div>
                 <div className="row align-items-center">
-                  <div className="col-12 p-0 md-p-4">
-                    <table className="table cart-products">
-                      <thead className="md-fs-14">
-                        <tr>
-                          <th className="text-center" scope="col"></th>
-                          <th className="text-center" scope="col">
-                            상품명
-                          </th>
-                          <th className="text-center" scope="col"></th>
-                          <th className="text-center" scope="col">
-                            개수
-                          </th>
-                          <th className="text-center" scope="col">
-                            배송비
-                          </th>
-                          <th className="text-center" scope="col">
-                            상품금액
-                          </th>
-                          <th className="text-center" scope="col">
-                            할인금액
-                          </th>
-                          <th className="text-center" scope="col">
-                            결제금액
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {cartProducts.length > 0 &&
-                          cartProducts.map((product, index) => (
-                            <tr key={index}>
-                              <td className="product-checkbox me-2 text-center">
+                  <div className="col-12 p-0">
+                    {/* 데스크톱 버전 */}
+                    <div className="d-none d-md-block">
+                      <table className="table cart-products">
+                        <thead className="md-fs-14">
+                          <tr>
+                            <th className="text-center" scope="col"></th>
+                            <th className="text-center" scope="col">상품명</th>
+                            <th className="text-center" scope="col"></th>
+                            <th className="text-center" scope="col">개수</th>
+                            <th className="text-center" scope="col">배송비</th>
+                            <th className="text-center" scope="col">상품금액</th>
+                            <th className="text-center" scope="col">할인금액</th>
+                            <th className="text-center" scope="col">결제금액</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {cartProducts.length > 0 &&
+                            cartProducts.map((product, index) => (
+                              <tr key={index}>
+                                <td className="product-checkbox me-2 text-center">
+                                  <input
+                                    type="checkbox"
+                                    name="terms_condition"
+                                    id={`terms_condition_${index}`}
+                                    checked={selectedProducts.includes(index)}
+                                    onChange={() => handleCheckboxChange(index)}
+                                    className="terms-condition check-box align-middle required"
+                                  />
+                                </td>
+                                <td className="product-thumbnail text-center">
+                                  <Link to={`/shop/${product.productId}`}>
+                                    <img
+                                      className="cart-product-image"
+                                      src={product.productImage || product.productImages[0]}
+                                      alt={product.productImage}
+                                    />
+                                  </Link>
+                                </td>
+                                <td className="product-name text-center p-0 sm-pe-25px">
+                                  <Link
+                                    to={`/shop/${product.productId}`}
+                                    className="text-dark-gray fw-500 d-block lh-initial md-fs-12"
+                                  >
+                                    {product.productName}
+                                  </Link>
+                                </td>
+                                <td className="product-quantity text-center">
+                                  <div className="quantity">
+                                    <button
+                                      type="button"
+                                      className="qty-minus"
+                                      onClick={() => handleQuantityChange('minus', index)}
+                                    >
+                                      -
+                                    </button>
+                                    <input
+                                      className="qty-text"
+                                      type="text"
+                                      id={`qty_${index}`}
+                                      value={product.quantity}
+                                      aria-label="qty-text"
+                                      readOnly
+                                    />
+                                    <button
+                                      type="button"
+                                      className="qty-plus"
+                                      onClick={() => handleQuantityChange('plus', index)}
+                                    >
+                                      +
+                                    </button>
+                                  </div>
+                                </td>
+                                <td className="product-price text-center">
+                                  {product.deliveryFee.toLocaleString()}원
+                                </td>
+                                <td className="product-price text-center">
+                                  {(product.price * product.quantity).toLocaleString()}원
+                                </td>
+                                <td className="product-subtotal text-center">
+                                  {product.discountedPrice * product.quantity > 0 ? '-' : ''}
+                                  {(product.discountedPrice * product.quantity).toLocaleString()}원
+                                </td>
+                                <td className="product-subtotal text-center">
+                                  {((product.price - product.discountedPrice) * product.quantity).toLocaleString()}원
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* 모바일 버전 */}
+                    <div className="d-md-none">
+                      {cartProducts.length > 0 &&
+                        cartProducts.map((product, index) => (
+                          <div key={index} className="cart-item mb-4 p-3 border-bottom">
+                            <div className="d-flex align-items-center mb-3">
+                              <div className="me-3 d-flex align-items-center">
                                 <input
                                   type="checkbox"
                                   name="terms_condition"
-                                  id="terms_condition"
+                                  id={`terms_condition_mobile_${index}`}
                                   checked={selectedProducts.includes(index)}
                                   onChange={() => handleCheckboxChange(index)}
                                   className="terms-condition check-box align-middle required"
                                 />
-                              </td>
-                              <td className="product-thumbnail text-center">
-                                <Link to={`/shop/${product.productId}`}>
-                                  <img
-                                    className="cart-product-image"
-                                    src={
-                                      product.productImage ||
-                                      product.productImages[0]
-                                    }
-                                    alt={product.productImage}
-                                  />
-                                </Link>
-                              </td>
-                              <td className="product-name text-center p-0 sm-pe-25px">
+                              </div>
+                              <div className="flex-grow-1">
                                 <Link
                                   to={`/shop/${product.productId}`}
-                                  className="text-dark-gray fw-500 d-block lh-initial md-fs-12"
+                                  className="text-dark-gray fw-500 d-block lh-initial"
                                 >
                                   {product.productName}
                                 </Link>
-                              </td>
-                              <td
-                                className="product-quantity text-center"
-                                data-title="개수"
-                              >
-                                <div className="quantity">
-                                  <button
-                                    type="button"
-                                    className="qty-minus"
-                                    onClick={() =>
-                                      handleQuantityChange('minus', index)
-                                    }
-                                  >
-                                    -
-                                  </button>
-
-                                  <input
-                                    className="qty-text"
-                                    type="text"
-                                    id="1"
-                                    value={product.quantity}
-                                    aria-label="qty-text"
-                                    readOnly // 수동 입력 방지
+                              </div>
+                            </div>
+                            <div className="d-flex">
+                              <div className="me-3" style={{ width: '100px' }}>
+                                <Link to={`/shop/${product.productId}`}>
+                                  <img
+                                    className="cart-product-image w-100"
+                                    src={product.productImage || product.productImages[0]}
+                                    alt={product.productImage}
                                   />
-
-                                  <button
-                                    type="button"
-                                    className="qty-plus"
-                                    onClick={() =>
-                                      handleQuantityChange('plus', index)
-                                    }
-                                  >
-                                    +
-                                  </button>
+                                </Link>
+                              </div>
+                              <div className="flex-grow-1">
+                                <div className="d-flex flex-column gap-2">
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <span className="text-dark-gray">개수</span>
+                                    <div className="quantity">
+                                      <button
+                                        type="button"
+                                        className="qty-minus"
+                                        onClick={() => handleQuantityChange('minus', index)}
+                                      >
+                                        -
+                                      </button>
+                                      <input
+                                        className="qty-text"
+                                        type="text"
+                                        id={`qty_mobile_${index}`}
+                                        value={product.quantity}
+                                        aria-label="qty-text"
+                                        readOnly
+                                      />
+                                      <button
+                                        type="button"
+                                        className="qty-plus"
+                                        onClick={() => handleQuantityChange('plus', index)}
+                                      >
+                                        +
+                                      </button>
+                                    </div>
+                                  </div>
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <span className="text-dark-gray">상품금액</span>
+                                    <span>{(product.price * product.quantity).toLocaleString()}원</span>
+                                  </div>
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <span className="text-dark-gray">할인금액</span>
+                                    <span>
+                                      {product.discountedPrice * product.quantity > 0 ? '-' : ''}
+                                      {(product.discountedPrice * product.quantity).toLocaleString()}원
+                                    </span>
+                                  </div>
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <span className="text-dark-gray">배송비</span>
+                                    <span>{product.deliveryFee.toLocaleString()}원</span>
+                                  </div>
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <span className="text-dark-gray fw-600">결제금액</span>
+                                    <span className="fw-600">
+                                      {((product.price - product.discountedPrice) * product.quantity).toLocaleString()}원
+                                    </span>
+                                  </div>
                                 </div>
-                              </td>
-                              <td
-                                className="product-price text-center"
-                                data-title="배송비"
-                              >
-                                {product.deliveryFee.toLocaleString()}원
-                              </td>
-                              <td
-                                className="product-price text-center"
-                                data-title="상픔금액"
-                              >
-                                {(
-                                  product.price * product.quantity
-                                ).toLocaleString()}
-                                원
-                              </td>
-
-                              <td
-                                className="product-subtotal text-center"
-                                data-title="할인금액"
-                              >
-                                {product.discountedPrice * product.quantity > 0 ? '-' : ''}
-                                {(
-                                  product.discountedPrice * product.quantity
-                                ).toLocaleString()}
-                                원
-                              </td>
-                              <td
-                                className="product-subtotal text-center"
-                                data-title="결제금액"
-                              >
-                                {(
-                                  (product.price - product.discountedPrice) * product.quantity
-                                ).toLocaleString()}
-                                원
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
                   </div>
                 </div>
               </div>
