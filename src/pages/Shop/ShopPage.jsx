@@ -747,6 +747,7 @@ const ShopPage = () => {
       <MobileBuyPanel
         productName={product.productName}
         productPrice={product.price}
+        discountedPrice={product.discountedPrice}
         quantity={quantity}
         handleMinus={handleMinus}
         handlePlus={handlePlus}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const MobileBuyPanel = ({
   productName,
   productPrice,
+  discountedPrice,
   quantity,
   handleMinus,
   handlePlus,
@@ -63,7 +64,7 @@ const MobileBuyPanel = ({
               </div>
               <div>
                 <span className="fs-18">
-                  {Number(productPrice).toLocaleString()}원
+                  {Number(productPrice - discountedPrice).toLocaleString()}원
                 </span>
               </div>
             </div>
@@ -73,7 +74,7 @@ const MobileBuyPanel = ({
             총 합계
             <strong className="text-black">
               {' '}
-              {(Number(productPrice) * quantity).toLocaleString()}
+              {(Number(productPrice - discountedPrice) * quantity).toLocaleString()}
             </strong>
           </p>
           <div className="action-btns">
