@@ -486,23 +486,23 @@ const ViewProfilePage = () => {
                             <>
                               {letters.map((letter, index) => (
                                 <div
-                                  className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-ps-3 ps-2 ${
+                                  className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-p-5 ${
                                     index % 2
                                       ? 'paper-note-odd'
                                       : 'paper-note-even'
                                   }`}
                                   key={index}
                                 >
-                                  <div className="col-12 col-md-1 text-md-center text-sm-start align-self-center">
-                                    <span className="text-dark-gray fs-14 fw-600">
+                                  <div className="col-12 d-flex justify-content-between align-items-center px-4 pt-2 pb-1">
+                                    <span className="text-dark-gray fs-16 fw-600">
                                       {letter.displayName}
                                     </span>
                                   </div>
-                                  <div className="col-lg-2 col-md-3 align-self-center text-md-start">
-                                    <span>{letter.createdAt}</span>
+                                  <div className="col-12 px-4 pb-1">
+                                    <span className="text-dark-gray fs-14">{letter.createdAt}</span>
                                   </div>
-                                  <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
-                                    <p className="sm-w-85">{letter.content}</p>
+                                  <div className="col-12 px-4 pb-3">
+                                    <p className="m-0" dangerouslySetInnerHTML={{ __html: letter.content.replace(/\n/g, '<br />') }}></p>
                                   </div>
                                 </div>
                               ))}
