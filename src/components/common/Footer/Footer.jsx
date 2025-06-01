@@ -25,7 +25,7 @@ const Footer = () => {
             </div>
 
             <div className="col-xl-4 col-sm-4 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
-              <p className="fs-14 md-fs-12 sm-fs-10">
+              <p className="fs-14 md-fs-13 sm-fs-12">
                 주소: (우)14313 경기도 광명시 하안로 198, 210동 1401호 <br />
                 (소하동, 동양2차아파트)
                 <br /> 에버링크(everlink) / 대표자명:전경아 <br />
@@ -39,7 +39,7 @@ const Footer = () => {
               </p>
             </div>
             <div className="col-xl-4 col-sm-4 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
-              <p className="fs-14 md-fs-12 sm-fs-10">
+              <p className="fs-14 md-fs-13 sm-fs-12">
                 고객센터: 010-5922-1221
                 <br />
                 이메일: everlink@everlink.com
@@ -48,7 +48,7 @@ const Footer = () => {
           </div>
           <div className="row align-items-center">
             <div className="col-xl-3 col-sm-3 text-center text-md-center last-paragraph-no-margin fs-15 order-3 order-md-1">
-              <p className="fs-14 md-fs-12">
+              <p className="fs-14 md-fs-13 sm-fs-12">
                 © Copyright 2025
                 <Link to="/" className="fw-500 ps-2">
                   EverLink
@@ -56,7 +56,7 @@ const Footer = () => {
               </p>
             </div>
             <div className="col-xl-6 col-sm-6 text-center sm-mt-0 sm-mb-10px order-1 order-xl-2 order-md-1">
-              <ul className="footer-navbar fs-14 md-fs-12">
+              <ul className="footer-navbar fs-14 md-fs-13 sm-fs-12">
                 <li className="nav-item">
                   <Link to="/about">회사소개</Link>
                 </li>
