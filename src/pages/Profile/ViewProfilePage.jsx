@@ -241,17 +241,31 @@ const ViewProfilePage = () => {
 
   const handleSendLetter = async (e) => {
     e.preventDefault();
-    let res = await postLetters(profileId, postLetter);
-
-    if (res.status === 201) {
-      setIsRegisterModalOpen(false);
-      setPostLetter(initLetter);
-      res = await getLetters(profileId);
-      if (res.status === 200) {
-        const { data } = res.data;
-        setLetters(data);
+    try {
+      // 이름과 내용이 공백인지 체크
+      if (!postLetter.displayName.trim()) {
+        alert('이름을 입력해주세요.');
+        return;
       }
-      letterInit();
+      if (!postLetter.content.trim()) {
+        alert('내용을 입력해주세요.');
+        return;
+      }
+
+      let res = await postLetters(profileId, postLetter);
+
+      if (res.status === 201) {
+        setIsRegisterModalOpen(false);
+        setPostLetter(initLetter);
+        res = await getLetters(profileId);
+        if (res.status === 200) {
+          const { data } = res.data;
+          setLetters(data);
+        }
+        letterInit();
+      }
+    } catch (err) {
+      alert(`에러 발생: ${err.message}`);
     }
   };
 
@@ -284,14 +298,28 @@ const ViewProfilePage = () => {
   };
 
   const handleUpdateAndSendLetter = async () => {
-    let res = await putLetters(profileId, letterId, postLetter);
-    if (res.status === 200) {
-      res = await getLetters(profileId);
-      const { data } = res.data;
-      setIsEditModalOpen(false);
-      setLetters(data);
+    try {
+      // 이름과 내용이 공백인지 체크
+      if (!postLetter.displayName.trim()) {
+        alert('이름을 입력해주세요.');
+        return;
+      }
+      if (!postLetter.content.trim()) {
+        alert('내용을 입력해주세요.');
+        return;
+      }
+
+      let res = await putLetters(profileId, letterId, postLetter);
+      if (res.status === 200) {
+        res = await getLetters(profileId);
+        const { data } = res.data;
+        setIsEditModalOpen(false);
+        setLetters(data);
+      }
+      letterInit();
+    } catch (err) {
+      alert(`에러 발생: ${err.message}`);
     }
-    letterInit();
   };
 
   //하늘편지 삭제 모달창
@@ -610,52 +638,51 @@ const ViewProfilePage = () => {
                             <>
                               {letters.map((letter, index) => (
                                 <div
-                                  className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-ps-3 ps-2 ${
+                                  className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-p-5 ${
                                     index % 2
                                       ? 'paper-note-odd'
                                       : 'paper-note-even'
                                   }`}
                                   key={index}
                                 >
-                                  <div className="col-12 col-md-1 text-md-left align-self-center">
-                                    <span className="text-dark-gray fs-14 fw-600">
+                                  <div className="col-12 d-flex justify-content-between align-items-center px-4 pt-2 pb-1">
+                                    <span className="text-dark-gray fs-16 fw-600">
                                       {letter.displayName}
                                     </span>
+                                    <div className="d-flex">
+                                      {letter.hasDeletePermission && (
+                                        <span
+                                          className="cursor-pointer me-4"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            handleRemoveLetterConfirm(
+                                              letter.letterId
+                                            );
+                                          }}
+                                        >
+                                          <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
+                                        </span>
+                                      )}
+                                      {letter.hasModifyPermission && (
+                                        <span
+                                          className="cursor-pointer"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            handleModifyLetterConfirm(
+                                              letter.letterId
+                                            );
+                                          }}
+                                        >
+                                          <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
+                                        </span>
+                                      )}
+                                    </div>
                                   </div>
-                                  <div className="col-lg-2 col-md-3 align-self-center">
-                                    <span>{letter.createdAt}</span>
+                                  <div className="col-12 px-4 pb-1">
+                                    <span className="text-dark-gray fs-14">{letter.createdAt}</span>
                                   </div>
-                                  <div className="col-lg-8 col-md-7 last-paragraph-no-margin ps-30px pe-30px pt-25px pb-25px md-pt-5px md-pb-5px sm-px-0">
-                                    <p className="sm-w-75">{letter.content}</p>
-                                  </div>
-
-                                  <div className="col-auto col-md-1 align-self-center text-end text-md-center sm-position-absolute right-0px md-w-65px">
-                                    {letter.hasDeletePermission && (
-                                      <span
-                                        className="cursor-pointer me-5"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          handleRemoveLetterConfirm(
-                                            letter.letterId
-                                          );
-                                        }}
-                                      >
-                                        <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                                      </span>
-                                    )}
-                                    {letter.hasModifyPermission && (
-                                      <span
-                                        className="cursor-pointer"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          handleModifyLetterConfirm(
-                                            letter.letterId
-                                          );
-                                        }}
-                                      >
-                                        <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
-                                      </span>
-                                    )}
+                                  <div className="col-12 px-4 pb-3">
+                                    <p className="m-0" dangerouslySetInnerHTML={{ __html: letter.content.replace(/\n/g, '<br />') }}></p>
                                   </div>
                                 </div>
                               ))}
