@@ -122,7 +122,7 @@ const StorePage = () => {
                           <del className="me-10px">
                             {product.price.toLocaleString()}원
                           </del>
-                          {product.discountedPrice.toLocaleString()}원
+                          {(product.price - product.discountedPrice).toLocaleString()}원
                         </div>
                       </div>
                     </div>

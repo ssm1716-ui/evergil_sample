@@ -355,7 +355,7 @@ const ShopPage = () => {
                   <del className="text-medium-gray me-10px fw-400 fs-20">
                     {Number(product.price).toLocaleString()}원
                   </del>
-                  {Number(product.discountedPrice).toLocaleString()}원
+                  {Number(product.price - product.discountedPrice).toLocaleString()}원
                 </span>
               </div>
               <p className="mb-30px fs-18" style={{ whiteSpace: 'pre-line' }}>
