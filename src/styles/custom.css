@@ -565,7 +565,9 @@ height: 1297px;
     height: 290px;
   }
   .product-main-image {
-    height: 130px !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 1/1;
     object-fit: cover; /* 이미지 비율 유지하면서 자르기 */
   }
   .shop-footer a {
