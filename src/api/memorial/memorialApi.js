@@ -2,6 +2,15 @@ import axiosInstance from '@/api/axiosInstance';
 
 // 추모 프로필 API
 
+export const getProfileIdByNickname = async (id) => {
+    try {
+        const res = await axiosInstance.post(`/memorial-profiles/${id}`);
+        return res;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 //추모 프로필 이미지 URL 수정
 export const putUpateProfileImage = async (id, param) => {
 

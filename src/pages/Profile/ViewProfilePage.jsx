@@ -28,6 +28,7 @@ import {
   getLetter,
   postLetters,
   putLetters,
+  getProfileIdByNickname
 } from '@/api/memorial/memorialApi';
 
 import avatarImage from '@/assets/images/base-profile-image.png';
@@ -40,7 +41,8 @@ const initFormPrivateProfile = {
 const ViewProfilePage = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const { profileId: urlProfileId, nickname } = useParams(); //URL에서 :profileId 값 가져오기
+  const [profileId, setProfileId] = useState(urlProfileId);
   const initLetter = {
     displayName: '',
     content: '',
@@ -86,7 +88,7 @@ const ViewProfilePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
-  } = useProfilePermission(profileId, { shouldRedirect: true });
+  } = useProfilePermission(profileId, { shouldRedirect: false });
 
   useEffect(() => {
     // 스타일 추가
@@ -96,7 +98,32 @@ const ViewProfilePage = () => {
   }, []);
 
   useEffect(() => {
+    const fetchProfileId = async () => {
+      if (nickname) {
+        try {
+          if (!nickname.startsWith('@')) {
+            navigate('/');
+            return;
+          }
+
+          const cleanNickname = nickname.substring(1);
+          const res = await getProfileIdByNickname(cleanNickname);
+          if (res.status === 200) {
+            setProfileId(res.data.data.profileId);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    fetchProfileId();
+  }, [nickname, navigate]);
+
+  useEffect(() => {
     const fetchProfile = async () => {
+      if (!profileId) return;
+      
       try {
         let res = await getSelectProfile(profileId);
         console.log(res);
@@ -112,7 +139,7 @@ const ViewProfilePage = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [profileId]);
 
   // 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {

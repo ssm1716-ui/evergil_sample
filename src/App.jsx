@@ -193,6 +193,8 @@ const App = () => {
                 <Route path="address" element={<AddressPage />} />
               </Route>
               {/* MyPAGE*/}
+
+              <Route path="/:nickname" element={<ViewProfilePage />} />
             </Routes>
           </Layout>
         </Router>

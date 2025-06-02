@@ -27,7 +27,7 @@ const useProfilePermission = (profileId, options = {}) => {
                         break;
                     case 'PUBLIC_PROFILE':
                     case 'YOU_HAVE_VIEWER_PERMISSION':
-                        navigate(`/profile/view-profile/${profileId}`);
+                        if (shouldRedirect) navigate(`/profile/view-profile/${profileId}`);
                         setShowScreen(true);
                         break;
                     case 'PUBLIC_PROFILE_EDITOR':
