@@ -12624,7 +12624,7 @@ blockquote footer {
 .interactive-banner-style-03 figure img {
   -webkit-transition: all 700ms cubic-bezier(0.61, 1, 0.88, 1);
   transition: all 700ms cubic-bezier(0.61, 1, 0.88, 1);
-  transform: scale(1.7);
+  transform: scale(1);
 }
 .interactive-banner-style-03 figure figcaption {
   position: absolute;
@@ -12633,8 +12633,8 @@ blockquote footer {
   /* background-color: rgba(0, 0, 0, 0.2); */
 }
 .interactive-banner-style-03 figure:hover img {
-  -webkit-transform: scale(1.08);
-  transform: scale(1.9);
+  /* -webkit-transform: scale(1.05);
+  transform: scale(1.05); */
 }
 /* Interactive banner style 04 */
 .interactive-banner-style-04 figure {

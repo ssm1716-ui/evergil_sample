@@ -9,6 +9,7 @@ import mainSubImage1 from '@/assets/images/main-sub-image1.jpg';
 
 import mainLogoPc from '@/assets/images/main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/main_logo_mobile.png';
+import main_guide from '@/assets/images/main_guide.png';
 import guide1 from '@/assets/images/guide_1.jpg';
 import guide2 from '@/assets/images/guide_2.jpg';
 import guide3 from '@/assets/images/guide_3.jpg';
@@ -292,69 +293,27 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      <section className="big-section bg-dark-gray pt-3 pb-1">
+      <section className="big-section bg-white pt-3 pb-1">
         <div className="container">
           <div
-            className="row row-cols-1 row-cols-lg-3 row-cols-md-2 justify-content-center interactive-banner-container"
+            className="row row-cols-1 row-cols-lg-12 row-cols-md-2 justify-content-center interactive-banner-container"
             data-anime='{"el": "childs", "translateY": [0, 0], "perspective": [1000,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
           >
-            <div className="col interactive-banner-style-03 transition-inner-all sm-min-w-auto md-w-30">
+            <div className="col interactive-banner-style-03 transition-inner-all w-100 sm-min-w-auto md-w-100">
               <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
                 <figure className="m-0">
                   <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
-                  <img src={guide1} alt="" />
-                  <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1">
-                    {/* <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
-                      Preferred style of accommodation.
-                    </span> */}
-                    {/* <a
-                      href="#"
-                      className="align-self-start fs-15 fw-500 ls-1px text-uppercase text-white"
-                    >
-                      <i className="bi bi-bookmark-heart align-middle icon-extra-medium me-10px"></i>
-                      Superior service
-                    </a> */}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-            <div className="col interactive-banner-style-03 transition-inner-all sm-min-w-auto md-w-30">
-              <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
-                <figure className="m-0">
-                  <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
-                  <img src={guide2} alt="" />
-                  <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1">
-                    {/* <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
-                      Our local guides and tour directors.
-                    </span>
-                    <a
-                      href="#"
-                      className="align-self-start fs-15 fw-500 ls-1px text-uppercase text-white"
-                    >
-                      <i className="bi bi-award align-middle icon-extra-medium me-10px"></i>
-                      Greatest guides
-                    </a> */}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-            <div className="col interactive-banner-style-03 transition-inner-all sm-min-w-auto md-w-30">
-              <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
-                <figure className="m-0">
-                  <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
-                  <img src={guide3} alt="" />
-                  <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1">
-                    {/* <span className="mb-auto fs-24 text-white text-white-hover w-90 lg-w-100">
-                      The best consumer protection plan.
-                    </span>
-                    <a
-                      href="#"
-                      className="align-self-start fs-15 fw-500 ls-1px text-uppercase text-white"
-                    >
-                      <i className="bi bi-shield-check align-middle icon-extra-medium me-10px"></i>
-                      Fully protected
-                    </a> */}
-                  </figcaption>
+                  <img
+                    src={main_guide}
+                    alt=""
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      display: 'block',
+                    }}
+                  />
+                  <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1"></figcaption>
                 </figure>
               </div>
             </div>
@@ -367,7 +326,7 @@ const HomeSubPage = () => {
               <div className="d-inline-block align-middle bg-base-color fw-600 text-white text-uppercase border-radius-4px ps-20px pe-20px fs-12 me-10px md-m-5px">
                 Awesome
               </div>
-              <div className="d-inline-block align-middle text-white fs-20 md-fs-16  sm-fs-12 fw-500">
+              <div className="d-inline-block align-middle text-black fs-20 md-fs-16  sm-fs-12 fw-500">
                 <span className="text-decoration-line-bottom fw-600">
                   open get 10% discount
                 </span>
