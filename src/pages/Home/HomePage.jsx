@@ -9,7 +9,7 @@ import mainSubImage1 from '@/assets/images/main-sub-image1.jpg';
 
 import mainLogoPc from '@/assets/images/main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/main_logo_mobile.png';
-import main_guide from '@/assets/images/main_guide.png';
+import main_guide from '@/assets/images/main_guide.jpeg';
 import guide1 from '@/assets/images/guide_1.jpg';
 import guide2 from '@/assets/images/guide_2.jpg';
 import guide3 from '@/assets/images/guide_3.jpg';
