@@ -349,7 +349,7 @@ const HomeSubPage = () => {
                         className="w-100 h-500px sm-h-200px"
                         width="100%"
                         height="550"
-                        src="https://www.youtube.com/embed/sU3FkzUKHXU?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
+                        src="https://www.youtube.com/embed/UkTrceJi_sM?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
                         allowfullscreen
                       ></iframe>
                     </div>
