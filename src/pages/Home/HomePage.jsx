@@ -16,6 +16,23 @@ import guide3 from '@/assets/images/guide_3.jpg';
 
 // Modal.setAppElement('#root');
 
+// 반응형 버튼 행 스타일을 위한 style 태그 추가 (임시)
+const btnRowStyle = `
+.btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 200px;
+}
+@media (max-width: 768px) {
+  .btn-row {
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+`;
+
 const HomeSubPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,6 +48,7 @@ const HomeSubPage = () => {
 
   return (
     <>
+      <style>{btnRowStyle}</style>
       <section
         className="p-0 top-space-margin full-screen md-h-600px sm-h-300px position-relative"
         data-parallax-background-ratio="0.3"
@@ -310,7 +328,7 @@ const HomeSubPage = () => {
             </div>
           </div>
           <div className="row justify-content-center align-items-center pt-2">
-            <div
+            {/* <div
               className="col-12 text-center last-paragraph-no-margin"
               data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
@@ -321,6 +339,28 @@ const HomeSubPage = () => {
                 <span className="text-decoration-line-bottom fw-600">
                   open get 10% discount
                 </span>
+              </div>
+            </div> */}
+
+            <div className="col-md-8 text-center pb-5">
+              <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
+                추모 프로필 미리보기
+              </h6>
+              <div className="btn-row">
+                <Link
+                  className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                  style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  onClick={() => window.open('/profile/view-profile/c6b04a1a-0a25-42f8-8d09-747506797e16', '_self')}
+                >
+                  사람
+                </Link>
+                <Link
+                  className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                  style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  onClick={() => window.open('/profile/view-profile/2e2e01cb-38da-4a9c-87f1-da15a70101b1', '_self')}
+                >
+                  애완동물
+                </Link>
               </div>
             </div>
           </div>
@@ -357,7 +397,7 @@ const HomeSubPage = () => {
                 </div>
               </div>
             </section>
-            <div className="col-md-8 text-center pb-5">
+            {/* <div className="col-md-8 text-center pb-5">
               <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
                 가상 추모 페이지 <br />
                 구매하기 전 미리 보기
@@ -376,7 +416,7 @@ const HomeSubPage = () => {
                   </span>
                 </span>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
