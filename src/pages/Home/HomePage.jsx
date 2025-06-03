@@ -381,9 +381,9 @@ const HomeSubPage = () => {
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-12 col-xl-10 text-center z-index-1">
-                    <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
+                    {/* <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
                       에버링크 영상
-                    </h6>
+                    </h6> */}
                     <div className="col text-center fit-videos md-mb-50px sm-mb-30px">
                       <iframe
                         className="w-100 h-500px sm-h-200px"
