@@ -21,7 +21,7 @@ const btnRowStyle = `
 .btn-row {
   display: flex;
   justify-content: center;
-  gap: 200px;
+  gap: 50px;
 }
 @media (max-width: 768px) {
   .btn-row {
@@ -29,6 +29,10 @@ const btnRowStyle = `
     gap: 8px;
     align-items: center;
     justify-content: center;
+  }
+  .btn-row .btn {
+    width: 180px !important;
+    height: 40px !important;
   }
 }
 `;
@@ -342,11 +346,11 @@ const HomeSubPage = () => {
               </div>
             </div> */}
 
-            <div className="col-md-8 text-center pb-5">
-              <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
+            <div className="col-md-8 text-center" style={{ paddingBottom: '10%' }}>
+              <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2" style={{ paddingBottom: '7%' }}>
                 추모 프로필 미리보기
               </h6>
-              <div className="btn-row">
+              <div className="btn-row" style={{ paddingBottom: '10%' }}>
                 <Link
                   className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
                   style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
