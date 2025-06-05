@@ -11,8 +11,12 @@ const ImageCompressor = () => {
       quality: 1,
       maxWidth: 900,
       maxHeight: 1000,
-      mimeType: 'image/webp',
+      mimeType: 'image/jpeg',
       convertSize: Infinity,
+      // 색상 프로파일 보존 옵션 추가
+      preserveHeaders: true,
+      // 색상 공간 보존
+      colorSpace: 'srgb',
       success(result) {
         setPreviewUrl(URL.createObjectURL(result));
         setSizeInfo({
