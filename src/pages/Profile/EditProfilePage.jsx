@@ -615,10 +615,10 @@ const EditProfilePage = () => {
     if (!files || !files[0]) return;
 
     const originalFile = files[0];
-    if (originalFile.size > MAX_FILE_SIZE) {
-      alert('이미지 용량은 5MB 이하만 업로드할 수 있습니다.');
-      return;
-    }
+    // if (originalFile.size > MAX_FILE_SIZE) {
+    //   alert('이미지 용량은 5MB 이하만 업로드할 수 있습니다.');
+    //   return;
+    // }
 
     try {
       const compressedFile = await compressImage(originalFile);
