@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import { postPasswordRequest } from '@/api/guest/guestApi';
+import useIsMobile from '@/hooks/useIsMobile';
 import { isValidEmail } from '@/utils/validators';
 import AboutImage1 from '@/assets/images/about-image-1.png';
-import AboutImage2 from '@/assets/images/about-image-2.png';
-import AboutImage3 from '@/assets/images/about-image-3.png';
+import AboutImage2 from '@/assets/images/about-image-2.jpeg';
+import AboutImage2Mobile from '@/assets/images/about-image-2-mobile.jpeg';
+import AboutImage3 from '@/assets/images/about-image-3.jpeg';
+import AboutImage3Mobile from '@/assets/images/about-image-3-mobile.jpeg';
 
 import AnimatedSection from '@/components/AnimatedSection';
 
@@ -14,6 +17,7 @@ import aboutUsImage from '@/assets/images/about_us.png';
 
 const AboutPage = () => {
   const [email, setEmail] = useState('');
+  const isMobile = useIsMobile();
 
   //이메일 useState 로직
   const handleEmailChange = (e) => {
@@ -64,7 +68,7 @@ const AboutPage = () => {
           <div className="row pb-10">
             <div className="col-lg-5 col-sm-12 sm-mb-25px text-md-center">
               <img
-                src={AboutImage2}
+                src={isMobile ? AboutImage2Mobile : AboutImage2}
                 alt=""
                 className="w-100 about-img1 md-w-50 sm-w-100"
               />
@@ -107,7 +111,7 @@ const AboutPage = () => {
               data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <h6 className="text-dark-gray mb-10px md-fs-28">Our Mission</h6>
-              <img src={AboutImage3} alt="" className="w-100" />
+              <img src={isMobile ? AboutImage3Mobile : AboutImage3} alt="" className="w-100" />
               <h5 className="text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
               <p className="lg-w-100 mt-8 lh-24 fs-18 md-fs-16 sm-fs-14  md-lh-30 text-keep-all">
                 에버링크의 사명은 사랑하는 사람의 기억을 의미 있게,

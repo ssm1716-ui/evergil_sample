@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import ReactPlayer from 'react-player/youtube';
+import useIsMobile from '@/hooks/useIsMobile';
 
 import FaqComponents from '@/components/Faq/FaqComponents';
 import mainBannerImage from '@/assets/images/main-banner.jpg';
-import mainSubImage1 from '@/assets/images/main-sub-image1.jpg';
+import mainBannerImageMobile from '@/assets/images/main-banner-mobile.jpeg';
+import mainSubImage1 from '@/assets/images/main-sub-image1.jpeg';
+import mainSubImage1Mobile from '@/assets/images/main-sub-image1-mobile.jpeg';
 
 import mainLogoPc from '@/assets/images/main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/main_logo_mobile.png';
@@ -14,7 +17,8 @@ import guide1 from '@/assets/images/guide_1.jpg';
 import guide2 from '@/assets/images/guide_2.jpg';
 import guide3 from '@/assets/images/guide_3.jpg';
 
-// Modal.setAppElement('#root');
+import profilePreviewPet from '@/assets/images/profile-preview-pet.jpeg';
+import profilePreviewHuman from '@/assets/images/profile-preview-human.jpeg';
 
 // 반응형 버튼 행 스타일을 위한 style 태그 추가 (임시)
 const btnRowStyle = `
@@ -39,6 +43,7 @@ const btnRowStyle = `
 
 const HomeSubPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   // 모달 열기
   const handleOpenModal = () => {
@@ -57,7 +62,7 @@ const HomeSubPage = () => {
         className="p-0 top-space-margin full-screen md-h-600px sm-h-300px position-relative"
         data-parallax-background-ratio="0.3"
         style={{
-          backgroundImage: `url(${mainBannerImage})`,
+          backgroundImage: `url(${isMobile ? mainBannerImageMobile : mainBannerImage})`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
         }}
@@ -154,7 +159,11 @@ const HomeSubPage = () => {
             </div>
             <div className="col-lg-7 col-sm-12 position-relative md-px-0">
               <div className="w-100 position-relative md-w-100 border-radius-4px float-end ">
-                <img className="w-100" src={mainSubImage1} alt="" />
+                <img
+                  className="w-100"
+                  src={isMobile ? mainSubImage1Mobile : mainSubImage1}
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -351,20 +360,34 @@ const HomeSubPage = () => {
                 추모 프로필 미리보기
               </h6>
               <div className="btn-row" style={{ paddingBottom: '10%' }}>
-                <Link
-                  className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
-                  style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  onClick={() => window.open('/profile/view-profile/c6b04a1a-0a25-42f8-8d09-747506797e16', '_self')}
-                >
-                  사람
-                </Link>
-                <Link
-                  className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
-                  style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  onClick={() => window.open('/profile/view-profile/2e2e01cb-38da-4a9c-87f1-da15a70101b1', '_self')}
-                >
-                  애완동물
-                </Link>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <img
+                    src={profilePreviewHuman}
+                    alt="사람 프로필 미리보기"
+                    style={{ width: '140px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
+                  />
+                  <Link
+                    className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                    style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    onClick={() => window.open('/profile/view-profile/c6b04a1a-0a25-42f8-8d09-747506797e16', '_self')}
+                  >
+                    사람
+                  </Link>
+                </div>
+                <div>
+                  <img
+                    src={profilePreviewPet}
+                    alt="애완동물 프로필 미리보기"
+                    style={{ width: '148px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
+                  />
+                  <Link
+                    className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                    style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    onClick={() => window.open('/profile/view-profile/2e2e01cb-38da-4a9c-87f1-da15a70101b1', '_self')}
+                  >
+                    애완동물
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
