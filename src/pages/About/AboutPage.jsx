@@ -77,7 +77,7 @@ const AboutPage = () => {
               className="col-xl-6 col-sm-12 offset-xl-1 last-paragraph-no-margin"
               data-anime='{ "el": "childs", "translateX": [-50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <h6 className="text-dark-gray mb-10px md-fs-28 text-md-center text-sm-center">
+              <h6 className="text-dark-gray mb-5 md-fs-28 text-md-center text-sm-center">
                 Our Story
               </h6>
               <p className="mt-4 w-100 lg-w-100 fs-18 md-fs-16 sm-fs-14 text-lg-start text-md-center text-sm-center text-keep-all">
@@ -103,41 +103,30 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className="cover-background position-relative overflow-visible pt-0 pb-150px">
+      <section className="cover-background position-relative overflow-visible pt-0 pb-10">
         <div className="container">
           <div className="row justify-content-center">
             <div
               className="col-xl-12 col-lg-10 text-center"
               data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <h6 className="text-dark-gray mb-10px md-fs-28">Our Mission</h6>
+              <h6 className="text-dark-gray mb-5 md-fs-28">Our Mission</h6>
               <img src={isMobile ? AboutImage3Mobile : AboutImage3} alt="" className="w-100" />
               <h5 className="text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
-              <p className="lg-w-100 mt-8 lh-24 fs-18 md-fs-16 sm-fs-14  md-lh-30 text-keep-all">
+              <p className="lg-w-100 mt-5 lh-24 fs-18 md-fs-16 sm-fs-14  md-lh-30 text-keep-all">
                 에버링크의 사명은 사랑하는 사람의 기억을 의미 있게,
+                <br />오래도록 간직할 수 있도록 돕는 것입니다.
                 <br />
-                오래도록 간직할 수 있도록 돕는 것입니다.
+                <br />전통적인 방식의 추모에는 한계가 있습니다.
+                <br />사진은 바래고, 공간은 부족하며, 시간이 지나면 기억도 점점 흐려집니다.
+                <br />하지만 기억은 그 어떤 것보다 소중하기에, 더 나은 방법이 필요했습니다.
                 <br />
+                <br />에버링크는 단순한 QR 명판이 아닙니다.
+                <br />언제든지 스캔 한 번으로, 그 사람의 삶과 이야기,
+                <br />가족의 사랑을 디지털 공간에 남길 수 있는 추모 플랫폼입니다.
                 <br />
-                전통적인 방식의 추모에는 한계가 있습니다.
-                <br />
-                사진은 바래고, 공간은 부족하며, 시간이 지나면 기억도 점점
-                흐려집니다.
-                <br />
-                하지만 기억은 그 어떤 것보다 소중하기에, 더 나은 방법이
-                필요했습니다.
-                <br />
-                <br />
-                에버링크는 단순한 QR 명판이 아닙니다.
-                <br />
-                언제든지 스캔 한 번으로, 그 사람의 삶과 이야기,
-                <br />
-                가족의 사랑을 디지털 공간에 남길 수 있는 추모 플랫폼입니다.
-                <br />
-                <br />
-                지금,사랑하는 사람의 이야기를 영원히 담을 수 있는 에버링크와
-                함께하세요.
-                <br /> 기억을 간직하는 가장 따뜻한 방법이 되어드리겠습니다.
+                <br />지금,사랑하는 사람의 이야기를 영원히 담을 수 있는 에버링크와 함께하세요.
+                <br />기억을 간직하는 가장 따뜻한 방법이 되어드리겠습니다.
               </p>
             </div>
           </div>
