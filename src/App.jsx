@@ -94,14 +94,15 @@ const App = () => {
               />
 
               {/* QR 검증*/}
-              <Route
+              {/* <Route
                 path="/qr-confirm/:key"
                 element={
                   <ProtectedRoute>
                     <QRCofirm />
                   </ProtectedRoute>
                 }
-              />
+              /> */}
+              <Route path="/qr-confirm/:key" element={<QRCofirm />} />
 
               {/* 프로필 영역 start*/}
               <Route
