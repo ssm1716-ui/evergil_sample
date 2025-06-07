@@ -461,6 +461,18 @@ const EditProfilePage = () => {
 
     try {
       setIsUploading(true);
+
+      // 삭제할 이미지 요소 찾기
+      const deletedImage = imageState.images.find(image => image.id === id);
+      const imageElement = deletedImage ? 
+        document.querySelector(`[data-src="${deletedImage.url}"]`) : null;
+      
+      // 삭제할 이미지의 위치 정보 저장
+      const imageRect = imageElement?.getBoundingClientRect();
+      const scrollTop = window.scrollY;
+      const imageTop = imageRect?.top || 0;
+      const absoluteImageTop = scrollTop + imageTop;
+
       const res = await deletePhotoRemove(id);
 
       if (res.status === 200) {
@@ -470,19 +482,29 @@ const EditProfilePage = () => {
         // 갤러리 리렌더링
         setGalleryKey((prev) => prev + 1);
 
-        // 삭제된 이미지의 페이지 번호 찾기
-        const deletedImage = imageState.images.find(image => image.id === id);
-        const currentPage = deletedImage ? 
-          document.querySelector(`[data-src="${deletedImage.url}"]`)?.getAttribute('data-page') : 
-          imageState.page;
-console.log("currentPage:" + currentPage);
         // 현재 페이지의 이미지 목록에서 삭제된 항목 제거
         setImageState((prev) => {
           const updatedImages = prev.images.filter((image) => image.id !== id);
           
           // 삭제된 이미지가 있던 페이지 새로고침
-          if (currentPage) {
-            fetchImages(parseInt(currentPage), false);
+          if (deletedImage) {
+            const currentPage = imageElement?.getAttribute('data-page');
+            if (currentPage) {
+              // 이미지 로드 전에 스크롤 위치 조정
+              const adjustScroll = () => {
+                const newScrollTop = window.scrollY;
+                const scrollDiff = newScrollTop - scrollTop;
+                window.scrollTo(0, absoluteImageTop - scrollDiff);
+              };
+
+              // 이미지 로드 시작 전에 스크롤 조정
+              adjustScroll();
+
+              fetchImages(parseInt(currentPage), false).then(() => {
+                // 이미지 로드 완료 후 한 번 더 스크롤 조정
+                requestAnimationFrame(adjustScroll);
+              });
+            }
           }
           
           return {
