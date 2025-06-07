@@ -740,10 +740,6 @@ const EditProfilePage = () => {
         });
 
         if (res.status === 200) {
-          // res = await getPhotoSeletct(profileId);
-          // const { data } = res.data;
-          // console.log(data);
-          // setImages(data);
           await fetchImages(1, false);
         }
       } else if (imageType === 'updatePhoto') {
@@ -751,11 +747,13 @@ const EditProfilePage = () => {
           imageUrl: url,
         });
         if (res.status === 200) {
-          // res = await getPhotoSeletct(profileId);
-          // const { data } = res.data;
-          // setImages(data);
-          // setUpdatePhotoId('');
-          await fetchImages(1, false); // 리스트 새로 고침
+          // 선택한 이미지만 업데이트
+          setImageState((prev) => ({
+            ...prev,
+            images: prev.images.map((image) =>
+              image.id === imageId ? { ...image, url } : image
+            ),
+          }));
           setUpdatePhotoId('');
         }
       }
