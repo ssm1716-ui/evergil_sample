@@ -257,7 +257,10 @@ const EditProfilePage = () => {
 
     if (showScreen) fetchTabDate();
 
-    if (showScreen && activeTab === '이미지' && !imageState.initialized) {
+    // if (showScreen && activeTab === '이미지' && !imageState.initialized) {
+    //   fetchImages(1, false);
+    // }
+    if (showScreen && activeTab === '이미지') {
       fetchImages(1, false);
     }
   }, [activeTab, showScreen]);

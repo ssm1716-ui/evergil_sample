@@ -69,6 +69,14 @@ const ViewProfilePage = () => {
     initFormPrivateProfile
   );
 
+  const [isFetching, setIsFetching] = useState(false);
+  const [imageState, setImageState] = useState({
+    images: [],
+    page: 1,
+    hasNext: true,
+    initialized: false,
+  });
+
   const lgRef = useRef(null);
 
   const {
@@ -110,17 +118,17 @@ const ViewProfilePage = () => {
     const fetchTabDate = async () => {
       try {
         let res;
-        console.log(activeTab);
-        if (!activeTab) return;
-        if (activeTab === '이미지') {
-          res = await getPhotoSeletct(profileId);
-          console.log('이미지 : ', res);
-          if (res.status === 200) {
-            const { data } = res.data;
-            console.log(data);
-            setImages(data);
-          }
-        }
+        // console.log(activeTab);
+        // if (!activeTab) return;
+        // if (activeTab === '이미지') {
+        //   res = await getPhotoSeletct(profileId);
+        //   console.log('이미지 : ', res);
+        //   if (res.status === 200) {
+        //     const { data } = res.data;
+        //     console.log(data);
+        //     setImages(data);
+        //   }
+        // }
         if (activeTab === '하늘편지') {
           res = await getLetters(profileId);
           console.log('하늘편지 : ', res);
@@ -144,7 +152,58 @@ const ViewProfilePage = () => {
     };
 
     if (showScreen) fetchTabDate();
+
+    if (showScreen && activeTab === '이미지') {
+      fetchImages(1, false);
+    }
   }, [activeTab, showScreen]);
+
+  //이미지 탭일 때만 스크롤 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        !profileId ||
+        isFetching ||
+        !imageState.hasNext ||
+        activeTab !== '이미지'
+      )
+        return;
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+
+      const scrollPercent = (scrollY + viewportHeight) / fullHeight;
+
+      if (scrollPercent >= 0.8) {
+        setIsFetching(true);
+        fetchImages(imageState.page + 1, true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFetching, imageState.hasNext, imageState.page, activeTab]);
+
+  // 이미지 fetch 함수
+  const fetchImages = async (page = 1, append = false) => {
+    try {
+      const res = await getPhotoSeletct(profileId, 'view', page);
+      if (res?.status === 200) {
+        const { data } = res.data;
+        setImageState((prev) => ({
+          images: append ? [...prev.images, ...data] : data,
+          page,
+          hasNext: data.length > 0,
+          initialized: true,
+        }));
+      }
+    } catch (error) {
+      console.error('이미지 로드 실패:', error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   //하늘편지 useEffect
   useEffect(() => {
@@ -455,7 +514,7 @@ const ViewProfilePage = () => {
                       >
                         <div className="gallery-grid">
                           {/* 이미지 썸네일 */}
-                          {images.map((image, index) => (
+                          {imageState.images.map((image, index) => (
                             <a
                               href={image.url}
                               key={index}
@@ -467,7 +526,7 @@ const ViewProfilePage = () => {
                           ))}
                         </div>
                       </LightGallery>
-                      {images.length <= 0 && (
+                      {imageState.images.length <= 0 && (
                         <div className="col-12 text-center mt-100px pb-2 fs-24">
                           <i className="feather icon-feather-camera align-middle icon-extra-large text-dark fs-50 md-fs-70 p-30px border border-4 border-dark border-radius-100px mb-1"></i>
                           <p className="fs-30 fw-800 text-black">
