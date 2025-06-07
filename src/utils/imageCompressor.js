@@ -8,11 +8,16 @@ import Compressor from 'compressorjs';
  */
 export const compressImage = (file, options = {}) => {
     const defaultOptions = {
-        quality: 0.9,
-        maxWidth: 800,
-        maxHeight: 800,
-        mimeType: 'image/webp',
+        quality: 1,
+        maxWidth: 900,
+        maxHeight: 1000,
+        mimeType: 'image/jpeg',
         convertSize: Infinity,
+        preserveHeaders: true,
+        colorSpace: 'srgb',
+        strict: true,
+        checkOrientation: true,
+        resize: 'contain'
     };
 
     return new Promise((resolve, reject) => {
