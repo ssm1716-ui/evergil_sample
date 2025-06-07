@@ -418,7 +418,15 @@ const EditProfilePage = () => {
       if (!file) return;
 
       try {
-        const imageFile = await compressAndPreviewImage(file);
+        // const imageFile = await compressAndPreviewImage(file);
+        const compressedFile = await compressImage(file);
+        const preview = URL.createObjectURL(compressedFile);
+  
+        const imageFile = {
+          originalFile: compressedFile,
+          preview,
+        };
+
         setUpdatePhoto(imageFile);
         setGalleryKey((prev) => prev + 1); // 갤러리 다시 열기 위한 키 재갱신
       } catch (error) {
