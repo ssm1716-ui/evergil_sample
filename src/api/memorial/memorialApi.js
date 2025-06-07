@@ -7,7 +7,6 @@ export const putUpateProfileImage = async (id, param) => {
 
     try {
         const res = await axiosInstance.put(`/memorial-profiles/${id}/profile-image`, param);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -19,7 +18,6 @@ export const putUpateBackgroundImage = async (id, param) => {
 
     try {
         const res = await axiosInstance.put(`/memorial-profiles/${id}/background-image`, param);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -31,7 +29,6 @@ export const putUpateDescription = async (id, param) => {
 
     try {
         const res = await axiosInstance.put(`/memorial-profiles/${id}/description`, param);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -47,8 +44,7 @@ export const postRegisterProfile = async (param) => {
         console.log(res);
         return res;
     } catch (err) {
-        const message =
-            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+        const message = err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
         alert(`[추모설정 등록] ${message}`);
         // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
         throw err;
@@ -73,8 +69,7 @@ export const putModifyProfile = async (id, param) => {
         const res = await axiosInstance.put(`/memorial-profiles/${id}`, param);
         return res;
     } catch (err) {
-        const message =
-            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
+        const message = err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
         alert(`[추모설정 실패] ${message}`);
         // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
         throw err;
@@ -187,7 +182,6 @@ export const putProfileImage = async (id, param) => {
 
     try {
         const res = await axiosInstance.put(`/memorial-profiles/${id}/profile-image`, param);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -200,7 +194,6 @@ export const putProfileDescription = async (id, param) => {
 
     try {
         const res = await axiosInstance.put(`/memorial-profiles/${id}/description`, param);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -216,7 +209,6 @@ export const getPhotoSeletct = async (id, type, page = 1, pageSize = type === 'e
                 page, pageSize
             },
         });
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -254,8 +246,6 @@ export const deletePhotoRemove = async (id) => {
     }
 };
 
-
-
 //추모 하늘편지 리스트 조회 및 검색
 export const getLetters = async (id, keyword = '', page = 1, pageSize = 10) => {
 
@@ -265,7 +255,6 @@ export const getLetters = async (id, keyword = '', page = 1, pageSize = 10) => {
                 keyword, page, pageSize
             },
         });
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
@@ -277,7 +266,6 @@ export const getLetter = async (profileId, letterId) => {
 
     try {
         const res = await axiosInstance.get(`/memorial-profiles/${profileId}/letters/${letterId}`);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);

@@ -455,23 +455,52 @@ const EditProfilePage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('삭제하시겠습니까?')) {
+    if (!id) return;
+    
+    if (!window.confirm('삭제하시겠습니까?')) return;
+
+    try {
+      setIsUploading(true);
       const res = await deletePhotoRemove(id);
 
       if (res.status === 200) {
+        // 갤러리 닫기
         closeLightGallery();
-        setImagesId(id);
-
-        // // ✅ 갤러리 리렌더링 + 버튼 재생성
+        
+        // 갤러리 리렌더링
         setGalleryKey((prev) => prev + 1);
 
-        setImageState((prev) => ({
-          ...prev,
-          images: prev.images.filter((image) => image.id !== id),
-        }));
+        // 삭제된 이미지의 페이지 번호 찾기
+        const deletedImage = imageState.images.find(image => image.id === id);
+        const currentPage = deletedImage ? 
+          document.querySelector(`[data-src="${deletedImage.url}"]`)?.getAttribute('data-page') : 
+          imageState.page;
+console.log("currentPage:" + currentPage);
+        // 현재 페이지의 이미지 목록에서 삭제된 항목 제거
+        setImageState((prev) => {
+          const updatedImages = prev.images.filter((image) => image.id !== id);
+          
+          // 삭제된 이미지가 있던 페이지 새로고침
+          if (currentPage) {
+            fetchImages(parseInt(currentPage), false);
+          }
+          
+          return {
+            ...prev,
+            images: updatedImages,
+          };
+        });
+      } else {
+        throw new Error('이미지 삭제에 실패했습니다.');
       }
+    } catch (error) {
+      console.error('이미지 삭제 중 오류 발생:', error);
+      alert('이미지 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsUploading(false);
     }
   };
+  
   // ✅ LightGallery가 열린 후 실행되는 이벤트 핸들러
   const handleGalleryOpen = () => {
     console.log('📸 LightGallery가 열렸습니다.');
@@ -483,8 +512,6 @@ const EditProfilePage = () => {
       const lgToolbar = document.querySelector('.lg-toolbar');
 
       if (lgToolbar && !document.getElementById('edit-button')) {
-        console.log('🔄 수정/삭제 버튼 추가!');
-
         const editButton = document.createElement('button');
         editButton.innerText = '수정';
         editButton.classList.add('lg-custom-btn', 'lg-custom-modify');
@@ -1225,6 +1252,7 @@ const EditProfilePage = () => {
                               key={index}
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
+                              data-page={Math.floor(index / 20) + 1}
                             >
                               <img
                                 src={image.url}
