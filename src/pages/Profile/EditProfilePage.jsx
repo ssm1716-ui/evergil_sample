@@ -407,18 +407,25 @@ const EditProfilePage = () => {
     }
     setGalleryKey((prev) => prev + 1); // 갤러리 재마운트 트리거
 
-    // ✅ 파일 업로드 input 생성
+    // ✅ 기존 파일 입력 요소 제거
+    const existingInput = document.getElementById('profile-edit-image-upload');
+    if (existingInput) {
+      existingInput.remove();
+    }
+
+    // ✅ 새로운 파일 업로드 input 생성
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
     fileInput.style.display = 'none';
+    fileInput.setAttribute('id', 'profile-edit-image-upload');
 
-    fileInput.onchange = async (event) => {
+    // ✅ 이벤트 리스너 함수 정의
+    const handleFileChange = async (event) => {
       const file = event.target.files[0];
       if (!file) return;
 
       try {
-        // const imageFile = await compressAndPreviewImage(file);
         const compressedFile = await compressImage(file);
         const preview = URL.createObjectURL(compressedFile);
   
@@ -429,11 +436,21 @@ const EditProfilePage = () => {
 
         setUpdatePhoto(imageFile);
         setGalleryKey((prev) => prev + 1); // 갤러리 다시 열기 위한 키 재갱신
+
+        // ✅ 이벤트 리스너 제거
+        fileInput.removeEventListener('change', handleFileChange);
+        fileInput.remove();
       } catch (error) {
         console.error('이미지 압축 또는 처리 실패:', error);
+        // ✅ 에러 발생 시에도 이벤트 리스너 제거
+        fileInput.removeEventListener('change', handleFileChange);
+        fileInput.remove();
       }
     };
 
+    // ✅ 이벤트 리스너 추가
+    fileInput.addEventListener('change', handleFileChange);
+    document.body.appendChild(fileInput);
     fileInput.click();
   };
 
