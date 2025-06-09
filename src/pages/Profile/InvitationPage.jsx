@@ -28,7 +28,6 @@ const InvitationPage = () => {
   const [errDesc, setErrDesc] = useState('');
   const invitationKey = searchParams.get('key');
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  console.log('🔥 인증 상태:', isAuthenticated);
 
   //초기 데이터 가져오기
   useEffect(() => {
@@ -42,7 +41,7 @@ const InvitationPage = () => {
       setIsErr(true);
       setIsModalOpen(true);
     }
-  }, [invitationKey]);
+  }, [invitationKey, isAuthenticated]);
 
   const SaveInvitationKey = () => {
     if (!invitationKey) return;
@@ -50,8 +49,7 @@ const InvitationPage = () => {
     localStorage.setItem('dev_invitation', invitationKey);
   };
 
-  const handleConfirmInvitation = async (isAggree) => {
-    console.log(invitationKey, isAggree);
+  const handleConfirmInvitation = async (isAgree) => {
     if (!invitationKey) {
       setErrDesc('유효한 접근이 아닙니다.');
       setIsErr(true);
@@ -60,10 +58,8 @@ const InvitationPage = () => {
 
     const res = await putConfirmInvitation({
       invitationToken: invitationKey,
-      isConfirmed: isAggree,
+      isConfirmed: isAgree,
     });
-
-    console.log(res);
 
     const { status, data } = res;
 
@@ -108,23 +104,13 @@ const InvitationPage = () => {
       {!isErr ? (
         <>
           <main>
-            <section
-              className="cover-background full-screen md-h-550px confirm-window"
-              // style="background-image: url(images/404-bg.jpg);"
-            >
+            <section className="cover-background full-screen md-h-550px confirm-window">
               <div className="container h-100">
                 <div className="row align-items-center justify-content-center h-100">
                   <div className="col-12 col-xl-6 col-lg-7 col-md-9 text-center">
-                    {/* <h6 className="text-dark-gray fw-600 mb-5px text-uppercase">
-                  Ooops!
-                </h6> */}
                     <h4 className="text-dark-gray fw-600 fs-24 sm-fs-22 mb-10px ls-minus-1px mb-10">
                       초대를 수락 하시겠습니까?
                     </h4>
-                    {/* <p className="mb-30px lh-28 sm-mb-30px w-55 md-w-80 sm-w-95 mx-auto">
-                  The resource you are looking for doesn't exist or might have
-                  been removed.
-                </p> */}
                     <Link
                       className="btn btn-large left-icon btn-rounded btn-base-color btn-box-shadow text-transform-none me-5"
                       onClick={() => handleConfirmInvitation(true)}
@@ -148,21 +134,13 @@ const InvitationPage = () => {
           <main>
             <section
               className="cover-background full-screen md-h-550px confirm-window"
-              // style="background-image: url(images/404-bg.jpg);"
             >
               <div className="container h-100">
                 <div className="row align-items-center justify-content-center h-100">
                   <div className="col-12 col-xl-6 col-lg-7 col-md-9 text-center">
-                    {/* <h6 className="text-dark-gray fw-600 mb-5px text-uppercase">
-                  Ooops!
-                </h6> */}
                     <h4 className="text-dark-gray fw-600 fs-24 sm-fs-18 mb-10px ls-minus-1px mb-10">
                       {errDesc}
                     </h4>
-                    {/* <p className="mb-30px lh-28 sm-mb-30px w-55 md-w-80 sm-w-95 mx-auto">
-                  The resource you are looking for doesn't exist or might have
-                  been removed.
-                </p> */}
                     <Link
                       to={'/'}
                       className="btn btn-large left-icon btn-rounded btn-base-color btn-box-shadow text-transform-none"
@@ -174,8 +152,6 @@ const InvitationPage = () => {
               </div>
             </section>
           </main>
-          {/* <h1>InvitationPage</h1>
-          <h2>Invitation key - {invitationKey}</h2> */}
         </>
       )}
 
@@ -188,6 +164,7 @@ const InvitationPage = () => {
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
                       <h6 className="text-dark-gray fw-500 mb-15px fs-24 sm-fs-16">
+                        <i className="fa-solid fa-circle-info me-5"></i>
                         회원가입 or 로그인으로 진행 가능합니다.
                       </h6>
                     </div>
@@ -208,6 +185,7 @@ const InvitationPage = () => {
                         onClick={() => {
                           setIsModalOpen(false);
                           SaveInvitationKey();
+                          localStorage.setItem('redirectAfterLogin', `/profile/invitation?key=${invitationKey}`);
                           navigate('/signin');
                         }}
                       >
