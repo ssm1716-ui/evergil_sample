@@ -1027,7 +1027,6 @@ const EditProfilePage = () => {
                         id="file-upload"
                         name="backgroundImageUrl"
                         type="file"
-                        multiple
                         accept="image/*,"
                         onChange={handleFileChange}
                         className="input-file-background-upload"
@@ -1077,7 +1076,6 @@ const EditProfilePage = () => {
                       id="file-upload"
                       type="file"
                       name="profileImageUrl"
-                      multiple
                       accept="image/*,"
                       onChange={handleFileChange}
                       className="input-file-upload"
