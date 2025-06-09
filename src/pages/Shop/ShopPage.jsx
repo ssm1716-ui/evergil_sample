@@ -61,9 +61,12 @@ const ShopPage = () => {
   // 페이지 번호 변경 시 기존 리뷰에 추가
   useEffect(() => {
     const fetchReviews = async () => {
+      // productId가 없으면 리뷰를 가져오지 않음
+      if (!product?.productId) return;
+
       try {
         const { status, data } = await getProductReviewsSelected(
-          id,
+          product.productId,
           sortType,
           pageNumber,
           pageSize
@@ -79,14 +82,17 @@ const ShopPage = () => {
     };
 
     fetchReviews();
-  }, [pageNumber]);
+  }, [pageNumber, product?.productId]); // productId를 의존성 배열에 추가
 
   // 정렬 방식 변경 시 새로운 리뷰 목록 불러오기
   useEffect(() => {
     const fetchReviews = async () => {
+      // productId가 없으면 리뷰를 가져오지 않음
+      if (!product?.productId) return;
+
       try {
         const { status, data } = await getProductReviewsSelected(
-          id,
+          product.productId,
           sortType,
           1,
           10
@@ -101,7 +107,7 @@ const ShopPage = () => {
     };
 
     fetchReviews();
-  }, [sortType]); // 🔥 정렬 방식이 바뀔 때만 실행
+  }, [sortType, product?.productId]); // 🔥 정렬 방식이 바뀔 때만 실행
 
   // `thumbsSwiper`가 설정될 때까지 `undefined`를 유지
   useEffect(() => {
