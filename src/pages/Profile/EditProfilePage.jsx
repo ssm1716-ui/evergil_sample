@@ -654,65 +654,30 @@ const EditProfilePage = () => {
   };
 
   // 파일 선택 핸들러
-  // const handleFileChange = (e) => {
-  //   const { files, name } = e.target;
-  //   console.log(files, name);
-  //   let imageFile;
-
-  //   if (!files[0]) return;
-
-  //   const file = files[0];
-  //   const imageUrl = URL.createObjectURL(file);
-  //   if (name === 'backgroundImageUrl') {
-  //     //배경 이미지
-  //     imageFile = {
-  //       originalFile: file, // 원본 File 객체 저장
-  //       preview: imageUrl,
-  //     };
-
-  //     setBackgroundImage(imageFile);
-  //   } else if (name === 'profileImageUrl') {
-  //     //프로필 이미지
-  //     imageFile = {
-  //       originalFile: file, // 원본 File 객체 저장
-  //       preview: imageUrl,
-  //     };
-  //     setProfileImage(imageFile);
-  //   } else {
-  //     imageFile = {
-  //       originalFile: file, // 원본 File 객체 저장
-  //       preview: imageUrl,
-  //     };
-  //     setPhoto(imageFile);
-  //   }
-  // };
-
   const handleFileChange = async (e) => {
     const { files, name } = e.target;
-    if (!files || !files[0]) return;
-
-    const originalFile = files[0];
-    // if (originalFile.size > MAX_FILE_SIZE) {
-    //   alert('이미지 용량은 5MB 이하만 업로드할 수 있습니다.');
-    //   return;
-    // }
+    if (!files || files.length === 0) return;
 
     try {
-      const compressedFile = await compressImage(originalFile);
-      const preview = URL.createObjectURL(compressedFile);
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const compressedFile = await compressImage(file);
+        const preview = URL.createObjectURL(compressedFile);
 
-      const imageFile = {
-        originalFile: compressedFile,
-        preview,
-      };
+        const imageFile = {
+          originalFile: compressedFile,
+          preview,
+        };
 
-      // setState는 화면 preview 용
-      if (name === 'backgroundImageUrl') setBackgroundImage(imageFile);
-      else if (name === 'profileImageUrl') setProfileImage(imageFile);
-      else setPhoto(imageFile);
+        // setState는 화면 preview 용
+        if (name === 'backgroundImageUrl') setBackgroundImage(imageFile);
+        else if (name === 'profileImageUrl') setProfileImage(imageFile);
+        else setPhoto(imageFile);
 
-      // 업로드는 즉시 수행
-      await handleGetFileUploadPath(name, imageFile);
+        // 업로드는 즉시 수행
+        await handleGetFileUploadPath(name, imageFile);
+      });
+
+      await Promise.all(uploadPromises);
     } catch (error) {
       console.error('압축 또는 업로드 실패:', error);
     }
@@ -1259,6 +1224,7 @@ const EditProfilePage = () => {
                             <input
                               type="file"
                               accept="image/*"
+                              multiple={true}
                               ref={fileInputRef}
                               style={{ display: 'none' }}
                               onChange={handleFileChange}
