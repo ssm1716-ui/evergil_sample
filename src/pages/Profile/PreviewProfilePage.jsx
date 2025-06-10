@@ -445,7 +445,7 @@ const ViewProfilePage = () => {
           <div className="bottom-minus-60px end-0 z-index-1 pe-1">
             {profile.description &&
               profile.description.replace(/<[^>]*>?/gm, '').trim() && (
-                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
+                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px custom-quill-wrapper">
                   <ReactQuill
                     className="w-60 sm-w-100 mx-center"
                     value={profile.description}

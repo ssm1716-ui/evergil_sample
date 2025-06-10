@@ -130,9 +130,16 @@ transition: opacity 0.3s ease-in-out;
 }
 
 .ql-editor {
-font-size : 20px !important;
+font-size : 16px !important;
 }
 
+.custom-quill-wrapper .ql-toolbar.ql-snow {
+  border: none !important;
+}
+
+.custom-quill-wrapper .ql-container.ql-snow {
+  border: none !important;
+}
 
 .flex-0 {
   flex: 0;
@@ -434,13 +441,13 @@ height: 1297px;
   padding: 10px;
   overflow-y: auto;
   max-height: 220px;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .ql-container.ql-snow {
   overflow-y: auto;
   max-height: 220px;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .date-button{
