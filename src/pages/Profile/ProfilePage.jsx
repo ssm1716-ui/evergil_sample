@@ -249,11 +249,10 @@ const ProfilePage = () => {
 
                       {profiles.map((profile, index) => (
                         <li className="grid-item cursor-pointer" key={index}>
-                          <div className="card border-0 border-radius-4px box-shadow-extra-large box-shadow-extra-large-hover h-100 d-flex flex-column">
-                            <div
-                              className="blog-image"
-                              onClick={() => handleMovePageProfile(profile.id)}
-                            >
+                          <div className="card border-0 border-radius-4px box-shadow-extra-large box-shadow-extra-large-hover h-100 d-flex flex-column"
+                            onClick={() => handleMovePageProfile(profile.id)}
+                          >
+                            <div className="blog-image">
                               <Link className="d-block">
                                 <img
                                   src={profile.profileImageUrl || avatarImage}
@@ -294,9 +293,11 @@ const ProfilePage = () => {
                                 ) : (
                                   <span
                                     className="cursor-pointer"
-                                    onClick={() =>
-                                      handleRemoveConfirm(profile.id)
-                                    }
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      handleRemoveConfirm(profile.id);
+                                    }}
                                   >
                                     <i className="feather icon-feather-trash-2 text-dark-gray icon-extra-medium"></i>
                                   </span>
