@@ -313,7 +313,7 @@ const MyReviewPage = () => {
           </div>
         </div>
 
-        <div className="row g-0 mb-4 md-mb-35px">
+        <div className="row g-0 mb-4 md-mb-30">
           {meReviews.length > 0 ? (
             meReviews.map((review, index) => (
               <div
