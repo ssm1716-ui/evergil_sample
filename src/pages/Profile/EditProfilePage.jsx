@@ -1573,7 +1573,7 @@ const EditProfilePage = () => {
         onClose={() => setIsRequestModalOpen(false)}
       >
         <div className="row justify-content-center">
-          <div className="col-6">
+          <div className="col-12">
             <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
