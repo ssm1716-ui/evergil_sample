@@ -774,7 +774,7 @@ const EditProfilePage = () => {
       console.log(res);
     } catch (error) {
       console.error('파일 업로드 중 오류 발생:', error);
-      alert('파일 업로드 중 오류 발생');
+      alert(error.message || '파일 업로드 중 오류 발생');
     } finally {
       setIsUploading(false); // 업로드 완료 표시
     }
