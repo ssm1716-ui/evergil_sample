@@ -338,9 +338,9 @@ const ManagePage = () => {
                                         }
                                       >
                                         <option value="">선택하기</option>
-                                        <option value="EDITOR">Edit</option>
-                                        <option value="VIEWER">View</option>
-                                        <option value="DELETE">Delete</option>
+                                        <option value="EDITOR">편집 권한</option>
+                                        <option value="VIEWER">보기 권한</option>
+                                        <option value="DELETE">삭제</option>
                                       </select>
                                     </div>
                                   ) : (
