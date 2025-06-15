@@ -274,7 +274,7 @@ const MyReviewPage = () => {
               </li>
               <li className="nav-item mt-10px">
                 <input
-                  className="border-1 nav-link text-center"
+                  className="border-1 nav-link text-center date-button"
                   type="date"
                   name="from"
                   value={viewSelect.from}
@@ -286,7 +286,7 @@ const MyReviewPage = () => {
               </li>
               <li className="nav-item mt-10px">
                 <input
-                  className="border-1 nav-link text-center"
+                  className="border-1 nav-link text-center date-button"
                   type="date"
                   name="to"
                   value={viewSelect.to}
