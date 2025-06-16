@@ -116,6 +116,7 @@ const EditProfilePage = () => {
   const imagesRef = useRef(images);
   const fileInputRef = useRef(null);
   const backImageInputRef = useRef(null);
+  const profileImageInputRef = useRef(null);
 
   const [url, setUrl] = useState('');
   // const [isAuthorized, setIsAuthorized] = useState(false);
@@ -146,6 +147,9 @@ const EditProfilePage = () => {
     showScreen,
   } = useProfilePermission(profileId, { shouldRedirect: true });
 
+  const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
   useEffect(() => {
     // 현재 페이지의 URL을 가져와 상태 업데이트
     setUrl(window.location.href);
@@ -159,6 +163,46 @@ const EditProfilePage = () => {
   // 프로필 배경 파일 업로드 시 창 열기
   const handleBackUploadClick = () => {
     backImageInputRef.current.click();
+  };
+
+  // 프로필 이미지 파일 업로드 시 창 열기
+  const handleProfileUploadClick = () => {
+    profileImageInputRef.current.click();
+  };
+
+  // 프로필 이미지 클릭 시 모달 열기 또는 파일 선택
+  const handleProfileImageClick = () => {
+    if (profile.profileImageUrl) {
+      setIsProfileModalOpen(true);
+    } else {
+      profileImageInputRef.current.click();
+    }
+  };
+
+  // 프로필 이미지 삭제
+  const handleProfileDelete = async () => {
+    if (!window.confirm('프로필 이미지를 삭제하시겠습니까?')) return;
+    
+    try {
+      setIsUploading(true);
+      const res = await putProfileImage(profileId, {
+        profileImageUrl: '',
+      });
+
+      if (res.status === 200) {
+        setProfile(prev => ({
+          ...prev,
+          profileImageUrl: '',
+        }));
+        setProfileImage({});
+        setIsProfileModalOpen(false);
+      }
+    } catch (error) {
+      console.error('프로필 이미지 삭제 중 오류 발생:', error);
+      alert('프로필 이미지 삭제 중 오류가 발생했습니다.');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   useEffect(() => {
@@ -656,30 +700,73 @@ const EditProfilePage = () => {
   // 파일 선택 핸들러
   const handleFileChange = async (e) => {
     const { files, name } = e.target;
-    if (!files || files.length === 0) return;
+    
+    // Handle deletion case (when no file is selected)
+    if (!files || files.length === 0) {
+        if (name === 'backgroundImageUrl' || name === 'profileImageUrl') {
+            // For deletion, pass empty string as URL
+            const imageType = name;
+            try {
+                setIsUploading(true);
+                let res;
+                
+                if (imageType === 'backgroundImageUrl') {
+                    res = await putProfileBackgroundImage(profileId, {
+                        backgroundImageUrl: '',
+                    });
+                } else if (imageType === 'profileImageUrl') {
+                    res = await putProfileImage(profileId, {
+                        profileImageUrl: '',
+                    });
+                }
 
+                if (res.status === 200) {
+                    // Update local state
+                    setProfile(prev => ({
+                        ...prev,
+                        [imageType]: '',
+                    }));
+                    
+                    // Clear the respective image state
+                    if (imageType === 'backgroundImageUrl') {
+                        setBackgroundImage({});
+                    } else if (imageType === 'profileImageUrl') {
+                        setProfileImage({});
+                    }
+                }
+            } catch (error) {
+                console.error('이미지 삭제 중 오류 발생:', error);
+                alert('이미지 삭제 중 오류가 발생했습니다.');
+            } finally {
+                setIsUploading(false);
+            }
+        }
+        return;
+    }
+
+    // Handle file selection case
     try {
-      const uploadPromises = Array.from(files).map(async (file) => {
-        const compressedFile = await compressImage(file);
-        const preview = URL.createObjectURL(compressedFile);
+        const uploadPromises = Array.from(files).map(async (file) => {
+            const compressedFile = await compressImage(file);
+            const preview = URL.createObjectURL(compressedFile);
 
-        const imageFile = {
-          originalFile: compressedFile,
-          preview,
-        };
+            const imageFile = {
+                originalFile: compressedFile,
+                preview,
+            };
 
-        // setState는 화면 preview 용
-        if (name === 'backgroundImageUrl') setBackgroundImage(imageFile);
-        else if (name === 'profileImageUrl') setProfileImage(imageFile);
-        else setPhoto(imageFile);
+            // setState는 화면 preview 용
+            if (name === 'backgroundImageUrl') setBackgroundImage(imageFile);
+            else if (name === 'profileImageUrl') setProfileImage(imageFile);
+            else setPhoto(imageFile);
 
-        // 업로드는 즉시 수행
-        await handleGetFileUploadPath(name, imageFile);
-      });
+            // 업로드는 즉시 수행
+            await handleGetFileUploadPath(name, imageFile);
+        });
 
-      await Promise.all(uploadPromises);
+        await Promise.all(uploadPromises);
     } catch (error) {
-      console.error('압축 또는 업로드 실패:', error);
+        console.error('압축 또는 업로드 실패:', error);
     }
   };
 
@@ -952,6 +1039,40 @@ const EditProfilePage = () => {
     }
   };
 
+  // 배경 이미지 클릭 시 모달 열기 또는 파일 선택
+  const handleBackgroundImageClick = () => {
+    if (profile.backgroundImageUrl) {
+      setIsBackgroundModalOpen(true);
+    } else {
+      backImageInputRef.current.click();
+    }
+  };
+
+  const handleBackgroundDelete = async () => {
+    if (!window.confirm('배경 이미지를 삭제하시겠습니까?')) return;
+    
+    try {
+      setIsUploading(true);
+      const res = await putProfileBackgroundImage(profileId, {
+        backgroundImageUrl: '',
+      });
+
+      if (res.status === 200) {
+        setProfile(prev => ({
+          ...prev,
+          backgroundImageUrl: '',
+        }));
+        setBackgroundImage({});
+        setIsBackgroundModalOpen(false);
+      }
+    } catch (error) {
+      console.error('배경 이미지 삭제 중 오류 발생:', error);
+      alert('배경 이미지 삭제 중 오류가 발생했습니다.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <>
       {!showScreen && <div className="blur-overlay"></div>}
@@ -966,10 +1087,13 @@ const EditProfilePage = () => {
             className="row small-screen bg-light-gray"
             style={{
               backgroundSize: 'cover',
-              backgroundImage: `url(
-            ${profile.backgroundImageUrl}
-          )`,
+              backgroundImage: `url(${profile.backgroundImageUrl})`,
+              cursor: 'pointer',
             }}
+            onClick={handleBackgroundImageClick}
+            role="button"
+            tabIndex={0}
+            title={profile.backgroundImageUrl ? '배경 이미지 전체화면 보기' : '배경 이미지 선택'}
           >
             <div
               className="col-lg-5 col-md-6 position-relative page-title-extra-large align-self-center"
@@ -980,6 +1104,10 @@ const EditProfilePage = () => {
                 <div
                   className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px h-65px md-w-50px md-h-50px sm-w-40px sm-h-40px  rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
                   style={{ backgroundColor: '#CDCDCD' }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // 배경 클릭 이벤트 전파 방지
+                    backImageInputRef.current.click();
+                  }}
                 >
                   <span>
                     <span className="video-icon">
@@ -989,13 +1117,14 @@ const EditProfilePage = () => {
                       </span>
                       {/* 숨겨진 파일 업로드 input */}
                       <input
-                        id="file-upload"
-                        name="backgroundImageUrl"
+                        ref={backImageInputRef}
                         type="file"
+                        name="backgroundImageUrl"
                         accept="image/*,"
                         onChange={handleFileChange}
                         className="input-file-background-upload"
                         loading="lazy"
+                        style={{ display: 'none' }}
                       />
                     </span>
                   </span>
@@ -1018,7 +1147,10 @@ const EditProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer">
+                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
+                    onClick={handleProfileImageClick}
+                    title={profile.profileImageUrl ? '프로필 이미지 전체화면 보기' : '프로필 이미지 선택'}
+                  >
                     <img
                       src={
                         profile.profileImageUrl
@@ -1029,21 +1161,26 @@ const EditProfilePage = () => {
                       loading="lazy"
                     />
 
-                    <div
-                      className="box-overlay"
-                      style={{ backgroundColor: '#CDCDCD' }}
-                    ></div>
-                    <span className="number icon-extra-large text-text absolute-middle-center">
-                      <i className="feather icon-feather-edit-1 icon-icon-extra-medium text-white"></i>
-                    </span>
+                    { !profile.profileImageUrl && (
+                      <>
+                        <div
+                          className="box-overlay"
+                          style={{ backgroundColor: '#CDCDCD' }}
+                        ></div>
+                        <span className="number icon-extra-large text-text absolute-middle-center">
+                          <i className="feather icon-feather-edit-1 icon-icon-extra-medium text-white"></i>
+                        </span>
+                      </>
+                    )}
                     {/* 숨겨진 파일 업로드 input */}
                     <input
-                      id="file-upload"
+                      ref={profileImageInputRef}
                       type="file"
                       name="profileImageUrl"
                       accept="image/*,"
                       onChange={handleFileChange}
                       className="input-file-upload"
+                      style={{ display: 'none' }}
                     />
                   </div>
                 </div>
@@ -1846,6 +1983,148 @@ const EditProfilePage = () => {
           <p>이미지를 업로드 중입니다...</p>
         </div>
       )}
+
+      <Modal isOpen={isBackgroundModalOpen} onClose={() => setIsBackgroundModalOpen(false)}>
+        <div style={{
+          background: '#000',
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 99999,
+          borderRadius: 0,
+          padding: 0,
+        }}>
+          {/* LightGallery 스타일 상단 바 */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '56px',
+            background: 'rgba(34, 34, 34, 0.92)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            padding: '0 32px',
+            zIndex: 100000,
+            boxSizing: 'border-box',
+          }}>
+            <button
+              onClick={handleBackUploadClick}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '18px', cursor: 'pointer', marginRight: '24px', fontWeight: 500, letterSpacing: '1px' }}
+            >
+              수정
+            </button>
+            {/* 숨겨진 파일 업로드 input */}
+            <input
+              ref={backImageInputRef}
+              type="file"
+              name="backgroundImageUrl"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            <button
+              onClick={handleBackgroundDelete}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '18px', cursor: 'pointer', marginRight: '24px', fontWeight: 500, letterSpacing: '1px' }}
+            >
+              삭제
+            </button>
+            <button
+              onClick={() => setIsBackgroundModalOpen(false)}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '28px', cursor: 'pointer', fontWeight: 700, lineHeight: 1 }}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+          <img
+            src={profile.backgroundImageUrl}
+            alt="배경 전체 이미지"
+            style={{
+              maxWidth: '100vw',
+              maxHeight: '100vh',
+              objectFit: 'contain',
+              borderRadius: 0,
+              background: '#000',
+              margin: 0,
+              padding: 0,
+              display: 'block',
+            }}
+          />
+        </div>
+      </Modal>
+
+      {/* 프로필 이미지 모달 */}
+      <Modal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)}>
+        <div style={{
+          background: '#000',
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 99999,
+          borderRadius: 0,
+          padding: 0,
+        }}>
+          {/* LightGallery 스타일 상단 바 */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '56px',
+            background: 'rgba(34, 34, 34, 0.92)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            padding: '0 32px',
+            zIndex: 100000,
+            boxSizing: 'border-box',
+          }}>
+            <button
+              onClick={handleProfileUploadClick}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '18px', cursor: 'pointer', marginRight: '24px', fontWeight: 500, letterSpacing: '1px' }}
+            >
+              수정
+            </button>
+            <button
+              onClick={handleProfileDelete}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '18px', cursor: 'pointer', marginRight: '24px', fontWeight: 500, letterSpacing: '1px' }}
+            >
+              삭제
+            </button>
+            <button
+              onClick={() => setIsProfileModalOpen(false)}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '28px', cursor: 'pointer', fontWeight: 700, lineHeight: 1 }}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+          <img
+            src={profile.profileImageUrl}
+            alt="프로필 전체 이미지"
+            style={{
+              maxWidth: '100vw',
+              maxHeight: '100vh',
+              objectFit: 'contain',
+              borderRadius: 0,
+              background: '#000',
+              margin: 0,
+              padding: 0,
+              display: 'block',
+            }}
+          />
+        </div>
+      </Modal>
     </>
   );
 };
