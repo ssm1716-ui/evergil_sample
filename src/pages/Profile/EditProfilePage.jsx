@@ -1581,9 +1581,10 @@ const EditProfilePage = () => {
                                           {/* 이름 입력 필드 */}
                                           <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-10px sm-pt-15px sm-pb-15px sm-px-0">
                                             <input
+                                              maxLength={10}
                                               className="md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
                                               type="text"
-                                              placeholder="이름"
+                                              placeholder="이름을 입력해주세요."
                                               value={f.displayName}
                                               onChange={(e) =>
                                                 handleNameChange(

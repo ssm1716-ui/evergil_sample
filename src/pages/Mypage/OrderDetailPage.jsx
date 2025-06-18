@@ -563,7 +563,7 @@ const MyPage = () => {
             className="container text-decoration-line-bottom"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+            <h6 className="fs-24 md-fs-20 sm-fs-18 fw-400 fw-600 border-black text-start text-black m-0">
               배송지
             </h6>
             <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 g-0 justify-content-start pt-3">
@@ -607,7 +607,7 @@ const MyPage = () => {
             className="container text-decoration-line-bottom"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+            <h6 className="fs-24 md-fs-20 sm-fs-18 fw-400 fw-600 border-black text-start text-black m-0">
               최종 결제 정보
             </h6>
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">
