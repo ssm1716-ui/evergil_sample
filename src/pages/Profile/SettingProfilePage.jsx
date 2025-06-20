@@ -43,6 +43,11 @@ const SettingProfilePage = () => {
         const res = await getSelectProfile(profileId);
         if (res.status === 200) {
           const { data } = res.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (data.result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           setFormProfile(data.profile);
         }
       } catch (error) {

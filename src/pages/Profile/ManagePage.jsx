@@ -80,7 +80,13 @@ const ManagePage = () => {
     try {
       const res = await getSelectProfile(id);
       if (res.status === 200) {
-        setScope(res.data.profile.scope);
+        const { profile, result } = res.data.data;
+        // PROFILE_INACTIVE 상태 확인
+        if (result === 'PROFILE_INACTIVE') {
+          navigate('/error-profile-inactive');
+          return;
+        }
+        setScope(profile.scope);
       }
     } catch (error) {
       console.error(error);
@@ -125,7 +131,12 @@ const ManagePage = () => {
       ]);
 
       if (profileRes.status === 200) {
-        const { profile } = profileRes.data.data;
+        const { profile, result } = profileRes.data.data;
+        // PROFILE_INACTIVE 상태 확인
+        if (result === 'PROFILE_INACTIVE') {
+          navigate('/error-profile-inactive');
+          return;
+        }
         setScope(profile.scope);
       }
 

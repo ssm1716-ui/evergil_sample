@@ -221,7 +221,12 @@ const EditProfilePage = () => {
       try {
         const res = await getSelectProfile(profileId);
         if (res.status === 200) {
-          const { profile } = res.data.data;
+          const { profile, result } = res.data.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           setProfile(profile);
           setContent(profile.description);
         }

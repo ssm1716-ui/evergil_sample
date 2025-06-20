@@ -102,7 +102,12 @@ const ViewProfilePage = () => {
       try {
         let res = await getSelectProfile(profileId);
         if (res.status === 200) {
-          const { profile, extension } = res.data.data;
+          const { profile, extension, result } = res.data.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           console.log(profile);
           console.log(extension);
           setProfile(profile);

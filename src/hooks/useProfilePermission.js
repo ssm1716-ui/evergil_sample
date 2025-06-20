@@ -46,6 +46,9 @@ const useProfilePermission = (profileId, options = {}) => {
         case 'YOU_HAVE_OWNER_PERMISSION':
           setShowScreen(true);
           break;
+        case 'PROFILE_INACTIVE':
+          navigate('/error-profile-inactive');
+          break;
         default:
           throw new Error('권한 에러 발생');
         }

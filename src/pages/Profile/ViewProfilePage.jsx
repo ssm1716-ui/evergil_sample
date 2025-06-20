@@ -101,10 +101,17 @@ const ViewProfilePage = () => {
         let res = await getSelectProfile(profileId);
         console.log(res);
         if (res.status === 200) {
-          const { profile, extension } = res.data.data;
+          const { profile, extension, result } = res.data.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           setProfile(profile);
-          setIsBookmarks(extension.isBookmarked);
-          setHasFamilyTree(extension.hasFamilyTree);
+          if (extension) {
+            setIsBookmarks(extension.isBookmarked);
+            setHasFamilyTree(extension.hasFamilyTree);
+          }
         }
       } catch (error) {
         console.error(error);
