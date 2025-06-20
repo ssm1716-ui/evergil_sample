@@ -101,7 +101,6 @@ export const restoreAuthorizationHeader = () => {
 
     if (accessToken) {
         axiosInstance.defaults.headers.common['Authorization'] = `${accessToken}`;
-        console.log('Authorization header restored');
     }
 };
 

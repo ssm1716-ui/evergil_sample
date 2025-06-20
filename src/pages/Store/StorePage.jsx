@@ -102,7 +102,7 @@ const StorePage = () => {
                   <li className="grid-item new" key={index}>
                     <div className="shop-image-wrapper">
                       <div className="shop-image mb-20px">
-                        <Link to={`/shop/${product.productId}`}>
+                        <Link to={`/shop/${product.slug || product.productId}`}>
                           <img
                             src={product.productImage}
                             alt="Product"

@@ -123,7 +123,10 @@ const Header = () => {
                     <Link
                       to="/signin"
                       className="nav-link feature-box"
-                      onClick={closeMenu}
+                      onClick={() => {
+                        localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
+                        closeMenu();
+                      }}
                     >
                       <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
                         <i className="feather icon-feather-log-in align-middle icon-extra-medium"></i>

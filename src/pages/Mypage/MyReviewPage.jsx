@@ -274,7 +274,7 @@ const MyReviewPage = () => {
               </li>
               <li className="nav-item mt-10px">
                 <input
-                  className="border-1 nav-link text-center"
+                  className="border-1 nav-link text-center date-button"
                   type="date"
                   name="from"
                   value={viewSelect.from}
@@ -286,7 +286,7 @@ const MyReviewPage = () => {
               </li>
               <li className="nav-item mt-10px">
                 <input
-                  className="border-1 nav-link text-center"
+                  className="border-1 nav-link text-center date-button"
                   type="date"
                   name="to"
                   value={viewSelect.to}
@@ -313,7 +313,7 @@ const MyReviewPage = () => {
           </div>
         </div>
 
-        <div className="row g-0 mb-4 md-mb-35px">
+        <div className="row g-0 mb-4 md-mb-30">
           {meReviews.length > 0 ? (
             meReviews.map((review, index) => (
               <div

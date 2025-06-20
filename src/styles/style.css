@@ -2481,7 +2481,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 }
 /* Magic cursor */
 .magic-cursor {
-  cursor: none;
+  cursor: default;
 }
 #ball-cursor {
   position: fixed;

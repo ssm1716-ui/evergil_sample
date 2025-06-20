@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Modal from '@/components/common/Modal/Modal';
@@ -20,6 +20,69 @@ import { getPolicySelected } from '@/api/policy/policyApi';
 
 import useAuth from '@/hooks/useAuth';
 import { formatDate, getTransformedCartData } from '@/utils/utils';
+
+const PolicyContent = ({ content }) => {
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      if (wrapperRef.current.shadowRoot) {
+        wrapperRef.current.shadowRoot.innerHTML = '';
+      } else {
+        wrapperRef.current.attachShadow({ mode: 'open' });
+      }
+
+      const shadow = wrapperRef.current.shadowRoot;
+      shadow.innerHTML = `
+        <style>
+          :host {
+            display: block;
+            width: 80%;
+            font-family: inherit;
+            color: inherit;
+          }
+          @media (max-width: 768px) {
+            :host {
+              width: 100%;
+            }
+          }
+          .policy-content {
+            font-size: 16px;
+            line-height: 1.5;
+            font-family: inherit;
+            color: inherit;
+          }
+          .policy-content p {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            font-family: inherit;
+            color: inherit;
+          }
+          .policy-content img {
+            max-width: 100%;
+            height: auto;
+          }
+          @media (max-width: 768px) {
+            .policy-content {
+              font-size: 14px;
+            }
+          }
+        </style>
+        <div class="policy-content">
+          ${content || ''}
+        </div>
+      `;
+    }
+
+    return () => {
+      if (wrapperRef.current && wrapperRef.current.shadowRoot) {
+        wrapperRef.current.shadowRoot.innerHTML = '';
+      }
+    };
+  }, [content]);
+
+  return <div ref={wrapperRef}></div>;
+};
 
 const ShopPage = () => {
   const { isAuthenticated, user } = useAuth();
@@ -61,9 +124,12 @@ const ShopPage = () => {
   // 페이지 번호 변경 시 기존 리뷰에 추가
   useEffect(() => {
     const fetchReviews = async () => {
+      // productId가 없으면 리뷰를 가져오지 않음
+      if (!product?.productId) return;
+
       try {
         const { status, data } = await getProductReviewsSelected(
-          id,
+          product.productId,
           sortType,
           pageNumber,
           pageSize
@@ -79,14 +145,17 @@ const ShopPage = () => {
     };
 
     fetchReviews();
-  }, [pageNumber]);
+  }, [pageNumber, product?.productId]); // productId를 의존성 배열에 추가
 
   // 정렬 방식 변경 시 새로운 리뷰 목록 불러오기
   useEffect(() => {
     const fetchReviews = async () => {
+      // productId가 없으면 리뷰를 가져오지 않음
+      if (!product?.productId) return;
+
       try {
         const { status, data } = await getProductReviewsSelected(
-          id,
+          product.productId,
           sortType,
           1,
           10
@@ -101,7 +170,7 @@ const ShopPage = () => {
     };
 
     fetchReviews();
-  }, [sortType]); // 🔥 정렬 방식이 바뀔 때만 실행
+  }, [sortType, product?.productId]); // 🔥 정렬 방식이 바뀔 때만 실행
 
   // `thumbsSwiper`가 설정될 때까지 `undefined`를 유지
   useEffect(() => {
@@ -544,24 +613,13 @@ const ShopPage = () => {
                       <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-10px fw-500">
                         배송 기간 안내
                       </div>
-
-                      <p
-                        className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28"
-                        dangerouslySetInnerHTML={{
-                          __html: policyContent.deliveryDesc,
-                        }}
-                      ></p>
+                      <PolicyContent content={policyContent.deliveryDesc} />
                     </div>
                     <div className="col-12 col-md-6 last-paragraph-no-margin">
                       <div className="fs-22 md-fs-18 text-dark-gray mb-15px md-mb-10px fw-500">
                         교환 및 환불 정책
                       </div>
-                      <p
-                        className="w-80 md-w-100 md-fs-16 sm-fs-14 md-lh-28"
-                        dangerouslySetInnerHTML={{
-                          __html: policyContent.refundDesc,
-                        }}
-                      ></p>
+                      <PolicyContent content={policyContent.refundDesc} />
                     </div>
                   </div>
                 </div>

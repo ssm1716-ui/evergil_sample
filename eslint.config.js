@@ -40,7 +40,7 @@ export default [
       'semi': ['error', 'always'],
       'quotes': ['error', 'single'],
       'indent': ['error', 2],
-      'max-len': ['warn', { code: 80 }],
+      'max-len': ['warn', { code: 240 }],
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react/jsx-no-duplicate-props': 'error',

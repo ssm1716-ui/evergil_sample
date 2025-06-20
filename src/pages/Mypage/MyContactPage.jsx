@@ -2,15 +2,18 @@ import { useState } from 'react';
 import FaqComponents from '@/components/Faq/FaqComponents';
 import ContactComponents from '@/components/Contact/ContactComponents';
 import Modal from '@/components/common/Modal/Modal';
+import useIsMobile from '@/hooks/useIsMobile';
 import { postInquiryRequest } from '@/api/guest/guestApi';
 import { isValidEmail } from '@/utils/validators';
-import everlinkTop from '@/assets/images/everlink-top.png';
+import everlinkTop from '@/assets/images/everlink-top.jpeg';
+import everlinkTopMobile from '@/assets/images/everlink-top-mobile.jpeg';
 
 const MyContactPage = () => {
   const initialFormState = { writerName: '', writerEmail: '', message: '' };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [contactUs, setContactUs] = useState(initialFormState);
   const [errors, setErrors] = useState(initialFormState);
+  const isMobile = useIsMobile();
 
   //문의하기 정보 set
   const handleSetContactUs = (e) => {
@@ -79,7 +82,10 @@ const MyContactPage = () => {
               data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
             >
               <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
-                <img src={everlinkTop} alt="everlinkTop" />
+                <img
+                  src={isMobile ? everlinkTopMobile : everlinkTop}
+                  alt="everlinkTop"
+                />
               </div>
             </div>
           </div>

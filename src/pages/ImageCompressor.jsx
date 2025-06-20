@@ -11,8 +11,13 @@ const ImageCompressor = () => {
       quality: 1,
       maxWidth: 900,
       maxHeight: 1000,
-      mimeType: 'image/webp',
+      mimeType: 'image/jpeg',
       convertSize: Infinity,
+      preserveHeaders: true,
+      colorSpace: 'srgb',
+      strict: true,
+      checkOrientation: true,
+      resize: 'contain',
       success(result) {
         setPreviewUrl(URL.createObjectURL(result));
         setSizeInfo({

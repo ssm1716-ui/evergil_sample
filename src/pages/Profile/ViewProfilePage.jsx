@@ -128,10 +128,17 @@ const ViewProfilePage = () => {
         let res = await getSelectProfile(profileId);
         console.log(res);
         if (res.status === 200) {
-          const { profile, extension } = res.data.data;
+          const { profile, extension, result } = res.data.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           setProfile(profile);
-          setIsBookmarks(extension.isBookmarked);
-          setHasFamilyTree(extension.hasFamilyTree);
+          if (extension) {
+            setIsBookmarks(extension.isBookmarked);
+            setHasFamilyTree(extension.hasFamilyTree);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -537,7 +544,7 @@ const ViewProfilePage = () => {
           {profile.description &&
             profile.description.replace(/<[^>]*>?/gm, '').trim() && (
               <div className="bottom-minus-60px end-0 z-index-1 pe-1">
-                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
+                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px custom-quill-wrapper">
                   <ReactQuill
                     className="w-60 sm-w-100 mx-center"
                     value={profile.description}
@@ -1056,7 +1063,7 @@ const ViewProfilePage = () => {
         onClose={() => setIsRequestModalOpen(false)}
       >
         <div className="row justify-content-center">
-          <div className="col-6">
+          <div className="col-12">
             <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">

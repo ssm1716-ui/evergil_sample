@@ -57,6 +57,7 @@ const CheckOutPage = () => {
     buyerName: '',
     buyerEmail: '',
     buyerPhone: '',
+    buyerReferrer: '',
     deliveryAddressInfo: {},
     orderItems: [],
   });
@@ -559,6 +560,17 @@ const CheckOutPage = () => {
                       {errors.buyerEmail}
                     </p>
                   )}
+                </div>
+                <div className="col-12 mb-20px md-mb-10px">
+                  <label>추천인 이름 (선택사항)</label>
+                  <input
+                    className="border-radius-4px input-large md-py-0 text-black sm-fs-14"
+                    type="text"
+                    name="buyerReferrer"
+                    value={payment.buyerReferrer}
+                    onChange={handlePaymentChange}
+                    maxLength={50}
+                  />
                 </div>
               </form>
             </div>

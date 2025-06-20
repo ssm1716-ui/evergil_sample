@@ -91,11 +91,11 @@ const Footer = () => {
                     <img src={footerIconInstagram} alt="" />
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a className="twitter">
                     <img src={footerIconNaver} alt="" />
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a
                     className="behance"

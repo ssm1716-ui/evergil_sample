@@ -12,11 +12,6 @@ const Modal = ({ isOpen, onClose, children }) => {
     document.body.style.width = '100%';
     document.body.style.overflowY = 'hidden';
 
-    const preventTouch = (e) => e.preventDefault();
-    document.body.addEventListener('touchmove', preventTouch, {
-      passive: false,
-    });
-
     return () => {
       document.body.style.position = '';
       document.body.style.top = '';
@@ -25,8 +20,6 @@ const Modal = ({ isOpen, onClose, children }) => {
 
       // 스크롤 원위치로 복원
       window.scrollTo(0, scrollY);
-
-      document.body.removeEventListener('touchmove', preventTouch);
     };
   }, [isOpen]);
 
@@ -58,6 +51,8 @@ const Modal = ({ isOpen, onClose, children }) => {
           overflowY: 'auto',
           width: '100%',
           maxWidth: '500px',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         {children}

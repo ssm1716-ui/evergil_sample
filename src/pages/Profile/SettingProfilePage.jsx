@@ -43,6 +43,11 @@ const SettingProfilePage = () => {
         const res = await getSelectProfile(profileId);
         if (res.status === 200) {
           const { data } = res.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (data.result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           setFormProfile(data.profile);
         }
       } catch (error) {
@@ -126,21 +131,25 @@ const SettingProfilePage = () => {
     //   qrKey: 'RGeqBguSH28XpMJ3',
     // };
 
-    let res;
-    if (profileId) {
-      //추모 프로필 수정
-      res = await putModifyProfile(profileId, formProfile);
-    } else {
-      //추모 프로필 생성
-      res = await postRegisterProfile(formProfile);
-    }
+    try {
+      let res;
+      if (profileId) {
+        //추모 프로필 수정
+        res = await putModifyProfile(profileId, formProfile);
+      } else {
+        //추모 프로필 생성
+        res = await postRegisterProfile(formProfile);
+      }
 
-    if (res.status === 200) {
-      setIsModalOpen(true);
-      return;
-    }
+      if (res.status === 200) {
+        setIsModalOpen(true);
+        return;
+      }
 
-    alert('추모프로필 등록시 에러가 발생 하였습니다.');
+      throw new Error('서버 응답이 올바르지 않습니다.');
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (

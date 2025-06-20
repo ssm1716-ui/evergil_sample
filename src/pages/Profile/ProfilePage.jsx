@@ -25,12 +25,20 @@ const ProfilePage = () => {
   const isotopeInstance = useRef(null);
   const [filterKey, setFilterKey] = useState('*'); // 기본 필터 값
   const [isotope, setIsotope] = useState(null);
-  const [profiles, setProfiles] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [profileState, setProfileState] = useState({
+    profiles: [],
+    page: 1,
+    hasNext: true,
+    initialized: false
+  });
   const [viewProfiles, setViewProfiles] = useState([]);
   const [BookmarksProfiles, setBookmarksProfiles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('My Everlinks');
   const [profileId, setProfileId] = useState('');
+  const [isotopeReady, setIsotopeReady] = useState(false);
+  const prevScrollY = useRef(0);
 
   // SNS 계정 여부와 이메일 존재 여부를 확인합니다.
   // SNS 계정이면 passwordInput에는 보통 빈 문자열을 전달하거나 API 사양에 맞게 값을 전달합니다.
@@ -87,64 +95,56 @@ const ProfilePage = () => {
 
   // 📌 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        let res;
-        console.log(activeTab);
-        if (!activeTab) return;
-        if (activeTab === 'My Everlinks') {
-          res = await getSelectProfileList();
-        }
-        if (activeTab === 'View') {
-          res = await getSelectProfileViewList();
-        }
-        if (activeTab === 'Bookmark') {
-          res = await getSelectProfileBookmarksList();
-        }
-
-        if (res.status === 200) {
-          const { data } = res.data;
-          console.log(data);
-          setProfiles(data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchProfiles();
+    setProfileState(prev => ({
+      ...prev,
+      profiles: [],
+      page: 1,
+      hasNext: true,
+      initialized: false
+    }));
+    fetchProfiles(1, false);
   }, [activeTab]);
 
   /** Isotope 초기화 및 레이아웃 적용 */
   useEffect(() => {
-    if (!gridRef.current) return;
+    if (!gridRef.current || !profileState.profiles.length) return;
 
-    imagesLoaded(gridRef.current, { background: true }, () => {
-      const isoInstance = new Isotope(gridRef.current, {
+    const initIsotope = () => {
+      const iso = new Isotope(gridRef.current, {
         itemSelector: '.grid-item',
-        layoutMode: 'fitRows', // ✅ masonry 사용
-        percentPosition: true,
         masonry: {
           columnWidth: '.grid-sizer',
         },
       });
+      setIsotope(iso);
+      setIsotopeReady(true);
+    };
 
-      setIsotope(isoInstance);
-      isoInstance.layout(); // ✅ 레이아웃 강제 적용
-    });
-
-    return () => isotope?.destroy(); // ✅ Unmount 시 Isotope 정리
-  }, [profiles]); // ✅ profiles 변경 시 재초기화
-
-  //📌 데이터 변경 시 Isotope 레이아웃 업데이트
-  useEffect(() => {
-    if (isotopeInstance.current) {
-      imagesLoaded(gridRef.current, () => {
+    // 이미지 로드 완료 후 Isotope 초기화
+    const imgLoad = imagesLoaded(gridRef.current);
+    imgLoad.on('done', () => {
+      if (!isotopeInstance.current) {
+        initIsotope();
+      } else {
+        // 기존 스크롤 위치 저장
+        prevScrollY.current = window.scrollY;
+        
+        // 레이아웃 업데이트
         isotopeInstance.current.reloadItems();
         isotopeInstance.current.arrange();
-      });
-    }
-  }, [profiles]);
+        
+        // 스크롤 위치 복원
+        window.scrollTo(0, prevScrollY.current);
+      }
+    });
+
+    return () => {
+      if (isotopeInstance.current) {
+        isotopeInstance.current.destroy();
+        isotopeInstance.current = null;
+      }
+    };
+  }, [profileState.profiles]);
 
   /** 필터 변경 시 적용 */
   useEffect(() => {
@@ -152,6 +152,60 @@ const ProfilePage = () => {
       isotope.arrange({ filter: filterKey });
     }
   }, [filterKey]);
+
+  // 프로필 fetch 함수
+  const fetchProfiles = async (page = 1, append = false) => {
+    try {
+      setIsFetching(true);
+      let res;
+      const pageSize = 10;
+      
+      if (activeTab === 'My Everlinks') {
+        res = await getSelectProfileList(page, pageSize);
+      } else if (activeTab === 'View') {
+        res = await getSelectProfileViewList(page, pageSize);
+      } else if (activeTab === 'Bookmark') {
+        res = await getSelectProfileBookmarksList(page, pageSize);
+      }
+
+      if (res?.status === 200) {
+        const { data } = res.data;
+        
+        // 현재 스크롤 위치 저장
+        prevScrollY.current = window.scrollY;
+        
+        setProfileState(prev => ({
+          profiles: append ? [...prev.profiles, ...data] : data,
+          page,
+          hasNext: data.length === pageSize,
+          initialized: true
+        }));
+      }
+    } catch (error) {
+      console.error('프로필 목록 로드 실패:', error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  // 스크롤 감지하여 추가 데이터 로드
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!profileState.hasNext || isFetching || !isotopeReady) return;
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+      const scrollPercent = (scrollY + viewportHeight) / fullHeight;
+
+      if (scrollPercent >= 0.8) {
+        fetchProfiles(profileState.page + 1, true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFetching, profileState.hasNext, profileState.page, isotopeReady]);
 
   const handleMovePageProfile = (profileId) => {
     if (activeTab === 'My Everlinks') {
@@ -166,35 +220,31 @@ const ProfilePage = () => {
   };
 
   const handleRemoveProfile = async () => {
-    let res;
-    if (activeTab === 'My Everlinks') {
-      res = await deleteEditorProfile(profileId);
-    }
-    if (activeTab === 'View') {
-      res = await deleteViwerProfile(profileId);
-    }
-    if (activeTab === 'Bookmark') {
-      res = await deleteBookmarksProfile(profileId);
-    }
-
-    if (res.status === 200) {
-      setIsModalOpen(false);
-      setActiveTab(activeTab);
-
+    try {
+      let res;
       if (activeTab === 'My Everlinks') {
-        res = await getSelectProfileList();
-      }
-      if (activeTab === 'View') {
-        res = await getSelectProfileViewList();
-      }
-      if (activeTab === 'Bookmark') {
-        res = await getSelectProfileBookmarksList();
+        res = await deleteEditorProfile(profileId);
+      } else if (activeTab === 'View') {
+        res = await deleteViwerProfile(profileId);
+      } else if (activeTab === 'Bookmark') {
+        res = await deleteBookmarksProfile(profileId);
       }
 
       if (res.status === 200) {
-        const { data } = res.data;
-        setProfiles(data);
+        setIsModalOpen(false);
+        // 현재 페이지 데이터 다시 로드
+        setProfileState(prev => ({
+          ...prev,
+          profiles: [],
+          page: 1,
+          hasNext: true,
+          initialized: false
+        }));
+        fetchProfiles(1, false);
       }
+    } catch (error) {
+      console.error('프로필 삭제 실패:', error);
+      alert('프로필 삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -221,7 +271,7 @@ const ProfilePage = () => {
               </ul>
 
               <div className="tab-content">
-                {profiles.length > 0 ? (
+                {profileState.profiles.length > 0 ? (
                   <>
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5 text-center">
                       {activeTab === 'My Everlinks' && (
@@ -247,13 +297,12 @@ const ProfilePage = () => {
                     >
                       <li className="grid-sizer"></li>
 
-                      {profiles.map((profile, index) => (
+                      {profileState.profiles.map((profile, index) => (
                         <li className="grid-item cursor-pointer" key={index}>
-                          <div className="card border-0 border-radius-4px box-shadow-extra-large box-shadow-extra-large-hover h-100 d-flex flex-column">
-                            <div
-                              className="blog-image"
-                              onClick={() => handleMovePageProfile(profile.id)}
-                            >
+                          <div className="card border-0 border-radius-4px box-shadow-extra-large box-shadow-extra-large-hover h-100 d-flex flex-column"
+                            onClick={() => handleMovePageProfile(profile.id)}
+                          >
+                            <div className="blog-image">
                               <Link className="d-block">
                                 <img
                                   src={profile.profileImageUrl || avatarImage}
@@ -294,9 +343,11 @@ const ProfilePage = () => {
                                 ) : (
                                   <span
                                     className="cursor-pointer"
-                                    onClick={() =>
-                                      handleRemoveConfirm(profile.id)
-                                    }
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      handleRemoveConfirm(profile.id);
+                                    }}
                                   >
                                     <i className="feather icon-feather-trash-2 text-dark-gray icon-extra-medium"></i>
                                   </span>
@@ -324,7 +375,7 @@ const ProfilePage = () => {
                 ) : (
                   ''
                 )}
-                {profiles.length === 0 && (
+                {profileState.profiles.length === 0 && (
                   <div className="text-center pt-12">
                     {activeTab === 'My Everlinks' && (
                       // <Link to="/profile/setting-profile">
@@ -365,6 +416,14 @@ const ProfilePage = () => {
                     )}
                   </div>
                 )}
+                {isFetching && (
+                  <div className="text-center mt-4 mb-4">
+                    <div className="spinner-border text-base-color" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-2">프로필을 불러오는 중...</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -383,8 +442,8 @@ const ProfilePage = () => {
                         {activeTab === 'My Everlinks'
                           ? ' 편집 권한이 사라집니다.'
                           : activeTab === 'View'
-                          ? ' view 권한이 사라집니다.'
-                          : ' 북마크를 삭제 하시겠습니까?'}
+                            ? ' view 권한이 사라집니다.'
+                            : ' 북마크를 삭제 하시겠습니까?'}
                         <br />
                         {activeTab !== 'Bookmark' ? '삭제 하시겠습니까?' : ''}
                       </h6>

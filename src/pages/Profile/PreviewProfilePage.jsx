@@ -69,6 +69,14 @@ const ViewProfilePage = () => {
     initFormPrivateProfile
   );
 
+  const [isFetching, setIsFetching] = useState(false);
+  const [imageState, setImageState] = useState({
+    images: [],
+    page: 1,
+    hasNext: true,
+    initialized: false,
+  });
+
   const lgRef = useRef(null);
 
   const {
@@ -78,6 +86,9 @@ const ViewProfilePage = () => {
     setIsRequestModalOpen,
     showScreen,
   } = useProfilePermission(profileId, { shouldRedirect: false });
+
+  const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   useEffect(() => {
     // 스타일 추가
@@ -91,7 +102,12 @@ const ViewProfilePage = () => {
       try {
         let res = await getSelectProfile(profileId);
         if (res.status === 200) {
-          const { profile, extension } = res.data.data;
+          const { profile, extension, result } = res.data.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           console.log(profile);
           console.log(extension);
           setProfile(profile);
@@ -110,17 +126,17 @@ const ViewProfilePage = () => {
     const fetchTabDate = async () => {
       try {
         let res;
-        console.log(activeTab);
-        if (!activeTab) return;
-        if (activeTab === '이미지') {
-          res = await getPhotoSeletct(profileId);
-          console.log('이미지 : ', res);
-          if (res.status === 200) {
-            const { data } = res.data;
-            console.log(data);
-            setImages(data);
-          }
-        }
+        // console.log(activeTab);
+        // if (!activeTab) return;
+        // if (activeTab === '이미지') {
+        //   res = await getPhotoSeletct(profileId);
+        //   console.log('이미지 : ', res);
+        //   if (res.status === 200) {
+        //     const { data } = res.data;
+        //     console.log(data);
+        //     setImages(data);
+        //   }
+        // }
         if (activeTab === '하늘편지') {
           res = await getLetters(profileId);
           console.log('하늘편지 : ', res);
@@ -144,7 +160,58 @@ const ViewProfilePage = () => {
     };
 
     if (showScreen) fetchTabDate();
+
+    if (showScreen && activeTab === '이미지') {
+      fetchImages(1, false);
+    }
   }, [activeTab, showScreen]);
+
+  //이미지 탭일 때만 스크롤 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        !profileId ||
+        isFetching ||
+        !imageState.hasNext ||
+        activeTab !== '이미지'
+      )
+        return;
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const fullHeight = document.documentElement.scrollHeight;
+
+      const scrollPercent = (scrollY + viewportHeight) / fullHeight;
+
+      if (scrollPercent >= 0.8) {
+        setIsFetching(true);
+        fetchImages(imageState.page + 1, true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFetching, imageState.hasNext, imageState.page, activeTab]);
+
+  // 이미지 fetch 함수
+  const fetchImages = async (page = 1, append = false) => {
+    try {
+      const res = await getPhotoSeletct(profileId, 'view', page);
+      if (res?.status === 200) {
+        const { data } = res.data;
+        setImageState((prev) => ({
+          images: append ? [...prev.images, ...data] : data,
+          page,
+          hasNext: data.length > 0,
+          initialized: true,
+        }));
+      }
+    } catch (error) {
+      console.error('이미지 로드 실패:', error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   //하늘편지 useEffect
   useEffect(() => {
@@ -154,38 +221,6 @@ const ViewProfilePage = () => {
     }
     setTabList(['이미지', '하늘편지']);
   }, [hasFamilyTree]);
-
-  // const onInit = () => {
-  //   setTimeout(() => {
-  //     // const lgContainer = document.querySelector('.lg-container');
-  //     const lgToolbar = document.getElementById('lg-toolbar-1');
-
-  //     if (lgToolbar && !document.getElementById('edit-button')) {
-  //       const editButton = document.createElement('button');
-  //       editButton.innerText = '수정';
-  //       editButton.classList.add('lg-custom-btn');
-  //       editButton.classList.add('lg-custom-modify');
-  //       editButton.id = 'edit-button';
-  //       editButton.onclick = () => {
-  //         const index = getCurrentImageIndex();
-  //         handleEdit(index);
-  //       };
-
-  //       const deleteButton = document.createElement('button');
-  //       deleteButton.innerText = '삭제';
-  //       deleteButton.classList.add('lg-custom-btn');
-  //       deleteButton.classList.add('lg-custom-remove');
-  //       deleteButton.id = 'delete-button';
-  //       deleteButton.onclick = () => {
-  //         const index = getCurrentImageIndex();
-  //         handleDelete(index);
-  //       };
-
-  //       lgToolbar.appendChild(editButton);
-  //       lgToolbar.appendChild(deleteButton);
-  //     }
-  //   }, 100);
-  // };
 
   // 현재 선택된 이미지의 index 찾기
   const getCurrentImageIndex = () => {
@@ -287,22 +322,40 @@ const ViewProfilePage = () => {
     }
   };
 
+  const handleBackgroundImageClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (profile.backgroundImageUrl) {
+      setIsBackgroundModalOpen(true);
+    }
+  };
+
+  const handleProfileImageClick = () => {
+    setIsProfileModalOpen(true);
+  };
+
   return (
     <>
       {!showScreen && <div className="blur-overlay"></div>}
       <section
         className="top-space-margin page-title-big-typography cover-background position-relative p-0 border-radius-10px lg-no-border-radius"
-        style={{ overflow: 'unset' }}
+        style={{
+          overflow: 'unset',
+        }}
       >
         <div className="container">
           <div
             className="row small-screen bg-light-gray"
             style={{
               backgroundSize: 'cover',
-              backgroundImage: `url(
-          ${profile.backgroundImageUrl}
-        )`,
+              backgroundImage: `url(${profile.backgroundImageUrl})`,
+              cursor: profile.backgroundImageUrl ? 'pointer' : 'default',
             }}
+            onClick={handleBackgroundImageClick}
+            role="button"
+            tabIndex={0}
+            title={profile.backgroundImageUrl ? '배경 이미지 전체화면 보기' : ''}
           >
             <div
               className="col-lg-5 col-md-6 position-relative page-title-extra-large align-self-center"
@@ -324,7 +377,13 @@ const ViewProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer">
+                  <div 
+                    className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
+                    onClick={handleProfileImageClick}
+                    role="button"
+                    tabIndex={0}
+                    title="프로필 이미지 전체화면 보기"
+                  >
                     <img
                       src={
                         profile.profileImageUrl
@@ -386,7 +445,7 @@ const ViewProfilePage = () => {
           <div className="bottom-minus-60px end-0 z-index-1 pe-1">
             {profile.description &&
               profile.description.replace(/<[^>]*>?/gm, '').trim() && (
-                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px">
+                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px custom-quill-wrapper">
                   <ReactQuill
                     className="w-60 sm-w-100 mx-center"
                     value={profile.description}
@@ -455,7 +514,7 @@ const ViewProfilePage = () => {
                       >
                         <div className="gallery-grid">
                           {/* 이미지 썸네일 */}
-                          {images.map((image, index) => (
+                          {imageState.images.map((image, index) => (
                             <a
                               href={image.url}
                               key={index}
@@ -467,7 +526,7 @@ const ViewProfilePage = () => {
                           ))}
                         </div>
                       </LightGallery>
-                      {images.length <= 0 && (
+                      {imageState.images.length <= 0 && (
                         <div className="col-12 text-center mt-100px pb-2 fs-24">
                           <i className="feather icon-feather-camera align-middle icon-extra-large text-dark fs-50 md-fs-70 p-30px border border-4 border-dark border-radius-100px mb-1"></i>
                           <p className="fs-30 fw-800 text-black">
@@ -533,14 +592,14 @@ const ViewProfilePage = () => {
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
                                 <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                                <div className="process-step-icon d-flex justify-content-start justify-content-sm-center  align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
                                   <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                                     <span className="number position-relative z-index-1 fw-600">
                                       <i className="feather icon-feather-user align-middle icon-large text-white"></i>
                                     </span>
                                     <div className="box-overlay bg-black rounded-circle"></div>
                                   </div>
-                                  <span className="number position-relative z-index-1 fw-600">
+                                  <span className="number position-relative z-index-1 fw-600 sm-w-100">
                                     {f.familyTitle}
                                   </span>
                                   <div className="box-overlay rounded-circle"></div>
@@ -549,7 +608,7 @@ const ViewProfilePage = () => {
                             </div>
                             <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
-                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 sm-w-70 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 sm-w-60 fs-18 rounded-circle text-dark-gray fw-500">
                                   <span className="number position-relative z-index-1 fw-600">
                                     {f.displayName}
                                   </span>
@@ -721,7 +780,7 @@ const ViewProfilePage = () => {
         onClose={() => setIsRequestModalOpen(false)}
       >
         <div className="row justify-content-center">
-          <div className="col-6">
+          <div className="col-12">
             <div className="p-7 lg-p-5 sm-p-7 bg-gradient-very-light-gray">
               <div className="row justify-content-center mb-30px sm-mb-10px">
                 <div className="col-md-9 text-center">
@@ -828,6 +887,116 @@ const ViewProfilePage = () => {
               </div>
             </div>
           </div>
+        </div>
+      </Modal>
+
+      {/* 배경 이미지 모달 */}
+      <Modal isOpen={isBackgroundModalOpen} onClose={() => setIsBackgroundModalOpen(false)}>
+        <div style={{
+          background: '#000',
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 99999,
+          borderRadius: 0,
+          padding: 0,
+        }}>
+          {/* LightGallery 스타일 상단 바 */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '56px',
+            background: 'rgba(34, 34, 34, 0.92)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            padding: '0 32px',
+            zIndex: 100000,
+            boxSizing: 'border-box',
+          }}>
+            <button
+              onClick={() => setIsBackgroundModalOpen(false)}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '28px', cursor: 'pointer', fontWeight: 700, lineHeight: 1 }}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+          <img
+            src={profile.backgroundImageUrl}
+            alt="배경 전체 이미지"
+            style={{
+              maxWidth: '100vw',
+              maxHeight: '100vh',
+              objectFit: 'contain',
+              borderRadius: 0,
+              background: '#000',
+              margin: 0,
+              padding: 0,
+              display: 'block',
+            }}
+          />
+        </div>
+      </Modal>
+
+      {/* 프로필 이미지 모달 */}
+      <Modal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)}>
+        <div style={{
+          background: '#000',
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 99999,
+          borderRadius: 0,
+          padding: 0,
+        }}>
+          {/* LightGallery 스타일 상단 바 */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '56px',
+            background: 'rgba(34, 34, 34, 0.92)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            padding: '0 32px',
+            zIndex: 100000,
+            boxSizing: 'border-box',
+          }}>
+            <button
+              onClick={() => setIsProfileModalOpen(false)}
+              style={{ background: 'none', color: '#fff', border: 'none', fontSize: '28px', cursor: 'pointer', fontWeight: 700, lineHeight: 1 }}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+          <img
+            src={profile.profileImageUrl || avatarImage}
+            alt="프로필 전체 이미지"
+            style={{
+              maxWidth: '100vw',
+              maxHeight: '100vh',
+              objectFit: 'contain',
+              borderRadius: 0,
+              background: '#000',
+              margin: 0,
+              padding: 0,
+              display: 'block',
+            }}
+          />
         </div>
       </Modal>
     </>

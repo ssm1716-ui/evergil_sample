@@ -12,6 +12,7 @@ export const useVerifyQrKey = () => {
 
             switch (route) {
                 case 'LOGIN_PAGE':
+                    localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
                     navigate('/signin');
                     break;
                 case 'ERROR_PAGE':

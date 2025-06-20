@@ -2,22 +2,48 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import ReactPlayer from 'react-player/youtube';
+import useIsMobile from '@/hooks/useIsMobile';
 
 import FaqComponents from '@/components/Faq/FaqComponents';
 import mainBannerImage from '@/assets/images/main-banner.jpg';
-import mainSubImage1 from '@/assets/images/main-sub-image1.jpg';
+import mainBannerImageMobile from '@/assets/images/main-banner-mobile.jpeg';
+import mainSubImage1 from '@/assets/images/main-sub-image1.jpeg';
+import mainSubImage1Mobile from '@/assets/images/main-sub-image1-mobile.jpeg';
 
 import mainLogoPc from '@/assets/images/main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/main_logo_mobile.png';
-import main_guide from '@/assets/images/main_guide.png';
+import main_guide from '@/assets/images/main_guide.jpeg';
 import guide1 from '@/assets/images/guide_1.jpg';
 import guide2 from '@/assets/images/guide_2.jpg';
 import guide3 from '@/assets/images/guide_3.jpg';
 
-// Modal.setAppElement('#root');
+import profilePreviewPet from '@/assets/images/profile-preview-pet.jpeg';
+import profilePreviewHuman from '@/assets/images/profile-preview-human.jpeg';
+
+// 반응형 버튼 행 스타일을 위한 style 태그 추가 (임시)
+const btnRowStyle = `
+.btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+@media (max-width: 768px) {
+  .btn-row {
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-row .btn {
+    width: 180px !important;
+    height: 40px !important;
+  }
+}
+`;
 
 const HomeSubPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   // 모달 열기
   const handleOpenModal = () => {
@@ -31,11 +57,12 @@ const HomeSubPage = () => {
 
   return (
     <>
+      <style>{btnRowStyle}</style>
       <section
         className="p-0 top-space-margin full-screen md-h-600px sm-h-300px position-relative"
         data-parallax-background-ratio="0.3"
         style={{
-          backgroundImage: `url(${mainBannerImage})`,
+          backgroundImage: `url(${isMobile ? mainBannerImageMobile : mainBannerImage})`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
         }}
@@ -92,30 +119,21 @@ const HomeSubPage = () => {
 
               <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14 text-keep-all">
                 Everlink 는 가족과 추억을 공유하고, 편지를 남기며,
-                <br /> 고인을 평생 기억할 수 있도록 만들어주는 추모페이지
-                입니다.
+                <br />고인을 기억할 수 있도록 만들어주는 추모페이지 입니다.
                 <br />
+                <br />에버링크의 사명은 사랑하는 사람들이 영원히 기억되는 것입니다.
+                <br />대부분 2-3세대가 지나면 사람들은
+                <br />우리의 이름조차 기억하지 못할 것입니다.
+                <br />확실한 건 시간이 지나면 기억은 희미해집니다.
                 <br />
-                에버링크의 사명은 사랑하는 사람들이 영원히 기어되는 것입니다.
+                <br />우리는 사랑하는 사람을 기억하고,
+                <br />고인과의 추억을 보존하고,
+                <br />고인을 기억할 수 있는 플랫폼을 제공할 것입니다.
                 <br />
-                대부분 2-3세대가 지나면 사람들은 우리의 이름조차 기억하지 못할
-                것입니다.
-                <br /> 확실한 건 시간이 지나면 기억은 희미해집니다.
-                <br />
-                <br />
-                우리는 사랑하는 사람을 기억하고,
-                <br /> 고인과의 추억을 보존하고,
-                <br />
-                고인을 평생 기억할 수 있는 플랫폼을 제공할 것입니다.
-                <br />
-                <br />
-                에버링크는 신뢰할 수 있는 품질과
-                <br />
-                사랑하는 사람의 발자취를 평생 기억할 수 있는 가치
-                <br />
-                그리고 고객과 함께 나아간다는 원칙을 통해
-                <br />
-                오늘도 진심으로 정성을 다해 움직입니다.
+                <br />에버링크는 신뢰할 수 있는 품질과
+                <br />사랑하는 사람의 발자취를 기억할 수 있는 가치
+                <br />그리고 고객과 함께 나아간다는 원칙을 통해
+                <br />오늘도 진심으로 정성을 다해 움직입니다.
               </p>
               <div className="d-inline-block w-100 text-center">
                 <Link
@@ -141,7 +159,11 @@ const HomeSubPage = () => {
             </div>
             <div className="col-lg-7 col-sm-12 position-relative md-px-0">
               <div className="w-100 position-relative md-w-100 border-radius-4px float-end ">
-                <img className="w-100" src={mainSubImage1} alt="" />
+                <img
+                  className="w-100"
+                  src={isMobile ? mainSubImage1Mobile : mainSubImage1}
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -212,7 +234,7 @@ const HomeSubPage = () => {
                     일회성 결제
                   </span>
                   <p className="fs-16">
-                    숨겨진 비용이나 구독이 없는 평생 서비스
+                    숨겨진 비용이나 구독이 없는 서비스
                   </p>
                 </div>
               </div>
@@ -284,7 +306,7 @@ const HomeSubPage = () => {
                     일회성 결제
                   </span>
                   <p className="fs-12 sm-lh-20 px-2">
-                    숨겨진 비용이나 구독이 없는 평생 서비스
+                    숨겨진 비용이나 구독이 없는 서비스
                   </p>
                 </div>
               </div>
@@ -319,7 +341,7 @@ const HomeSubPage = () => {
             </div>
           </div>
           <div className="row justify-content-center align-items-center pt-2">
-            <div
+            {/* <div
               className="col-12 text-center last-paragraph-no-margin"
               data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
@@ -330,6 +352,42 @@ const HomeSubPage = () => {
                 <span className="text-decoration-line-bottom fw-600">
                   open get 10% discount
                 </span>
+              </div>
+            </div> */}
+
+            <div className="col-md-8 text-center" style={{ paddingBottom: '10%' }}>
+              <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2" style={{ paddingBottom: '7%' }}>
+                추모 프로필 미리보기
+              </h6>
+              <div className="btn-row" style={{ paddingBottom: '10%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <img
+                    src={profilePreviewHuman}
+                    alt="사람 프로필 미리보기"
+                    style={{ width: '140px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
+                  />
+                  <Link
+                    className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                    style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    onClick={() => window.open('/profile/view-profile/c6b04a1a-0a25-42f8-8d09-747506797e16', '_self')}
+                  >
+                    사람
+                  </Link>
+                </div>
+                <div>
+                  <img
+                    src={profilePreviewPet}
+                    alt="애완동물 프로필 미리보기"
+                    style={{ width: '148px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
+                  />
+                  <Link
+                    className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                    style={{ width: '200px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    onClick={() => window.open('/profile/view-profile/2e2e01cb-38da-4a9c-87f1-da15a70101b1', '_self')}
+                  >
+                    애완동물
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -350,15 +408,15 @@ const HomeSubPage = () => {
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-12 col-xl-10 text-center z-index-1">
-                    <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
+                    {/* <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
                       에버링크 영상
-                    </h6>
+                    </h6> */}
                     <div className="col text-center fit-videos md-mb-50px sm-mb-30px">
                       <iframe
                         className="w-100 h-500px sm-h-200px"
                         width="100%"
                         height="550"
-                        src="https://www.youtube.com/embed/sU3FkzUKHXU?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
+                        src="https://www.youtube.com/embed/UkTrceJi_sM?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
                         allowfullscreen
                       ></iframe>
                     </div>
@@ -366,7 +424,7 @@ const HomeSubPage = () => {
                 </div>
               </div>
             </section>
-            <div className="col-md-8 text-center pb-5">
+            {/* <div className="col-md-8 text-center pb-5">
               <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
                 가상 추모 페이지 <br />
                 구매하기 전 미리 보기
@@ -385,7 +443,7 @@ const HomeSubPage = () => {
                   </span>
                 </span>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
