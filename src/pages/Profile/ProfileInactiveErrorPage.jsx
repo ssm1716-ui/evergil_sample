@@ -45,7 +45,7 @@ const ProfileInactiveErrorPage = () => {
                   해당 프로필은 비활성화 상태입니다.
                 </h4>
                 <p className="mb-30px lh-28 sm-mb-30px w-55 md-w-80 sm-w-95 mx-auto">
-                  요청하신 프로필이 비활성화되어 접근할 수 없습니다.
+                  요청하신 프로필은 접근할 수 없습니다.
                 </p>
                 <Button
                   radiusOn="radius-on"
