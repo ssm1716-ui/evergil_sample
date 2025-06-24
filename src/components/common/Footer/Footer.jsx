@@ -28,7 +28,7 @@ const Footer = () => {
               <p className="fs-14 md-fs-13 sm-fs-12">
                 주소: (우)14313 경기도 광명시 하안로 198, 210동 1401호 <br />
                 (소하동, 동양2차아파트)
-                <br /> 에버길(evergil) / 대표자명:전경아 <br />
+                <br /> 에버링크(everlink) / 대표자명:전경아 <br />
                 사업자 등록번호: 136-04-69494 <br />
                 통신판매업신고: 2024-경기광명-1086 <br />
                 {/* <p className="xl-w-hidden sm-w-block fs-16">
@@ -42,7 +42,7 @@ const Footer = () => {
               <p className="fs-14 md-fs-13 sm-fs-12">
                 고객센터: 010-5922-1221
                 <br />
-                이메일: support@everlink.kr
+                이메일: everlink@everlink.com
               </p>
             </div>
           </div>
