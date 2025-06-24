@@ -12,11 +12,13 @@ const CartPage = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   //로드시 로컬스토리지에 장바구니 가져오기
   useEffect(() => {
     const fetchCart = async () => {
+      setIsLoading(true);
       let storedCartProduct;
 
       if (isAuthenticated) {
@@ -34,6 +36,7 @@ const CartPage = () => {
       }
       setCartProducts(storedCartProduct);
       setSelectedProducts([]);
+      setIsLoading(false);
     };
 
     fetchCart();
@@ -188,14 +191,31 @@ const CartPage = () => {
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
             <div className="col-12 text-center position-relative page-title-extra-large text-decoration-line-bottom mb-3">
-              <h4 className="fw-600 text-dark-gray mb-10px">장바구니</h4>
+              <h6 className="fw-600 text-dark-gray mb-10px">장바구니</h6>
             </div>
             <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
           </div>
         </div>
       </section>
 
-      {cartProducts.length > 0 ? (
+      {isLoading ? (
+        <section className="bg-base-white-color pt-0 pb-5">
+          <div className="container">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
+              <div className="col">
+                <div className="text-center">
+                  <div className="spinner-border text-base-color mb-4" role="status" style={{ width: '3rem', height: '3rem' }}>
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <h6 className="fw-600 text-dark-gray ls-minus-1px">
+                    장바구니를 불러오는 중입니다...
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : cartProducts.length > 0 ? (
         <section className="pt-0">
           <div className="container">
             <div className="row align-items-start">
