@@ -98,10 +98,7 @@ const ManagePage = () => {
     try {
       const res = await getInvitationsList(id);
       if (res.status === 200) {
-        console.log(res.data);
         const { items } = res.data.data;
-
-        console.log(items);
         setInvitations(items);
       }
     } catch (error) {
@@ -142,7 +139,6 @@ const ManagePage = () => {
 
       if (invitationsRes.status === 200) {
         const { items } = invitationsRes.data.data;
-        console.log(items);
         setInvitations(items);
       }
       if (privateAccessRes.status === 200) {
@@ -162,8 +158,6 @@ const ManagePage = () => {
   }, [profileId, showScreen]);
 
   const handleOptionChange = async (selectedOption) => {
-    console.log('선택한 값:', selectedOption.value);
-
     let seletedText = selectedOption.value === 'PUBLIC' ? '전체공개' : '비공개';
 
     const confirmed = window.confirm(`${seletedText}로 변경 하시겠습니까?`);
@@ -189,11 +183,15 @@ const ManagePage = () => {
       return;
     }
 
-    const res = await postEmailInvitations(profileId, receiverEmail);
-    if (res.status === 201) {
-      setIsModalOpen(true);
-      setReceiverEmail('');
-      fetchAllData(profileId);
+    try {
+      const res = await postEmailInvitations(profileId, receiverEmail);
+      if (res.status === 201) {
+        setIsModalOpen(true);
+        setReceiverEmail('');
+        fetchAllData(profileId);
+      }
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -234,7 +232,6 @@ const ManagePage = () => {
   };
 
   const handlePrivateRequests = async (obj, status) => {
-    console.log(obj);
     const { requestId } = obj;
     if (!requestId) return;
 
@@ -276,7 +273,7 @@ const ManagePage = () => {
                     </h6>
                   </Link>
                   <div className="d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-5">
-                    <form>
+                    <div>
                       <input
                         className="input-large md-input-medium border-1 bg-white border-color-gray form-control"
                         type="email"
@@ -284,6 +281,12 @@ const ManagePage = () => {
                         value={receiverEmail}
                         placeholder="Invite Email"
                         onChange={(e) => setReceiverEmail(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleInvitation(e);
+                          }
+                        }}
                       />
                       <input type="hidden" name="redirect" value="" />
                       <Button
@@ -293,7 +296,7 @@ const ManagePage = () => {
                         초대하기
                       </Button>
                       <div className="form-results border-radius-4px mt-15px pt-10px pb-10px ps-15px pe-15px fs-15 w-100 text-center position-absolute d-none"></div>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
