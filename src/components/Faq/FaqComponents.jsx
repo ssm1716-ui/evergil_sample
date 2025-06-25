@@ -34,16 +34,16 @@ const FaqComponents = () => {
       data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
     >
       <div className="col-12">
-        <div className="bg-linen md-p-7 border-radius-6px overflow-hidden position-relative">
+        <div className="bg-linen border-radius-6px overflow-hidden position-relative">
           <div className="position-absolute right-70px md-right-20px top-0 w-250px sm-w-180px xs-w-150px opacity-1">
             <img src={faqImage} alt="" />
           </div>
           {/* <div className="bg-base-color d-lg-inline-block mb-10px fw-600 text-white text-uppercase border-radius-30px ps-20px pe-20px fs-12 d-sm-none">
             공통 질문
           </div> */}
-          <h6 className="fw-700 text-dark-gray ls-minus-1px pb-1 text-decoration-line-bottom">
+          <h4 className="fw-700 text-dark-gray ls-minus-1px pb-1 text-decoration-line-bottom">
             FAQ
-          </h6>
+          </h4>
           <div
             className="accordion accordion-style-02"
             id="accordion-style-02"
@@ -70,7 +70,7 @@ const FaqComponents = () => {
                           : 'icon-feather-plus'
                       } fs-20`}
                     ></i>
-                    <span className="fs-16 sm-fs-12 fw-600">{f.question}</span>
+                    <span className="fs-16 sm-fs-15 fw-600">{f.question}</span>
                   </div>
                 </div>
                 <motion.div
@@ -85,7 +85,7 @@ const FaqComponents = () => {
                 >
                   <div className="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-dark-very-light">
                     <p
-                      className="w-90 sm-w-95 xs-w-100 fs-16 sm-fs-12"
+                      className="w-90 sm-w-95 xs-w-100 fs-16 sm-fs-13"
                       style={{ whiteSpace: 'pre-line' }}
                     >
                       {f.answer}

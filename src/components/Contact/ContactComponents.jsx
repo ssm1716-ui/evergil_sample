@@ -10,11 +10,11 @@ const ContactComponents = ({
     <form className="contact-form-style-03">
       <label
         htmlFor="exampleInputEmail1"
-        className="form-label fs-14 text-uppercase text-dark-gray fw-600 mb-0"
+        className="form-label fs-16 text-uppercase text-dark-gray fw-600 mb-1"
       >
         이름
       </label>
-      <div className="position-relative form-group mb-5px">
+      <div className="position-relative form-group mb-20px">
         <span className="form-icon">
           <i className="bi bi-emoji-smile"></i>
         </span>
@@ -32,11 +32,11 @@ const ContactComponents = ({
 
       <label
         htmlFor="exampleInputEmail1"
-        className="form-label fs-14 text-uppercase text-dark-gray fw-600 mb-0"
+        className="form-label fs-16 text-uppercase text-dark-gray fw-600 mb-1"
       >
         이메일
       </label>
-      <div className="position-relative form-group mb-5px">
+      <div className="position-relative form-group mb-20px">
         <span className="form-icon">
           <i className="bi bi-envelope"></i>
         </span>
@@ -56,11 +56,11 @@ const ContactComponents = ({
 
       <label
         htmlFor="exampleInputEmail1"
-        className="form-label fs-14 text-uppercase text-dark-gray fw-600 mb-0"
+        className="form-label fs-16 text-uppercase text-dark-gray fw-600 mb-1"
       >
         메시지
       </label>
-      <div className="position-relative form-group form-textarea mb-5px">
+      <div className="position-relative form-group form-textarea mb-20px">
         <textarea
           className="ps-0 md-py-0 border-radius-0px border-color-dark-gray bg-transparent form-control required"
           name="message"
