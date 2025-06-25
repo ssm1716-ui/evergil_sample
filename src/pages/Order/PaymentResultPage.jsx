@@ -47,7 +47,7 @@ const PaymentResultPage = () => {
         </section>
       </main>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-40">
+        <div className="w-100 h-50 md-h-50 sm-h-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
