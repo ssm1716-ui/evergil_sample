@@ -163,7 +163,7 @@ const SettingProfilePage = () => {
                   <h6 className="fw-600 text-dark-gray mb-8 ls-minus-1px">
                     추모페이지 설정
                   </h6>
-                  <p className="fs-16 md-fs-12">
+                  <p className="fs-16 md-fs-14">
                     사랑하는 사람에 대한 정보를 등록해보세요.
                     <br />
                     언제든지 이 정보는 수정할 수 있습니다.
@@ -233,7 +233,7 @@ const SettingProfilePage = () => {
                     {formProfile.birthday && (
                       <button
                         type="button"
-                        className="btn btn-sm position-absolute"
+                        className="btn btn-sm position-absolute fs-5"
                         style={{ right: '10px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}
                         onClick={() => handleChange({ target: { name: 'birthday', value: '' } })}
                       >
@@ -262,7 +262,7 @@ const SettingProfilePage = () => {
                     {formProfile.deathDate && (
                       <button
                         type="button"
-                        className="btn btn-sm position-absolute"
+                        className="btn btn-sm position-absolute fs-5"
                         style={{ right: '10px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}
                         onClick={() => handleChange({ target: { name: 'deathDate', value: '' } })}
                       >
