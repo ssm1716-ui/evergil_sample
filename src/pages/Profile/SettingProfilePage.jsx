@@ -222,13 +222,25 @@ const SettingProfilePage = () => {
                   <label className="text-dark-gray fw-500 d-block text-start">
                     생년월일
                   </label>
-                  <input
-                    className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
-                    type="date"
-                    name="birthday"
-                    value={formProfile.birthday}
-                    onChange={handleChange}
-                  />
+                  <div className="position-relative">
+                    <input
+                      className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
+                      type="date"
+                      name="birthday"
+                      value={formProfile.birthday}
+                      onChange={handleChange}
+                    />
+                    {formProfile.birthday && (
+                      <button
+                        type="button"
+                        className="btn btn-sm position-absolute"
+                        style={{ right: '10px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}
+                        onClick={() => handleChange({ target: { name: 'birthday', value: '' } })}
+                      >
+                        <i className="bi bi-x-circle text-muted"></i>
+                      </button>
+                    )}
+                  </div>
                   {errors.birthday && (
                     <p className="text-danger text-start">
                       생년월일 입력 해 주세요.
@@ -239,13 +251,25 @@ const SettingProfilePage = () => {
                   <label className="text-dark-gray fw-500 d-block text-start">
                     기일
                   </label>
-                  <input
-                    className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
-                    type="date"
-                    name="deathDate"
-                    value={formProfile.deathDate}
-                    onChange={handleChange}
-                  />
+                  <div className="position-relative">
+                    <input
+                      className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
+                      type="date"
+                      name="deathDate"
+                      value={formProfile.deathDate}
+                      onChange={handleChange}
+                    />
+                    {formProfile.deathDate && (
+                      <button
+                        type="button"
+                        className="btn btn-sm position-absolute"
+                        style={{ right: '10px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}
+                        onClick={() => handleChange({ target: { name: 'deathDate', value: '' } })}
+                      >
+                        <i className="bi bi-x-circle text-muted"></i>
+                      </button>
+                    )}
+                  </div>
                   {errors.deathDate && (
                     <p className="text-danger text-start">
                       기일을 입력 해 주세요.
