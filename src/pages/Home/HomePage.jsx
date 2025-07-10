@@ -10,8 +10,9 @@ import mainBannerImageMobile from '@/assets/images/main-banner-mobile.jpeg';
 import mainSubImage1 from '@/assets/images/main-sub-image1.jpeg';
 import mainSubImage1Mobile from '@/assets/images/main-sub-image1-mobile.jpeg';
 
-import mainLogoPc from '@/assets/images/main_logo_pc.png';
-import mainLogoMobile from '@/assets/images/main_logo_mobile.png';
+import mainLogoPc from '@/assets/images/evergil_main_logo_pc.png';
+import mainLogoMobile from '@/assets/images/evergil_main_logo_mobile.png';
+import signupMobile from '@/assets/images/evergil_signup_logo_mobile.png';
 import main_guide from '@/assets/images/main_guide.jpeg';
 import guide1 from '@/assets/images/guide_1.jpg';
 import guide2 from '@/assets/images/guide_2.jpg';
@@ -74,11 +75,8 @@ const HomeSubPage = () => {
               className="col-md-10 position-relative text-white d-flex flex-column justify-content-center text-center h-100"
               data-anime='{ "el": "childs", "translateY": [-15, 0], "perspective": [1200,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 600, "delay": 100, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
-              {/* <h5 className="fw-400 mb-20px text-shadow-double-large">
-                  Luxury space that you can afford
-                </h5> */}
               <div className="fs-200 lg-fs-200 md-fs-170 sm-fs-150 xs-fs-110 fw-700 mb-20px ls-minus-8px md-ls-minus-4px xs-ls-minus-2px text-shadow-double-large">
-                <img src={mainLogoPc} alt="mainlogo" />
+                <img src={isMobile ? mainLogoMobile : mainLogoPc} alt="mainlogo" />
               </div>
               <div className="mb-30px">
                 <Link
@@ -114,14 +112,14 @@ const HomeSubPage = () => {
                 소중한 사람들이 항상 기억될 수 있도록
               </span>
               <h6 className="text-dark-gray lh-60 md-mb-0">
-                에버링크 추모페이지
+                에버길 추모페이지
               </h6>
 
               <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14 text-keep-all">
-                Everlink 는 가족과 추억을 공유하고, 편지를 남기며,
+                Evergil 는 가족과 추억을 공유하고, 편지를 남기며,
                 <br />고인을 기억할 수 있도록 만들어주는 추모페이지 입니다.
                 <br />
-                <br />에버링크의 사명은 사랑하는 사람들이 영원히 기억되는 것입니다.
+                <br />에버길의 사명은 사랑하는 사람들이 영원히 기억되는 것입니다.
                 <br />대부분 2-3세대가 지나면 사람들은
                 <br />우리의 이름조차 기억하지 못할 것입니다.
                 <br />확실한 건 시간이 지나면 기억은 희미해집니다.
@@ -130,7 +128,7 @@ const HomeSubPage = () => {
                 <br />고인과의 추억을 보존하고,
                 <br />고인을 기억할 수 있는 플랫폼을 제공할 것입니다.
                 <br />
-                <br />에버링크는 신뢰할 수 있는 품질과
+                <br />에버길은 신뢰할 수 있는 품질과
                 <br />사랑하는 사람의 발자취를 기억할 수 있는 가치
                 <br />그리고 고객과 함께 나아간다는 원칙을 통해
                 <br />오늘도 진심으로 정성을 다해 움직입니다.

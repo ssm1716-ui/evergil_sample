@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 
 import WebShareButton from '@/components/Share/WebShareButton';
-import defaultLogo_pc from '@/assets/images/logo_pc.png';
-import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
+// import defaultLogo_pc from '@/assets/images/logo_pc.png';
+import defaultLogo_pc from '@/assets/images/evergil_logo_pc.png';
+//import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
+import defaultLogo_mobile from '@/assets/images/evergil_logo_mobile.png';
+
 import footerIconYoutube from '@/assets/images/footer-icon-youtube.png';
 import footerIconInstagram from '@/assets/images/footer-icon-instagram.png';
 import footerIconNaver from '@/assets/images/footer-icon-naver.png';
@@ -26,9 +29,10 @@ const Footer = () => {
 
             <div className="col-xl-4 col-sm-4 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-14 md-fs-13 sm-fs-12">
-                주소: (우)14313 경기도 광명시 하안로 198, 210동 1401호 <br />
-                (소하동, 동양2차아파트)
-                <br /> 에버링크(everlink) / 대표자명:전경아 <br />
+                {/* 주소: (우)14313 경기도 광명시 하안로 198, 210동 1401호 <br />
+                (소하동, 동양2차아파트) */}
+                주소: (우)14441 경기도 부천시 오정구 오정로211번길 35-24,201호<br />(오정동, ㈜예스테크)
+                <br /> 에버길(Evergil) / 대표자명:전경아 <br />
                 사업자 등록번호: 136-04-69494 <br />
                 통신판매업신고: 2024-경기광명-1086 <br />
                 {/* <p className="xl-w-hidden sm-w-block fs-16">
@@ -40,9 +44,9 @@ const Footer = () => {
             </div>
             <div className="col-xl-4 col-sm-4 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-14 md-fs-13 sm-fs-12">
-                고객센터: 010-5922-1221
+                고객센터: 010-9291-8601
                 <br />
-                이메일: everlink@everlink.com
+                이메일: support@evergil.kr
               </p>
             </div>
           </div>
@@ -51,7 +55,7 @@ const Footer = () => {
               <p className="fs-14 md-fs-13 sm-fs-12">
                 © Copyright 2025
                 <Link to="/" className="fw-500 ps-2">
-                  EverLink
+                  Evergil.
                 </Link>
               </p>
             </div>

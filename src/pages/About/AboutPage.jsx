@@ -40,8 +40,7 @@ const AboutPage = () => {
 
   return (
     <>
-      <section className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center">
-        {/* <div className="opacity-full-dark bg-gradient-dark-transparent"></div> */}
+      {/* <section className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center">
         <div className="container position-relative">
           <div
             className="row align-items-start align-items-lg-end justify-content-end flex-column flex-lg-row"
@@ -56,9 +55,9 @@ const AboutPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       <section
-        className="background-position-center background-repeat overlap-height pb-5"
+        className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center"
         style={{ backgroundImage: `url(${VerticalCenterLineBg})` }}
       >
         <div
@@ -81,21 +80,21 @@ const AboutPage = () => {
                 Our Story
               </h6>
               <p className="mt-4 w-100 lg-w-100 fs-18 md-fs-16 sm-fs-14 text-lg-start text-md-center text-sm-center text-keep-all">
-                에버링크는 사랑하는 가족, 친구, 반려동물을
+                에버길은 사랑하는 가족, 친구, 반려동물을
                 <br />마음속에 오래도록 간직할 수 있도록 돕는 공간입니다.
                 <br />사랑하는 사람을 떠나보낸 후 기억들을 좀 더 오래, 좀 더 의미 있게
                 <br />간직하고 싶다는 바람에서 시작되었습니다.
                 <br />
-                <br />그 마음으로 만든 것이 바로 에버링크의 “메모리태그” 입니다.
+                <br />그 마음으로 만든 것이 바로 에버길의 “메모리태그” 입니다.
                 <br />5cm x 5cm의 견고한 양극산화 알루미늄 명판에는
                 <br />QR 코드가 새겨져 있으며 이를 스캔하면 사진, 가족관계도, 하늘편지를
                 <br />남길 수 있는 디지털추모 공간으로 연결됩니다.
                 <br />
-                <br />에버링크는 2024년에 시작되어 지금까지,
+                <br />에버길은 2024년에 시작되어 지금까지,
                 <br />추억을 지키는 가장 진심 어린 방법을 고민해왔습니다.
                 <br />납골당, 묘비, 혹은 가정에서 언제 어디서나 사랑하는 사람을
                 <br />기억할 수 있도록 정성과 품질을 담아 제작했습니다.
-                <br />에버링크는 사랑을 추모하고, 기억을 공유하며,
+                <br />에버길은 사랑을 추모하고, 기억을 공유하며,
                 <br />세대를 넘어 마음을 잇는 다리입니다.
               </p>
             </div>
@@ -103,7 +102,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className="cover-background position-relative overflow-visible pt-0 pb-10">
+      <section className="cover-background position-relative overflow-visible pt-5 pb-10">
         <div className="container">
           <div className="row justify-content-center">
             <div
@@ -114,18 +113,18 @@ const AboutPage = () => {
               <img src={isMobile ? AboutImage3Mobile : AboutImage3} alt="" className="w-100" />
               <h5 className="text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
               <p className="lg-w-100 mt-5 lh-24 fs-18 md-fs-16 sm-fs-14  md-lh-30 text-keep-all">
-                에버링크의 사명은 사랑하는 사람의 기억을 의미 있게,
+                에버길의 사명은 사랑하는 사람의 기억을 의미 있게,
                 <br />오래도록 간직할 수 있도록 돕는 것입니다.
                 <br />
                 <br />전통적인 방식의 추모에는 한계가 있습니다.
                 <br />사진은 바래고, 공간은 부족하며, 시간이 지나면 기억도 점점 흐려집니다.
                 <br />하지만 기억은 그 어떤 것보다 소중하기에, 더 나은 방법이 필요했습니다.
                 <br />
-                <br />에버링크는 단순한 QR 명판이 아닙니다.
+                <br />에버길은 단순한 QR 명판이 아닙니다.
                 <br />언제든지 스캔 한 번으로, 그 사람의 삶과 이야기,
                 <br />가족의 사랑을 디지털 공간에 남길 수 있는 추모 플랫폼입니다.
                 <br />
-                <br />지금,사랑하는 사람의 이야기를 영원히 담을 수 있는 에버링크와 함께하세요.
+                <br />지금,사랑하는 사람의 이야기를 영원히 담을 수 있는 에버길과 함께하세요.
                 <br />기억을 간직하는 가장 따뜻한 방법이 되어드리겠습니다.
               </p>
             </div>
