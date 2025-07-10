@@ -9,10 +9,10 @@ import {
 } from '@/api/memberApi';
 
 import { getPolicySelected } from '@/api/policy/policyApi';
-import useIsMobile from '@/hooks/useIsMobile';
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
+import useIsMobile from '@/hooks/useIsMobile';
 
 import { isValidEmail, isInteger } from '@/utils/validators';
 
@@ -26,6 +26,7 @@ const SignUpPage = () => {
   const inputRefs = useRef([]);
   const [step, byStep] = useState(0);
   const dispatch = useDispatch();
+  const isMobile = useIsMobile();
   const [member, setMember] = useState({
     loginEmail: '',
     password: '',
@@ -43,7 +44,6 @@ const SignUpPage = () => {
   const [policyContent, setPolicyContent] = useState({});
   const [timeLeft, setTimeLeft] = useState(180); // 3분 타이머
   const [isTimerExpired, setIsTimerExpired] = useState(false);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const style = document.createElement('style');
@@ -424,8 +424,12 @@ const SignUpPage = () => {
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
                 <div className="py-5 md-p-5 text-center">
-                  {/* <img src={signup} alt="" className="default-logo" /> */}
-                  <img src={isMobile ? signupMobile : signup} className="default-logo" />
+                  <img 
+                    src={signup} 
+                    alt="" 
+                    className="default-logo" 
+                    style={{ width: isMobile ? '160px' : 'auto' }}
+                  />
                   <form className="mt-50px sm-mt-10px ">
                     <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       이메일<span className="text-red">*</span>
@@ -529,7 +533,7 @@ const SignUpPage = () => {
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
                 <div className="mt-10 md-mt-0 py-4_5 text-center ">
-                <img src={isMobile ? signupMobile : signup} className="default-logo" />
+                  <img src={signup} className="default-logo" style={{ width: isMobile ? '160px' : 'auto' }} />
                   <form method="post" className="mt-40px md-mt-50px sm-mt-10px">
                     <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px md-fs-40 sm-fs-24">
                       이메일 인증하기
