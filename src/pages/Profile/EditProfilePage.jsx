@@ -583,42 +583,52 @@ const EditProfilePage = () => {
   };
 
   const addCustomButtons = () => {
+    // 즉시 실행 후 지연 실행도 추가 (PC 환경에서 타이밍 이슈 대응)
+    const tryAddButtons = () => {
+      const lgToolbar = document.querySelector('.lg-toolbar');
+      if (lgToolbar && !document.getElementById('edit-button')) {
+        const editButton = document.createElement('button');
+        editButton.innerText = '수정';
+        editButton.classList.add('lg-custom-btn', 'lg-custom-modify');
+        editButton.id = 'edit-button';
+        editButton.onclick = () => {
+          const index = getCurrentImageIndex();
+          console.log('Edit button clicked, index:', index);
+          if (index !== -1 && imagesRef.current[index]) {
+            const imageId = imagesRef.current[index]?.id;
+            handleEdit(imageId);
+          }
+        };
+
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = '삭제';
+        deleteButton.classList.add('lg-custom-btn', 'lg-custom-remove');
+        deleteButton.id = 'delete-button';
+        deleteButton.onclick = () => {
+          const index = getCurrentImageIndex();
+          console.log('Delete button clicked, index:', index);
+          if (index !== -1 && imagesRef.current[index]) {
+            const imageId = imagesRef.current[index]?.id;
+            handleDelete(imageId);
+          }
+        };
+
+        lgToolbar.appendChild(editButton);
+        lgToolbar.appendChild(deleteButton);
+        
+        return true; // 성공
+      }
+      return false; // 실패
+    };
+
+    // 즉시 시도
+    if (tryAddButtons()) return;
+
     // MutationObserver를 사용하여 DOM 변경 감지
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList') {
-          const lgToolbar = document.querySelector('.lg-toolbar');
-          if (lgToolbar && !document.getElementById('edit-button')) {
-            const editButton = document.createElement('button');
-            editButton.innerText = '수정';
-            editButton.classList.add('lg-custom-btn', 'lg-custom-modify');
-            editButton.id = 'edit-button';
-            editButton.onclick = () => {
-              const index = getCurrentImageIndex();
-              console.log(index);
-              if (index !== -1) {
-                const imageId = imagesRef.current[index]?.id;
-                handleEdit(imageId);
-              }
-            };
-
-            const deleteButton = document.createElement('button');
-            deleteButton.innerText = '삭제';
-            deleteButton.classList.add('lg-custom-btn', 'lg-custom-remove');
-            deleteButton.id = 'delete-button';
-            deleteButton.onclick = () => {
-              const index = getCurrentImageIndex();
-              console.log(index);
-              if (index !== -1) {
-                const imageId = imagesRef.current[index]?.id;
-                handleDelete(imageId);
-              }
-            };
-
-            lgToolbar.appendChild(editButton);
-            lgToolbar.appendChild(deleteButton);
-            
-            // 버튼이 추가되면 observer 해제
+          if (tryAddButtons()) {
             observer.disconnect();
           }
         }
@@ -631,6 +641,19 @@ const EditProfilePage = () => {
       subtree: true
     });
 
+    // 지연 시도 (PC 환경에서 추가 보장)
+    setTimeout(() => {
+      if (tryAddButtons()) {
+        observer.disconnect();
+      }
+    }, 100);
+
+    setTimeout(() => {
+      if (tryAddButtons()) {
+        observer.disconnect();
+      }
+    }, 500);
+
     // 3초 후 observer 해제 (타임아웃)
     setTimeout(() => {
       observer.disconnect();
@@ -642,12 +665,19 @@ const EditProfilePage = () => {
   };
 
   const getCurrentImageIndex = () => {
-    // 현재 활성화된 이미지 찾기
+    // LightGallery 인스턴스에서 현재 인덱스 가져오기
+    if (lgRef.current?.instance) {
+      return lgRef.current.instance.index;
+    }
+    
+    // fallback: 현재 활성화된 이미지 찾기
     const currentSlide = document.querySelector('.lg-item.lg-current img');
-
     if (currentSlide) {
-      const index = currentSlide.getAttribute('data-index'); // ✅ data-index 속성 가져오기
-      return index !== null ? parseInt(index, 10) : -1; // 정수 변환 후 반환
+      // 부모 요소에서 인덱스 찾기
+      const lgItem = currentSlide.closest('.lg-item');
+      const allItems = document.querySelectorAll('.lg-item');
+      const index = Array.from(allItems).indexOf(lgItem);
+      return index !== -1 ? index : -1;
     }
 
     return -1; // 활성화된 이미지가 없을 경우 -1 반환
@@ -862,6 +892,22 @@ const EditProfilePage = () => {
       saveDescription(content); // API 호출
     }
   };
+
+  // ReactQuill 변경 시 디바운스된 저장
+  const debouncedSaveDescription = useRef(
+    debounce(async (content) => {
+      if (content.trim() !== '') {
+        await saveDescription(content);
+      }
+    }, 2000) // 2초 대기
+  ).current;
+
+  // content 변경 시 디바운스된 저장 실행
+  useEffect(() => {
+    if (content && content.trim() !== '') {
+      debouncedSaveDescription(content);
+    }
+  }, [content, debouncedSaveDescription]);
 
   // 추모 프로필 설명 문구 저장
   const saveDescription = async (content) => {
@@ -1264,7 +1310,7 @@ const EditProfilePage = () => {
                 theme="snow"
                 value={content}
                 onChange={setContent}
-                // onBlur={handleBlur}
+                onBlur={handleBlur}
                 modules={modules}
                 formats={formats}
                 className="w-700px md-w-95 md-h-450px lh-initial"
@@ -1344,10 +1390,8 @@ const EditProfilePage = () => {
                         speed={500}
                         closable={true}
                         download={false}
-                        mobileSettings={{
-                          controls: true,
-                          showCloseIcon: true,
-                        }}
+                        controls={true}
+                        showCloseIcon={true}
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"
@@ -1395,15 +1439,17 @@ const EditProfilePage = () => {
                           {imageState.images.map((image, index) => (
                             <a
                               href={image.url}
-                              key={index}
+                              key={image.id || index}
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
                               data-page={Math.floor(index / 20) + 1}
+                              data-index={index}
                             >
                               <img
                                 src={image.url}
                                 loading="lazy"
                                 alt="추모 이미지"
+                                data-index={index}
                               />
                             </a>
                           ))}

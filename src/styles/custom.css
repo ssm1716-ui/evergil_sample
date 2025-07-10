@@ -832,6 +832,14 @@ height: 1297px;
   border: none;
   margin-left: 8px;
   border-radius: 4px;
+  cursor: pointer;
+  z-index: 9999;
+  position: relative;
+}
+
+.lg-custom-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
 }
 
 @media (max-width: 768px) {
@@ -843,6 +851,27 @@ height: 1297px;
   .lg-custom-btn {
     margin-bottom: 6px;
     font-size: 12px;
+    padding: 4px 8px;
+  }
+}
+
+/* PC 환경에서 LightGallery 버튼 위치 보정 */
+@media (min-width: 769px) {
+  .lg-custom-btn {
+    position: absolute;
+    top: 15px;
+    padding: 8px 15px;
+    font-size: 14px;
+    margin-left: 10px;
+    z-index: 9999;
+  }
+  
+  .lg-custom-modify {
+    right: 100px;
+  }
+  
+  .lg-custom-remove {
+    right: 30px;
   }
 }
 
@@ -899,3 +928,4 @@ header .navbar-brand .default-logo, footer .navbar-brand .default-logo {
   header .navbar-brand .mobile-logo, footer .mobile-logo {
       height: 30px;
   }
+}
