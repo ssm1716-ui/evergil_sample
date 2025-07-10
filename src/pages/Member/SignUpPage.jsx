@@ -9,7 +9,7 @@ import {
 } from '@/api/memberApi';
 
 import { getPolicySelected } from '@/api/policy/policyApi';
-
+import useIsMobile from '@/hooks/useIsMobile';
 import Button from '@/components/common/Button/Button';
 import { Link } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
@@ -18,7 +18,8 @@ import { isValidEmail, isInteger } from '@/utils/validators';
 
 import { isValidPassword, isValidPhoneNumber } from '@/utils/validators';
 
-import signup from '@/assets/images/signup.png';
+import signup from '@/assets/images/evergil_signup_logo_pc.png';
+import signupMobile from '@/assets/images/evergil_signup_logo_mobile.png';
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SignUpPage = () => {
@@ -42,6 +43,7 @@ const SignUpPage = () => {
   const [policyContent, setPolicyContent] = useState({});
   const [timeLeft, setTimeLeft] = useState(180); // 3분 타이머
   const [isTimerExpired, setIsTimerExpired] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const style = document.createElement('style');
@@ -353,7 +355,7 @@ const SignUpPage = () => {
                         id="terms_of_service"
                         className="terms-condition check-box align-middle required"
                       />
-                      <span className="box">Everlink 이용 약관(필수)</span>
+                      <span className="box">Evergil 이용 약관(필수)</span>
                     </div>
                     <span className="lg-fs-25 md-fs-18 sm-fs-14 terms-view">
                       <Link
@@ -422,7 +424,8 @@ const SignUpPage = () => {
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
                 <div className="py-5 md-p-5 text-center">
-                  <img src={signup} alt="" className="default-logo" />
+                  {/* <img src={signup} alt="" className="default-logo" /> */}
+                  <img src={isMobile ? signupMobile : signup} className="default-logo" />
                   <form className="mt-50px sm-mt-10px ">
                     <label className="text-dark-gray mb-10px md-mb-0 fw-500 d-block text-start signup-label">
                       이메일<span className="text-red">*</span>
@@ -526,7 +529,7 @@ const SignUpPage = () => {
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
                 <div className="mt-10 md-mt-0 py-4_5 text-center ">
-                  <img src={signup} alt="" className="default-logo pb-10px" />
+                <img src={isMobile ? signupMobile : signup} className="default-logo" />
                   <form method="post" className="mt-40px md-mt-50px sm-mt-10px">
                     <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px md-fs-40 sm-fs-24">
                       이메일 인증하기

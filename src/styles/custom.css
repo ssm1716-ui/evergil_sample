@@ -889,3 +889,13 @@ height: 1297px;
     height: auto;
   }
 }
+
+/* Evergil 변경 작업 */
+header .navbar-brand .default-logo, footer .navbar-brand .default-logo {
+  height: 44px;
+}
+
+@media (max-width: 991px) {
+  header .navbar-brand .mobile-logo, footer .mobile-logo {
+      height: 30px;
+  }

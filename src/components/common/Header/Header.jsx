@@ -5,9 +5,10 @@ import { logout } from '@/state/slices/authSlices';
 import { useNavigate } from 'react-router-dom';
 import { signLogout } from '@/api/memberApi';
 
-// import defaultLogo from '@/assets/images/header-logo.png';
-import defaultLogo_pc from '@/assets/images/logo_pc.png';
-import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
+// import defaultLogo_pc from '@/assets/images/logo_pc.png';
+import defaultLogo_pc from '@/assets/images/evergil_logo_pc.png';
+//import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
+import defaultLogo_mobile from '@/assets/images/evergil_logo_mobile.png';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -112,7 +113,7 @@ const Header = () => {
                       className="nav-link"
                       onClick={closeMenu}
                     >
-                      My Everlinks
+                      My Profiles
                     </Link>
                   </li>
                 )}

@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getSelectCart, putUpdateCart, deleteCart } from '@/api/member/cartApi';
 import { getCart, modifyCart, removeCart } from '@/api/memberApi';
 import useAuth from '@/hooks/useAuth';
+import useIsMobile from '@/hooks/useIsMobile';
 import Button from '@/components/common/Button/Button';
 import LoginModal from '@/components/common/Modal/LoginModal';
 import { getTransformedCartData } from '@/utils/utils';
 
 const CartPage = () => {
   const { isAuthenticated, user } = useAuth();
+  const isMobile = useIsMobile();
   const [cartProducts, setCartProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -488,20 +490,17 @@ const CartPage = () => {
           </div>
         </section>
       ) : (
-        <section className="bg-base-white-color pt-0 pb-5">
+        <section className={`bg-base-white-color ${isMobile ? 'pt-20 pb-30' : 'pt-2 pb-7'}`}>
           <div className="container">
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
               <div className="col">
                 <div className="text-center ">
                   <a className="navbar-brand mb-10">
-                    {/* <i className="feather icon-feather-shopping-cart align-middle text-extra-medium-gray fs-150 mb-10" /> */}
                     <i className="bi bi-handbag align-middle align-middle text-extra-medium-gray fs-70 mb-5"></i>
                   </a>
-
                   <h6 className="fw-600 text-dark-gray  ls-minus-1px">
                     장바구니에 담긴 상품이 없습니다.
                   </h6>
-
                   <Link to="/store" className="d-block pt-5 fw-800 fs-18">
                     <Button
                       size="extra-large"
