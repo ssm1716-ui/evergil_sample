@@ -1398,6 +1398,11 @@ const EditProfilePage = () => {
                         onAfterOpen={handleGalleryOpen}
                         onInit={onInit}
                         ref={lgRef}
+                        // 모바일에서 닫기 버튼 표시를 위한 설정 (다른 페이지와 동일)
+                        mobileSettings={{
+                          controls: true,
+                          showCloseIcon: true,
+                        }}
                         // DOM 조작 최소화를 위한 설정
                         allowMediaOverlap={false}
                         backdropDuration={400}
