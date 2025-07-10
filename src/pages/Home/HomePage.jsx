@@ -116,7 +116,7 @@ const HomeSubPage = () => {
               </h6>
 
               <p className="w-100 xl-w-100 mb-35px xs-mb-10px fs-16 sm-fs-14 text-keep-all">
-                Evergil 는 가족과 추억을 공유하고, 편지를 남기며,
+                Evergil 은 가족과 추억을 공유하고, 편지를 남기며,
                 <br />고인을 기억할 수 있도록 만들어주는 추모페이지 입니다.
                 <br />
                 <br />에버길의 사명은 사랑하는 사람들이 영원히 기억되는 것입니다.
