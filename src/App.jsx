@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import ProtectedRoute from './ProtectedRoute';
 import Layout from '@/components/common/Layout';
+import MetaTags from '@/components/common/MetaTags';
 
 import HomePage from '@/pages/Home/HomePage';
 import AboutPage from '@/pages/About/AboutPage';
@@ -58,6 +59,7 @@ const App = () => {
       <HelmetProvider>
         <Router>
           <ScrollToTop />
+          <MetaTags />
           <Layout>
             <Routes>
               <Route path="/" element={<HomePage />} />

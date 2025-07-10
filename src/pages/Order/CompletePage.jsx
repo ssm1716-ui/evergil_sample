@@ -81,7 +81,7 @@ const CompletePage = () => {
                   radiusOn="radius-on"
                   className="btn btn-base-color d-table d-lg-inline-block lg-mb-15px"
                 >
-                  My EverLinks
+                  My Profiles
                 </Button>
               </Link>
             </div>

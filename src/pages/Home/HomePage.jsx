@@ -200,7 +200,7 @@ const HomeSubPage = () => {
                     데이터 보호
                   </span>
                   <p className="fs-16">
-                    에버링크를 볼 수 있는 사용자를 결정할 수 있습니다.
+                    에버길을 볼 수 있는 사용자를 결정할 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -216,7 +216,7 @@ const HomeSubPage = () => {
                     분실 시 보안
                   </span>
                   <p className="fs-16">
-                    에버링크를 도난당해도 즉시 교체할 수 있습니다.
+                    에버길을 도난당해도 즉시 교체할 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -272,7 +272,7 @@ const HomeSubPage = () => {
                     데이터 보호
                   </span>
                   <p className="fs-12 sm-lh-20 px-2">
-                    에버링크를 볼 수 있는 사용자를 결정할 수 있습니다.
+                    에버길을 볼 수 있는 사용자를 결정할 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -288,7 +288,7 @@ const HomeSubPage = () => {
                     분실 시 보안
                   </span>
                   <p className="fs-12 sm-lh-20 px-2">
-                    에버링크를 도난당해도 즉시 교체할 수 있습니다.
+                    에버길을 도난당해도 즉시 교체할 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -406,9 +406,6 @@ const HomeSubPage = () => {
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-12 col-xl-10 text-center z-index-1">
-                    {/* <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2">
-                      에버링크 영상
-                    </h6> */}
                     <div className="col text-center fit-videos md-mb-50px sm-mb-30px">
                       <iframe
                         className="w-100 h-500px sm-h-200px"

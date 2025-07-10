@@ -35,7 +35,7 @@ const ProfilePage = () => {
   const [viewProfiles, setViewProfiles] = useState([]);
   const [BookmarksProfiles, setBookmarksProfiles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('My Everlinks');
+  const [activeTab, setActiveTab] = useState('My Profiles');
   const [profileId, setProfileId] = useState('');
   const [isotopeReady, setIsotopeReady] = useState(false);
   const prevScrollY = useRef(0);
@@ -160,7 +160,7 @@ const ProfilePage = () => {
       let res;
       const pageSize = 10;
       
-      if (activeTab === 'My Everlinks') {
+      if (activeTab === 'My Profiles') {
         res = await getSelectProfileList(page, pageSize);
       } else if (activeTab === 'View') {
         res = await getSelectProfileViewList(page, pageSize);
@@ -208,7 +208,7 @@ const ProfilePage = () => {
   }, [isFetching, profileState.hasNext, profileState.page, isotopeReady]);
 
   const handleMovePageProfile = (profileId) => {
-    if (activeTab === 'My Everlinks') {
+    if (activeTab === 'My Profiles') {
       navigate(`/profile/edit-profile/${profileId}`);
       return;
     }
@@ -222,7 +222,7 @@ const ProfilePage = () => {
   const handleRemoveProfile = async () => {
     try {
       let res;
-      if (activeTab === 'My Everlinks') {
+      if (activeTab === 'My Profiles') {
         res = await deleteEditorProfile(profileId);
       } else if (activeTab === 'View') {
         res = await deleteViwerProfile(profileId);
@@ -255,7 +255,7 @@ const ProfilePage = () => {
           <div className="row">
             <div className="col-12 tab-style-10">
               <ul className="nav nav-tabs border-0 justify-content-center fw-700 fs-26 md-fs-13 sm-fs-12 text-center">
-                {['My Everlinks', 'View', 'Bookmark'].map((tab) => (
+                {['My Profiles', 'View', 'Bookmark'].map((tab) => (
                   <li key={tab} className="nav-item sm-p-0">
                     <button
                       className={`w-100 nav-link text-center md-fs-20 sm-fs-16 ${
@@ -274,7 +274,7 @@ const ProfilePage = () => {
                 {profileState.profiles.length > 0 ? (
                   <>
                     <div className="w-100 sm-mt-10px xs-mb-8 my-5 text-center">
-                      {activeTab === 'My Everlinks' && (
+                      {activeTab === 'My Profiles' && (
                         <div className="col text-lg-end text-md-center xs-mt-25px">
                           {/* <Link to="/profile/setting-profile"> */}
                           <Link to="/bridge-profile">
@@ -377,7 +377,7 @@ const ProfilePage = () => {
                 )}
                 {profileState.profiles.length === 0 && (
                   <div className="text-center pt-12">
-                    {activeTab === 'My Everlinks' && (
+                    {activeTab === 'My Profiles' && (
                       // <Link to="/profile/setting-profile">
                       <Link to="/bridge-profile">
                         <div className="pb-2">
@@ -439,7 +439,7 @@ const ProfilePage = () => {
                     <div className="col-md-9 text-center">
                       <h6 className="text-dark-gray fw-500 fs-18 sm-fs-14 mb-15px">
                         해당 프로필
-                        {activeTab === 'My Everlinks'
+                        {activeTab === 'My Profiles'
                           ? ' 편집 권한이 사라집니다.'
                           : activeTab === 'View'
                             ? ' view 권한이 사라집니다.'

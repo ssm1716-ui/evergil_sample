@@ -423,7 +423,7 @@ const SignUpPage = () => {
           {step === 1 && (
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
-                <div className="py-5 md-p-5 text-center">
+                <div className="md-p-5 text-center">
                   <img 
                     src={signup} 
                     alt="" 
@@ -532,7 +532,7 @@ const SignUpPage = () => {
           {step === 2 && (
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden bg-white py-4_5 md-py-0">
               <div className="col contact-form-style-04">
-                <div className="mt-10 md-mt-0 py-4_5 text-center ">
+                <div className="md-mt-0 text-center ">
                   <img src={signup} className="default-logo" style={{ width: isMobile ? '160px' : 'auto' }} />
                   <form method="post" className="mt-40px md-mt-50px sm-mt-10px">
                     <h3 className="fw-600 text-dark-gray mb-2 ls-minus-1px md-fs-40 sm-fs-24">
@@ -652,7 +652,7 @@ const SignUpPage = () => {
                         </Button>
                       </Link>
                       <h6 className=" mb-8 ls-minus-1px">
-                        에버링크 프로필을 생성해보세요.
+                        에버길 프로필을 생성해보세요.
                       </h6>
                     </>
                   ) : (

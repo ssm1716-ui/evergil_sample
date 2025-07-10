@@ -2,7 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaLink, FaShareAlt } from 'react-icons/fa';
 
-const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
+const WebShareButton = ({ 
+  triggerElement, 
+  positionConfig = {}, 
+  shareUrl = window.location.href,
+  shareTitle = document.title,
+  shareText = '이 페이지를 공유해 보세요!'
+}) => {
   // 기본값 설정
   const { left = '26%', bottom = '-100px' } = positionConfig;
 
@@ -24,9 +30,9 @@ const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
       // ✅ 모바일 환경에서만 Web Share API 실행
       try {
         await navigator.share({
-          title: document.title,
-          //text: '이 페이지를 공유해 보세요!',
-          url: window.location.href,
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
         });
         console.log('공유 성공!');
       } catch (error) {
@@ -40,7 +46,7 @@ const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
 
   // ✅ URL 복사 기능
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -126,7 +132,7 @@ const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
           <div style={{ display: 'flex', gap: '10px' }}>
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                window.location.href
+                shareUrl
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -136,7 +142,7 @@ const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
             </a>
             <a
               href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                window.location.href
+                shareUrl
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -150,7 +156,7 @@ const WebShareButton = ({ triggerElement, positionConfig = {} }) => {
           <div style={{ display: 'flex', width: '100%', gap: '5px' }}>
             <input
               type="text"
-              value={window.location.href}
+              value={shareUrl}
               readOnly
               style={{
                 flex: 1,
