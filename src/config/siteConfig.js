@@ -2,7 +2,7 @@
 export const siteConfig = {
   // 기본 도메인 정보
   domain: import.meta.env.VITE_SITE_DOMAIN || 'https://www.evergil.kr',
-  name: import.meta.env.VITE_SITE_NAME || '에버길',
+  name: import.meta.env.VITE_SITE_NAME || 'Evergil',
   description: import.meta.env.VITE_SITE_DESCRIPTION || '소중한 사람들을 기억하는 추모페이지',
   
   // 공유 설정
