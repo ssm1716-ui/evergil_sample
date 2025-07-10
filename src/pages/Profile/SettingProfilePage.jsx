@@ -284,7 +284,7 @@ const SettingProfilePage = () => {
                     className="mb-5px bg-very-light-white form-control md-input-small text-black"
                     type="text"
                     name="nickname"
-                    placeholder="everlink.kr/profile/nickname"
+                    placeholder={`${window.location.origin}/@nickname`}
                     value={formProfile.nickname}
                     onChange={handleChange}
                   />

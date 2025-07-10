@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import WebShareButton from '@/components/Share/WebShareButton';
+import { siteConfig } from '@/config/siteConfig';
 import defaultLogo_pc from '@/assets/images/evergil_logo_pc.png';
 import defaultLogo_mobile from '@/assets/images/evergil_logo_mobile.png';
 
@@ -24,17 +25,17 @@ const Footer = () => {
             </div>
             <div className="col-xl-5 col-sm-5 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-14 md-fs-13 sm-fs-12">
-                주소: (우)14441 경기도 부천시 오정구 오정로211번길 35-24,201호<br />(오정동, ㈜예스테크)
-                <br /> 에버길(Evergil) / 대표자명:전경아 <br />
+                주소: {siteConfig.contact.address}<br />{siteConfig.contact.detailAddress}
+                <br /> {siteConfig.name}(Evergil) / 대표자명:전경아 <br />
                 사업자 등록번호: 136-04-69494 <br />
                 통신판매업신고: 2024-경기광명-1086 <br />
               </p>
             </div>
             <div className="col-xl-3 col-sm-3 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-14 md-fs-13 sm-fs-12">
-                고객센터: 010-9291-8601
+                고객센터: {siteConfig.contact.phone}
                 <br />
-                이메일: support@evergil.kr
+                이메일: {siteConfig.contact.email}
               </p>
             </div>
           </div>
@@ -68,7 +69,7 @@ const Footer = () => {
                 <li>
                   <a
                     className="facebook"
-                    href="https://m.youtube.com/@everlinkqr"
+                    href={siteConfig.social.youtube}
                     target="_blank"
                   >
                     <img src={footerIconYoutube} alt="" />
@@ -77,7 +78,7 @@ const Footer = () => {
                 <li>
                   <a
                     className="dribbble"
-                    href="https://www.instagram.com/everlink.qr"
+                    href={siteConfig.social.instagram}
                     target="_blank"
                   >
                     <img src={footerIconInstagram} alt="" />
@@ -86,7 +87,7 @@ const Footer = () => {
                 <li>
                   <a
                     className="behance"
-                    href="http://pf.kakao.com/_jXMxfn"
+                    href={siteConfig.social.kakao}
                     target="_blank"
                   >
                     <img src={footerIconKakao} alt="" />
@@ -100,6 +101,9 @@ const Footer = () => {
                       </a>
                     }
                     positionConfig={{ bottom: '0px', left: '70%' }}
+                    shareUrl={siteConfig.share.url}
+                    shareTitle={siteConfig.share.title}
+                    shareText={siteConfig.share.text}
                   />
                 </li>
               </ul>
