@@ -23,6 +23,7 @@ import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
 import useProfilePermission from '@/hooks/useProfilePermission';
 import WebShareButton from '@/components/Share/WebShareButton';
+import { suppressDeprecationWarnings } from '@/utils/consoleSuppression';
 
 import {
   getSelectProfile,
@@ -153,6 +154,9 @@ const EditProfilePage = () => {
   useEffect(() => {
     // 현재 페이지의 URL을 가져와 상태 업데이트
     setUrl(window.location.href);
+    
+    // DOMNodeInserted 경고 억제
+    suppressDeprecationWarnings();
   }, []);
 
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
@@ -221,7 +225,12 @@ const EditProfilePage = () => {
       try {
         const res = await getSelectProfile(profileId);
         if (res.status === 200) {
-          const { profile } = res.data.data;
+          const { profile, result } = res.data.data;
+          // PROFILE_INACTIVE 상태 확인
+          if (result === 'PROFILE_INACTIVE') {
+            navigate('/error-profile-inactive');
+            return;
+          }
           setProfile(profile);
           setContent(profile.description);
         }
@@ -574,40 +583,58 @@ const EditProfilePage = () => {
   };
 
   const addCustomButtons = () => {
+    // MutationObserver를 사용하여 DOM 변경 감지
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          const lgToolbar = document.querySelector('.lg-toolbar');
+          if (lgToolbar && !document.getElementById('edit-button')) {
+            const editButton = document.createElement('button');
+            editButton.innerText = '수정';
+            editButton.classList.add('lg-custom-btn', 'lg-custom-modify');
+            editButton.id = 'edit-button';
+            editButton.onclick = () => {
+              const index = getCurrentImageIndex();
+              console.log(index);
+              if (index !== -1) {
+                const imageId = imagesRef.current[index]?.id;
+                handleEdit(imageId);
+              }
+            };
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = '삭제';
+            deleteButton.classList.add('lg-custom-btn', 'lg-custom-remove');
+            deleteButton.id = 'delete-button';
+            deleteButton.onclick = () => {
+              const index = getCurrentImageIndex();
+              console.log(index);
+              if (index !== -1) {
+                const imageId = imagesRef.current[index]?.id;
+                handleDelete(imageId);
+              }
+            };
+
+            lgToolbar.appendChild(editButton);
+            lgToolbar.appendChild(deleteButton);
+            
+            // 버튼이 추가되면 observer 해제
+            observer.disconnect();
+          }
+        }
+      });
+    });
+
+    // DOM 변경 감지 시작
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    // 3초 후 observer 해제 (타임아웃)
     setTimeout(() => {
-      const lgToolbar = document.querySelector('.lg-toolbar');
-
-      if (lgToolbar && !document.getElementById('edit-button')) {
-        const editButton = document.createElement('button');
-        editButton.innerText = '수정';
-        editButton.classList.add('lg-custom-btn', 'lg-custom-modify');
-        editButton.id = 'edit-button';
-        editButton.onclick = () => {
-          const index = getCurrentImageIndex();
-          console.log(index);
-          if (index !== -1) {
-            const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
-            handleEdit(imageId);
-          }
-        };
-
-        const deleteButton = document.createElement('button');
-        deleteButton.innerText = '삭제';
-        deleteButton.classList.add('lg-custom-btn', 'lg-custom-remove');
-        deleteButton.id = 'delete-button';
-        deleteButton.onclick = () => {
-          const index = getCurrentImageIndex();
-          console.log(index);
-          if (index !== -1) {
-            const imageId = imagesRef.current[index]?.id; // ✅ 최신 images 배열에서 id 가져오기
-            handleDelete(imageId);
-          }
-        };
-
-        lgToolbar.appendChild(editButton);
-        lgToolbar.appendChild(deleteButton);
-      }
-    }, 500);
+      observer.disconnect();
+    }, 3000);
   };
 
   const onInit = () => {
@@ -1327,6 +1354,11 @@ const EditProfilePage = () => {
                         onAfterOpen={handleGalleryOpen}
                         onInit={onInit}
                         ref={lgRef}
+                        // DOM 조작 최소화를 위한 설정
+                        allowMediaOverlap={false}
+                        backdropDuration={400}
+                        startAnimationDuration={400}
+                        endAnimationDuration={400}
                       >
                         <div className="gallery-grid">
                           {/* 업로드 버튼 */}
@@ -1581,9 +1613,10 @@ const EditProfilePage = () => {
                                           {/* 이름 입력 필드 */}
                                           <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-10px sm-pt-15px sm-pb-15px sm-px-0">
                                             <input
+                                              maxLength={10}
                                               className="md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
                                               type="text"
-                                              placeholder="이름"
+                                              placeholder="이름을 입력해주세요."
                                               value={f.displayName}
                                               onChange={(e) =>
                                                 handleNameChange(
