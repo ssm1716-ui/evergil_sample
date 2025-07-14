@@ -27,7 +27,7 @@ export const siteConfig = {
   
   // 연락처 정보
   contact: {
-    phone: '010-9291-8601',
+    phone: '010-5705-0716',
     email: 'support@evergil.kr',
     address: '(우)14441 경기도 부천시 오정구 오정로211번길 35-24,201호',
     detailAddress: '(오정동, ㈜예스테크)'
