@@ -121,12 +121,12 @@ const Header = () => {
               <ul className="navbar-nav navbar-right justify-content-end">
                 {!isAuthenticated ? (
                   <li className="nav-item">
-                    <Link
-                      to="/signin"
-                      className="nav-link feature-box"
+                    <button
+                      className="nav-link feature-box border-0 bg-transparent"
                       onClick={() => {
-                        localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
+                        // localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
                         closeMenu();
+                        navigate('/signin');
                       }}
                     >
                       <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
@@ -135,7 +135,7 @@ const Header = () => {
                       <div className="feature-box-content header-box-content">
                         <span className="d-inline-block">로그인</span>
                       </div>
-                    </Link>
+                    </button>
                   </li>
                 ) : (
                   <li className="nav-item">
