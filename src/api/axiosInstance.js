@@ -82,12 +82,17 @@ axiosInstance.interceptors.response.use(
         console.log(error);
         console.log(error.response);
 
-        // if (error.response?.status === 401) {
-        if (!error.response) {
-
+        // 401 Unauthorized 에러 처리
+        if (error.response?.status === 401) {
             localStorage.removeItem('token');
             window.location.href = '/signin';
+            return Promise.reject(error);
+        }
 
+        // 네트워크 에러 등 response가 없는 경우
+        if (!error.response) {
+            localStorage.removeItem('token');
+            window.location.href = '/signin';
             return Promise.reject(error);
         }
 

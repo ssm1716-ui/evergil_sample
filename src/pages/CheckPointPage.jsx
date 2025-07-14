@@ -22,7 +22,7 @@ const CheckPointPage = () => {
         //   alert('토큰 통신에러가 발생하였습니다');
         //   return;
         // }
-        console.log(token);
+        // console.log(token);
         dispatch(loginSuccess({ token }));
 
         //로그인 후 장바구니 아이템 서버로 전송
