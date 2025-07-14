@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SuccessModal from '@/components/common/Modal/SuccessModal';
 import { isValidEmail } from '@/utils/validators';
 import { loginSuccess } from '@/state/slices/authSlices';
@@ -15,7 +15,7 @@ import { getTransformedCartData } from '@/utils/utils';
 import { API_BASE_URL } from '@/config';
 
 if (localStorage.getItem('persist:root') === null) {
-  console.log('스토리지 초기화 방지');
+  // console.log('스토리지 초기화 방지');
 }
 
 const SignInPage = () => {
@@ -25,6 +25,24 @@ const SignInPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  // Redux 상태에서 인증 여부 가져오기
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // 인증된 사용자가 /signin 페이지에 접속하면 리다이렉트
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     // 로컬스토리지에 redirectAfterLogin 값이 있으면 해당 값으로 리다이렉트
+  //     const redirectPath = localStorage.getItem('redirectAfterLogin');
+  //     if (redirectPath) {
+  //       localStorage.removeItem('redirectAfterLogin');
+  //       navigate(redirectPath);
+  //     } else {
+  //       // 없으면 홈페이지로 리다이렉트
+  //       navigate('/');
+  //     }
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   const handleMemberRegisterChange = (e) => {
     const { name, value } = e.target;
@@ -80,9 +98,8 @@ const SignInPage = () => {
       //초대하기로 전달받은 로그인 & 비공개 프로필
       profileBridge();
 
-      const redirectPath =
-        localStorage.getItem('redirectAfterLogin') || '/profile';
-
+      const redirectPath = localStorage.getItem('redirectAfterLogin') || '/profile';
+console.log("redirectPath!!! -> " + redirectPath);
       localStorage.removeItem('redirectAfterLogin');
       navigate(redirectPath);
     } catch (error) {

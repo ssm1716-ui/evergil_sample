@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import Modal from '@/components/common/Modal/Modal';
 import LoginModal from '@/components/common/Modal/LoginModal';
 import MobileBuyPanel from '@/components/Shop/MobileBuyPanel';
@@ -280,7 +280,7 @@ const ShopPage = () => {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>Everlink - {product.productName || '상품 상세'}</title>
         <meta property="og:locale" content="ko_KR" />
         <meta property="og:title" content={`Everlink - ${product.productName || '상품 상세'}`} />
@@ -295,7 +295,7 @@ const ShopPage = () => {
         <meta name="twitter:image" content={product.productImages?.[0]?.startsWith('http') ? product.productImages[0] : `${window.location.origin}${product.productImages?.[0]}`} />
         <meta name="description" content={product.description?.substring(0, 100)} />
         <meta name="keywords" content={product.productName} />
-      </Helmet>
+      </Helmet> */}
       <section>
         <div className="container">
           <div
