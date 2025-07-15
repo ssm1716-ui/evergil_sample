@@ -2,7 +2,7 @@
 export const siteConfig = {
   // 기본 도메인 정보
   domain: import.meta.env.VITE_SITE_DOMAIN || 'https://www.evergil.kr',
-  name: import.meta.env.VITE_SITE_NAME || 'Evergil',
+  name: import.meta.env.VITE_SITE_NAME || '에버길',
   description: import.meta.env.VITE_SITE_DESCRIPTION || '소중한 사람들을 기억하는 추모페이지',
   
   // 공유 설정
@@ -20,6 +20,7 @@ export const siteConfig = {
   
   // 소셜 미디어 정보
   social: {
+    youtubeMainLink: 'https://www.youtube.com/embed/1z4dG6vip1M?si=CgB8kkC66JqmrhIv',
     youtube: 'https://www.youtube.com/@Evergil.official',
     instagram: 'https://www.instagram.com/evergil.official',
     kakao: 'https://pf.kakao.com/_jXMxfn'

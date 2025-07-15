@@ -9,6 +9,7 @@ import mainBannerImage from '@/assets/images/main-banner.jpg';
 import mainBannerImageMobile from '@/assets/images/main-banner-mobile.jpeg';
 import mainSubImage1 from '@/assets/images/main-sub-image1.jpeg';
 import mainSubImage1Mobile from '@/assets/images/main-sub-image1-mobile.jpeg';
+import { siteConfig } from '@/config/siteConfig';
 
 import mainLogoPc from '@/assets/images/evergil_main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/evergil_main_logo_mobile.png';
@@ -411,7 +412,7 @@ const HomeSubPage = () => {
                         className="w-100 h-500px sm-h-200px"
                         width="100%"
                         height="550"
-                        src="https://www.youtube.com/embed/UkTrceJi_sM?autoplay=0;&mute=1;rel=0&amp;showinfo=0"
+                        src={siteConfig.social.youtubeMainLink}
                         allowfullscreen
                       ></iframe>
                     </div>
