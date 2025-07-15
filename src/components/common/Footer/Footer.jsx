@@ -26,7 +26,7 @@ const Footer = () => {
             <div className="col-xl-5 col-sm-5 text-start text-md-start last-paragraph-no-margin fs-15 order-3 order-md-1">
               <p className="fs-14 md-fs-13 sm-fs-12">
                 주소: {siteConfig.contact.address}<br />{siteConfig.contact.detailAddress}
-                <br /> {siteConfig.name}(Evergil) / 대표자명:전경아 <br />
+                <br /> {siteConfig.nameKr} ({siteConfig.name}) / 대표자명:{siteConfig.contact.representative} <br />
                 사업자 등록번호: 136-04-69494 <br />
                 통신판매업신고: 2024-경기광명-1086 <br />
               </p>

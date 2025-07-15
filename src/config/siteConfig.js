@@ -2,7 +2,8 @@
 export const siteConfig = {
   // 기본 도메인 정보
   domain: import.meta.env.VITE_SITE_DOMAIN || 'https://www.evergil.kr',
-  name: import.meta.env.VITE_SITE_NAME || '에버길',
+  name: import.meta.env.VITE_SITE_NAME || 'Evergil',
+  nameKr: import.meta.env.VITE_SITE_NAME_KR || '에버길',
   description: import.meta.env.VITE_SITE_DESCRIPTION || '소중한 사람들을 기억하는 추모페이지',
   
   // 공유 설정
@@ -31,7 +32,8 @@ export const siteConfig = {
     phone: '010-5705-0716',
     email: 'support@evergil.kr',
     address: '(우)14441 경기도 부천시 오정구 오정로211번길 35-24,201호',
-    detailAddress: '(오정동, ㈜예스테크)'
+    detailAddress: '(오정동, ㈜예스테크)',
+    representative: '전경아'
   }
 };
 
