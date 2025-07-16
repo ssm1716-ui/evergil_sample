@@ -39,6 +39,12 @@ const MyInfoPage = () => {
     email: false,
     emailAuthCode: false,
   });
+  const [errorMessages, setErrorMessages] = useState({
+    phoneNumber: '',
+    phoneAuthCode: '',
+    email: '',
+    emailAuthCode: '',
+  });
   const [fristPassword, setFristPassword] = useState('');
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -188,32 +194,57 @@ const MyInfoPage = () => {
   const handlePhoneAuthRequest = async () => {
     if (!phoneNumber.trim() || !isValidPhoneNumber(phoneNumber)) {
       setErrors((prev) => ({ ...prev, phoneNumber: true }));
+      setErrorMessages((prev) => ({ ...prev, phoneNumber: '유효한 핸드폰 번호를 입력해주세요.' }));
       return;
     }
 
-    const res = await putUpdatePhone({
-      phoneNumber,
-      nonce: getUserNonce(),
-    });
-
-    if (res.status === 200) {
-      setIsSecondModalOpen(true);
+    try {
+      const res = await putUpdatePhone({
+        phoneNumber,
+        nonce: getUserNonce(),
+      });
+  
+      if (res.status === 200) {
+        setIsSecondModalOpen(true);
+        // 성공 시 에러 메시지 초기화
+        setErrors((prev) => ({ ...prev, phoneNumber: false }));
+        setErrorMessages((prev) => ({ ...prev, phoneNumber: '' }));
+      }
+    } catch (error) {
+      console.error('핸드폰 인증 요청 오류:', error);
+      // 서버에서 받은 에러 메시지 표시
+      const errorMessage = error.message || '인증번호 전송에 실패했습니다.';
+      setErrorMessages((prev) => ({ ...prev, phoneNumber: errorMessage }));
+      setErrors((prev) => ({ ...prev, phoneNumber: true }));
     }
+
   };
 
   // 핸드폰번호 변경 확인
   const handlePhoneNumberChangeConfirm = async () => {
     if (!phoneAuthCode.trim()) {
       setErrors((prev) => ({ ...prev, phoneAuthCode: true }));
+      setErrorMessages((prev) => ({ ...prev, phoneAuthCode: '인증번호를 입력해주세요.' }));
       return;
     }
 
-    const res = await putPhoneAuthCodeConfirm({
-      code: phoneAuthCode,
-    });
+    try {
+      const res = await putPhoneAuthCodeConfirm({
+        code: phoneAuthCode,
+      });
 
-    if (res.status === 200) {
-      setIsFirstModalOpen(true);
+      if (res.status === 200) {
+        setIsFirstModalOpen(true);
+        // 성공 시 에러 메시지 초기화
+        setErrors((prev) => ({ ...prev, phoneAuthCode: false }));
+        setErrorMessages((prev) => ({ ...prev, phoneAuthCode: '' }));
+      }
+    } catch (error) {
+      console.error('핸드폰 인증번호 확인 오류:', error);
+      // 서버에서 받은 에러 메시지 표시
+      const errorMessage = error.response?.data?.message || '인증번호가 올바르지 않습니다.';
+      setErrorMessages((prev) => ({ ...prev, phoneAuthCode: errorMessage }));
+      setErrors((prev) => ({ ...prev, phoneAuthCode: true }));
     }
   };
 
@@ -583,39 +614,55 @@ const MyInfoPage = () => {
               <label className="text-dark-gray fw-500 d-block text-start">
                 휴대폰 번호 변경
               </label>
-              <div className="row d-flex align-items-baseline justify-content-between">
+              <div className="row d-flex justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75 sm-w-65 sm-input"
+                  className="mb-5px bg-very-light-white form-control required w-75 sm-w-60 sm-input"
                   type="text"
                   name="phoneNumber"
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                    // 입력 시 에러 상태 초기화
+                    if (errors.phoneNumber) {
+                      setErrors((prev) => ({ ...prev, phoneNumber: false }));
+                      setErrorMessages((prev) => ({ ...prev, phoneNumber: '' }));
+                    }
+                  }}
                   placeholder="휴대폰 번호"
                 />
 
                 <Button
                   size="extra-large"
-                  className="btn btn-large w-20 md-w-auto"
+                  className="btn btn-large flex-shrink-0 fs-12 sm-fs-10"
                   onClick={handlePhoneAuthRequest}
                 >
                   인증번호 전송
                 </Button>
                 {errors.phoneNumber && (
                   <p className="text-danger text-start">
-                    유효한 핸드폰 번호를 입력해주세요.
+                    {errorMessages.phoneNumber || '유효한 핸드폰 번호를 입력해주세요.'}
                   </p>
                 )}
+              </div>
+              <div className="row d-flex justify-content-between">
                 <input
                   className="mt-20px sm-mt-10px bg-very-light-white form-control required w-75 w-100 sm-input"
                   type="text"
                   name="phoneAuthCode"
                   value={phoneAuthCode}
-                  onChange={(e) => setPhoneAuthCode(e.target.value)}
+                  onChange={(e) => {
+                    setPhoneAuthCode(e.target.value);
+                    // 입력 시 에러 상태 초기화
+                    if (errors.phoneAuthCode) {
+                      setErrors((prev) => ({ ...prev, phoneAuthCode: false }));
+                      setErrorMessages((prev) => ({ ...prev, phoneAuthCode: '' }));
+                    }
+                  }}
                   placeholder="인증번호 입력"
                 />
                 {errors.phoneAuthCode && (
                   <p className="text-danger text-start">
-                    인증번호를 입력해주세요.
+                    {errorMessages.phoneAuthCode || '인증번호를 입력해주세요.'}
                   </p>
                 )}
               </div>
@@ -645,9 +692,9 @@ const MyInfoPage = () => {
               <label className="text-dark-gray mb-10px fw-500 d-block text-start">
                 이메일 변경
               </label>
-              <div className="row d-flex align-items-baseline justify-content-between">
+              <div className="row d-flex justify-content-between">
                 <input
-                  className="mb-5px bg-very-light-white form-control required w-75 sm-w-60 sm-input"
+                  className="mb-5px bg-very-light-white form-control required w-75 sm-w-55 sm-input"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -666,6 +713,8 @@ const MyInfoPage = () => {
                     유효한 이메일을 입력해주세요.
                   </p>
                 )}
+              </div>
+              <div className="row d-flex justify-content-between">
                 <input
                   className="mt-20px sm-mt-10px bg-very-light-white form-control required w-75 w-100 sm-input"
                   type="text"

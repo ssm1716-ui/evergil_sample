@@ -23,6 +23,7 @@ export const putUpdatePassword = async (param) => {
         return res;
     } catch (err) {
         console.error(err);
+        throw err;
     }
 };
 
@@ -34,6 +35,7 @@ export const putUpdateDisplayName = async (param) => {
         return res;
     } catch (err) {
         console.error(err);
+        throw err;
     }
 };
 
@@ -41,14 +43,12 @@ export const putUpdateDisplayName = async (param) => {
 export const putUpdatePhone = async (param) => {
     try {
         const res = await axiosInstance.put('/members/me/personal-info/phone-number/request', param);
-        console.log(res);
         return res;
     } catch (err) {
         console.error(err);
+        throw new Error(err.response?.data?.message || '처리 중 오류가 발생했습니다.');
     }
 };
-
-
 
 //핸드폰번호 인증번호
 export const putPhoneAuthCodeConfirm = async (param) => {
@@ -58,6 +58,7 @@ export const putPhoneAuthCodeConfirm = async (param) => {
         return res;
     } catch (err) {
         console.error(err);
+        throw err; // 에러를 상위로 전달하여 처리할 수 있도록 함
     }
 };
 
