@@ -617,7 +617,7 @@ const MyInfoPage = () => {
               <div className="row d-flex justify-content-between">
                 <input
                   className="mb-5px bg-very-light-white form-control required w-75 sm-w-60 sm-input"
-                  type="text"
+                  type="tel"
                   name="phoneNumber"
                   value={phoneNumber}
                   onChange={(e) => {
@@ -647,7 +647,7 @@ const MyInfoPage = () => {
               <div className="row d-flex justify-content-between">
                 <input
                   className="mt-20px sm-mt-10px bg-very-light-white form-control required w-75 w-100 sm-input"
-                  type="text"
+                  type="number"
                   name="phoneAuthCode"
                   value={phoneAuthCode}
                   onChange={(e) => {
@@ -717,7 +717,7 @@ const MyInfoPage = () => {
               <div className="row d-flex justify-content-between">
                 <input
                   className="mt-20px sm-mt-10px bg-very-light-white form-control required w-75 w-100 sm-input"
-                  type="text"
+                  type="number"
                   value={emailAuthCode}
                   onChange={(e) => setEmailAuthCode(e.target.value)}
                   placeholder="인증번호 입력"
