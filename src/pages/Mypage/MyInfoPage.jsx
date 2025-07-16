@@ -209,6 +209,15 @@ const MyInfoPage = () => {
         // 성공 시 에러 메시지 초기화
         setErrors((prev) => ({ ...prev, phoneNumber: false }));
         setErrorMessages((prev) => ({ ...prev, phoneNumber: '' }));
+        // 인증번호 입력 항목 초기화
+        setPhoneAuthCode('');
+        setErrors((prev) => ({ ...prev, phoneAuthCode: false }));
+        setErrorMessages((prev) => ({ ...prev, phoneAuthCode: '' }));
+        // 인증번호 입력 필드의 is-valid 클래스 제거
+        const phoneAuthCodeInput = document.querySelector('input[name="phoneAuthCode"]');
+        if (phoneAuthCodeInput) {
+          phoneAuthCodeInput.classList.remove('is-valid');
+        }
       }
     } catch (error) {
       console.error('핸드폰 인증 요청 오류:', error);
@@ -255,13 +264,28 @@ const MyInfoPage = () => {
       return;
     }
 
-    const res = await putUpdateEmail({
-      email,
-      nonce: getUserNonce(),
-    });
+    try {
+      const res = await putUpdateEmail({
+        email,
+        nonce: getUserNonce(),
+      });
 
-    if (res.status === 200) {
-      setIsSecondModalOpen(true);
+      if (res.status === 200) {
+        setIsSecondModalOpen(true);
+        // 성공 시 에러 메시지 초기화
+        setErrors((prev) => ({ ...prev, email: false }));
+        // 인증번호 입력 항목 초기화
+        setEmailAuthCode('');
+        setErrors((prev) => ({ ...prev, emailAuthCode: false }));
+        // 인증번호 입력 필드의 is-valid 클래스 제거
+        const emailAuthCodeInput = document.querySelector('input[type="number"][placeholder="인증번호 입력"]');
+        if (emailAuthCodeInput) {
+          emailAuthCodeInput.classList.remove('is-valid');
+        }
+      }
+    } catch (error) {
+      console.error('이메일 인증 요청 오류:', error);
+      setErrors((prev) => ({ ...prev, email: true }));
     }
   };
 
@@ -313,7 +337,11 @@ const MyInfoPage = () => {
                   className="mb-5px bg-very-light-white form-control required w-100 sm-input"
                   type="password"
                   value={fristPassword}
-                  onChange={(e) => setFristPassword(e.target.value)}
+                  onChange={(e) => {
+                    setFristPassword(e.target.value);
+                    // is-valid 클래스 제거
+                    e.target.classList.remove('is-valid');
+                  }}
                   placeholder="비밀번호를 입력하세요"
                 />
                 {errors.fristPassword && (
@@ -479,7 +507,11 @@ const MyInfoPage = () => {
                       type={showPassword.password ? 'text' : 'password'}
                       name="password"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        // is-valid 클래스 제거
+                        e.target.classList.remove('is-valid');
+                      }}
                       placeholder="기존 비밀번호를 입력하세요"
                     />
                     <i
@@ -505,7 +537,11 @@ const MyInfoPage = () => {
                       type={showPassword.newPassword ? 'text' : 'password'}
                       name="newPassword"
                       value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
+                      onChange={(e) => {
+                        setNewPassword(e.target.value);
+                        // is-valid 클래스 제거
+                        e.target.classList.remove('is-valid');
+                      }}
                       placeholder="영문, 숫자, 특수문자 포함 8자이상 입력"
                     />
                     <i
@@ -531,7 +567,11 @@ const MyInfoPage = () => {
                       type={showPassword.confirmPassword ? 'text' : 'password'}
                       name="confirmPassword"
                       value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      onChange={(e) => {
+                        setConfirmPassword(e.target.value);
+                        // is-valid 클래스 제거
+                        e.target.classList.remove('is-valid');
+                      }}
                       placeholder="영문, 숫자, 특수문자 포함 8자이상 입력"
                     />
                     <i
@@ -581,7 +621,11 @@ const MyInfoPage = () => {
                 type="text"
                 name="displayName"
                 value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                onChange={(e) => {
+                  setDisplayName(e.target.value);
+                  // is-valid 클래스 제거
+                  e.target.classList.remove('is-valid');
+                }}
                 placeholder="이름을 입력하세요"
               />
               {errors.displayName && (
@@ -627,6 +671,8 @@ const MyInfoPage = () => {
                       setErrors((prev) => ({ ...prev, phoneNumber: false }));
                       setErrorMessages((prev) => ({ ...prev, phoneNumber: '' }));
                     }
+                    // is-valid 클래스 제거
+                    e.target.classList.remove('is-valid');
                   }}
                   placeholder="휴대폰 번호"
                 />
@@ -657,6 +703,8 @@ const MyInfoPage = () => {
                       setErrors((prev) => ({ ...prev, phoneAuthCode: false }));
                       setErrorMessages((prev) => ({ ...prev, phoneAuthCode: '' }));
                     }
+                    // is-valid 클래스 제거
+                    e.target.classList.remove('is-valid');
                   }}
                   placeholder="인증번호 입력"
                 />
@@ -697,7 +745,11 @@ const MyInfoPage = () => {
                   className="mb-5px bg-very-light-white form-control required w-75 sm-w-55 sm-input"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    // is-valid 클래스 제거
+                    e.target.classList.remove('is-valid');
+                  }}
                   placeholder="이메일"
                 />
 
@@ -719,7 +771,11 @@ const MyInfoPage = () => {
                   className="mt-20px sm-mt-10px bg-very-light-white form-control required w-75 w-100 sm-input"
                   type="number"
                   value={emailAuthCode}
-                  onChange={(e) => setEmailAuthCode(e.target.value)}
+                  onChange={(e) => {
+                    setEmailAuthCode(e.target.value);
+                    // is-valid 클래스 제거
+                    e.target.classList.remove('is-valid');
+                  }}
                   placeholder="인증번호 입력"
                 />
                 {errors.emailAuthCode && (
