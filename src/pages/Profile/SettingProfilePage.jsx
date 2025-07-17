@@ -340,15 +340,15 @@ const SettingProfilePage = () => {
         <div className="row justify-content-center overflow-hidden bg-white">
           <div className="contact-form-style-04">
             <div className="py-5 text-center">
-              <img src={checkCircle} alt="" className="sm-w-30" />
-              <h4 className="fw-800 text-dark-gray mt-2 mb-2 ls-minus-1px sm-fs-18">
+              <img src={checkCircle} alt="" className="sm-w-20 w-20" />
+              <h4 className="text-dark-gray fw-500 mt-20px mb-15px fs-22 md-fs-18">
                 추모페이지 {profileId ? '변경 완료' : '생성 완료'}
               </h4>
-              <Link to={'/profile'}>
+              <Link to={`/profile/edit-profile/${profileId}`}>
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"
-                  className="w-50 mt-20px mb-5px"
+                  className="btn btn-extra-large w-40 mt-20px mb-5px"
                 >
                   계속하기
                 </Button>

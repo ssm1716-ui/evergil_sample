@@ -411,6 +411,7 @@ const ViewProfilePage = () => {
   const handleLoginModalOpen = async () => {
     localStorage.removeItem('dev_remberProfileUrl');
     localStorage.setItem('dev_remberProfileUrl', window.location.pathname);
+    localStorage.setItem('redirectAfterLogin', window.location.pathname);
     navigate('/signin');
   };
 
