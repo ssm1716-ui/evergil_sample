@@ -5,22 +5,22 @@ import ReactPlayer from 'react-player/youtube';
 import useIsMobile from '@/hooks/useIsMobile';
 
 import FaqComponents from '@/components/Faq/FaqComponents';
-import mainBannerImage from '@/assets/images/main-banner.jpg';
-import mainBannerImageMobile from '@/assets/images/main-banner-mobile.jpeg';
-import mainSubImage1 from '@/assets/images/main-sub-image1.jpeg';
-import mainSubImage1Mobile from '@/assets/images/main-sub-image1-mobile.jpeg';
+import mainBannerImage from '@/assets/images/evergil_main_banner.jpg';
+import mainBannerImageMobile from '@/assets/images/evergil_main_banner_mobile.jpg';
+import mainSubImage1 from '@/assets/images/evergil_main_sub_image1.jpg';
+import mainSubImage1Mobile from '@/assets/images/evergil_main_sub_image1.jpg';
 import { siteConfig } from '@/config/siteConfig';
 
 import mainLogoPc from '@/assets/images/evergil_main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/evergil_main_logo_mobile.png';
 import signupMobile from '@/assets/images/evergil_signup_logo_mobile.png';
-import main_guide from '@/assets/images/main_guide.jpeg';
+import main_guide from '@/assets/images/evergil_main_guide.jpg';
 import guide1 from '@/assets/images/guide_1.jpg';
 import guide2 from '@/assets/images/guide_2.jpg';
 import guide3 from '@/assets/images/guide_3.jpg';
 
-import profilePreviewPet from '@/assets/images/profile-preview-pet.jpeg';
-import profilePreviewHuman from '@/assets/images/profile-preview-human.jpeg';
+import profilePreviewPet from '@/assets/images/evergil_profile_preview_pet.png';
+import profilePreviewHuman from '@/assets/images/evergil_profile_preview_human.png';
 
 // 반응형 버튼 행 스타일을 위한 style 태그 추가 (임시)
 const btnRowStyle = `
@@ -363,7 +363,7 @@ const HomeSubPage = () => {
                   <img
                     src={profilePreviewHuman}
                     alt="사람 프로필 미리보기"
-                    style={{ width: '140px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
+                    style={{ height: '180px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
                   />
                   <Link
                     className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
@@ -377,7 +377,7 @@ const HomeSubPage = () => {
                   <img
                     src={profilePreviewPet}
                     alt="애완동물 프로필 미리보기"
-                    style={{ width: '148px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
+                    style={{ height: '180px', objectFit: 'cover', display: 'block', margin: '0 auto 12px auto' }}
                   />
                   <Link
                     className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
