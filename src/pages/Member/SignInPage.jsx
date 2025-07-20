@@ -99,11 +99,6 @@ const SignInPage = () => {
 
       //초대하기로 전달받은 로그인 & 비공개 프로필
       profileBridge();
-
-      const redirectPath = localStorage.getItem('redirectAfterLogin') || '/profile';
-console.log("redirectPath!!! -> " + redirectPath);
-      localStorage.removeItem('redirectAfterLogin');
-      navigate(redirectPath);
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
     }
@@ -140,11 +135,14 @@ console.log("redirectPath!!! -> " + redirectPath);
       localStorage.removeItem('dev_invitation');
       navigate(`/profile/invitation?key=${invitationKey}`);
       return;
-    }
-    if (remberProfileUrl) {
+    } else if (remberProfileUrl) {
       localStorage.removeItem('dev_remberProfileUrl');
       navigate(`${remberProfileUrl}`);
       return;
+    } else {
+      const redirectPath = localStorage.getItem('redirectAfterLogin') || '/profile';
+      localStorage.removeItem('redirectAfterLogin');
+      navigate(redirectPath);
     }
   };
 
