@@ -11,7 +11,12 @@ const SuccessModal = ({ isOpen, onClose, message = '전송되었습니다.' }) =
                 <div className="row justify-content-center">
                   <div className="col-md-9 text-center">
                     <h6 className="text-dark-gray fw-500 mb-15px fs-22 md-fs-18">
-                      {message}
+                      {message.split('\n').map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          {index < message.split('\n').length - 1 && <br />}
+                        </span>
+                      ))}
                     </h6>
                   </div>
                   <div className="col-lg-12 text-center text-lg-center pt-3">

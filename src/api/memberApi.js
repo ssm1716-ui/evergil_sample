@@ -30,7 +30,10 @@ export const postSignIn = async (param) => {
         return { status: res.status, token: newAccessToken };
     } catch (err) {
         console.error(err);
-        return { status: err.status };
+        return { 
+            status: err.response?.status || err.status, 
+            message: err.response?.data?.message || err.response?.data || '로그인에 실패했습니다.'
+        };
     }
 };
 

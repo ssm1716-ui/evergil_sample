@@ -23,6 +23,7 @@ const SignInPage = () => {
   const [member, setMember] = useState(initialFormState);
   const [errors, setErrors] = useState(initialFormState);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
@@ -84,8 +85,9 @@ const SignInPage = () => {
 
       if (Object.keys(newErrors).length > 0) return;
 
-      const { status, token } = await postSignIn(member);
+      const { status, token, message } = await postSignIn(member);
       if (status !== 200) {
+        setModalMessage(message);
         setIsModalOpen(true);
         return;
       }
@@ -178,7 +180,7 @@ console.log("redirectPath!!! -> " + redirectPath);
               className="col-lg-8 col-md-10 p-5"
               data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              <form className="px-4">
+              <form className="px-4" onSubmit={(e) => e.preventDefault()}>
                 <div className="mb-4">
                   <label className="text-dark-gray mb-2 d-block fw-500">
                     이메일<span className="text-red">*</span>
@@ -237,6 +239,7 @@ console.log("redirectPath!!! -> " + redirectPath);
                 <div className="text-center">
                   <div className="d-flex justify-content-center gap-3">
                     <Button
+                      type="button"
                       data-value="google"
                       name="google"
                       size="extra-large"
@@ -287,6 +290,7 @@ console.log("redirectPath!!! -> " + redirectPath);
                       </span>
                     </Button>
                     <Button
+                      type="button"
                       data-value="kakao"
                       size="extra-large"
                       color="kakao"
@@ -326,6 +330,7 @@ console.log("redirectPath!!! -> " + redirectPath);
                       </span>
                     </Button>
                     <Button
+                      type="button"
                       data-value="naver"
                       size="extra-large"
                       color="naver"
@@ -374,7 +379,7 @@ console.log("redirectPath!!! -> " + redirectPath);
       <SuccessModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        message="이메일, 비밀번호를 확인 해주세요."
+        message={modalMessage}
       />
     </>
   );
