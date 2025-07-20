@@ -36,8 +36,6 @@ const CheckPointPage = () => {
 
         //초대하기로 전달받은 로그인 & 비공개 프로필
         profileBridge();
-
-        navigate('/profile');
       } catch (error) {
         console.error('check-poing: ', error);
       }
@@ -59,10 +57,12 @@ const CheckPointPage = () => {
       localStorage.removeItem('dev_invitation');
       navigate(`/profile/invitation?key=${invitationKey}`);
       return;
-    }
-    if (remberProfileUrl) {
+    } else if (remberProfileUrl) {
       localStorage.removeItem('dev_remberProfileUrl');
       navigate(`${remberProfileUrl}`);
+      return;
+    } else {
+      navigate('/profile');
       return;
     }
   };
