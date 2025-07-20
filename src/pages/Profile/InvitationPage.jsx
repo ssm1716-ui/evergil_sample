@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { putConfirmInvitation } from '@/api/memorial/memorialApi';
 
 import { removeHyphens } from '@/utils/utils';
-import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const InvitationPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
