@@ -31,19 +31,11 @@ const SignInPage = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   // 인증된 사용자가 /signin 페이지에 접속하면 리다이렉트
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     // 로컬스토리지에 redirectAfterLogin 값이 있으면 해당 값으로 리다이렉트
-  //     const redirectPath = localStorage.getItem('redirectAfterLogin');
-  //     if (redirectPath) {
-  //       localStorage.removeItem('redirectAfterLogin');
-  //       navigate(redirectPath);
-  //     } else {
-  //       // 없으면 홈페이지로 리다이렉트
-  //       navigate('/');
-  //     }
-  //   }
-  // }, [isAuthenticated, navigate]);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleMemberRegisterChange = (e) => {
     const { name, value } = e.target;

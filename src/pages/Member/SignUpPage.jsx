@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '@/state/slices/authSlices';
 import {
   postSignUp,
@@ -44,6 +45,17 @@ const SignUpPage = () => {
   const [policyContent, setPolicyContent] = useState({});
   const [timeLeft, setTimeLeft] = useState(180); // 3분 타이머
   const [isTimerExpired, setIsTimerExpired] = useState(false);
+  const navigate = useNavigate();
+
+  // Redux 상태에서 인증 여부 가져오기
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  // 인증된 사용자가 /signin 페이지에 접속하면 리다이렉트
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const style = document.createElement('style');
