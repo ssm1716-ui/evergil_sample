@@ -62,7 +62,9 @@ const CheckPointPage = () => {
       navigate(`${remberProfileUrl}`);
       return;
     } else {
-      navigate('/profile');
+      const redirectPath = localStorage.getItem('redirectAfterLogin') || '/profile';
+      localStorage.removeItem('redirectAfterLogin');
+      navigate(redirectPath);
       return;
     }
   };
