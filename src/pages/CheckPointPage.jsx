@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '@/state/slices/authSlices';
+import SuccessModal from '@/components/common/Modal/SuccessModal';
 
 import { postAddCart } from '@/api/member/cartApi';
 import { getCart, removeLocalStorageCart } from '@/api/memberApi';
@@ -11,18 +12,23 @@ const CheckPointPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('access_token');
+  const error = searchParams.get('error');
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  // error 파라미터 처리
+  useEffect(() => {
+    if (error === 'status') {
+      setModalMessage('**로그인이 차단되었습니다**\n본 계정은 약관 위반 또는 의심스러운 활동으로 인해 비활성화되었습니다. 자세한 사항은 고객센터로 문의해 주세요.');
+      setIsModalOpen(true);
+    }
+  }, [error]);
 
   // 토큰 있는지 확인 후 로그인 처리
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        // const { status, token } = await getAccessToken();
-        // if (status !== 200) {
-        //   alert('토큰 통신에러가 발생하였습니다');
-        //   return;
-        // }
-        // console.log(token);
         dispatch(loginSuccess({ token }));
 
         //로그인 후 장바구니 아이템 서버로 전송
@@ -37,8 +43,10 @@ const CheckPointPage = () => {
       }
     };
 
-    fetchToken();
-  }, []);
+    if (token && !error) {
+      fetchToken();
+    }
+  }, [token, error]);
 
   const profileBridge = () => {
     //이메일로 전달받은 초대하기로 로그인 후 로컬스토리지에서 get
@@ -72,13 +80,18 @@ const CheckPointPage = () => {
     }
     removeLocalStorageCart();
   };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    navigate('/signin');
+  };
+
   return (
     <>
-      {/* <div>
-        <span>Access Token 발행 테스트</span>
-        <br />
-        <p>{token}</p>
-      </div> */}
+      <SuccessModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        message={modalMessage}
+      />
     </>
   );
 };
