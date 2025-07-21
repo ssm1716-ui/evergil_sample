@@ -50,9 +50,9 @@ const ProfileInactiveErrorPage = () => {
                 <Button
                   radiusOn="radius-on"
                   className="btn btn-large btn-base-color btn-box-shadow btn-round-edge"
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => window.location.href = '/profile'}
                 >
-                  메인으로
+                  My Profiles
                 </Button>
               </div>
             </div>
