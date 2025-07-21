@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FaqComponents from '@/components/Faq/FaqComponents';
 import ContactComponents from '@/components/Contact/ContactComponents';
-import Modal from '@/components/common/Modal/Modal';
+import SuccessModal from '@/components/common/Modal/SuccessModal';
 import useIsMobile from '@/hooks/useIsMobile';
 import { postInquiryRequest } from '@/api/guest/guestApi';
 import { isValidEmail } from '@/utils/validators';
@@ -69,7 +69,26 @@ const MyContactPage = () => {
     if (res === 201) {
       setIsModalOpen(true);
       setContactUs(initialFormState);
+
+      // is-valid 클래스 제거
+      const inputs = document.querySelectorAll('.contact-form-style-03 input, .contact-form-style-03 textarea');
+      inputs.forEach(input => {
+        input.classList.remove('is-valid', 'is-invalid');
+      });
     }
+  };
+
+  // 모달 닫기 시 유효성 체크 초기화
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setContactUs(initialFormState); // 유효성 체크 로직 초기화
+    setErrors({});
+    
+    // is-valid 클래스 제거
+    const inputs = document.querySelectorAll('.contact-form-style-03 input, .contact-form-style-03 textarea');
+    inputs.forEach(input => {
+      input.classList.remove('is-valid', 'is-invalid');
+    });
   };
 
   return (
@@ -111,6 +130,7 @@ const MyContactPage = () => {
             </div>
           </div>
         </section>
+        <SuccessModal isOpen={isModalOpen} onClose={handleModalClose} />
       </div>
     </>
   );

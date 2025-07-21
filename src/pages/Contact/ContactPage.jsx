@@ -146,7 +146,6 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
-
       <SuccessModal isOpen={isModalOpen} onClose={handleModalClose} />
     </>
   );
