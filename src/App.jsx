@@ -46,6 +46,7 @@ import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
 import ScrollToTop from '@/components/common/ScrollToTop'; // 추가3
 import ErrorBoundary from '@/components/common/ErrorBoundary';
+import AuthRedirect from '@/components/common/AuthRedirect';
 import ErrorPage from '@/pages/ErrorPage';
 import CheckPointPage from '@/pages/CheckPointPage';
 import TestPage from '@/pages/TestPage';
@@ -66,7 +67,14 @@ const App = () => {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/store" element={<StorePage />} />
               <Route path="/shop/:id" element={<ShopPage />} />
-              <Route path="/signin" element={<SignInPage />} />
+              <Route 
+                path="/signin" 
+                element={
+                  <AuthRedirect redirectTo="/profile" skipOnSignIn={true}>
+                    <SignInPage />
+                  </AuthRedirect>
+                } 
+              />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/password-forgot" element={<ForgotPage />} />
               <Route path="/auth/token-validation" element={<ValidationPage />} />

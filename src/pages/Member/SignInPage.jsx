@@ -30,12 +30,12 @@ const SignInPage = () => {
   // Redux 상태에서 인증 여부 가져오기
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // 인증된 사용자가 /signin 페이지에 접속하면 리다이렉트
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/profile');
-    }
-  }, [isAuthenticated, navigate]);
+  // // 인증된 사용자가 /signin 페이지에 접속하면 리다이렉트
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate('/profile');
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   const handleMemberRegisterChange = (e) => {
     const { name, value } = e.target;
