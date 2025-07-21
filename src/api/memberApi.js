@@ -22,9 +22,6 @@ export const postSignIn = async (param) => {
         if (newAccessToken) {
             // Axios 기본 헤더에 Authorization 설정/ 상태관리 / 로컬스토리지 설정
             axiosInstance.defaults.headers.common['Authorization'] = newAccessToken;
-            // localStorage.setItem('dev_accessToken', newAccessToken);
-
-            console.log('Authorization Header Set:', newAccessToken);
         }
 
         return { status: res.status, token: newAccessToken };

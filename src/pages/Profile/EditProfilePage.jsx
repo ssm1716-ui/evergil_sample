@@ -763,9 +763,9 @@ const EditProfilePage = () => {
       return;
     }
 
-    // Handle file selection case
+    // Handle file selection case - 동기적으로 순차 처리
     try {
-      const uploadPromises = Array.from(files).map(async (file) => {
+      for (const file of Array.from(files)) {
         const compressedFile = await compressImage(file);
         const preview = URL.createObjectURL(compressedFile);
 
@@ -779,11 +779,9 @@ const EditProfilePage = () => {
         else if (name === 'profileImageUrl') setProfileImage(imageFile);
         else setPhoto(imageFile);
 
-        // 업로드는 즉시 수행
+        // 업로드를 순차적으로 수행 (동기 처리)
         await handleGetFileUploadPath(name, imageFile);
-      });
-
-      await Promise.all(uploadPromises);
+      }
     } catch (error) {
       console.error('압축 또는 업로드 실패:', error);
     }
@@ -805,18 +803,13 @@ const EditProfilePage = () => {
       }
 
       setIsUploading(true);
-      console.log(
-        `📂 파일 업로드 시작: ${file.originalFile.name} (${file.originalFile.type})`
-      );
+
       // 1️⃣ Presigned URL 요청
       const type = getFileType(file.originalFile.type);
       const presignedResponse = await postRequestPresignedUrl(type);
       const { data } = presignedResponse.data;
       url = data.completedUrl; // 업로드 완료 후 접근할 URL
       imageId = updatePhotoId || '';
-      console.log(imageId);
-
-      console.log(`Uploading: ${file.originalFile.name} -> ${url}`);
 
       // 2️⃣ S3에 파일 업로드
       const response = await fetch(data.url, {
@@ -825,12 +818,8 @@ const EditProfilePage = () => {
         headers: { 'Content-Type': file.originalFile.type },
       });
 
-      console.log(response);
-
       if (!response.ok)
         throw new Error(`업로드 실패: ${file.originalFile.name}`);
-
-      console.log('업로드 성공:', url);
 
       // ✅ State 업데이트 전, 최신 profile 가져오기
       if (imageType !== 'photo' || imageType !== 'updatePhoto') {
@@ -877,7 +866,6 @@ const EditProfilePage = () => {
           setUpdatePhotoId('');
         }
       }
-      console.log(res);
     } catch (error) {
       console.error('파일 업로드 중 오류 발생:', error);
       alert(error.message || '파일 업로드 중 오류 발생');
