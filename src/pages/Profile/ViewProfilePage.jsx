@@ -663,7 +663,7 @@ const ViewProfilePage = () => {
                                     }}
                                   >
                                     <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
-                                    add comment
+                                    하늘 편지 쓰기
                                   </a>
                                 </li>
                               </ul>
