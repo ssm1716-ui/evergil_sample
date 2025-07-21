@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaTwitter, FaLink, FaShareAlt } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaLink, FaShareAlt, FaTimes } from 'react-icons/fa';
 
 const WebShareButton = ({ 
   triggerElement, 
@@ -10,7 +10,7 @@ const WebShareButton = ({
   shareText = '이 페이지를 공유해 보세요!'
 }) => {
   // 기본값 설정
-  const { left = '26%', bottom = '-100px' } = positionConfig;
+  const { left = '27%', bottom = '70px' } = positionConfig;
 
   const [showShareBox, setShowShareBox] = useState(false); // ✅ 공유 박스 상태
   const [copied, setCopied] = useState(false); // ✅ URL 복사 상태
@@ -34,7 +34,6 @@ const WebShareButton = ({
           text: shareText,
           url: shareUrl,
         });
-        console.log('공유 성공!');
       } catch (error) {
         console.error('공유 실패:', error);
       }
@@ -121,12 +120,44 @@ const WebShareButton = ({
             flexDirection: 'column',
             alignItems: 'center',
             gap: '10px',
-            zIndex: 100,
+            zIndex: 9999,
+            border: '1px solid #e0e0e0',
           }}
         >
-          <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
-            공유하기
-          </p>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            width: '100%',
+            marginBottom: '5px'
+          }}>
+            <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
+              공유하기
+            </p>
+            <button
+              onClick={() => setShowShareBox(false)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '4px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#666',
+                fontSize: '16px',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#f0f0f0';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = 'transparent';
+              }}
+            >
+              <FaTimes />
+            </button>
+          </div>
 
           {/* ✅ 소셜 공유 버튼 */}
           <div style={{ display: 'flex', gap: '10px' }}>
