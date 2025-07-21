@@ -88,7 +88,7 @@ const ViewProfilePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
-  } = useProfilePermission(profileId, { shouldRedirect: false });
+  } = useProfilePermission(profileId, { shouldRedirect: false, nickname });
 
   useEffect(() => {
     // 스타일 추가
