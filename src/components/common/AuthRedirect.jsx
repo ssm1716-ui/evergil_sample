@@ -21,14 +21,20 @@ const AuthRedirect = ({ children, redirectTo = '/profile', skipOnSignIn = false 
 
         //로그인 모달로 전달받은 리다이렉트 페이지
         const redirectAfterLogin = localStorage.getItem('redirectAfterLogin');
-        
+
         if (invitationKey) {
           localStorage.removeItem('dev_invitation');
+          localStorage.removeItem('dev_remberProfileUrl');
+          localStorage.removeItem('redirectAfterLogin');
           navigate(`/profile/invitation?key=${invitationKey}`, { replace: true });
         } else if (remberProfileUrl) {
+          localStorage.removeItem('dev_invitation');
           localStorage.removeItem('dev_remberProfileUrl');
+          localStorage.removeItem('redirectAfterLogin');
           navigate(remberProfileUrl, { replace: true });
         } else if (redirectAfterLogin) {
+          localStorage.removeItem('dev_invitation');
+          localStorage.removeItem('dev_remberProfileUrl');
           localStorage.removeItem('redirectAfterLogin');
           navigate(redirectAfterLogin, { replace: true });
         } else {
