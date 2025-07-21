@@ -283,7 +283,6 @@ const EditProfilePage = () => {
         // }
         if (activeTab === '하늘편지') {
           res = await getLetters(profileId);
-          console.log('하늘편지 : ', res);
           if (res.status === 200) {
             const { data } = res.data;
             setLetters(data);
@@ -291,10 +290,8 @@ const EditProfilePage = () => {
         }
         if (activeTab === '가족관계도') {
           res = await getFamilyProfile(profileId);
-          console.log('가족관계도 : ', res);
           if (res.status === 200) {
             const { items } = res.data.data;
-            console.log(items);
             setFamily(items);
           }
         }
@@ -416,10 +413,8 @@ const EditProfilePage = () => {
       try {
         if (!imagesId) return;
         const res = await getPhotoSeletct(profileId);
-        console.log('이미지 : ', res);
         if (res.status === 200) {
           const { data } = res.data;
-          console.log(data);
           setImages(data);
         }
       } catch (error) {
@@ -445,8 +440,6 @@ const EditProfilePage = () => {
     const closeBtn = document.querySelector("[id^='lg-close']"); // ✅ ID가 'lg-close-'로 시작하는 버튼 찾기
     if (closeBtn) {
       closeBtn.click(); // ✅ LightGallery 닫기 버튼 강제 클릭
-    } else {
-      console.error('닫기 버튼을 찾을 수 없습니다.');
     }
   };
 
@@ -578,7 +571,6 @@ const EditProfilePage = () => {
   
   // ✅ LightGallery가 열린 후 실행되는 이벤트 핸들러
   const handleGalleryOpen = () => {
-    console.log('📸 LightGallery가 열렸습니다.');
     addCustomButtons();
   };
 
@@ -592,10 +584,8 @@ const EditProfilePage = () => {
         editButton.classList.add('lg-custom-btn', 'lg-custom-modify');
         editButton.id = 'edit-button';
         editButton.onclick = () => {
-          const index = getCurrentImageIndex();
-          console.log('Edit button clicked, index:', index);
-          if (index !== -1 && imagesRef.current[index]) {
-            const imageId = imagesRef.current[index]?.id;
+          const imageId = getCurrentImageId();
+          if (imageId) {
             handleEdit(imageId);
           }
         };
@@ -605,11 +595,11 @@ const EditProfilePage = () => {
         deleteButton.classList.add('lg-custom-btn', 'lg-custom-remove');
         deleteButton.id = 'delete-button';
         deleteButton.onclick = () => {
-          const index = getCurrentImageIndex();
-          console.log('Delete button clicked, index:', index);
-          if (index !== -1 && imagesRef.current[index]) {
-            const imageId = imagesRef.current[index]?.id;
+          const imageId = getCurrentImageId();
+          if (imageId) {
             handleDelete(imageId);
+          } else {
+            alert('삭제할 이미지를 찾을 수 없습니다. 새로고침 후 다시 시도해주세요.');
           }
         };
 
@@ -681,6 +671,44 @@ const EditProfilePage = () => {
     }
 
     return -1; // 활성화된 이미지가 없을 경우 -1 반환
+  };
+
+  // 현재 이미지의 ID를 안전하게 가져오는 함수
+  const getCurrentImageId = () => {
+    try {
+      // 1. DOM에서 현재 활성화된 이미지의 data-id 속성 직접 가져오기 (최우선)
+      const currentItem = document.querySelector('.lg-item.lg-current');
+      if (currentItem) {
+        // lg-item 내부의 img 요소에서 data-id 가져오기
+        const imgElement = currentItem.querySelector('img');
+        if (imgElement && imgElement.dataset.id) {
+          return imgElement.dataset.id;
+        }
+      }
+      
+      // 2. LightGallery 인스턴스에서 현재 인덱스로 가져오기
+      if (lgRef.current?.instance) {
+        const currentIndex = lgRef.current.instance.index;
+        if (currentIndex !== undefined && imagesRef.current[currentIndex]) {
+          const imageId = imagesRef.current[currentIndex].id;
+          return imageId;
+        }
+      }
+      
+      // 3. DOM에서 현재 활성화된 이미지 URL로 찾기 (fallback)
+      const currentImg = document.querySelector('.lg-item.lg-current img');
+      if (currentImg) {
+        const currentImageUrl = currentImg.src;
+        const foundImage = imagesRef.current.find(img => img.url === currentImageUrl);
+        if (foundImage) {
+          return foundImage.id;
+        }
+      }
+
+      return null;
+    } catch (error) {
+      return null;
+    }
   };
 
   // 가족관계도 항목 추가 기능
@@ -797,8 +825,7 @@ const EditProfilePage = () => {
         !file.originalFile ||
         !(file.originalFile instanceof Blob) // File도 Blob의 하위
       ) {
-        console.error('유효하지 않은 파일 구조입니다.', file);
-        alert('유효하지 않은 파일');
+        alert('유효하지 않은 파일입니다.');
         return;
       }
 
@@ -903,10 +930,6 @@ const EditProfilePage = () => {
       const res = await putProfileDescription(profileId, {
         description: content,
       });
-
-      if (res.status === 200) {
-        console.log('✅ 저장 완료');
-      }
     } catch (error) {
       console.error('🚨 저장 중 오류 발생:', error);
     }
@@ -979,7 +1002,6 @@ const EditProfilePage = () => {
   // 비공개 접근권한 요청 입력 핸들러
   const handleFormRequestPrivateProfileChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormRequestPrivateProfile((prevForm) => ({
       ...prevForm,
       [name]: value,
@@ -1435,6 +1457,7 @@ const EditProfilePage = () => {
                               key={image.id || index}
                               className="gallery-item gallery-grid-item"
                               data-src={image.url}
+                              data-id={image.id}
                               data-page={Math.floor(index / 20) + 1}
                               data-index={index}
                             >
@@ -1443,6 +1466,7 @@ const EditProfilePage = () => {
                                 loading="lazy"
                                 alt="추모 이미지"
                                 data-index={index}
+                                data-id={image.id}
                               />
                             </a>
                           ))}
