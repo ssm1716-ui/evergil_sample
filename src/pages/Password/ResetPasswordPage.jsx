@@ -7,7 +7,7 @@ import Button from '@/components/common/Button/Button';
 import { postTokenValidation, postResetPassword } from '@/api/guest/guestApi';
 import { isValidPassword } from '@/utils/validators';
 
-import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const ResetPasswordPage = () => {
   const [resetPassword, setResetPassword] = useState({

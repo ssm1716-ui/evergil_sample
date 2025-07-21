@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import jsQR from 'jsqr';
 import { getLastPathSegment } from '@/utils/utils';
-import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const QRScanner = () => {
   const [scanResult, setScanResult] = useState(null);

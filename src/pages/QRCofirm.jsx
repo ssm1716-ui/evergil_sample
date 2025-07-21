@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useVerifyQrKey } from '@/hooks/useVerifyQrKey';
 import { getLastPathSegment } from '@/utils/utils';
 
-import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const QRCofirm = () => {
   const [desc, setDesc] = useState('스캔하신 QR코드 검증이 진행중에 있습니다.');

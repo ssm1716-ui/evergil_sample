@@ -4,7 +4,7 @@ import {
   useNavigate,
   useLocation,
 } from 'react-router-dom';
-import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const ErrorPage = () => {
   const location = useLocation();

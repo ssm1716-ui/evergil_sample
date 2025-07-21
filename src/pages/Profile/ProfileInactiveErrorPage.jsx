@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
-import defaultLogo from '@/assets/images/header-logo.png';
+import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const ProfileInactiveErrorPage = () => {
   return (
