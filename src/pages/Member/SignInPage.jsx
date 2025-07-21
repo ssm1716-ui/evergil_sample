@@ -117,25 +117,32 @@ const SignInPage = () => {
   };
 
   const profileBridge = () => {
-    //이메일로 전달받은 초대하기로 로그인 후 로컬스토리지에서 get
-    const invitationKey = localStorage.getItem('dev_invitation');
+    // *** AuthRedirect.jsx 에서 처리 ***
+    // //이메일로 전달받은 초대하기로 로그인 후 로컬스토리지에서 get
+    // const invitationKey = localStorage.getItem('dev_invitation');
 
-    //비공개 프로필 -> 로그인 후 로컬스토리지 get
-    const remberProfileUrl = localStorage.getItem('dev_remberProfileUrl');
+    // //비공개 프로필 -> 로그인 후 로컬스토리지 get
+    // const remberProfileUrl = localStorage.getItem('dev_remberProfileUrl');
 
-    if (invitationKey) {
-      localStorage.removeItem('dev_invitation');
-      navigate(`/profile/invitation?key=${invitationKey}`);
-      return;
-    } else if (remberProfileUrl) {
-      localStorage.removeItem('dev_remberProfileUrl');
-      navigate(`${remberProfileUrl}`);
-      return;
-    } else {
-      const redirectPath = localStorage.getItem('redirectAfterLogin') || '/profile';
-      localStorage.removeItem('redirectAfterLogin');
-      navigate(redirectPath);
-    }
+    // const redirectAfterLogin = localStorage.getItem('redirectAfterLogin');
+
+    // if (invitationKey) {
+    //   localStorage.removeItem('dev_invitation');
+    //   navigate(`/profile/invitation?key=${invitationKey}`, { replace: true });
+    //   return;
+    // } else if (remberProfileUrl) {
+    //   localStorage.removeItem('dev_remberProfileUrl');
+    //   navigate(`${remberProfileUrl}`, { replace: true });
+    //   return;
+    // } else if (redirectAfterLogin) {
+    //   localStorage.removeItem('redirectAfterLogin');
+    //   navigate(encodeURIComponent(redirectAfterLogin), { replace: true });
+    //   return;
+    // } else {
+    //   const redirectPath = '/profile';
+    //   localStorage.removeItem('redirectAfterLogin');
+    //   navigate(redirectPath, { replace: true });
+    // }
   };
 
   const sendCartProduct = async () => {

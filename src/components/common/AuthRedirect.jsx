@@ -33,10 +33,10 @@ const AuthRedirect = ({ children, redirectTo = '/profile', skipOnSignIn = false 
           localStorage.removeItem('redirectAfterLogin');
           navigate(remberProfileUrl, { replace: true });
         } else if (redirectAfterLogin) {
-          localStorage.removeItem('dev_invitation');
-          localStorage.removeItem('dev_remberProfileUrl');
-          localStorage.removeItem('redirectAfterLogin');
-          navigate(redirectAfterLogin, { replace: true });
+           localStorage.removeItem('dev_invitation');
+           localStorage.removeItem('dev_remberProfileUrl');
+           localStorage.removeItem('redirectAfterLogin');
+           navigate(redirectAfterLogin, { replace: true });
         } else {
           navigate(redirectTo, { replace: true });
         }        
