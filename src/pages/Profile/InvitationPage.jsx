@@ -175,6 +175,7 @@ const InvitationPage = () => {
                         onClick={() => {
                           setIsModalOpen(false);
                           SaveInvitationKey();
+                          localStorage.setItem('redirectAfterLogin', `/profile/invitation?key=${invitationKey}`);
                           navigate('/signup');
                         }}
                       >

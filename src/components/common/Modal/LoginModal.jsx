@@ -23,6 +23,7 @@ const LoginModal = ({ onClose }) => {
                     <button
                       className="btn btn-white btn-large btn-box-shadow btn-round-edge btn-transparent-light-gray me-1 mb-2"
                       onClick={() => {
+                        localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
                         onClose();
                         navigate('/signup');
                       }}

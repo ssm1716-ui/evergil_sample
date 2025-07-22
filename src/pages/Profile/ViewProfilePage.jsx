@@ -1019,6 +1019,7 @@ const ViewProfilePage = () => {
                         className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
                         onClick={() => {
                           setIsModalOpen(false);
+                          localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
                           navigate('/signup');
                         }}
                       >
@@ -1027,8 +1028,8 @@ const ViewProfilePage = () => {
                       <button
                         className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
                         onClick={() => {
-                          localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
                           setIsModalOpen(false);
+                          localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
                           navigate('/signin');
                         }}
                       >
