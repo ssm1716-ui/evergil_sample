@@ -445,7 +445,14 @@ const MyInfoPage = () => {
                               color="profile"
                               size="xs-small"
                               className="fw-700"
-                              onClick={() => setCurrentView('phoneChange')}
+                              onClick={() => {
+                                setCurrentView('phoneChange');
+                                // 휴대폰 번호와 인증번호 입력 필드 초기화
+                                setPhoneNumber('');
+                                setPhoneAuthCode('');
+                                setErrors((prev) => ({ ...prev, phoneNumber: false, phoneAuthCode: false }));
+                                setErrorMessages((prev) => ({ ...prev, phoneNumber: '', phoneAuthCode: '' }));
+                              }}
                             >
                               변경
                             </Button>
