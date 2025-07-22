@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
+import { postAddCart } from '@/api/member/cartApi';
+import { getCart, removeLocalStorageCart } from '@/api/memberApi';
+import { getTransformedCartData } from '@/utils/utils';
 
 const AuthRedirect = ({ children, redirectTo = '/profile', skipOnSignIn = false }) => {
   const { isAuthenticated } = useAuth();
@@ -22,42 +25,47 @@ const AuthRedirect = ({ children, redirectTo = '/profile', skipOnSignIn = false 
         //로그인 모달로 전달받은 리다이렉트 페이지
         const redirectAfterLogin = localStorage.getItem('redirectAfterLogin');
 
-        if (invitationKey) {
+        const handleRedirect = async () => {
+          await sendCartProduct();
+
           localStorage.removeItem('dev_invitation');
           localStorage.removeItem('dev_remberProfileUrl');
           localStorage.removeItem('redirectAfterLogin');
-          navigate(`/profile/invitation?key=${invitationKey}`, { replace: true });
-        } else if (remberProfileUrl) {
-          localStorage.removeItem('dev_invitation');
-          localStorage.removeItem('dev_remberProfileUrl');
-          localStorage.removeItem('redirectAfterLogin');
-          navigate(remberProfileUrl, { replace: true });
-        } else if (redirectAfterLogin) {
-           localStorage.removeItem('dev_invitation');
-           localStorage.removeItem('dev_remberProfileUrl');
-           localStorage.removeItem('redirectAfterLogin');
-           navigate(redirectAfterLogin, { replace: true });
-        } else {
-          navigate(redirectTo, { replace: true });
-        }        
+
+          if (invitationKey) {
+            navigate(`/profile/invitation?key=${invitationKey}`, { replace: true });
+          } else if (remberProfileUrl) {
+            navigate(remberProfileUrl, { replace: true });
+          } else if (redirectAfterLogin) {
+             navigate(redirectAfterLogin, { replace: true });
+          } else {
+            navigate(redirectTo, { replace: true });
+          }        
+        };
+
+        handleRedirect();
       }
-      
-      // // URL 파라미터에서 returnTo 값을 확인
-      // const urlParams = new URLSearchParams(location.search);
-      // const returnTo = urlParams.get('returnTo');
-      
-      // if (returnTo) {
-      //   // returnTo 파라미터가 있으면 해당 페이지로 이동
-      //   navigate(returnTo, { replace: true });
-      // } else {
-      //   // 없으면 기본 리다이렉트 페이지로 이동
-      //   navigate(redirectTo, { replace: true });
-      // }
     }
   }, [isAuthenticated, navigate, redirectTo, location, skipOnSignIn]);
 
   // 인증되지 않은 경우에만 children을 렌더링
   return !isAuthenticated ? children : null;
+};
+
+const sendCartProduct = async () => {
+  const storedCart = getCart();
+  if (storedCart.length <= 0) return;
+  const transformedData = getTransformedCartData(storedCart);
+
+  try {
+    const res = await postAddCart(transformedData); 
+    if (res.status !== 200) {
+      console.log('not saved cart!');
+    }
+  } catch (error) {
+    console.log('Error saving cart:', error);
+  }
+  removeLocalStorageCart();
 };
 
 export default AuthRedirect; 
