@@ -62,13 +62,20 @@ const AddressPage = () => {
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
+    
+    // 핸드폰번호는 숫자만 입력 허용
+    let processedValue = value;
+    if (name === 'phoneNumber') {
+      processedValue = value.replace(/\D/g, ''); // 숫자가 아닌 문자 제거
+    }
+    
     setAddress({
       ...address,
-      [name]: value,
+      [name]: processedValue,
     });
 
     // 실시간 유효성 검사
-    if (value.trim() === '') {
+    if (processedValue.trim() === '') {
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: true,
@@ -107,6 +114,12 @@ const AddressPage = () => {
       setAddress(initialForm);
       setSelectedAddress('');
       setRefreshKey((prevKey) => prevKey + 1);
+      setFocusAddress(''); // ✅ 선택된 효과 초기화
+      // ✅ a 태그의 active 클래스 초기화
+      setTimeout(() => {
+        const activeLinks = document.querySelectorAll('.nav-link.active');
+        activeLinks.forEach(link => link.classList.remove('active'));
+      }, 100);
     }
   };
 
@@ -152,6 +165,12 @@ const AddressPage = () => {
       setAddress(initialForm);
       setSelectedAddress('');
       setRefreshKey((prevKey) => prevKey + 1);
+      setFocusAddress(''); // ✅ 선택된 효과 초기화
+      // ✅ a 태그의 active 클래스 초기화
+      setTimeout(() => {
+        const activeLinks = document.querySelectorAll('.nav-link.active');
+        activeLinks.forEach(link => link.classList.remove('active'));
+      }, 100);
     } else {
       const { data } = res;
       alert(data.message);
@@ -162,6 +181,12 @@ const AddressPage = () => {
     const res = await deleteAddress(id);
     if (res.status === 200) {
       setRefreshKey((prevKey) => prevKey + 1);
+      setFocusAddress(''); // ✅ 선택된 효과 초기화
+      // ✅ a 태그의 active 클래스 초기화
+      setTimeout(() => {
+        const activeLinks = document.querySelectorAll('.nav-link.active');
+        activeLinks.forEach(link => link.classList.remove('active'));
+      }, 100);
     } else {
       const { data } = res;
       alert(data.message);
@@ -178,6 +203,11 @@ const AddressPage = () => {
     if (res.status === 200) {
       setRefreshKey((prevKey) => prevKey + 1);
       setFocusAddress(null); // ✅ 체크 표시 초기화
+      // ✅ a 태그의 active 클래스 초기화
+      setTimeout(() => {
+        const activeLinks = document.querySelectorAll('.nav-link.active');
+        activeLinks.forEach(link => link.classList.remove('active'));
+      }, 100);
       alert('기본 배송지로 변경 되었습니다.');
     }
   };
@@ -363,10 +393,11 @@ const AddressPage = () => {
                       <label>핸드폰번호</label>
                       <input
                         className="border-radius-4px input-small mb-5px text-black"
-                        type="text"
+                        type="tel"
                         name="phoneNumber"
                         value={address.phoneNumber}
                         onChange={handleAddressChange}
+                        placeholder="숫자만 입력해주세요"
                         required
                       />
                       {errors.phoneNumber && (
