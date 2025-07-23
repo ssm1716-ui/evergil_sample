@@ -40,59 +40,6 @@ const ProfilePage = () => {
   const [isotopeReady, setIsotopeReady] = useState(false);
   const prevScrollY = useRef(0);
 
-  // SNS 계정 여부와 이메일 존재 여부를 확인합니다.
-  // SNS 계정이면 passwordInput에는 보통 빈 문자열을 전달하거나 API 사양에 맞게 값을 전달합니다.
-  // const { isSnsAccount, hasEmail, loading, error } =
-  //   useSnsAccountValidation('');
-
-  // useEffect(() => {
-  //   const fetchProfiles = async () => {
-  //     try {
-  //       const res = await getSelectProfileList();
-  //       if (res.status === 200) {
-  //         const { data } = res.data;
-  //         setProfiles(data);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchProfiles();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchViewProfiles = async () => {
-  //     try {
-  //       const res = await getSelectProfileViewList();
-  //       if (res.status === 200) {
-  //         const { data } = res.data;
-  //         setViewProfiles(data);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchViewProfiles();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchBookmarksProfiles = async () => {
-  //     try {
-  //       const res = await getSelectProfileBookmarksList();
-  //       if (res.status === 200) {
-  //         const { data } = res.data;
-  //         setBookmarksProfiles(data);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchBookmarksProfiles();
-  // }, []);
-
   // 📌 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {
     setProfileState(prev => ({
@@ -207,12 +154,14 @@ const ProfilePage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isFetching, profileState.hasNext, profileState.page, isotopeReady]);
 
-  const handleMovePageProfile = (profileId) => {
-    if (activeTab === 'My Profiles') {
-      navigate(`/profile/edit-profile/${profileId}`);
-      return;
-    }
-    navigate(`/profile/view-profile/${profileId}`);
+  const handleMovePageProfile = (profileId, nickname) => {
+    // if (activeTab === 'My Profiles') {
+    //   navigate(`/profile/edit-profile/${profileId}`);
+    //   return;
+    // }
+    // navigate(`/profile/view-profile/${profileId}`);
+
+    navigate(`/@${nickname}`);
   };
   const handleRemoveConfirm = (id) => {
     setProfileId(id);
@@ -300,9 +249,9 @@ const ProfilePage = () => {
                       {profileState.profiles.map((profile, index) => (
                         <li className="grid-item cursor-pointer" key={index}>
                           <div className="card border-0 border-radius-4px box-shadow-extra-large box-shadow-extra-large-hover h-100 d-flex flex-column"
-                            onClick={() => handleMovePageProfile(profile.id)}
+                            onClick={() => handleMovePageProfile(profile.id, profile.nickname)}
                           >
-                            <div className="blog-image">
+                            <div className="blog-image image-container">
                               <Link className="d-block">
                                 <img
                                   src={profile.profileImageUrl || avatarImage}
