@@ -61,6 +61,8 @@ const ManagePage = () => {
   //Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCopyLinkOpen, setIsModalCopyLinkOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
     initFormPrivateProfile
   );
@@ -169,6 +171,9 @@ const ManagePage = () => {
     const res = await putProfileScope(profileId, optionVal);
     if (res.status !== 200) {
       alert('일반 액세스 변경하는데 에러가 발생했습니다.');
+    } else {
+      setSuccessMessage(`일반 액세스가 ${seletedText}로 변경되었습니다.`);
+      setIsSuccessModalOpen(true);
     }
     fetchAllData(profileId);
   };
@@ -206,27 +211,27 @@ const ManagePage = () => {
   const handleInvitationsPermissionChange = async (invitationId, value) => {
     // let updatedItems;
     let res;
+    let message = '';
     if (!value) return;
     if (value === 'DELETE') {
-      // updatedItems = invitations.filter((item) => item.id === invitationId);
       const confirmed = window.confirm('정말로 삭제하시겠습니까?');
       if (!confirmed) return;
       res = await deleteInvitationPermissions(profileId, invitationId);
+      // message = '초대한 사용자가 삭제되었습니다.';
     } else if (value && (value === 'EDITOR' || value === 'VIEWER')) {
-      // updatedItems = invitations.map((item, i) =>
-      //   item.id === invitationId
-      //     ? {
-      //         ...item,
-      //         permission: value,
-      //       }
-      //     : item
-      // );
-
       res = await putInvitationPermissions(profileId, invitationId, value);
+      const permissionText = value === 'EDITOR' ? '편집 권한' : '보기 권한';
+      message = `${permissionText}으로 변경되었습니다.`;
     } else if (value === 'CANCEL') {
       const confirmed = window.confirm('정말로 초대취소하시겠습니까?');
       if (!confirmed) return;
       res = await deleteInvitationCancel(profileId, invitationId);
+      // message = '초대가 취소되었습니다.';
+    }
+    
+    if (res && res.status === 200 && message) {
+      setSuccessMessage(message);
+      setIsSuccessModalOpen(true);
     }
     fetchInvitations(profileId);
   };
@@ -237,6 +242,9 @@ const ManagePage = () => {
 
     const res = await putPrivateAccessRequests(profileId, requestId, status);
     if (res.status === 200) {
+      const statusText = status === 'ALLOW' ? '허용' : '거부';
+      setSuccessMessage(`비공개 계정 보기 요청이 ${statusText}되었습니다.`);
+      setIsSuccessModalOpen(true);
       fetchAllData(profileId);
     }
   };
@@ -246,7 +254,7 @@ const ManagePage = () => {
       {!showScreen && <div className="blur-overlay"></div>}
       {showScreen ? (
         <>
-          <section className="top-space-margin big-section pb-0 pt-5 md-pt-10px">
+          <section className="top-space-margin big-section pb-0 pt-5 md-pt-30px">
             <div className="container">
               <div
                 className="row align-items-center justify-content-center"
@@ -336,14 +344,11 @@ const ManagePage = () => {
                                     <tr key={invitation.invitationId}>
                                       <td className="product-name">
                                         <a className="text-dark-gray fw-500 d-block">
-                                          {invitation.email}
+                                          {isValidEmail(invitation.email) ? invitation.email : ''}
                                         </a>
                                       </td>
-                                      <td>{invitation.memberDisplayName || ''} {invitation.memberEmail && (
-                                          <>
-                                            &nbsp;({invitation.memberEmail})
-                                          </>
-                                        )}
+                                      <td>
+                                        {invitation.memberDisplayName || ''}
                                       </td>
                                       <td>
                                         {invitation.isConfirmed ? (
@@ -399,22 +404,18 @@ const ManagePage = () => {
                               <div key={invitation.invitationId} className="card mb-3 border border-1 border-color-gray">
                                 <div className="card-body p-3">
                                   <div className="row">
-                                    <div className="col-12 mb-2">
-                                      <strong className="fs-14 text-base-color">이메일:</strong>
-                                      <div className="text-dark-gray fw-500">
-                                        {invitation.email}
-                                      </div>
-                                    </div>
-                                    <div className="col-12 mb-2">
-                                      <strong className="fs-14 text-base-color">회원정보:</strong>
-                                      <div className="text-dark-gray">
-                                        {invitation.memberDisplayName || ''} {invitation.memberEmail && (
-                                          <>
-                                            &nbsp;({invitation.memberEmail})
-                                          </>
-                                        )}
-                                      </div>
-                                    </div>
+                                                                         <div className="col-12 mb-2">
+                                       <strong className="fs-14 text-base-color">이메일:</strong>
+                                       <div className="text-dark-gray fw-500">
+                                         {isValidEmail(invitation.email) ? invitation.email : ''}
+                                       </div>
+                                     </div>
+                                     <div className="col-12 mb-2">
+                                       <strong className="fs-14 text-base-color">회원정보:</strong>
+                                       <div className="text-dark-gray">
+                                         {invitation.memberDisplayName || ''}
+                                       </div>
+                                     </div>
                                     <div className="col-12">
                                       <strong className="fs-14 text-base-color">권한:</strong>
                                       <div className="mt-2">
@@ -535,7 +536,7 @@ const ManagePage = () => {
                                     <tr key={index}>
                                       <td>
                                         {p.memberDisplayName}
-                                        {p.memberEmail && (
+                                        {p.memberEmail && isValidEmail(p.memberEmail) && (
                                           <>
                                             &nbsp;({p.memberEmail})
                                           </>
@@ -583,17 +584,17 @@ const ManagePage = () => {
                               <div key={index} className="card mb-3 border border-1 border-color-gray">
                                 <div className="card-body p-3">
                                   <div className="row">
-                                    <div className="col-12 mb-2">
-                                      <strong className="fs-14 text-base-color">회원정보:</strong>
-                                      <div className="text-dark-gray">
-                                        {p.memberDisplayName}
-                                        {p.memberEmail && (
-                                          <>
-                                            &nbsp;({p.memberEmail})
-                                          </>
-                                        )}
-                                      </div>
-                                    </div>
+                                                                         <div className="col-12 mb-2">
+                                       <strong className="fs-14 text-base-color">회원정보:</strong>
+                                       <div className="text-dark-gray">
+                                         {p.memberDisplayName}
+                                         {p.memberEmail && isValidEmail(p.memberEmail) && (
+                                           <>
+                                             &nbsp;({p.memberEmail})
+                                           </>
+                                         )}
+                                       </div>
+                                     </div>
                                     <div className="col-12 mb-2">
                                       <strong className="fs-14 text-base-color">이름:</strong>
                                       <div className="text-dark-gray">{p.name}</div>
@@ -773,6 +774,40 @@ const ManagePage = () => {
                       >
                         돌아가기
                       </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+      >
+        <div className="w-100">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
+                        {successMessage}
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => {
+                          setIsSuccessModalOpen(false);
+                          setSuccessMessage('');
+                        }}
+                      >
+                        확인
+                      </button>
                     </div>
                   </div>
                 </div>
