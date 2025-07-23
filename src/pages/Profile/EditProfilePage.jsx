@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { debounce } from 'lodash';
@@ -133,6 +133,8 @@ const EditProfilePage = () => {
   );
   const hasMountedRef = useRef(false); // mount 여부 저장
   const [isUploading, setIsUploading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeoutRef = useRef(null);
 
   const [imageState, setImageState] = useState({
     images: [],
@@ -185,6 +187,15 @@ const EditProfilePage = () => {
       }
     }
   }, [nickname, navigate]);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
   const handleUploadClick = () => {
@@ -1058,17 +1069,47 @@ const EditProfilePage = () => {
     }
   };
 
-  //하늘편지 검색
-  const handleSearchLetters = async (e) => {
-    const value = e.target.value;
-
-    if (value.length > 1 || value.length === 0) {
-      const res = await getLetters(profileId, value);
+  //하늘편지 검색 (디바운스 적용)
+  const handleSearchLetters = useCallback(async (searchValue) => {
+    if (!profileId) return;
+    
+    setIsSearching(true);
+    try {
+      const res = await getLetters(profileId, searchValue);
       if (res.status !== 200) {
         alert('하늘편지 검색 에러 발생');
+        return;
       }
       const { data } = res.data;
       setLetters(data);
+    } catch (error) {
+      console.error('하늘편지 검색 중 오류 발생:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  }, [profileId]);
+
+  // 검색 입력 핸들러 (디바운스 적용)
+  const handleSearchInput = (e) => {
+    const value = e.target.value;
+    
+    // 이전 타이머가 있다면 취소
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    
+    // 한글자 이상이거나 빈 값일 때만 검색 실행
+    if (value.length >= 1 || value.length === 0) {
+      // 입력 중일 때 로딩 표시
+      if (value.length >= 1) {
+        setIsSearching(true);
+      }
+      // 500ms 딜레이 후 검색 실행
+      searchTimeoutRef.current = setTimeout(() => {
+        handleSearchLetters(value);
+      }, 500);
+    } else {
+      setIsSearching(false);
     }
   };
 
@@ -1525,10 +1566,14 @@ const EditProfilePage = () => {
                                       className="border-1 nav-link w-400px md-w-100"
                                       type="text"
                                       name="keyword"
-                                      onChange={handleSearchLetters}
+                                      onChange={handleSearchInput}
                                       placeholder="검색어를 입력 해주세요."
                                     />
-                                    <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                                    {isSearching ? (
+                                      <i className="fa-solid fa-spinner fa-spin align-middle icon-small position-absolute z-index-1 search-icon fa-spinner"></i>
+                                    ) : (
+                                      <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                                    )}
                                   </div>
                                 </li>
                                 <li className="nav-item">

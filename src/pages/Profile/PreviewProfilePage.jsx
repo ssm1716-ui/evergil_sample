@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from '@/components/common/Modal/Modal';
 import ReactQuill from 'react-quill';
@@ -78,6 +78,7 @@ const ViewProfilePage = () => {
   });
 
   const lgRef = useRef(null);
+  const searchTimeoutRef = useRef(null);
 
   const {
     isLoginModalOpen,
@@ -89,12 +90,22 @@ const ViewProfilePage = () => {
 
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     // 스타일 추가
     const styleElement = document.createElement('style');
     styleElement.innerHTML = customButtonStyle;
     document.head.appendChild(styleElement);
+  }, []);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -259,16 +270,47 @@ const ViewProfilePage = () => {
     }
   };
 
-  const handleSearchLetters = async (e) => {
-    const value = e.target.value;
-
-    if (value.length > 1 || value.length === 0) {
-      const res = await getLetters(profileId, value);
+  //하늘편지 검색 (디바운스 적용)
+  const handleSearchLetters = useCallback(async (searchValue) => {
+    if (!profileId) return;
+    
+    setIsSearching(true);
+    try {
+      const res = await getLetters(profileId, searchValue);
       if (res.status !== 200) {
         alert('하늘편지 검색 에러 발생');
+        return;
       }
       const { data } = res.data;
       setLetters(data);
+    } catch (error) {
+      console.error('하늘편지 검색 중 오류 발생:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  }, [profileId]);
+
+  // 검색 입력 핸들러 (디바운스 적용)
+  const handleSearchInput = (e) => {
+    const value = e.target.value;
+    
+    // 이전 타이머가 있다면 취소
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    
+    // 한글자 이상이거나 빈 값일 때만 검색 실행
+    if (value.length >= 1 || value.length === 0) {
+      // 입력 중일 때 로딩 표시
+      if (value.length >= 1) {
+        setIsSearching(true);
+      }
+      // 500ms 딜레이 후 검색 실행
+      searchTimeoutRef.current = setTimeout(() => {
+        handleSearchLetters(value);
+      }, 500);
+    } else {
+      setIsSearching(false);
     }
   };
 
