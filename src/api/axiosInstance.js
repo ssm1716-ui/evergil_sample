@@ -85,8 +85,8 @@ axiosInstance.interceptors.response.use(
         // 401 Unauthorized 에러 처리
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
-            // 현재 페이지가 이미 /signin이 아닌 경우에만 리다이렉트
-            if (window.location.pathname !== '/signin') {
+            // 현재 페이지가 이미 /signin 또는 /signup이 아닌 경우에만 리다이렉트
+            if (window.location.pathname !== '/signin' && window.location.pathname !== '/signup') {
                 window.location.href = '/signin';
             }
             return Promise.reject(error);
@@ -97,7 +97,7 @@ axiosInstance.interceptors.response.use(
             localStorage.removeItem('token');
             // 현재 페이지가 이미 /signin이 아닌 경우에만 리다이렉트
             if (window.location.pathname !== '/signin') {
-                window.location.href = '/signin';
+                // window.location.href = '/signin';
             }
             return Promise.reject(error);
         }
