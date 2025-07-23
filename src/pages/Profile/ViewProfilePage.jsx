@@ -80,6 +80,7 @@ const ViewProfilePage = () => {
   const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
     initFormPrivateProfile
   );
+  const [isSearching, setIsSearching] = useState(false);
 
   const lgRef = useRef(null);
   const searchTimeoutRef = useRef(null);
@@ -325,6 +326,7 @@ const ViewProfilePage = () => {
   const handleSearchLetters = useCallback(async (searchValue) => {
     if (!profileId) return;
     
+    setIsSearching(true);
     try {
       const res = await getLetters(profileId, searchValue);
       if (res.status !== 200) {
@@ -335,6 +337,8 @@ const ViewProfilePage = () => {
       setLetters(data);
     } catch (error) {
       console.error('하늘편지 검색 중 오류 발생:', error);
+    } finally {
+      setIsSearching(false);
     }
   }, [profileId]);
 
@@ -349,10 +353,16 @@ const ViewProfilePage = () => {
     
     // 한글자 이상이거나 빈 값일 때만 검색 실행
     if (value.length >= 1 || value.length === 0) {
+      // 입력 중일 때 로딩 표시
+      if (value.length >= 1) {
+        setIsSearching(true);
+      }
       // 500ms 딜레이 후 검색 실행
       searchTimeoutRef.current = setTimeout(() => {
         handleSearchLetters(value);
       }, 500);
+    } else {
+      setIsSearching(false);
     }
   };
 
@@ -713,7 +723,11 @@ const ViewProfilePage = () => {
                                       onChange={handleSearchInput}
                                       placeholder="검색어를 입력 해주세요."
                                     />
-                                    <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                                    {isSearching ? (
+                                      <i className="fa-solid fa-spinner fa-spin align-middle icon-small position-absolute z-index-1 search-icon fa-spinner"></i>
+                                    ) : (
+                                      <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
+                                    )}
                                   </div>
                                 </li>
                                 <li className="nav-item">

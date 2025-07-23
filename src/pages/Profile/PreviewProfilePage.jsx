@@ -90,6 +90,7 @@ const ViewProfilePage = () => {
 
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     // 스타일 추가
@@ -273,6 +274,7 @@ const ViewProfilePage = () => {
   const handleSearchLetters = useCallback(async (searchValue) => {
     if (!profileId) return;
     
+    setIsSearching(true);
     try {
       const res = await getLetters(profileId, searchValue);
       if (res.status !== 200) {
@@ -283,6 +285,8 @@ const ViewProfilePage = () => {
       setLetters(data);
     } catch (error) {
       console.error('하늘편지 검색 중 오류 발생:', error);
+    } finally {
+      setIsSearching(false);
     }
   }, [profileId]);
 
@@ -297,10 +301,16 @@ const ViewProfilePage = () => {
     
     // 한글자 이상이거나 빈 값일 때만 검색 실행
     if (value.length >= 1 || value.length === 0) {
+      // 입력 중일 때 로딩 표시
+      if (value.length >= 1) {
+        setIsSearching(true);
+      }
       // 500ms 딜레이 후 검색 실행
       searchTimeoutRef.current = setTimeout(() => {
         handleSearchLetters(value);
       }, 500);
+    } else {
+      setIsSearching(false);
     }
   };
 

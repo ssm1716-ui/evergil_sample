@@ -73,6 +73,21 @@ cursor: pointer;
   top: 10px !important;
 }
 
+/* 검색 로딩 스피너 스타일 */
+.search-icon.fa-spinner {
+  color: var(--base-color) !important;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 .order-detail-text-icon::after {
   content: "\e844";
