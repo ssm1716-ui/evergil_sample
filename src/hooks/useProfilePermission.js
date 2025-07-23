@@ -8,6 +8,8 @@ const useProfilePermission = (profileId, options = {}) => {
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [showScreen, setShowScreen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(true);
+  const [hasEditPermission, setHasEditPermission] = useState(false);
+  const [shouldShowEditComponent, setShouldShowEditComponent] = useState(false);
 
   const { shouldRedirect = true, nickname = null } = options; // nickname 옵션 추가
 
@@ -44,16 +46,24 @@ const useProfilePermission = (profileId, options = {}) => {
             break;
           case 'PUBLIC_PROFILE_EDITOR':
           case 'YOU_HAVE_EDITOR_PERMISSION':
-            // nickname URL일 때는 기존 edit 페이지로 리다이렉트 (/@nickname/edit 라우팅이 없으므로)
-            if (shouldRedirect && isNicknameUrl) {
-              navigate(`/profile/edit-profile/${profileId}`);
-            } else if (shouldRedirect && !isNicknameUrl && currentPath !== editProfilePath) {
+            setHasEditPermission(true);
+            // nickname URL일 때는 URL 유지하고 edit 컴포넌트 표시
+            if (isNicknameUrl) {
+              setShouldShowEditComponent(true);
+              setShowScreen(true);
+            } else if (shouldRedirect && currentPath !== editProfilePath) {
               navigate(editProfilePath);
+            } else {
+              setShowScreen(true);
             }
-            setShowScreen(true);
             break;
           case 'PUBLIC_PROFILE_OWNER':
           case 'YOU_HAVE_OWNER_PERMISSION':
+            setHasEditPermission(true);
+            // nickname URL일 때는 URL 유지하고 edit 컴포넌트 표시
+            if (isNicknameUrl) {
+              setShouldShowEditComponent(true);
+            }
             setShowScreen(true);
             break;
           case 'PROFILE_INACTIVE':
@@ -79,6 +89,8 @@ const useProfilePermission = (profileId, options = {}) => {
     setShowScreen,
     isAuthorized,
     setIsAuthorized,
+    hasEditPermission,
+    shouldShowEditComponent,
   };
 };
 

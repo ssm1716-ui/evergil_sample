@@ -42,6 +42,7 @@ import {
   getFamilyProfile,
   putFamilyProfile,
   deleteLetters,
+  getProfileIdByNickname
 } from '@/api/memorial/memorialApi';
 
 import avatarImage from '@/assets/images/base-profile-image.png';
@@ -82,7 +83,8 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const EditProfilePage = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const { profileId: urlProfileId, nickname } = useParams(); //URL에서 :profileId 값 가져오기
+  const [profileId, setProfileId] = useState(urlProfileId);
   const lgRef = useRef(null);
   const [content, setContent] = useState('');
   const [profile, setProfile] = useState({});
@@ -159,6 +161,28 @@ const EditProfilePage = () => {
     suppressDeprecationWarnings();
   }, []);
 
+  useEffect(() => {
+    if (nickname) {
+      try {
+        if (!nickname.startsWith('@')) {
+          navigate('/');
+          return;
+        }
+
+        const cleanNickname = nickname.substring(1);
+        getProfileIdByNickname(cleanNickname).then(res => {
+          if (res.status === 200) {
+            setProfileId(res.data.data.profileId);
+          }
+        }).catch(error => {
+          console.error(error);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [nickname, navigate]);
+
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -222,6 +246,8 @@ const EditProfilePage = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!profileId) return; // profileId가 없으면 실행하지 않음
+      
       try {
         const res = await getSelectProfile(profileId);
         if (res.status === 200) {
@@ -240,7 +266,7 @@ const EditProfilePage = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [profileId, navigate]);
 
   //  상태 변경 감지 후 자동 업로드
   useEffect(() => {
@@ -270,6 +296,8 @@ const EditProfilePage = () => {
   // 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {
     const fetchTabDate = async () => {
+      if (!profileId) return; // profileId가 없으면 실행하지 않음
+      
       try {
         let res;
         // if (activeTab === '이미지') {
@@ -305,15 +333,15 @@ const EditProfilePage = () => {
       }
     };
 
-    if (showScreen) fetchTabDate();
+    if (showScreen && profileId) fetchTabDate();
 
     // if (showScreen && activeTab === '이미지' && !imageState.initialized) {
     //   fetchImages(1, false);
     // }
-    if (showScreen && activeTab === '이미지') {
+    if (showScreen && activeTab === '이미지' && profileId) {
       fetchImages(1, false);
     }
-  }, [activeTab, showScreen]);
+  }, [activeTab, showScreen, profileId]);
 
   // 이미지 탭 재진입 시 스크롤 및 렌더 보정
   useEffect(() => {
@@ -355,10 +383,12 @@ const EditProfilePage = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isFetching, imageState.hasNext, imageState.page, activeTab]);
+  }, [isFetching, imageState.hasNext, imageState.page, activeTab, profileId]);
 
   // 이미지 fetch 함수
   const fetchImages = async (page = 1, append = false) => {
+    if (!profileId) return; // profileId가 없으면 실행하지 않음
+    
     try {
       const res = await getPhotoSeletct(profileId, 'edit', page);
       if (res?.status === 200) {
@@ -405,13 +435,15 @@ const EditProfilePage = () => {
       return;
     }
 
-    debouncedSaveFamily(profileId, family);
-  }, [family]);
+    if (profileId) {
+      debouncedSaveFamily(profileId, family);
+    }
+  }, [family, profileId]);
 
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        if (!imagesId) return;
+        if (!imagesId || !profileId) return;
         const res = await getPhotoSeletct(profileId);
         if (res.status === 200) {
           const { data } = res.data;
@@ -422,7 +454,7 @@ const EditProfilePage = () => {
       }
     };
     fetchPhotos();
-  }, [imagesId]);
+  }, [imagesId, profileId]);
 
   useEffect(() => {
     if (lgRef.current) {
@@ -919,13 +951,15 @@ const EditProfilePage = () => {
 
   // content 변경 시 디바운스된 저장 실행
   useEffect(() => {
-    if (content && content.trim() !== '') {
+    if (content && content.trim() !== '' && profileId) {
       debouncedSaveDescription(content);
     }
-  }, [content, debouncedSaveDescription]);
+  }, [content, debouncedSaveDescription, profileId]);
 
   // 추모 프로필 설명 문구 저장
   const saveDescription = async (content) => {
+    if (!profileId) return; // profileId가 없으면 실행하지 않음
+    
     try {
       const res = await putProfileDescription(profileId, {
         description: content,

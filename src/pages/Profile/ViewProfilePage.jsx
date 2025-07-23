@@ -16,6 +16,7 @@ import WebShareButton from '@/components/Share/WebShareButton';
 import { formatDateRelace } from '@/utils/utils';
 
 import useProfilePermission from '@/hooks/useProfilePermission';
+import EditProfilePage from './EditProfilePage';
 import {
   getSelectProfile,
   postPrivateProfileAccessRequest,
@@ -88,6 +89,8 @@ const ViewProfilePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
+    hasEditPermission,
+    shouldShowEditComponent,
   } = useProfilePermission(profileId, { shouldRedirect: false, nickname });
 
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
@@ -457,6 +460,11 @@ const ViewProfilePage = () => {
       setIsProfileModalOpen(true);
     }
   };
+
+  // nickname URL에서 edit 권한이 있을 때 EditProfilePage 렌더링
+  if (shouldShowEditComponent) {
+    return <EditProfilePage />;
+  }
 
   return (
     <>
