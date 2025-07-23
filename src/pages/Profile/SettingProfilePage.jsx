@@ -344,7 +344,7 @@ const SettingProfilePage = () => {
               <h4 className="text-dark-gray fw-500 mt-20px mb-15px fs-22 md-fs-18">
                 추모페이지 {profileId ? '변경 완료' : '생성 완료'}
               </h4>
-              <Link to={`/profile/edit-profile/${profileId}`}>
+              <Link to={`/@${formProfile.nickname}`}>
                 <Button
                   size="extra-large"
                   radiusOn="radius-on"

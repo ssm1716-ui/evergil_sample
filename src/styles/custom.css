@@ -929,3 +929,29 @@ header .navbar-brand .default-logo, footer .navbar-brand .default-logo {
       height: 30px;
   }
 }
+
+/* 프로필 이미지 표기 개선 */
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-container img {
+  position: absolute; /* 컨테이너 안에 정확히 위치시킴 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* .background-image-container-padding {
+  width: 100%;
+  padding-bottom: 100%;
+  position: relative;
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+} */

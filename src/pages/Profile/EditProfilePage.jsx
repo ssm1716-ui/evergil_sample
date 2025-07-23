@@ -1181,7 +1181,7 @@ const EditProfilePage = () => {
           >
             <div
               className="col-lg-5 col-md-6 position-relative page-title-extra-large align-self-center"
-              data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
+              // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
             ></div>
             <div className="col-lg-7 col-md-6 position-relative d-md-block">
               <div className="w-85px h-85px border-radius-100 d-flex align-items-center justify-content-center position-absolute right-40px md-right-10px sm-right-5px bottom-minus-70px sm-bottom-minus-80px mt-10 translate-middle-y">
@@ -1251,11 +1251,11 @@ const EditProfilePage = () => {
           <div className="row row-cols-1 row-cols-lg-4 row-cols-sm-2">
             <div
               className="col-lg-12 col-md-12 position-relative page-title-extra-large align-self-center"
-              data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
+              // data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
+                  <div className="image-container d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
                     onClick={handleProfileImageClick}
                     title={profile.profileImageUrl ? '프로필 이미지 전체화면 보기' : '프로필 이미지 선택'}
                   >

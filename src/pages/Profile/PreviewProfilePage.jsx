@@ -108,8 +108,6 @@ const ViewProfilePage = () => {
             navigate('/error-profile-inactive');
             return;
           }
-          console.log(profile);
-          console.log(extension);
           setProfile(profile);
           setHasFamilyTree(extension.hasFamilyTree);
         }
@@ -378,7 +376,7 @@ const ViewProfilePage = () => {
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
                   <div 
-                    className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
+                    className="image-container d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
                     onClick={handleProfileImageClick}
                     role="button"
                     tabIndex={0}
@@ -458,7 +456,7 @@ const ViewProfilePage = () => {
             <div className="mt-80px md-mt-100px sm-mt-30px d-flex justify-content-evenly justify-content-md-center gap-3">
               <Link
                 className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 me-1 xs-me-0 w-20 md-w-45 mb-5"
-                to={`/profile/edit-profile/${profileId}`}
+                to={`/@${profile.nickname}`}
               >
                 <span>
                   <i className="fa-solid fa-backward align-middle"></i>

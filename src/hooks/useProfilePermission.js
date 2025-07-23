@@ -26,8 +26,7 @@ const useProfilePermission = (profileId, options = {}) => {
 
         // nickname URL 형태와 일반 URL 형태 정의
         const viewProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/view-profile/${profileId}`;
-        // const editProfilePath = isNicknameUrl ? `/${nickname}/edit` : `/profile/edit-profile/${profileId}`;
-        const editProfilePath = `/profile/edit-profile/${profileId}`;
+        const editProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/edit-profile/${profileId}`;
 
         switch (result) {
           case 'NEED_TO_LOGIN':

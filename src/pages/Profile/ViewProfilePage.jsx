@@ -132,7 +132,6 @@ const ViewProfilePage = () => {
       
       try {
         let res = await getSelectProfile(profileId);
-        console.log(res);
         if (res.status === 200) {
           const { profile, extension, result } = res.data.data;
           // PROFILE_INACTIVE 상태 확인
@@ -506,7 +505,7 @@ const ViewProfilePage = () => {
             >
               <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
                 <div className="process-step-icon-box position-relative mb-20px">
-                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
+                  <div className="d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer image-container"
                     onClick={handleProfileImageClick}
                     title={profile.profileImageUrl ? '프로필 이미지 전체화면 보기' : '프로필 이미지 선택'}
                   >
