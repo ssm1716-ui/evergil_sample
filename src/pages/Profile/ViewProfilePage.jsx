@@ -774,7 +774,7 @@ const ViewProfilePage = () => {
                               <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
                                 <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
 
-                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
+                                <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-60 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
                                   <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
                                     <span className="number position-relative z-index-1 fw-600">
                                       <i className="feather icon-feather-user align-middle icon-large text-white"></i>
