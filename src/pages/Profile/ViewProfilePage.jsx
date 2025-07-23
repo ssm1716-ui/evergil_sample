@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Modal from '@/components/common/Modal/Modal';
@@ -82,6 +82,7 @@ const ViewProfilePage = () => {
   );
 
   const lgRef = useRef(null);
+  const searchTimeoutRef = useRef(null);
 
   const {
     isLoginModalOpen,
@@ -128,6 +129,15 @@ const ViewProfilePage = () => {
 
     fetchProfileId();
   }, [nickname, navigate]);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -311,17 +321,38 @@ const ViewProfilePage = () => {
     }
   };
 
-  //하늘편지 검색
-  const handleSearchLetters = async (e) => {
-    const value = e.target.value;
-
-    if (value.length > 1 || value.length === 0) {
-      const res = await getLetters(profileId, value);
+  //하늘편지 검색 (디바운스 적용)
+  const handleSearchLetters = useCallback(async (searchValue) => {
+    if (!profileId) return;
+    
+    try {
+      const res = await getLetters(profileId, searchValue);
       if (res.status !== 200) {
         alert('하늘편지 검색 에러 발생');
+        return;
       }
       const { data } = res.data;
       setLetters(data);
+    } catch (error) {
+      console.error('하늘편지 검색 중 오류 발생:', error);
+    }
+  }, [profileId]);
+
+  // 검색 입력 핸들러 (디바운스 적용)
+  const handleSearchInput = (e) => {
+    const value = e.target.value;
+    
+    // 이전 타이머가 있다면 취소
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    
+    // 한글자 이상이거나 빈 값일 때만 검색 실행
+    if (value.length >= 1 || value.length === 0) {
+      // 500ms 딜레이 후 검색 실행
+      searchTimeoutRef.current = setTimeout(() => {
+        handleSearchLetters(value);
+      }, 500);
     }
   };
 
@@ -679,7 +710,7 @@ const ViewProfilePage = () => {
                                       className="border-1 nav-link w-400px md-w-100"
                                       type="text"
                                       name="keyword"
-                                      onChange={handleSearchLetters}
+                                      onChange={handleSearchInput}
                                       placeholder="검색어를 입력 해주세요."
                                     />
                                     <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
