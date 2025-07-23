@@ -14,6 +14,8 @@ const Layout = ({ children }) => {
     '/check-point',
     '/profile/invitation',
     '/error',
+    '/error-profile-inactive',
+    '/error-profile-not-found',
     '/test',
     '/qr-scanner',
     '/qr-confirm',

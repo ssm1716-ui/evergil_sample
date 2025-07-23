@@ -25,6 +25,7 @@ import ViewProfilePage from '@/pages/Profile/ViewProfilePage';
 import PreviewProfilePage from '@/pages/Profile/PreviewProfilePage';
 import ManagePage from '@/pages/Profile/ManagePage';
 import ProfileInactiveErrorPage from '@/pages/Profile/ProfileInactiveErrorPage';
+import ProfileNotFoundPage from '@/pages/Profile/ProfileNotFoundPage';
 
 import CartPage from '@/pages/Cart/CartPage';
 import MyPage from '@/pages/Mypage/MyPage';
@@ -90,6 +91,7 @@ const App = () => {
               <Route path="/check-point" element={<CheckPointPage />} />
               <Route path="/error" element={<ErrorPage />} />
               <Route path="/error-profile-inactive" element={<ProfileInactiveErrorPage />} />
+              <Route path="/error-profile-not-found" element={<ProfileNotFoundPage />} />
               {/* <Route path="/test" element={<ImageCompressor />} /> */}
 
               {/* <Route path="/qr-scanner" element={<QRScanner />} /> */}
