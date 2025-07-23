@@ -319,9 +319,9 @@ const ManagePage = () => {
                               <th scope="col" className="fw-600">
                                 이메일
                               </th>
-                              {/* <th scope="col" className="fw-600">
-                                이름
-                              </th> */}
+                              <th scope="col" className="fw-600">
+                                회원정보
+                              </th>
                               <th scope="col" className="fw-600">
                                 권한
                               </th>
@@ -335,11 +335,15 @@ const ManagePage = () => {
                                     {invitation.email}
                                   </a>
                                 </td>
-                                {/* <td>{invitation.name || ''}</td> */}
-                                {/* 🔹 이름이 없을 경우 기본값 처리 */}
+                                <td>{invitation.memberDisplayName || ''} {invitation.memberEmail && (
+                                    <>
+                                      &nbsp;({invitation.memberEmail})
+                                    </>
+                                  )}
+                                </td>
                                 <td>
                                   {invitation.isConfirmed ? (
-                                    <div className="select select-container">
+                                    <div className="select">
                                       <select
                                         className="form-control select-invite"
                                         name="scope"
@@ -359,7 +363,7 @@ const ManagePage = () => {
                                     </div>
                                   ) : (
                                     // <span>초대수락 대기중</span>
-                                    <div className="select select-container">
+                                    <div className="select">
                                       <select
                                         className="form-control select-invite"
                                         name="scope"
@@ -434,7 +438,9 @@ const ManagePage = () => {
                         <table className="table nondisclosure-table md-fs-14">
                           <thead>
                             <tr>
-                              {/* <th scope="col" className="fw-600">이메일</th> */}
+                              <th scope="col" className="fw-600">
+                                회원정보
+                              </th>
                               <th scope="col" className="fw-600">
                                 이름
                               </th>
@@ -449,13 +455,27 @@ const ManagePage = () => {
                           <tbody>
                             {privateRequests.map((p, index) => (
                               <tr key={index}>
-                                {/* <td>DavidKim@gmai.com</td> */}
+                                <td>
+                                  {p.memberDisplayName}
+                                  {p.memberEmail && (
+                                    <>
+                                      &nbsp;({p.memberEmail})
+                                    </>
+                                  )}
+                                </td>
                                 <td>{p.name}</td>
-                                <td>{p.memo}</td>
+                                <td>
+                                  {p.memo ? p.memo.split('\n').map((line, index) => (
+                                    <span key={index}>
+                                      {line}
+                                      {index < p.memo.split('\n').length - 1 && <br />}
+                                    </span>
+                                  )) : ''}
+                                </td>
                                 <td>
                                   <div className="d-flex">
                                     <Link
-                                      className="btn btn-black btn-small w-50 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-3 me-3"
+                                      className="btn btn-black btn-small w-40 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-3 me-3"
                                       onClick={(e) =>
                                         handlePrivateRequests(p, 'ALLOW')
                                       }
@@ -463,7 +483,7 @@ const ManagePage = () => {
                                       허용
                                     </Link>
                                     <Link
-                                      className="btn btn-white btn-small w-50 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-3 me-3"
+                                      className="btn btn-white btn-small w-40 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-3 me-3"
                                       onClick={(e) =>
                                         handlePrivateRequests(p, 'DENY')
                                       }
