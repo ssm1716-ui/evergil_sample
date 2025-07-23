@@ -278,6 +278,41 @@ const ShopPage = () => {
     }
   };
 
+  // 리뷰 탭 활성화 함수
+  const handleReviewTabClick = () => {
+    // 모든 탭 링크에서 active 클래스 제거
+    const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+    tabLinks.forEach(link => link.classList.remove('active'));
+    
+    // 모든 탭 콘텐츠에서 active 클래스 제거
+    const tabContents = document.querySelectorAll('.tab-pane');
+    tabContents.forEach(content => {
+      content.classList.remove('active', 'show');
+    });
+    
+    // 리뷰 탭 링크에 active 클래스 추가
+    const reviewTabLink = document.querySelector('[data-tab="review-tab"]');
+    if (reviewTabLink) {
+      reviewTabLink.classList.add('active');
+    }
+    
+    // 리뷰 탭 콘텐츠에 active 클래스 추가
+    const reviewTabContent = document.getElementById('tab_five4');
+    if (reviewTabContent) {
+      reviewTabContent.classList.add('active', 'show');
+    }
+    
+    // 탭 섹션으로 스크롤 이동
+    const tabSection = document.getElementById('tab');
+    if (tabSection) {
+      // 부드러운 스크롤 애니메이션과 함께 이동
+      tabSection.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+  };
+
   return (
     <>
       {/* <Helmet>
@@ -411,6 +446,10 @@ const ShopPage = () => {
                   <a
                     href="#tab"
                     className="d-block section-link me-25px text-dark-gray fw-500 section-link xs-me-0 w-100 fs-13"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleReviewTabClick();
+                    }}
                   >
                     <i className="bi bi-star-fill text-golden-yellow pe-1 fs-14"></i>
                     리뷰 {product.totalReviewCount}건
