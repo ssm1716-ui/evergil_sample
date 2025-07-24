@@ -154,6 +154,8 @@ const EditProfilePage = () => {
 
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isLoadingFamilyData, setIsLoadingFamilyData] = useState(false);
+  const [familyDataLoaded, setFamilyDataLoaded] = useState(false);
 
   useEffect(() => {
     // 현재 페이지의 URL을 가져와 상태 업데이트
@@ -331,10 +333,16 @@ const EditProfilePage = () => {
           }
         }
         if (activeTab === '가족관계도') {
-          res = await getFamilyProfile(profileId);
-          if (res.status === 200) {
-            const { items } = res.data.data;
-            setFamily(items);
+          setIsLoadingFamilyData(true);
+          try {
+            res = await getFamilyProfile(profileId);
+            if (res.status === 200) {
+              const { items } = res.data.data;
+              setFamily(items);
+              setFamilyDataLoaded(true); // 데이터 로드 완료 표시
+            }
+          } finally {
+            setIsLoadingFamilyData(false);
           }
         }
 
@@ -424,12 +432,24 @@ const EditProfilePage = () => {
   // 디바운스된 저장 함수
   const debouncedSaveFamily = useRef(
     debounce(async (profileId, familyData) => {
+      // 초기 빈 배열이나 모든 항목이 비어있는 경우 저장하지 않음
+      if (!familyData || familyData.length === 0) {
+        return;
+      }
+
       const validFamily = familyData.filter(
         (item) =>
           item.familyTitle.trim() !== '' && item.displayName.trim() !== ''
       );
 
-      // if (validFamily.length === 0) return; // 전송할 항목이 없으면 호출하지 않음
+      // 모든 항목이 비어있는 경우에도 저장하지 않음 (단, 명시적으로 모든 항목을 삭제한 경우는 제외)
+      const hasAnyContent = familyData.some(
+        (item) => item.familyTitle.trim() !== '' || item.displayName.trim() !== ''
+      );
+      
+      if (!hasAnyContent && familyData.every(item => !item.familyTitle && !item.displayName)) {
+        return;
+      }
 
       try {
         const res = await putFamilyProfile(profileId, validFamily);
@@ -449,10 +469,11 @@ const EditProfilePage = () => {
       return;
     }
 
-    if (profileId) {
+    // 가족 데이터가 실제로 로드된 후에만 저장 (초기 빈 배열 전송 방지)
+    if (profileId && !isLoadingFamilyData && familyDataLoaded) {
       debouncedSaveFamily(profileId, family);
     }
-  }, [family, profileId]);
+  }, [family, profileId, isLoadingFamilyData, familyDataLoaded]);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -765,6 +786,7 @@ const EditProfilePage = () => {
       isCustomInput: false,
     };
     setFamily([...family, newItem]);
+    setFamilyDataLoaded(true); // 사용자가 직접 추가한 경우도 데이터 로드된 것으로 간주
   };
 
   // 가족관계도 드래그 종료 시 순서 업데이트
