@@ -149,23 +149,9 @@ const CheckOutPage = () => {
         }));
       } catch (error) {
         console.error('구매자 정보 복원 실패:', error);
-        // 잘못된 데이터가 있으면 삭제
-        sessionStorage.removeItem('checkout_buyer_info');
       }
+      sessionStorage.removeItem('checkout_buyer_info');
     }
-  }, []);
-
-  // 구매자 정보 정리 함수
-  const clearSavedBuyerInfo = () => {
-    sessionStorage.removeItem('checkout_buyer_info');
-  };
-
-  // 컴포넌트 unmount 시 정리 (선택사항)
-  useEffect(() => {
-    return () => {
-      // 페이지를 완전히 떠날 때만 정리 (뒤로가기나 새로고침이 아닌 경우)
-      // 실제 결제 완료 페이지로 이동할 때는 별도로 clearSavedBuyerInfo() 호출
-    };
   }, []);
 
   useEffect(() => {
