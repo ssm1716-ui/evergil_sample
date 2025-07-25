@@ -594,7 +594,7 @@ const OrderListPage = () => {
               </div>
             </div> */}
 
-        {orders.length > 0 && (
+        {orders.length > 0 ? (
           <div ref={containerRef} className="row justify-content-center">
             <div className="col-12">
               {orders.map((order, index) => (
@@ -800,6 +800,21 @@ const OrderListPage = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        ) : (
+          <div className="row justify-content-center">
+            <div className="col-12 text-center">
+              <div className="feature-box pt-10 pb-15 text-center overflow-hidden">
+                <div className="feature-box-icon">
+                  <i className="bi bi-exclamation-circle icon-extra-large text-medium-gray"></i>
+                </div>
+                <div className="feature-box-content last-paragraph-no-margin pt-1">
+                  <p className="text-dark-gray opacity-5">
+                    주문/배송 내역이 없습니다.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         )}
