@@ -13,6 +13,11 @@ const CompletePage = () => {
   const key = searchParams.get('key'); // ✅ URL에서 key 값 가져오기
   const copyToClipboard = useCopyToClipboard();
 
+  // 구매자 정보 정리 함수
+  const clearSavedBuyerInfo = () => {
+    sessionStorage.removeItem('checkout_buyer_info');
+  };
+
   useEffect(() => {
     if (!key) {
       navigate(
@@ -36,6 +41,9 @@ const CompletePage = () => {
         if (data.data.paymentType === 'VBANK') {
           setVbankData(data.data.vBankData);
         }
+
+        // 결제 완료 후 저장된 구매자 정보 정리
+        clearSavedBuyerInfo();
       } catch (error) {
         console.error(error);
       }
