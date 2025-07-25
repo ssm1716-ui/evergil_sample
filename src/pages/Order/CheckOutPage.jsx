@@ -134,6 +134,40 @@ const CheckOutPage = () => {
     }
   }, [location.state, isAuthenticated, navigate]);
 
+  // 결제 취소 후 돌아올 때 구매자 정보 복원
+  useEffect(() => {
+    const savedBuyerInfo = sessionStorage.getItem('checkout_buyer_info');
+    if (savedBuyerInfo) {
+      try {
+        const buyerInfo = JSON.parse(savedBuyerInfo);
+        setPayment((prev) => ({
+          ...prev,
+          buyerName: buyerInfo.buyerName || '',
+          buyerPhone: buyerInfo.buyerPhone || '',
+          buyerEmail: buyerInfo.buyerEmail || '',
+          buyerReferrer: buyerInfo.buyerReferrer || '',
+        }));
+      } catch (error) {
+        console.error('구매자 정보 복원 실패:', error);
+        // 잘못된 데이터가 있으면 삭제
+        sessionStorage.removeItem('checkout_buyer_info');
+      }
+    }
+  }, []);
+
+  // 구매자 정보 정리 함수
+  const clearSavedBuyerInfo = () => {
+    sessionStorage.removeItem('checkout_buyer_info');
+  };
+
+  // 컴포넌트 unmount 시 정리 (선택사항)
+  useEffect(() => {
+    return () => {
+      // 페이지를 완전히 떠날 때만 정리 (뒤로가기나 새로고침이 아닌 경우)
+      // 실제 결제 완료 페이지로 이동할 때는 별도로 clearSavedBuyerInfo() 호출
+    };
+  }, []);
+
   useEffect(() => {
     SetIsAddresOpen(false);
   }, [selectedAddress]);
@@ -325,6 +359,15 @@ const CheckOutPage = () => {
     e.preventDefault();
 
     try {
+      // 결제 진행 전에 구매자 정보 저장
+      const buyerInfo = {
+        buyerName: payment.buyerName,
+        buyerPhone: payment.buyerPhone,
+        buyerEmail: payment.buyerEmail,
+        buyerReferrer: payment.buyerReferrer,
+      };
+      sessionStorage.setItem('checkout_buyer_info', JSON.stringify(buyerInfo));
+
       // 1. 주문 폼 데이터 요청
       const convertedAddress = {
         name: orderAddressData.deliveryName,
@@ -344,13 +387,11 @@ const CheckOutPage = () => {
       };
 
       const res = await postInicisPaymentForm(updatedPayment);
-      console.log('결제제 정보 요청 -', res);
+
       if (res.status !== 200) throw new Error('결제 정보 요청 실패');
       const paymentReqObj = res.data.data;
       paymentReqObj.P_PAY_TYPE = selectedMethod; //"CARD:BANK:VBANK"
       paymentReqObj.P_DEVICE_TYPE = deviceType;
-
-      console.log('결제창 뜨기전 파라미터들 -', paymentReqObj);
 
       if (window.INIPayPro) {
         window.INIPayPro.requestPayment(paymentReqObj);
