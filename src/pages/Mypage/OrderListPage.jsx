@@ -286,11 +286,13 @@ const OrderListPage = () => {
     return date.toISOString().split('T')[0];
   };
 
-  // startDate 값 변경 함수 (to 값 기준)
+  // startDate와 endDate 값 변경 함수
   const handleUpdateFromDate = (daysAgo) => {
+    const today = getTodayDate();
     setViewSelect((prev) => ({
       ...prev,
-      startDate: getPastDate(prev.endDate, daysAgo), // to 기준 daysAgo 전 날짜로 변경
+      startDate: getPastDate(today, daysAgo), // 오늘 기준 daysAgo 전 날짜로 변경
+      endDate: today, // endDate를 오늘날짜로 설정
     }));
   };
 
@@ -491,7 +493,8 @@ const OrderListPage = () => {
                   onClick={() => {
                     setViewSelect((prev) => ({
                       ...prev,
-                      startDate: getFirstDayOfYear(), // to 기준 daysAgo 전 날짜로 변경
+                      startDate: "2025-01-01",
+                      endDate: getTodayDate(),
                     }));
                   }}
                 >
