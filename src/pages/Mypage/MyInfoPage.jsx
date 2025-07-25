@@ -282,9 +282,13 @@ const MyInfoPage = () => {
         if (emailAuthCodeInput) {
           emailAuthCodeInput.classList.remove('is-valid');
         }
+      } else {
+        setErrorMessages((prev) => ({ ...prev, email: error.response?.data?.message }));
+        setErrors((prev) => ({ ...prev, email: true }));
       }
     } catch (error) {
       console.error('이메일 인증 요청 오류:', error);
+      setErrorMessages((prev) => ({ ...prev, email: error.response?.data?.message }));
       setErrors((prev) => ({ ...prev, email: true }));
     }
   };
@@ -769,7 +773,7 @@ const MyInfoPage = () => {
                 </Button>
                 {errors.email && (
                   <p className="text-danger text-start">
-                    유효한 이메일을 입력해주세요.
+                    {errorMessages.email || '유효한 이메일을 입력해주세요.'}
                   </p>
                 )}
               </div>

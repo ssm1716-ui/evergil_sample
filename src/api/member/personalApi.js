@@ -70,10 +70,7 @@ export const putUpdateEmail = async (param) => {
         console.log(res);
         return res;
     } catch (err) {
-        const message =
-            err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
-        alert(`[이메일 변경 실패] ${message}`);
-        // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
+        console.error(err);
         throw err;
     }
 };
@@ -88,6 +85,7 @@ export const putEmailAuthCodeConfirm = async (param) => {
         return res;
     } catch (err) {
         console.error(err);
+        throw err;
     }
 };
 
@@ -100,7 +98,7 @@ export const postMeReviews = async (param) => {
         return res;
     } catch (err) {
         console.error(err);
-
+        throw err;
     }
 };
 
