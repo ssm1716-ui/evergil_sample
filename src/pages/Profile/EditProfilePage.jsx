@@ -88,6 +88,7 @@ const EditProfilePage = () => {
   const lgRef = useRef(null);
   const [content, setContent] = useState('');
   const [profile, setProfile] = useState({});
+  const [result, setResult] = useState('');
 
   const [items, setItems] = useState([
     { displayName: '', familyTitle: '', isCustomInput: false },
@@ -150,7 +151,7 @@ const EditProfilePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
-  } = useProfilePermission(profileId, { shouldRedirect: true });
+  } = useProfilePermission(profileId, { shouldRedirect: true, nickname });
 
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -273,6 +274,7 @@ const EditProfilePage = () => {
             navigate('/error-profile-inactive');
             return;
           }
+          setResult(result);
           setProfile(profile);
           setContent(profile.description);
         }
@@ -1388,10 +1390,11 @@ const EditProfilePage = () => {
                     }}
                   >
                     <WebShareButton />
-                    <Link
-                      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
-                      to={`/profile/manage-profile/${profileId}`}
-                    >
+                    {result === 'PUBLIC_PROFILE_OWNER' || result === 'YOU_HAVE_OWNER_PERMISSION' && (
+                      <Link
+                        className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
+                        to={`/profile/manage-profile/${profileId}`}
+                      >
                       <span>
                         <span>
                           <i className="feather icon-feather-users"></i>
@@ -1404,6 +1407,7 @@ const EditProfilePage = () => {
                         </span>
                       </span>
                     </Link>
+                    )}
                   </div>
                 </div>
               )}

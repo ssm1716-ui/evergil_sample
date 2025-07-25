@@ -55,6 +55,7 @@ const ManagePage = () => {
   const [receiverEmail, setReceiverEmail] = useState('');
   const [isError, setIsError] = useState(false);
   const [scope, setScope] = useState('PUBLIC');
+  const [profile, setProfile] = useState({});
   const [invitations, setInvitations] = useState([]);
   const [privateRequests, setPrivateRequests] = useState([]);
 
@@ -136,6 +137,7 @@ const ManagePage = () => {
           navigate('/error-profile-inactive');
           return;
         }
+        setProfile(profile);
         setScope(profile.scope);
       }
 
@@ -202,7 +204,7 @@ const ManagePage = () => {
 
   const handleCopylink = () => {
     navigator.clipboard.writeText(
-      window.location.origin + '/profile/view-profile/' + profileId
+      window.location.origin + '/@' + profile.nickname
     );
     setIsModalCopyLinkOpen(true);
   };
