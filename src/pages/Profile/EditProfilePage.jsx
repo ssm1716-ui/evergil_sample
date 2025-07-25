@@ -1738,7 +1738,8 @@ const EditProfilePage = () => {
                                               <input
                                                 className="border-color-transparent-dark-very-light form-control bg-transparent md-pt-0 md-pb-0 required"
                                                 type="text"
-                                                value={f.familyTitle}
+                                                value={f.familyTitle === '직접 입력' ? '' : f.familyTitle}
+                                                placeholder="직접 입력"
                                                 onChange={(e) =>
                                                   handleCustomInputChange(
                                                     index,
