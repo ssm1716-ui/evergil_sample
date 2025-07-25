@@ -73,11 +73,13 @@ const MyReviewPage = () => {
     return date.toISOString().split('T')[0];
   };
 
-  // from 값 변경 함수 (to 값 기준)
+  // from과 to 값 변경 함수
   const handleUpdateFromDate = (daysAgo) => {
+    const today = getTodayDate();
     setViewSelect((prev) => ({
       ...prev,
-      from: getPastDate(prev.to, daysAgo), // to 기준 daysAgo 전 날짜로 변경
+      from: getPastDate(today, daysAgo), // 오늘 기준 daysAgo 전 날짜로 변경
+      to: today, // to를 오늘날짜로 설정
     }));
   };
 
@@ -238,7 +240,8 @@ const MyReviewPage = () => {
                   onClick={() => {
                     setViewSelect((prev) => ({
                       ...prev,
-                      from: getFirstDayOfYear(), // to 기준 daysAgo 전 날짜로 변경
+                      from: "2025-01-01",
+                      to: getTodayDate(),
                     }));
                   }}
                 >
