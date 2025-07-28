@@ -12,6 +12,16 @@ const Modal = ({ isOpen, onClose, children }) => {
     document.body.style.width = '100%';
     document.body.style.overflowY = 'hidden';
 
+    // 엔터키 이벤트 리스너 추가
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
     return () => {
       document.body.style.position = '';
       document.body.style.top = '';
@@ -20,8 +30,11 @@ const Modal = ({ isOpen, onClose, children }) => {
 
       // 스크롤 원위치로 복원
       window.scrollTo(0, scrollY);
+      
+      // 엔터키 이벤트 리스너 제거
+      document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -50,7 +63,7 @@ const Modal = ({ isOpen, onClose, children }) => {
           overflowX: 'hidden',
           overflowY: 'auto',
           width: '100%',
-          maxWidth: '500px',
+          maxWidth: '600px',
           display: 'flex',
           flexDirection: 'column',
         }}

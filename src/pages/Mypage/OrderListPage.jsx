@@ -57,6 +57,16 @@ const OrderListPage = () => {
   const [isConfirmPurchaseTitle, setIsConfirmPurchaseTitle] = useState('');
   const [isConfirmPurchaseModalOpen, setIsConfirmPurchaseModalOpen] =
     useState(false);
+  
+  // 알림 모달 상태 추가
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  // 알림 모달 표시 함수
+  const showAlert = (message) => {
+    setAlertMessage(message);
+    setIsAlertModalOpen(true);
+  };
 
   const [reviews, setReviews] = useState({
     orderNumber: '',
@@ -81,7 +91,7 @@ const OrderListPage = () => {
     try {
       const { status, data } = await getOrdersList(viewSelect);
       if (status !== 200) {
-        alert('통신 에러가 발생했습니다.');
+        showAlert('통신 에러가 발생했습니다.');
         return;
       }
 
@@ -267,7 +277,7 @@ const OrderListPage = () => {
     } else if (order.product.paymentMethod === 'VBANK') {
       res = await putOrdersVbankCancel(order.orderNumber);
     } else {
-      alert('결제 취소가 불가능');
+      showAlert('결제 취소가 불가능');
       return;
     }
 
@@ -314,7 +324,7 @@ const OrderListPage = () => {
       viewSelect.startDate &&
       value < viewSelect.startDate
     ) {
-      alert('종료일은 시작일보다 빠를 수 없습니다.');
+      showAlert('종료일은 시작일보다 빠를 수 없습니다.');
       return;
     }
 
@@ -323,7 +333,7 @@ const OrderListPage = () => {
       viewSelect.endDate &&
       value > viewSelect.endDate
     ) {
-      alert('시작일은 종료일보다 빠를 수 없습니다.');
+      showAlert('시작일은 종료일보다 빠를 수 없습니다.');
       return;
     }
 
@@ -346,7 +356,7 @@ const OrderListPage = () => {
   const handleFetchMeReviews = async (orderNumberId, productId) => {
     const { status, data } = await postMeReviews(viewSelect);
     if (status !== 200) {
-      alert('통신 에러가 발생했습니다.');
+      showAlert('통신 에러가 발생했습니다.');
       return;
     }
     const arr = data.data;
@@ -1199,6 +1209,38 @@ const OrderListPage = () => {
                       <button
                         className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsConfirmPurchaseModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 알림 모달 (표준화 필요) */}
+      <Modal
+        isOpen={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+      >
+        <div className="w-100">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-7 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 fs-24 sm-fs-18">
+                        {alertMessage}
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1 border-radius-6px"
+                        onClick={() => setIsAlertModalOpen(false)}
                       >
                         확인
                       </button>
