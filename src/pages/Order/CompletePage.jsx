@@ -165,14 +165,14 @@ const CompletePage = () => {
         </div>
       </section>
 
-      <section className="pt-0 pb-70px">
+      <section className="pt-0 pb-60px sm-pb-50px">
         <div
           className="container"
           data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
         >
-          <h6 className="fs-40 fw-400 border-black text-start text-black m-0 mb-3">
+          <h2 className="fs-32 sm-fs-24 fw-400 border-black text-start text-black m-0 mb-2 sm-mb-4">
             주문 상품 정보
-          </h6>
+          </h2>
           <div className="col-12">
             <table className="table cart-products">
               <thead>
@@ -243,15 +243,15 @@ const CompletePage = () => {
         </div>
       </section>
 
-      <section className="pt-0 pb-70px">
+      <section className="pt-0 pb-60px sm-pb-50px">
         <div
           className="container text-decoration-line-bottom"
           data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
         >
-          <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+          <h2 className="fs-32 sm-fs-24 fw-400 border-black text-start text-black m-0 mb-2 sm-mb-4">
             배송지
-          </h6>
-          <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 g-0 justify-content-start pt-3">
+          </h2>
+          <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 g-0 justify-content-start">
             <div className="col contact-form-style-04">
               <div className="text-center">
                 <div className="row d-flex align-items-baseline">
@@ -267,8 +267,8 @@ const CompletePage = () => {
                     주소
                   </label>
                   <span className="text-black flex-1 text-start">
-                    {paymentResult.recipientZipcode}<br />
-                    {paymentResult.recipientAddress1}<br />
+                    [{paymentResult.recipientZipcode}]&nbsp;
+                    {paymentResult.recipientAddress1}&nbsp;
                     {paymentResult.recipientAddress2}
                   </span>
                 </div>
@@ -296,10 +296,10 @@ const CompletePage = () => {
           className="container text-decoration-line-bottom"
           data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
         >
-          <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+          <h2 className="fs-32 sm-fs-24 fw-400 border-black text-start text-black m-0 mb-2 sm-mb-4">
             최종 결제 정보
-          </h6>
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">
+          </h2>
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start">
             <div className="col w-100">
               <div className="text-center">
                 <div className="row d-flex align-items-baseline">
