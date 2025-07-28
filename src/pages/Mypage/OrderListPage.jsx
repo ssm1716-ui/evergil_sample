@@ -73,6 +73,7 @@ const OrderListPage = () => {
   const [meReviews, setMeReviews] = useState({});
   const [hasNext, setHasNext] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 초기 로딩 상태 추가
   const containerRef = useRef(null); // 스크롤 감지할 영역 참조
 
   // 👉 데이터 로드 함수
@@ -101,6 +102,7 @@ const OrderListPage = () => {
       console.error(error);
     } finally {
       setIsFetching(false); // 무조건 false
+      setIsLoading(false); // 초기 로딩 완료
     }
   };
 
@@ -112,6 +114,7 @@ const OrderListPage = () => {
       page: 0,
     }));
     setHasNext(true);
+    setIsLoading(true); // 로딩 상태 시작
     fetchOrders(false);
   }, [viewSelect.startDate, viewSelect.endDate, viewSelect.status]);
 
@@ -361,6 +364,8 @@ const OrderListPage = () => {
       page: 0,
     }));
 
+    // 로딩 상태 시작
+    setIsLoading(true);
     // 바로 호출
     fetchOrders(false);
   };
@@ -831,7 +836,24 @@ const OrderListPage = () => {
               ))}
             </div>
           </div>
+        ) : isLoading ? (
+          // 로딩 중일 때
+          <div className="row justify-content-center">
+            <div className="col-12 text-center">
+              <div className="feature-box pt-10 pb-15 text-center overflow-hidden">
+                <div className="feature-box-icon">
+                  <i className="bi bi-arrow-clockwise icon-extra-large text-medium-gray" style={{animation: 'spin 1s linear infinite'}}></i>
+                </div>
+                <div className="feature-box-content last-paragraph-no-margin pt-1">
+                  <p className="text-dark-gray opacity-5">
+                    주문 내역을 불러오는 중입니다...
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         ) : (
+          // 데이터가 없을 때
           <div className="row justify-content-center">
             <div className="col-12 text-center">
               <div className="feature-box pt-10 pb-15 text-center overflow-hidden">
