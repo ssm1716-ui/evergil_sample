@@ -53,7 +53,7 @@ const CompletePage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section">
+      <section className="top-space-margin section">
         <div
           className="container"
           data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
@@ -165,42 +165,93 @@ const CompletePage = () => {
         </div>
       </section>
 
-      {/* <section className="p-0">
-          <div
-            className="container"
-            data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
-          >
-            <div className="col-12">
-              <table className="table cart-products">
-                <tbody>
-                  <tr>
-                    <td className="product-thumbnail border-0">
+      <section className="pt-0 pb-60px sm-pb-50px">
+        <div
+          className="container"
+          data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+        >
+          <h2 className="fs-32 sm-fs-24 fw-400 border-black text-start text-black m-0 mb-2 sm-mb-4">
+            주문 상품 정보
+          </h2>
+          <div className="col-12">
+            <table className="table cart-products">
+              <thead>
+                <tr>
+                  <th scope="col" className="fw-600 text-center">
+                    상품명
+                  </th>
+                  <th scope="col" className="fw-600 text-center">
+                    
+                  </th>
+                  <th scope="col" className="fw-600 text-center">
+                    개수
+                  </th>
+                  <th scope="col" className="fw-600 text-center">
+                    배송비
+                  </th>
+                  <th scope="col" className="fw-600 text-center">
+                    상품금액
+                  </th>
+                  <th scope="col" className="fw-600 text-center">
+                    상품할인금액
+                  </th>
+                  <th scope="col" className="fw-600 text-center">
+                    결제금액
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {paymentResult.orderItems?.map((item, index) => (
+                  <tr key={index}>
+                    <td className="product-thumbnail">
                       <img
                         className="cart-product-image"
-                        src={CartImage1}
-                        alt=""
+                        src={item.productImage}
+                        alt={item.productName}
                       />
                     </td>
-                    <td className="product-name border-0 fw-600 text-black ps-2">
-                      <span className="row">Textured sweater</span>
-                      <span className="row">80,000원</span>
+                    <td className="product-name fw-600 text-black ps-2">
+                      <span className="row">{item.productName}</span>
+                    </td>
+                    <td className="product-quantity text-center" data-title="개수">
+                      {item.quantity}개
+                    </td>
+                    <td className="product-price text-center" data-title="배송비">
+                      {item.deliveryFee.toLocaleString()}원
+                    </td>
+                    <td className="product-price text-center" data-title="상품금액">
+                      {(item.price * item.quantity).toLocaleString()}원
+                    </td>
+                    <td className="product-subtotal text-center" data-title="상품할인금액">
+                      -{(item.discountedPrice * item.quantity).toLocaleString()}원
+                    </td>
+                    <td className="product-subtotal text-center" data-title="결제금액">
+                      <strong>
+                        {(
+                          item.deliveryFee +
+                          item.price * item.quantity -
+                          item.discountedPrice * item.quantity
+                        ).toLocaleString()}
+                      </strong>
+                      원
                     </td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </section> */}
+        </div>
+      </section>
 
-      <section className="p-0">
+      <section className="pt-0 pb-60px sm-pb-50px">
         <div
           className="container text-decoration-line-bottom"
           data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
         >
-          <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+          <h2 className="fs-32 sm-fs-24 fw-400 border-black text-start text-black m-0 mb-2 sm-mb-4">
             배송지
-          </h6>
-          <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 g-0 justify-content-start pt-3">
+          </h2>
+          <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 g-0 justify-content-start">
             <div className="col contact-form-style-04">
               <div className="text-center">
                 <div className="row d-flex align-items-baseline">
@@ -216,8 +267,8 @@ const CompletePage = () => {
                     주소
                   </label>
                   <span className="text-black flex-1 text-start">
-                    {paymentResult.recipientZipcode}
-                    {paymentResult.recipientAddress1}
+                    [{paymentResult.recipientZipcode}]&nbsp;
+                    {paymentResult.recipientAddress1}&nbsp;
                     {paymentResult.recipientAddress2}
                   </span>
                 </div>
@@ -226,7 +277,12 @@ const CompletePage = () => {
                     배송 메시지
                   </label>
                   <span className="text-black flex-1 text-start">
-                    {paymentResult.deliveryMessage}
+                    {paymentResult.deliveryMessage?.split('\n').map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        {index < paymentResult.deliveryMessage.split('\n').length - 1 && <br />}
+                      </span>
+                    ))}
                   </span>
                 </div>
               </div>
@@ -234,16 +290,16 @@ const CompletePage = () => {
           </div>
         </div>
       </section>
-
-      <section className="pb-20">
+      
+      <section className="pt-0 pb-10">
         <div
           className="container text-decoration-line-bottom"
           data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
         >
-          <h6 className="fs-40 fw-400 border-black text-start text-black m-0">
+          <h2 className="fs-32 sm-fs-24 fw-400 border-black text-start text-black m-0 mb-2 sm-mb-4">
             최종 결제 정보
-          </h6>
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">
+          </h2>
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start">
             <div className="col w-100">
               <div className="text-center">
                 <div className="row d-flex align-items-baseline">
