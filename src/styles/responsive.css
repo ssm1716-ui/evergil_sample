@@ -20353,7 +20353,7 @@
     width: 75%;
   }
   .top-space-margin {
-    margin-top: 76px;
+    margin-top: 76px !important;
   }
   .ipad-top-space-margin {
     margin-top: 76px;
