@@ -2154,7 +2154,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 }
 /* Full screen */
 .full-screen {
-  /* height: 100vh; */
+  height: 100vh;
 }
 .full-screen.top-space-margin {
   height: calc(100vh - 96px);

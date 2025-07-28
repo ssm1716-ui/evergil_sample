@@ -26,6 +26,7 @@ const InvitationPage = () => {
   const [searchParams] = useSearchParams();
   const [isErr, setIsErr] = useState(false);
   const [errDesc, setErrDesc] = useState('');
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const invitationKey = searchParams.get('key');
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -34,6 +35,7 @@ const InvitationPage = () => {
     if (!invitationKey) {
       setErrDesc('유효한 접근이 아닙니다.');
       setIsErr(true);
+      setIsLoading(false);
       return;
     }
     if (!isAuthenticated) {
@@ -41,6 +43,7 @@ const InvitationPage = () => {
       setIsErr(true);
       setIsModalOpen(true);
     }
+    setIsLoading(false);
   }, [invitationKey, isAuthenticated]);
 
   const SaveInvitationKey = () => {
@@ -101,10 +104,32 @@ const InvitationPage = () => {
           </div>
         </nav>
       </header>
-      {!isErr ? (
+      {isLoading ? (
+        // 로딩 중일 때
+        <main>
+          <section className="cover-background full-screen confirm-window">
+            <div className="container h-100">
+              <div className="row align-items-center justify-content-center h-100">
+                <div className="col-12 col-xl-6 col-lg-7 col-md-9 text-center">
+                  <div className="feature-box pt-10 pb-15 text-center overflow-hidden">
+                    <div className="feature-box-icon">
+                      <i className="bi bi-arrow-clockwise icon-extra-large text-medium-gray" style={{animation: 'spin 1s linear infinite'}}></i>
+                    </div>
+                    <div className="feature-box-content last-paragraph-no-margin pt-1">
+                      <p className="text-dark-gray opacity-5">
+                        초대 정보를 확인하는 중입니다...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      ) : !isErr ? (
         <>
           <main>
-            <section className="cover-background full-screen md-h-550px confirm-window">
+            <section className="cover-background full-screen confirm-window">
               <div className="container h-100">
                 <div className="row align-items-center justify-content-center h-100">
                   <div className="col-12 col-xl-6 col-lg-7 col-md-9 text-center">
@@ -133,7 +158,7 @@ const InvitationPage = () => {
         <>
           <main>
             <section
-              className="cover-background full-screen md-h-550px confirm-window"
+              className="cover-background full-screen confirm-window"
             >
               <div className="container h-100">
                 <div className="row align-items-center justify-content-center h-100">

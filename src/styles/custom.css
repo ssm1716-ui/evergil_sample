@@ -380,7 +380,10 @@ padding: 0 5px 0 0px;
 }
 
 .confirm-window {
-height: 1297px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
