@@ -578,22 +578,6 @@ const OrderListPage = () => {
             </ul>
           </div>
         </div>
-
-        {/* <div className="row row-cols-1 row-cols-lg-12 row-cols-sm-12 justify-content-center">
-              <div className="col-12 text-center">
-                <div className="feature-box pt-10 pb-15 text-center overflow-hidden">
-                  <div className="feature-box-icon">
-                    <i className="bi bi-exclamation-circle icon-extra-large text-medium-gray"></i>
-                  </div>
-                  <div className="feature-box-content last-paragraph-no-margin pt-1">
-                    <p className="text-dark-gray opacity-5">
-                      주문하신 내역이 없습니다.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
         {orders.length > 0 ? (
           <div ref={containerRef} className="row justify-content-center">
             <div className="col-12">
@@ -602,7 +586,7 @@ const OrderListPage = () => {
                   key={index}
                   className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-10px sm-mb-20px align-items-center d-block d-md-flex w-100 position-relative"
                 >
-                  <div className="col-12 d-flex justify-content-between md-mb-15px">
+                  <div className="col-12 d-flex justify-content-between md-mb-20px mb-20px">
                     <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
                       {order.product.deliveryStatusName}
                     </span>
@@ -625,23 +609,68 @@ const OrderListPage = () => {
                     </div>
                   </div>
 
-                  <div className="col-md-4 offset-md-1 icon-with-text-style-01 md-mb-25px">
-                    <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
-                      <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
-                        <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
-                          {order.product.productName}
-                        </span>
+                  <div className="col-md-6 offset-md-1 icon-with-text-style-01 md-mb-25px">
+                    {/* <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start"> */}
+                    <div className="row">
+                      <div className="text-center">
+                        <div className="row d-flex align-items-baseline">
+                          <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                            주문번호
+                          </label>
+                          <span className="text-black flex-1 text-start">
+                            {order.orderNumber}
+                          </span>
+                        </div>
+                        <div className="row d-flex align-items-baseline">
+                          <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                            주문일시
+                          </label>
+                          <span className="text-black flex-1 text-start">
+                            {order.orderDate}
+                          </span>
+                        </div>
+                        <div className="row d-flex align-items-baseline">
+                          <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                            상품명
+                          </label>
+                          <span className="text-black flex-1 text-start">
+                            {order.product.productName}
+                          </span>
+                        </div>
+                        <div className="row d-flex align-items-baseline">
+                          <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                            결제금액
+                          </label>
+                          <span className="text-black flex-1 text-start">
+                            {formatNumber(
+                              order.product.amount + order.product.deliveryFee
+                            )}원
+                          </span>
+                        </div>
+                      </div>
+
+
+                      {/* <div className="feature-box-content ps-0 md-ps-25px sm-ps-0">
                         <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
-                          {formatNumber(
+                          주문번호: {order.orderNumber}
+                        </p>
+                        <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                          주문일자: {order.orderDate}
+                        </p>
+                        <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                          상품명: {order.product.productName}
+                        </p>
+                        <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
+                          결제금액: {formatNumber(
                             order.product.amount + order.product.deliveryFee
                           )}
                           원
                         </p>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
-                  <div className="col-md-6 text-center text-md-end text-sm-center">
+                  <div className="col-md-4 text-center text-md-end text-sm-center">
                     <div>
                       {/* actions 속성값에 교환이 있으면 표시 */}
                       {order.product.nextActions.canExchange && (
