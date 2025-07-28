@@ -216,8 +216,8 @@ const CompletePage = () => {
                     주소
                   </label>
                   <span className="text-black flex-1 text-start">
-                    {paymentResult.recipientZipcode}
-                    {paymentResult.recipientAddress1}
+                    {paymentResult.recipientZipcode}<br />
+                    {paymentResult.recipientAddress1}<br />
                     {paymentResult.recipientAddress2}
                   </span>
                 </div>
@@ -226,7 +226,12 @@ const CompletePage = () => {
                     배송 메시지
                   </label>
                   <span className="text-black flex-1 text-start">
-                    {paymentResult.deliveryMessage}
+                    {paymentResult.deliveryMessage?.split('\n').map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        {index < paymentResult.deliveryMessage.split('\n').length - 1 && <br />}
+                      </span>
+                    ))}
                   </span>
                 </div>
               </div>
@@ -234,6 +239,7 @@ const CompletePage = () => {
           </div>
         </div>
       </section>
+      
 
       <section className="pb-20">
         <div
