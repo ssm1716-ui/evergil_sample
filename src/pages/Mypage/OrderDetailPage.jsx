@@ -24,6 +24,7 @@ const MyPage = () => {
   const [product, setProduct] = useState({});
   const [actions, setActions] = useState({});
   const [vBankData, setVBankData] = useState({});
+  const [productInfo, setProductInfo] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState({
     rate: 0,
@@ -86,7 +87,6 @@ const MyPage = () => {
     const fetchOrder = async () => {
       try {
         const { status, data } = await getOrdersDetail(orderNumber);
-        console.log(data);
 
         if (status !== 200) {
           alert('통신 에러가 발생했습니다.');
@@ -98,6 +98,7 @@ const MyPage = () => {
         setProduct(order.product);
         setVBankData(order.vBankData);
         setActions(order.product.nextActions);
+        setProductInfo(order.productInfo);
       } catch (error) {
         console.error(error);
       }
@@ -293,14 +294,15 @@ const MyPage = () => {
         <div className="col-12 col-xl-12 col-lg-12 text-start position-relative page-title-extra-large text-decoration-line-bottom mb-3">
           <h6 className="fw-600 text-dark-gray mb-10px">주문/상세내역</h6>
         </div>
-        <section className="pt-1 pb-1">
-          <div>
+        <section className="pt-1 pb-60px sm-pb-50px">
+          <div
+            className="">
             <div
               className="col-12"
               data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
             >
-              <div className="row mx-0 border-bottom border-2 border-color-dark-gray pb-50px mb-50px sm-pb-35px sm-mb-35px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
-                <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px">
+              <div className="row mx-0 border-bottom border-1 border-color-dark-gray pb-50px sm-pb-10px align-items-center d-block d-md-flex w-100 align-items-center position-relative">
+                <span className="fw-600 text-dark-gray fs-22 md-fs-20 ls-minus-05px m-0 mb-2 sm-mb-4">
                   {product.deliveryStatusName}
                 </span>
                 <div className="col-md-1 text-center text-lx-start text-md-start text-sm-center md-mb-15px">
@@ -310,19 +312,45 @@ const MyPage = () => {
                     )}
                   </div>
                 </div>
-                <div className="col-md-4 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">
+                <div className="col-md-6 offset-0 offset-md-1 icon-with-text-style-01 md-mb-25px">
                   <div className="feature-box feature-box-left-icon-middle last-paragraph-no-margin text-center text-md-start">
                     <div className="feature-box-content text-sm-center ps-0 md-ps-25px sm-ps-0">
-                      <span className="d-inline-block text-dark-gray mb-5px fs-20 ls-minus-05px">
-                        {product.productName}
-                      </span>
-                      <p className="text-dark-gray mb-5px fs-20 ls-minus-05px">
-                        {formatNumber(product.amount + product.deliveryFee)}원
-                      </p>
+                      <div className="row d-flex align-items-baseline">
+                        <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                          주문번호
+                        </label>
+                        <span className="text-black flex-1 text-start">
+                          {orderNumber}
+                        </span>
+                      </div>
+                      <div className="row d-flex align-items-baseline">
+                        <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                          주문일시
+                        </label>
+                        <span className="text-black flex-1 text-start">
+                          {product.createdAt}
+                        </span>
+                      </div>
+                      <div className="row d-flex align-items-baseline">
+                        <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                          상품명
+                        </label>
+                        <span className="text-black flex-1 text-start">
+                          {product.productName}
+                        </span>
+                      </div>
+                      <div className="row d-flex align-items-baseline">
+                        <label className="mb-10px fw-500 text-start w-20 sm-w-40">
+                          결제금액
+                        </label>
+                        <span className="text-black flex-1 text-start">
+                          {formatNumber(product.amount + product.deliveryFee)}원
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 text-center text-md-end text-sm-center">
+                <div className="col-md-4 text-center text-md-end text-sm-center">
                   <div>
                     {/* actions 속성값에 교환이 있으면 표시 */}
                     {actions.canExchange && (
@@ -558,15 +586,95 @@ const MyPage = () => {
               )}
           </div>
         </section>
-        <section className="p-0">
+
+        {/* 주문 상품 정보 섹션 */}
+        <section className="pt-0 pb-60px sm-pb-50px">
+          <div
+            className="container"
+            data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+          >
+            <h6 className="fs-24 md-fs-20 sm-fs-18 fw-400 fw-600 border-black text-start text-black m-0 mb-2 sm-mb-4">
+              주문 상품 정보
+            </h6>
+            <div className="col-12">
+              <table className="table cart-products">
+                <thead>
+                  <tr>
+                    <th scope="col" className="fw-600 text-center">
+                      상품명
+                    </th>
+                    <th scope="col" className="fw-600 text-center">
+                      
+                    </th>
+                    <th scope="col" className="fw-600 text-center">
+                      개수
+                    </th>
+                    <th scope="col" className="fw-600 text-center">
+                      배송비
+                    </th>
+                    <th scope="col" className="fw-600 text-center">
+                      상품금액
+                    </th>
+                    <th scope="col" className="fw-600 text-center">
+                      상품할인금액
+                    </th>
+                    <th scope="col" className="fw-600 text-center">
+                      결제금액
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productInfo?.map((item, index) => (
+                    <tr key={index}>
+                      <td className="product-thumbnail">
+                        <img
+                          className="cart-product-image"
+                          src={item.productImage}
+                          alt={item.productName}
+                        />
+                      </td>
+                      <td className="product-name fw-600 text-black ps-2">
+                        <span className="row">{item.productName}</span>
+                      </td>
+                      <td className="product-quantity text-center" data-title="개수">
+                        {item.quantity}개
+                      </td>
+                      <td className="product-price text-center" data-title="배송비">
+                        {item.deliveryFee.toLocaleString()}원
+                      </td>
+                      <td className="product-price text-center" data-title="상품금액">
+                        {(item.price * item.quantity).toLocaleString()}원
+                      </td>
+                      <td className="product-subtotal text-center" data-title="상품할인금액">
+                        -{(item.discountedPrice * item.quantity).toLocaleString()}원
+                      </td>
+                      <td className="product-subtotal text-center" data-title="결제금액">
+                        <strong>
+                          {(
+                            item.deliveryFee +
+                            item.price * item.quantity -
+                            item.discountedPrice * item.quantity
+                          ).toLocaleString()}
+                        </strong>
+                        원
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section className="pt-0 pb-60px sm-pb-50px">
           <div
             className="container text-decoration-line-bottom"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <h6 className="fs-24 md-fs-20 sm-fs-18 fw-400 fw-600 border-black text-start text-black m-0">
+            <h6 className="fs-24 md-fs-20 sm-fs-18 fw-400 fw-600 border-black text-start text-black m-0 mb-2 sm-mb-4">
               배송지
             </h6>
-            <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 g-0 justify-content-start pt-3">
+            <div className="row row-cols-1 row-cols-lg-1 row-cols-md-1 g-0 justify-content-start">
               <div className="col contact-form-style-04">
                 <div className="text-center">
                   <div className="row d-flex align-items-baseline">
@@ -582,8 +690,8 @@ const MyPage = () => {
                       주소
                     </label>
                     <span className="text-black flex-1 text-start">
-                      {delivery.recipientZipcode}
-                      {delivery.recipientAddress1}
+                      [{delivery.recipientZipcode}]&nbsp;
+                      {delivery.recipientAddress1}&nbsp;
                       {delivery.recipientAddress2}
                     </span>
                   </div>
@@ -593,7 +701,12 @@ const MyPage = () => {
                     </label>
 
                     <span className="text-black flex-1 text-start">
-                      {delivery.deliveryMessage}
+                      {delivery.deliveryMessage?.split('\n').map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          {index < delivery.deliveryMessage.split('\n').length - 1 && <br />}
+                        </span>
+                      ))}
                     </span>
                   </div>
                 </div>
@@ -602,15 +715,15 @@ const MyPage = () => {
           </div>
         </section>
 
-        <section className="pb-20">
+        <section className="pt-0 pb-60px sm-pb-50px">
           <div
             className="container text-decoration-line-bottom"
             data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
-            <h6 className="fs-24 md-fs-20 sm-fs-18 fw-400 fw-600 border-black text-start text-black m-0">
+            <h6 className="fs-24 md-fs-20 sm-fs-18 fw-400 fw-600 border-black text-start text-black m-0 mb-2 sm-mb-4">
               최종 결제 정보
             </h6>
-            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start pt-3">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-start">
               <div className="col w-100">
                 <div className="text-center">
                   <div className="row d-flex align-items-baseline">
@@ -618,29 +731,30 @@ const MyPage = () => {
                       상품 합계
                     </label>
                     <span className="flex-1 text-black text-end">
-                      {formatNumber(payment.amount)}원
+                      {formatNumber(productInfo.reduce((sum, item) => sum + (item.price * item.quantity), 0))}원
                     </span>
                   </div>
                   <div className="row d-flex align-items-baseline">
                     <label className="mb-10px fw-500 text-start w-15 sm-w-40">
                       배송비
                     </label>
-                    `
                     <span className="flex-1 text-black text-end">
-                      {formatNumber(payment.deliveryFee)}원
+                    {formatNumber(productInfo.reduce((sum, item) => sum + (item.deliveryFee), 0))}원
                     </span>
                   </div>
-                  {/* <div className="row d-flex align-items-baseline">
-                  <label className="mb-10px fw-500 text-start w-15 sm-w-40">
-                    할인 합계
-                  </label>
-                  <span className="flex-1 text-black text-end">0원</span>
-                </div> */}
                   <div className="row d-flex align-items-baseline">
-                    <label className="mb-10px fw-500 text-start w-15 sm-w-40 fw-600 text-black">
+                    <label className="mb-10px fw-500 text-start w-15 sm-w-40">
+                      할인 금액
+                    </label>
+                    <span className="flex-1 text-black text-end">
+                      -{formatNumber(productInfo.reduce((sum, item) => sum + (item.discountedPrice * item.quantity), 0))}원
+                    </span>
+                  </div>
+                  <div className="row d-flex align-items-baseline">
+                    <label className="mb-10px text-start w-15 sm-w-40 fw-600 text-black">
                       결제 금액
                     </label>
-                    <span className="flex-1 text-end text-base-color">
+                    <span className="flex-1 text-end text-base-color fw-600">
                       {formatNumber(payment.amount + payment.deliveryFee)}원
                     </span>
                   </div>
@@ -658,144 +772,7 @@ const MyPage = () => {
           </div>
         </section>
       </div>
-      {/* <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="w-100">
-          <div className="modal-content p-0 rounded shadow-lg">
-            <div className="row justify-content-center">
-              <div className="col-12">
-                <div className="p-7 lg-p-5 sm-p-7 bg-very-light-gray">
-                  <div className="row justify-content-center mb-30px sm-mb-10px">
-                    <div className="col-md-9 text-center">
-                      <h4 className="text-dark-gray fw-500 mb-15px">
-                        리뷰 쓰기
-                      </h4>
-                    </div>
-                  </div>
-                  <form className="row contact-form-style-02">
-                    <div className="col-lg-12 mb-20px text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px">
-                        상품 만족도
-                      </h6>
-
-                      <div>
-                        <span className="ls-minus-1px icon-large d-block mt-20px md-mt-0">
-                          {[...Array(5)].map((_, index) => (
-                            <FaStar
-                              key={index}
-                              size={35}
-                              style={{ cursor: 'pointer', marginRight: '5px' }}
-                              color={
-                                index < reviews.rate ? '#FFD700' : '#E0E0E0'
-                              } 
-                              onClick={() => handleStarClick(index)}
-                            />
-                          ))}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="col-md-12 mb-20px">
-                      <label className="form-label mb-5px fw-700 text-black">
-                        리뷰 작성
-                      </label>
-                      <textarea
-                        className="border-radius-4px form-control"
-                        cols="40"
-                        rows="4"
-                        name="content"
-                        value={reviews.content}
-                        onChange={handleContentChange}
-                        placeholder="리뷰를 남겨주세요."
-                      ></textarea>
-                    </div>
-
-                    <div className="col-md-12 mb-20px">
-                      <div
-                        className="border-1 border-dashed rounded mt-1 mb-3 p-1 position-relative text-center "
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <label
-                          htmlFor="file-upload"
-                          style={{ cursor: 'pointer' }}
-                          className="w-50"
-                        >
-                          <i className="bi bi-camera fs-5 me-2"></i>
-                          사진 첨부하기
-                        </label>
-
-                        <input
-                          id="file-upload"
-                          type="file"
-                          multiple
-                          accept="image/*,"
-                          onChange={handleFileChange}
-                          className="input-file-upload"
-                        />
-                      </div>
-                      {files.length > 5 && (
-                        <p className="text-red text-sm mt-1 text-center mb-1">
-                          최대 5개의 이미지만 업로드 가능합니다.
-                        </p>
-                      )}
-                      <div className="d-flex justify-conten-start mt-4 gap-2">
-                        {files.map((fileObj, index) => (
-                          <div
-                            key={index}
-                            className="position-relative w-20 h-20"
-                          >
-                            <Button
-                              onClick={() => handleRemoveFile(index)}
-                              size="extra-small"
-                              className="position-absolute top-0 end-0 bg-black text-white text-sm border-0 md-p-5"
-                            >
-                              ✕
-                            </Button>
-
-                            <img
-                              src={fileObj.preview}
-                              alt="미리보기"
-                              className="w-100 h-100"
-                            />
-                          </div>
-                        ))}
-                      </div>
-
-                      {files.length > 0 && (
-                        <p className="text-center mt-2">
-                          {files.length} / 5 파일 업로드됨
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="col-lg-112 text-center text-lg-center">
-                      <input type="hidden" name="redirect" value="" />
-                      <Button
-                        className="btn btn-base-color btn-box-shadow btn-round-edge me-1"
-                        onClick={handleGetFileUploadPath}
-                      >
-                        리뷰쓰기
-                      </Button>
-                      <Button
-                        className="btn btn-white btn-box-shadow btn-round-edge me-1"
-                        onClick={() => {
-                          setIsModalOpen(false);
-                          setReviews(initialForm);
-                          setFiles([]);
-                        }}
-                      >
-                        닫기
-                      </Button>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-results mt-20px d-none"></div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal> */}
-
+     
       <Modal
         isOpen={isReviewWriteModalOpen}
         onClose={() => setIsReviewWriteModalOpen(false)}
