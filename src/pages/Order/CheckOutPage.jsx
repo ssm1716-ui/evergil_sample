@@ -37,6 +37,8 @@ const CheckOutPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDeliveryOpen, setIsModalDeliveryOpen] = useState(false);
   const [isNotAddressModalOpen, setIsNotAddressModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [orderProductData, setOrderProductData] = useState([]);
   const [orderAddressData, setOrderAddressData] = useState({
     id: '',
@@ -68,6 +70,14 @@ const CheckOutPage = () => {
     if (!isAuthenticated) {
       navigate('/signin');
       return;
+    }
+
+    // 세션에 저장된 에러 메시지 확인
+    const storedErrorMessage = sessionStorage.getItem('paymentErrorMessage');
+    if (storedErrorMessage) {
+      setErrorMessage(storedErrorMessage);
+      setIsErrorModalOpen(true);
+      sessionStorage.removeItem('paymentErrorMessage'); // 메시지 표시 후 제거
     }
 
     const stateOrderType = location.state?.orderType;
@@ -461,7 +471,7 @@ const CheckOutPage = () => {
                                 <img
                                   className="cart-product-image"
                                   src={
-                                    order.productImage || order.productImages[0]
+                                    order.productImage || (order.productImages && order.productImages[0])
                                   }
                                   alt={order.productImage}
                                 />
@@ -486,13 +496,13 @@ const CheckOutPage = () => {
                               className="product-price text-center"
                               data-title="배송비"
                             >
-                              {order.deliveryFee.toLocaleString()}원
+                              {(order.deliveryFee || 0).toLocaleString()}원
                             </td>
                             <td
                               className="product-price text-center"
                               data-title="상품금액"
                             >
-                              {(order.price * order.quantity).toLocaleString()}
+                              {((order.price || 0) * (order.quantity || 1)).toLocaleString()}
                               원
                             </td>
 
@@ -502,7 +512,7 @@ const CheckOutPage = () => {
                             >
                               -
                               {(
-                                order.discountedPrice * order.quantity
+                                (order.discountedPrice || 0) * (order.quantity || 1)
                               ).toLocaleString()}
                               원
                             </td>
@@ -512,9 +522,9 @@ const CheckOutPage = () => {
                             >
                               <strong>
                                 {(
-                                  order.deliveryFee +
-                                  order.price * order.quantity -
-                                  order.discountedPrice * order.quantity
+                                  (order.deliveryFee || 0) +
+                                  (order.price || 0) * (order.quantity || 1) -
+                                  (order.discountedPrice || 0) * (order.quantity || 1)
                                 ).toLocaleString()}
                               </strong>
                               원
@@ -1023,6 +1033,42 @@ const CheckOutPage = () => {
                         onClick={() => setIsModalOpen(false)}
                       >
                         취소
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 결제 에러 메시지 모달 */}
+      <Modal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+      >
+        <div className="w-100">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
+                        <i className="fa-solid fa-circle-exclamation me-5 text-red"></i>
+                        결제 처리 중 오류가 발생했습니다.
+                      </h6>
+                      <p className="text-dark-gray mb-15px fs-20 sm-fs-16">
+                        {errorMessage}
+                      </p>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        onClick={() => setIsErrorModalOpen(false)}
+                      >
+                        확인
                       </button>
                     </div>
                   </div>

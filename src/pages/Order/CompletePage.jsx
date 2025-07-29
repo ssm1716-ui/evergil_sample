@@ -38,12 +38,37 @@ const CompletePage = () => {
         }
         setPaymentResult(data.data);
 
-        if (data.data.paymentType === 'VBANK') {
-          setVbankData(data.data.vBankData);
+        if (data.data.status !== '00') {
+          // 에러 메시지가 있으면 세션에 저장
+          if (data.data.message) {
+            sessionStorage.setItem('paymentErrorMessage', data.data.message);
+          }
+          
+          // ✅ orderItems를 ShopPage와 같은 포맷으로 변환하여 저장
+          const orderProducts = data.data.orderItems.map(item => ({
+            productId: item.productId,
+            productName: item.productName,
+            productImage: item.productImage,
+            price: item.price,
+            discountedPrice: item.discountedPrice,
+            deliveryFee: item.deliveryFee,
+            quantity: item.quantity,
+            cartItemId: item.cartItemId
+          }));
+          
+          sessionStorage.setItem('orderType', 'direct');
+          sessionStorage.setItem('order_product', JSON.stringify(orderProducts));
+
+          navigate('/checkout');
+          return;
+        } else {
+          // 결제 완료 후 저장된 구매자 정보 정리
+          clearSavedBuyerInfo();
         }
 
-        // 결제 완료 후 저장된 구매자 정보 정리
-        clearSavedBuyerInfo();
+        if (data.data.paymentType === 'VBANK') {
+          setVbankData(data.data.vBankData);
+        }        
       } catch (error) {
         console.error(error);
       }
@@ -61,7 +86,10 @@ const CompletePage = () => {
           <div className="row align-items-center justify-content-center">
             <div className="col-12 col-xl-8 col-lg-10 text-center position-relative page-title-extra-large">
               <h6 className="fw-600 text-dark-gray mb-10px">
-                주문이 정상적으로 완료되었습니다.
+                {paymentResult.status === '00' 
+                  ? '주문이 정상적으로 완료되었습니다.'
+                  : '주문이 정상적으로 처리 되지 않았습니다. - ' + paymentResult.message
+                }
               </h6>
               <h6 className="mb-2 fs-26 md-fs-18 fw-400 pb-1 text-center text-black">
                 주문번호 :
