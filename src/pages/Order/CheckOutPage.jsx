@@ -89,10 +89,12 @@ const CheckOutPage = () => {
       sessionStorage.setItem('orderType', 'direct');
       sessionStorage.setItem('order_product', JSON.stringify(stateProduct));
 
-      setOrderProductData([stateProduct]);
+      // ✅ stateProduct가 배열인지 확인하고 처리
+      const orderData = Array.isArray(stateProduct) ? stateProduct : [stateProduct];
+      setOrderProductData(orderData);
       setPayment((prev) => ({
         ...prev,
-        orderItems: [stateProduct],
+        orderItems: orderData,
       }));
     } else if (
       stateOrderType === 'cart' &&
@@ -113,10 +115,12 @@ const CheckOutPage = () => {
         : null;
 
       if (storedOrderType === 'direct' && parsedStoredProduct) {
-        setOrderProductData([parsedStoredProduct]);
+        // ✅ parsedStoredProduct가 배열인지 확인하고 처리
+        const orderData = Array.isArray(parsedStoredProduct) ? parsedStoredProduct : [parsedStoredProduct];
+        setOrderProductData(orderData);
         setPayment((prev) => ({
           ...prev,
-          orderItems: [parsedStoredProduct],
+          orderItems: orderData,
         }));
         return;
       }
