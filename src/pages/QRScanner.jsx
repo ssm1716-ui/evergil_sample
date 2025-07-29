@@ -128,6 +128,7 @@ const QRScanner = () => {
           height: 200px;
           transform: translate(-50%, -50%);
           box-sizing: border-box;
+          z-index: 2;
         }
 
         .overlay-box .corner {
@@ -196,15 +197,29 @@ const QRScanner = () => {
         </header>
 
         {/* 비디오 출력 */}
-        <video ref={videoRef} style={{ display: 'none' }} />
+        <video 
+          ref={videoRef} 
+          style={{ 
+            width: '100%',
+            height: 'calc(100vh - 63px)',
+            objectFit: 'contain',
+            position: 'absolute',
+            top: '63px',
+            left: 0,
+            zIndex: 1,
+            backgroundColor: '#000'
+          }} 
+        />
 
-        {/* 반전 캔버스 (QR 인식용) */}
+        {/* 반전 캔버스 (QR 인식용) - 숨김 처리 */}
         <canvas
           ref={canvasRef}
           style={{
-            width: '100%',
-            height: 'calc(100vh - 63px)',
-            backgroundColor: 'black',
+            position: 'absolute',
+            top: '-9999px',
+            left: '-9999px',
+            width: '1px',
+            height: '1px'
           }}
         />
 
