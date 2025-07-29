@@ -6,6 +6,17 @@ import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const QRScanner = () => {
   const [scanResult, setScanResult] = useState(null);
+  const [videoStyle, setVideoStyle] = useState({
+    width: '100%',
+    height: 'calc(100vh - 63px)',
+    objectFit: 'cover',
+    objectPosition: 'center',
+    position: 'absolute',
+    top: '63px',
+    left: 0,
+    zIndex: 1,
+    backgroundColor: '#000'
+  });
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const navigate = useNavigate();
@@ -27,6 +38,39 @@ const QRScanner = () => {
     return () => window.removeEventListener('pageshow', handlePageShow);
   }, []);
 
+  // 카메라 비율 조정 함수
+  const adjustVideoStyle = (video) => {
+    if (!video) return;
+    
+    const videoAspectRatio = video.videoWidth / video.videoHeight;
+    const screenAspectRatio = window.innerWidth / (window.innerHeight - 63);
+    
+    let objectFit = 'cover';
+    let objectPosition = 'center';
+    
+    if (videoAspectRatio > screenAspectRatio) {
+      // 카메라가 화면보다 가로가 긴 경우
+      objectFit = 'cover';
+      objectPosition = 'center';
+    } else {
+      // 카메라가 화면보다 세로가 긴 경우
+      objectFit = 'cover';
+      objectPosition = 'center';
+    }
+    
+    setVideoStyle({
+      width: '100%',
+      height: 'calc(100vh - 63px)',
+      objectFit,
+      objectPosition,
+      position: 'absolute',
+      top: '63px',
+      left: 0,
+      zIndex: 1,
+      backgroundColor: '#000'
+    });
+  };
+
   useEffect(() => {
     let animationId;
     let stream;
@@ -40,6 +84,12 @@ const QRScanner = () => {
         const video = videoRef.current;
         video.srcObject = stream;
         video.setAttribute('playsinline', true);
+        
+        // 비디오 메타데이터 로드 후 스타일 조정
+        video.addEventListener('loadedmetadata', () => {
+          adjustVideoStyle(video);
+        });
+        
         await video.play();
 
         const scanLoop = () => {
@@ -199,16 +249,7 @@ const QRScanner = () => {
         {/* 비디오 출력 */}
         <video 
           ref={videoRef} 
-          style={{ 
-            width: '100%',
-            height: 'calc(100vh - 63px)',
-            objectFit: 'contain',
-            position: 'absolute',
-            top: '63px',
-            left: 0,
-            zIndex: 1,
-            backgroundColor: '#000'
-          }} 
+          style={videoStyle}
         />
 
         {/* 반전 캔버스 (QR 인식용) - 숨김 처리 */}
