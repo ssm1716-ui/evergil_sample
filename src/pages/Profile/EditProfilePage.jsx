@@ -21,6 +21,7 @@ import {
 } from '@/utils/imageCompressor';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import Modal from '@/components/common/Modal/Modal';
+import Confirm from '@/components/common/Modal/Confirm';
 import useProfilePermission from '@/hooks/useProfilePermission';
 import WebShareButton from '@/components/Share/WebShareButton';
 import { suppressDeprecationWarnings } from '@/utils/consoleSuppression';
@@ -155,6 +156,10 @@ const EditProfilePage = () => {
 
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isProfileDeleteConfirmOpen, setIsProfileDeleteConfirmOpen] = useState(false);
+  const [isImageDeleteConfirmOpen, setIsImageDeleteConfirmOpen] = useState(false);
+  const [isBackgroundDeleteConfirmOpen, setIsBackgroundDeleteConfirmOpen] = useState(false);
+  const [deleteImageId, setDeleteImageId] = useState(null);
   const [isLoadingFamilyData, setIsLoadingFamilyData] = useState(false);
   const [familyDataLoaded, setFamilyDataLoaded] = useState(false);
 
@@ -224,10 +229,13 @@ const EditProfilePage = () => {
     }
   };
 
+  // 프로필 이미지 삭제 확인 모달 열기
+  const handleProfileDeleteConfirm = () => {
+    setIsProfileDeleteConfirmOpen(true);
+  };
+
   // 프로필 이미지 삭제
   const handleProfileDelete = async () => {
-    if (!window.confirm('프로필 이미지를 삭제하시겠습니까?')) return;
-    
     try {
       setIsUploading(true);
       const res = await putProfileImage(profileId, {
@@ -241,6 +249,7 @@ const EditProfilePage = () => {
         }));
         setProfileImage({});
         setIsProfileModalOpen(false);
+        setIsProfileDeleteConfirmOpen(false);
       }
     } catch (error) {
       console.error('프로필 이미지 삭제 중 오류 발생:', error);
@@ -569,10 +578,14 @@ const EditProfilePage = () => {
     fileInput.click();
   };
 
+  // 이미지 삭제 확인 모달 열기
+  const handleImageDeleteConfirm = (id) => {
+    setDeleteImageId(id);
+    setIsImageDeleteConfirmOpen(true);
+  };
+
   const handleDelete = async (id) => {
     if (!id) return;
-    
-    if (!window.confirm('삭제하시겠습니까?')) return;
 
     try {
       setIsUploading(true);
@@ -635,6 +648,7 @@ const EditProfilePage = () => {
       alert('이미지 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
     } finally {
       setIsUploading(false);
+      setIsImageDeleteConfirmOpen(false);
     }
   };
   
@@ -666,7 +680,7 @@ const EditProfilePage = () => {
         deleteButton.onclick = () => {
           const imageId = getCurrentImageId();
           if (imageId) {
-            handleDelete(imageId);
+            handleImageDeleteConfirm(imageId);
           } else {
             alert('삭제할 이미지를 찾을 수 없습니다. 새로고침 후 다시 시도해주세요.');
           }
@@ -1198,9 +1212,12 @@ const EditProfilePage = () => {
     }
   };
 
+  // 배경 이미지 삭제 확인 모달 열기
+  const handleBackgroundDeleteConfirm = () => {
+    setIsBackgroundDeleteConfirmOpen(true);
+  };
+
   const handleBackgroundDelete = async () => {
-    if (!window.confirm('배경 이미지를 삭제하시겠습니까?')) return;
-    
     try {
       setIsUploading(true);
       const res = await putProfileBackgroundImage(profileId, {
@@ -1222,6 +1239,7 @@ const EditProfilePage = () => {
       alert('배경 이미지 삭제 중 오류가 발생했습니다.');
     } finally {
       setIsUploading(false);
+      setIsBackgroundDeleteConfirmOpen(false);
     }
   };
 
@@ -2225,7 +2243,7 @@ const EditProfilePage = () => {
               style={{ display: 'none' }}
             />
             <button
-              onClick={handleBackgroundDelete}
+              onClick={handleBackgroundDeleteConfirm}
               style={{ background: 'none', color: '#fff', border: 'none', fontSize: '18px', cursor: 'pointer', marginRight: '24px', fontWeight: 500, letterSpacing: '1px' }}
             >
               삭제
@@ -2292,7 +2310,7 @@ const EditProfilePage = () => {
               수정
             </button>
             <button
-              onClick={handleProfileDelete}
+              onClick={handleProfileDeleteConfirm}
               style={{ background: 'none', color: '#fff', border: 'none', fontSize: '18px', cursor: 'pointer', marginRight: '24px', fontWeight: 500, letterSpacing: '1px' }}
             >
               삭제
@@ -2354,13 +2372,46 @@ const EditProfilePage = () => {
               </div>
             </div>
             <div className="modal-footer">
-              <button onClick={handleBackgroundDelete} disabled={isUploading}>
+              <button onClick={handleBackgroundDeleteConfirm} disabled={isUploading}>
                 {isUploading ? '삭제 중...' : '삭제'}
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <Confirm
+        isOpen={isProfileDeleteConfirmOpen}
+        onClose={() => setIsProfileDeleteConfirmOpen(false)}
+        onConfirm={handleProfileDelete}
+        title="프로필 이미지 삭제"
+        message="프로필 이미지를 삭제하시겠습니까?"
+        confirmText="삭제"
+        cancelText="취소"
+        isLoading={isUploading}
+      />
+
+      <Confirm
+        isOpen={isImageDeleteConfirmOpen}
+        onClose={() => setIsImageDeleteConfirmOpen(false)}
+        onConfirm={() => handleDelete(deleteImageId)}
+        title="이미지 삭제"
+        message="이미지를 삭제하시겠습니까?"
+        confirmText="삭제"
+        cancelText="취소"
+        isLoading={isUploading}
+      />
+      
+      <Confirm
+        isOpen={isBackgroundDeleteConfirmOpen}
+        onClose={() => setIsBackgroundDeleteConfirmOpen(false)}
+        onConfirm={handleBackgroundDelete}
+        title="배경 이미지 삭제"
+        message="배경 이미지를 삭제하시겠습니까?"
+        confirmText="삭제"
+        cancelText="취소"
+        isLoading={isUploading}
+      />
     </>
   );
 };
