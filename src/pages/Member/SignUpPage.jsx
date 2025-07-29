@@ -324,7 +324,7 @@ const SignUpPage = () => {
 
   return (
     <>
-      <section className="top-space-margin big-section bg-very-light-gray">
+      <section className="top-space-margin section bg-very-light-gray">
         <div className="container">
           {step === 0 && (
             <div className="col contact-form-style-04 text-center bg-white">
@@ -645,9 +645,9 @@ const SignUpPage = () => {
           {step === 3 && (
             <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overflow-hidden">
               <div className="col contact-form-style-04">
-                <div className="mt-20 md-mt-0 py-5 sm-py-0 text-center ">
-                  <a className="navbar-brand" href="demo-hotel-and-resort.html">
-                    <img src={checkCircle} alt="" />
+                <div className="mt-0 md-mt-0 py-3 sm-py-0 text-center ">
+                  <a className="navbar-brand" href="/">
+                    <img src={checkCircle} alt="" style={{ width: '30%' }} />
                   </a>
                   <h4 className="fw-800 text-dark-gray mt-15 sm-mt-5 mb-2 ls-minus-1px">
                     회원가입 완료
