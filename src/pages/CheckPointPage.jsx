@@ -53,6 +53,9 @@ const CheckPointPage = () => {
     //비공개 프로필 -> 로그인 후 로컬스토리지 get
     const remberProfileUrl = localStorage.getItem('dev_remberProfileUrl');
 
+    //리다이렉트 정보 get
+    const redirectPath = localStorage.getItem('redirectAfterLogin');
+
     if (invitationKey) {
       localStorage.removeItem('dev_invitation');
       navigate(`/profile/invitation?key=${invitationKey}`);
@@ -61,10 +64,12 @@ const CheckPointPage = () => {
       localStorage.removeItem('dev_remberProfileUrl');
       navigate(`${remberProfileUrl}`);
       return;
-    } else {
-      const redirectPath = localStorage.getItem('redirectAfterLogin') || '/profile';
+    } else if (redirectPath) {
       localStorage.removeItem('redirectAfterLogin');
       navigate(redirectPath);
+      return;
+    } else {
+      navigate('/profile');
       return;
     }
   };

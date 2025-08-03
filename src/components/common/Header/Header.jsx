@@ -5,9 +5,7 @@ import { logout } from '@/state/slices/authSlices';
 import { useNavigate } from 'react-router-dom';
 import { signLogout } from '@/api/memberApi';
 
-// import defaultLogo_pc from '@/assets/images/logo_pc.png';
 import defaultLogo_pc from '@/assets/images/evergil_logo_pc.png';
-//import defaultLogo_mobile from '@/assets/images/logo_mobile.png';
 import defaultLogo_mobile from '@/assets/images/evergil_logo_mobile.png';
 
 const Header = () => {
@@ -124,7 +122,9 @@ const Header = () => {
                     <button
                       className="nav-link feature-box border-0 bg-transparent"
                       onClick={() => {
-                        // localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
+                        const currentPath = window.location.pathname + window.location.search;
+                        const redirectPath = currentPath === '/contact' ? '/mypage/my-contact' : currentPath;
+                        localStorage.setItem('redirectAfterLogin', redirectPath);
                         closeMenu();
                         navigate('/signin');
                       }}
