@@ -11,6 +11,8 @@ const ForgotPage = () => {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   //이메일 useState 로직
   const handleEmailChange = (e) => {
@@ -37,12 +39,18 @@ const ForgotPage = () => {
       return;
     }
 
-    const res = await postPasswordRequest(email);
+    try {
+      const res = await postPasswordRequest(email);
 
-    if (res === 200) {
-      setIsModalOpen(true);
-      setEmail('');
-      setErrors('');
+      if (res === 200) {
+        setIsModalOpen(true);
+        setEmail('');
+        setErrors('');
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(error.response?.data?.message || '비밀번호 재설정 요청 중 오류가 발생했습니다.');
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -124,6 +132,37 @@ const ForgotPage = () => {
                       <button
                         className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal isOpen={isErrorModalOpen} onClose={() => setIsErrorModalOpen(false)}>
+        <div className="w-100">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-10 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-danger fw-500 mb-15px md-fs-18">
+                        오류가 발생했습니다.
+                      </h6>
+                      <p className="text-dark-gray fw-400 mb-15px md-fs-16">
+                        {errorMessage}
+                      </p>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <input type="hidden" name="redirect" value="" />
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
+                        onClick={() => setIsErrorModalOpen(false)}
                       >
                         확인
                       </button>

@@ -12,8 +12,6 @@ export const postPasswordRequest = async (param) => {
     } catch (err) {
         const message =
             err.response?.data?.message || '알 수 없는 오류가 발생했습니다.';
-        alert(`[비밀번호 찾기 실패] ${message}`);
-        // 또는 throw 해서 상위에서 처리하도록 할 수도 있음
         throw err;
     }
 };
