@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player/youtube';
 import useIsMobile from '@/hooks/useIsMobile';
 
 import FaqComponents from '@/components/Faq/FaqComponents';
-import mainBannerImage from '@/assets/images/evergil_main_banner.jpg';
+import mainBannerImage from '@/assets/images/evergil_main_banner.jpeg';
 import mainBannerImageMobile from '@/assets/images/evergil_main_banner_mobile.jpg';
 import mainSubImage1 from '@/assets/images/evergil_main_sub_image1.jpg';
 import mainSubImage1Mobile from '@/assets/images/evergil_main_sub_image1.jpg';
@@ -13,14 +13,8 @@ import { siteConfig } from '@/config/siteConfig';
 
 import mainLogoPc from '@/assets/images/evergil_main_logo_pc.png';
 import mainLogoMobile from '@/assets/images/evergil_main_logo_mobile.png';
-import signupMobile from '@/assets/images/evergil_signup_logo_mobile.png';
-import main_guide from '@/assets/images/evergil_main_guide.jpg';
-import guide1 from '@/assets/images/guide_1.jpg';
-import guide2 from '@/assets/images/guide_2.jpg';
-import guide3 from '@/assets/images/guide_3.jpg';
-
-import profilePreviewPet from '@/assets/images/evergil_profile_preview_pet.png';
-import profilePreviewHuman from '@/assets/images/evergil_profile_preview_human.png';
+import main_guide from '@/assets/images/evergil_main_guide.png';
+import main_guide2 from '@/assets/images/evergil_main_guide2.png';
 
 // 반응형 버튼 행 스타일을 위한 style 태그 추가 (임시)
 const btnRowStyle = `
@@ -314,7 +308,7 @@ const HomeSubPage = () => {
         </div>
       </section>
 
-      <section className="big-section bg-white pt-3 pb-1">
+      <section className="big-section bg-white pt-5 sm-pt-10 pb-3">
         <div className="container">
           <div
             className="row row-cols-1 row-cols-lg-12 row-cols-md-2 justify-content-center interactive-banner-container"
@@ -339,21 +333,30 @@ const HomeSubPage = () => {
               </div>
             </div>
           </div>
-          <div className="row justify-content-center align-items-center pt-2">
-            {/* <div
-              className="col-12 text-center last-paragraph-no-margin"
-              data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
-            >
-              <div className="d-inline-block align-middle bg-base-color fw-600 text-white text-uppercase border-radius-4px ps-20px pe-20px fs-12 me-10px md-m-5px">
-                Awesome
+          <div
+            className="row row-cols-1 row-cols-lg-12 row-cols-md-2 justify-content-center interactive-banner-container"
+            data-anime='{"el": "childs", "translateY": [0, 0], "perspective": [1000,1200], "scale": [1.1, 1], "rotateX": [50, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'
+          >
+            <div className="col interactive-banner-style-03 transition-inner-all w-100 sm-min-w-auto md-w-100">
+              <div className="position-relative overflow-hidden border-radius-6px last-paragraph-no-margin">
+                <figure className="m-0">
+                  <div className="position-absolute top-0px left-0px w-100 h-100 z-index-1"></div>
+                  <img
+                    src={main_guide2}
+                    alt=""
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      display: 'block',
+                    }}
+                  />
+                  <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1"></figcaption>
+                </figure>
               </div>
-              <div className="d-inline-block align-middle text-black fs-20 md-fs-16  sm-fs-12 fw-500">
-                <span className="text-decoration-line-bottom fw-600">
-                  open get 10% discount
-                </span>
-              </div>
-            </div> */}
-
+            </div>
+          </div>
+          {/* <div className="row justify-content-center align-items-center pt-2">
             <div className="col-md-8 text-center" style={{ paddingBottom: '10%' }}>
               <h6 className="mb-5px text-dark-gray ls-minus-2px mb-2" style={{ paddingBottom: '7%' }}>
                 추모 프로필 미리보기
@@ -389,7 +392,7 @@ const HomeSubPage = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 

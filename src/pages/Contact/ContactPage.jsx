@@ -6,7 +6,7 @@ import { postInquiryRequest } from '@/api/guest/guestApi';
 import { isValidEmail } from '@/utils/validators';
 import VerticalCenterLineBg from '@/assets/images/vertical-center-line-bg.svg';
 
-import everlinkTop from '@/assets/images/everlink-top.png';
+import everlinkTop from '@/assets/images/evergil_contact.jpeg';
 
 const ContactPage = () => {
   const initialFormState = { writerName: '', writerEmail: '', message: '' };
@@ -95,7 +95,7 @@ const ContactPage = () => {
             data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
           >
             <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
-              <img src={everlinkTop} alt="everlinkTop" />
+              <img src={everlinkTop} className='h-350px sm-h-150px' alt="everlinkTop" style={{ width: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -111,9 +111,6 @@ const ContactPage = () => {
               className="col-lg-12 md-mb-50px"
               data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
-              {/* <h4 className="text-dark-gray ls-minus-2px mb-5px sm-fs-32">
-                문의사항
-              </h4> */}
               <h4 className="fw-700 text-dark-gray ls-minus-1px mb-5px">
                 문의사항
               </h4>
