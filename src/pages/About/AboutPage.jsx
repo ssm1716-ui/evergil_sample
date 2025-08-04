@@ -1,19 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@/components/common/Button/Button';
 import { postPasswordRequest } from '@/api/guest/guestApi';
 import useIsMobile from '@/hooks/useIsMobile';
 import { isValidEmail } from '@/utils/validators';
-import AboutImage1 from '@/assets/images/about-image-1.png';
-import AboutImage2 from '@/assets/images/about-image-2.jpeg';
-import AboutImage2Mobile from '@/assets/images/about-image-2-mobile.jpeg';
-import AboutImage3 from '@/assets/images/about-image-3.jpeg';
-import AboutImage3Mobile from '@/assets/images/about-image-3-mobile.jpeg';
-
-import AnimatedSection from '@/components/AnimatedSection';
+import AboutOurStory from '@/assets/images/evergil_about_our_story.jpg';
+import AboutOurMission from '@/assets/images/evergil_about_our_mission.jpg';
 
 import VerticalCenterLineBg from '@/assets/images/vertical-center-line-bg.svg';
-import aboutUsImage from '@/assets/images/about_us.png';
 
 const AboutPage = () => {
   const [email, setEmail] = useState('');
@@ -40,22 +32,6 @@ const AboutPage = () => {
 
   return (
     <>
-      {/* <section className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center">
-        <div className="container position-relative">
-          <div
-            className="row align-items-start align-items-lg-end justify-content-end flex-column flex-lg-row"
-            data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
-          >
-            <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
-              <img
-                src={aboutUsImage}
-                alt="about_us"
-                className="about_us_logo"
-              />
-            </div>
-          </div>
-        </div>
-      </section> */}
       <section
         className="page-title-separate-breadcrumbs cover-background top-space-margin magic-cursor round-cursor pb-0 text-center"
         style={{ backgroundImage: `url(${VerticalCenterLineBg})` }}
@@ -67,7 +43,7 @@ const AboutPage = () => {
           <div className="row pb-10">
             <div className="col-lg-5 col-sm-12 sm-mb-25px text-md-center">
               <img
-                src={isMobile ? AboutImage2Mobile : AboutImage2}
+                src={isMobile ? AboutOurStory : AboutOurStory}
                 alt=""
                 className="w-100 about-img1 md-w-50 sm-w-100"
               />
@@ -102,7 +78,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className="cover-background position-relative overflow-visible pt-5 pb-10">
+      <section className="cover-background position-relative overflow-visible pt-5 pb-5">
         <div className="container">
           <div className="row justify-content-center">
             <div
@@ -110,7 +86,7 @@ const AboutPage = () => {
               data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <h6 className="text-dark-gray mb-5 md-fs-28">Our Mission</h6>
-              <img src={isMobile ? AboutImage3Mobile : AboutImage3} alt="" className="w-100" />
+              <img src={isMobile ? AboutOurMission : AboutOurMission} alt="" className="w-100" />
               <h5 className="text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
               <p className="lg-w-100 mt-5 lh-24 fs-18 md-fs-16 sm-fs-14  md-lh-30 text-keep-all">
                 에버길의 사명은 사랑하는 사람의 기억을 의미 있게,
