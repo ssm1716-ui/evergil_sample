@@ -5,7 +5,7 @@ import Modal from '@/components/common/Modal/Modal';
 import Select from 'react-select';
 import { FaEye, FaEyeSlash, FaLink, FaShareAlt } from 'react-icons/fa'; // 아이콘 가져오기
 
-import everlinkTop from '@/assets/images/everlink-top.png';
+import everlinkTop from '@/assets/images/evergil_contact.jpeg';
 
 import useProfilePermission from '@/hooks/useProfilePermission';
 import {
@@ -264,7 +264,7 @@ const ManagePage = () => {
                 data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
               >
                 <div className="col-12 text-center position-relative page-title-extra-large">
-                  <img src={everlinkTop} alt="everlinkTop" />
+                  <img src={everlinkTop} className='h-350px sm-h-150px' style={{ width: '100%', objectFit: 'cover' }} alt="everlinkTop" />
                 </div>
                 <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
               </div>
