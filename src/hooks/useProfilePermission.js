@@ -10,6 +10,7 @@ const useProfilePermission = (profileId, options = {}) => {
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [hasEditPermission, setHasEditPermission] = useState(false);
   const [shouldShowEditComponent, setShouldShowEditComponent] = useState(false);
+  const [currentPermission, setCurrentPermission] = useState(null);
 
   const { shouldRedirect = true, nickname = null } = options; // nickname 옵션 추가
 
@@ -28,11 +29,14 @@ const useProfilePermission = (profileId, options = {}) => {
         const viewProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/view-profile/${profileId}`;
         const editProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/edit-profile/${profileId}`;
 
+        setCurrentPermission(result);
+
         switch (result) {
           case 'NEED_TO_LOGIN':
             setIsLoginModalOpen(true);
             break;
           case 'PERMISSION_DENIED':
+          case 'PERMISSION_DENIED_BUT_REQUESTED':
             setIsRequestModalOpen(true);
             break;
           case 'PUBLIC_PROFILE':
@@ -90,6 +94,7 @@ const useProfilePermission = (profileId, options = {}) => {
     setIsAuthorized,
     hasEditPermission,
     shouldShowEditComponent,
+    currentPermission,
   };
 };
 

@@ -76,6 +76,7 @@ const ManagePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
+    currentPermission,
   } = useProfilePermission(profileId, { shouldRedirect: false });
 
   // 프로필 데이터 가져오기
@@ -762,9 +763,23 @@ const ManagePage = () => {
                 <div className="p-5 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
-                      <h6 className="text-dark-gray fw-500 mb-15px fs-22">
-                        접근 할 수 없습니다.
-                      </h6>
+                      {currentPermission === 'PERMISSION_DENIED_BUT_REQUESTED' ? (
+                        <>
+                          <h6 className="text-dark-gray fw-500 mb-15px fs-22">
+                            이미 요청된 프로필입니다.
+                          </h6>
+                          <p className="text-dark-gray mb-15px">
+                            초대 승인을 기다려주세요
+                          </p>
+                          <p className="text-dark-gray mb-15px">
+                            감사합니다.
+                          </p>
+                        </>
+                      ) : (
+                        <h6 className="text-dark-gray fw-500 mb-15px fs-22">
+                          접근 할 수 없습니다.
+                        </h6>
+                      )}
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
                       <input type="hidden" name="redirect" value="" />

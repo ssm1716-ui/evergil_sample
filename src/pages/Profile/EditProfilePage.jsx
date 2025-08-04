@@ -152,6 +152,7 @@ const EditProfilePage = () => {
     isRequestModalOpen,
     setIsRequestModalOpen,
     showScreen,
+    currentPermission,
   } = useProfilePermission(profileId, { shouldRedirect: true, nickname });
 
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
@@ -1938,61 +1939,84 @@ const EditProfilePage = () => {
                   ></button>
                 </div>
               </div>
-              <form className="row">
-                <div className="col-12 mb-20px ">
-                  <label className="fw-bold">이름</label>
-                  <input
-                    className="border-radius-15px input-large mb-5px"
-                    type="text"
-                    name="name"
-                    placeholder="이름을 입력해 주세요."
-                    value={formRequestPrivateProfile.name}
-                    onChange={handleFormRequestPrivateProfileChange}
-                    required
-                  />
-                  {/* {errors.displayName && (
-                    <p className="text-danger text-start">
-                      이름을 입력 하셔야 됩니다.
+              {currentPermission === 'PERMISSION_DENIED_BUT_REQUESTED' ? (
+                <div className="row">
+                  <div className="col-12 text-center">
+                    <p className="text-dark-gray fw-500 mb-10px">
+                      이미 요청된 프로필입니다.
                     </p>
-                  )} */}
-                </div>
-                <div className="col-12 mb-20px ">
-                  <label className="fw-bold">메모</label>
-                  <textarea
-                    className="border-radius-15px form-control"
-                    cols="40"
-                    rows="4"
-                    name="memo"
-                    value={formRequestPrivateProfile.memo}
-                    onChange={handleFormRequestPrivateProfileChange}
-                    placeholder="비공개 계정 방문을 위해 본인을 알릴 수 있는 메모를 입력해 주세요."
-                  ></textarea>
-                  {/* {errors.memo && (
-                    <p className="text-danger text-start">
-                      받는분 이름을 추가 해주세요.
+                    <p className="text-dark-gray fw-500 mb-10px">
+                      초대 승인을 기다려주세요
                     </p>
-                  )} */}
+                    <p className="text-dark-gray mb-30px">
+                      감사합니다.
+                    </p>
+                    <Button
+                      radiusOn="radius-on"
+                      className="btn btn-white btn-medium btn-box-shadow btn-round-edge me-1 w-100"
+                      onClick={() => navigate('/profile')}
+                    >
+                      나의 프로필 리스트
+                    </Button>
+                  </div>
                 </div>
+              ) : (
+                <form className="row">
+                  <div className="col-12 mb-20px ">
+                    <label className="fw-bold">이름</label>
+                    <input
+                      className="border-radius-15px input-large mb-5px"
+                      type="text"
+                      name="name"
+                      placeholder="이름을 입력해 주세요."
+                      value={formRequestPrivateProfile.name}
+                      onChange={handleFormRequestPrivateProfileChange}
+                      required
+                    />
+                    {/* {errors.displayName && (
+                      <p className="text-danger text-start">
+                        이름을 입력 하셔야 됩니다.
+                      </p>
+                    )} */}
+                  </div>
+                  <div className="col-12 mb-20px ">
+                    <label className="fw-bold">메모</label>
+                    <textarea
+                      className="border-radius-15px form-control"
+                      cols="40"
+                      rows="4"
+                      name="memo"
+                      value={formRequestPrivateProfile.memo}
+                      onChange={handleFormRequestPrivateProfileChange}
+                      placeholder="비공개 계정 방문을 위해 본인을 알릴 수 있는 메모를 입력해 주세요."
+                    ></textarea>
+                    {/* {errors.memo && (
+                      <p className="text-danger text-start">
+                        받는분 이름을 추가 해주세요.
+                      </p>
+                    )} */}
+                  </div>
 
-                <div className="col-lg-112 text-center text-lg-center">
-                  <input type="hidden" name="redirect" value="" />
+                  <div className="col-lg-112 text-center text-lg-center">
+                    <input type="hidden" name="redirect" value="" />
 
-                  <Button
-                    radiusOn="radius-on"
-                    className="btn btn-base-color btn-medium btn-box-shadow btn-round-edge me-1 w-100 mb-3"
-                    onClick={handleRequestPrivateProfile}
-                  >
-                    보내기
-                  </Button>
-                  <Button
-                    radiusOn="radius-on"
-                    className="btn btn-white btn-medium btn-box-shadow btn-round-edge me-1 w-100"
-                    onClick={() => navigate('/profile')}
-                  >
-                    나의 프로필 리스트
-                  </Button>
-                </div>
-              </form>
+                    <Button
+                      radiusOn="radius-on"
+                      className="btn btn-base-color btn-medium btn-box-shadow btn-round-edge me-1 w-100 mb-3"
+                      onClick={handleRequestPrivateProfile}
+                    >
+                      보내기
+                    </Button>
+                    <Button
+                      radiusOn="radius-on"
+                      className="btn btn-white btn-medium btn-box-shadow btn-round-edge me-1 w-100"
+                      onClick={() => navigate('/profile')}
+                    >
+                      나의 프로필 리스트
+                    </Button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>
