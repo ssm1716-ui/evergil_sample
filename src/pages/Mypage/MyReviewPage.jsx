@@ -397,7 +397,7 @@ const MyReviewPage = () => {
                         <ul className="language-dropdown text-center">
                           <li>
                             <a
-                              className="fs-18"
+                              className="fs-18 cursor-pointer"
                               onClick={() => handleReviewsModify(review.id)}
                             >
                               수정
@@ -405,7 +405,7 @@ const MyReviewPage = () => {
                           </li>
                           <li>
                             <a
-                              className="fs-18"
+                              className="fs-18 cursor-pointer"
                               onClick={() => handleReviewsRemove(review.id)}
                             >
                               삭제
