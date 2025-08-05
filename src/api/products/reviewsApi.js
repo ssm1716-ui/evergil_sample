@@ -20,7 +20,7 @@ export const postReviewRegister = async (id, param) => {
         return res;
     } catch (err) {
         console.error(err);
-        // return err.response ? err.response : { status: 500, data: 'Unknown error' };
+        throw err;
     }
 };
 

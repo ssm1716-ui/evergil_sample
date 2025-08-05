@@ -43,6 +43,16 @@ const MyReviewPage = () => {
   });
   const [files, setFiles] = useState([]);
 
+  // 알림 모달 상태 추가
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  // 알림 모달 표시 함수
+  const showAlert = (message) => {
+    setAlertMessage(message);
+    setIsAlertModalOpen(true);
+  };
+
   // 리뷰 조회
   useEffect(() => {
     const getMeReviews = async () => {
@@ -194,17 +204,31 @@ const MyReviewPage = () => {
     }
 
     // 이후 로직 업로드된 파일 URL을 백엔드에 전송
-    const res = await postReviewModify(
-      focusReviewid.productId,
-      focusReviewid.reviewId,
-      {
-        ...reviews,
-        images: completedUrls,
+    try {
+      const res = await postReviewModify(
+        focusReviewid.productId,
+        focusReviewid.reviewId,
+        {
+          ...reviews,
+          images: completedUrls,
+        }
+      );
+      if (res.status === 200) {
+        setIsModalOpen(false);
+        setViewSelect(initData);
       }
-    );
-    if (res.status === 200) {
-      setIsModalOpen(false);
-      setViewSelect(initData);
+    } catch (error) {
+      console.error(error);
+      let errorMessage = '리뷰 수정에 실패했습니다.';
+      
+      if (error.response && error.response.data) {
+        // 서버에서 전달된 메시지가 있으면 사용
+        if (error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      }
+      
+      showAlert(errorMessage);
     }
   };
 
@@ -218,6 +242,17 @@ const MyReviewPage = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  // 개행을 <br/> 태그로 변환하는 함수
+  const formatContentWithLineBreaks = (content) => {
+    if (!content) return '';
+    return content.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < content.split('\n').length - 1 && <br />}
+      </span>
+    ));
   };
 
   return (
@@ -423,7 +458,7 @@ const MyReviewPage = () => {
                       </span>
                     )}
 
-                    <p className="w-85 sm-w-100 sm-mt-15px">{review.content}</p>
+                    <p className="w-85 sm-w-100 sm-mt-15px">{formatContentWithLineBreaks(review.content)}</p>
                   </div>
                 </div>
               </div>
@@ -581,6 +616,38 @@ const MyReviewPage = () => {
                       <div className="form-results mt-20px d-none"></div>
                     </div>
                   </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 알림 모달 */}
+      <Modal
+        isOpen={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+      >
+        <div className="w-100">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-7 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 fs-24 sm-fs-18">
+                        {alertMessage}
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1 border-radius-6px"
+                        onClick={() => setIsAlertModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
