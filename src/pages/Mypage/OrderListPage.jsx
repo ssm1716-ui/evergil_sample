@@ -232,18 +232,32 @@ const OrderListPage = () => {
       }
     }
 
-    const updateReviews = {
-      ...reviews,
-      orderNumber: orderTarget.orderNumber,
-    };
+    try {
+      const updateReviews = {
+        ...reviews,
+        orderNumber: orderTarget.orderNumber,
+      };
 
-    // 이후 로직 (예: 업로드된 파일 URL을 백엔드에 전송)
-    const res = await postReviewRegister(productTargetId, {
-      ...updateReviews,
-      images: completedUrls,
-    });
-    if (res.status === 200) {
-      setIsReviewWriteModalOpen(false);
+      // 이후 로직 (예: 업로드된 파일 URL을 백엔드에 전송)
+      const res = await postReviewRegister(productTargetId, {
+        ...updateReviews,
+        images: completedUrls,
+      });
+      if (res.status === 200) {
+        // 현재 스크롤 위치 저장
+        const currentScrollPosition = window.scrollY;
+        
+        setIsReviewWriteModalOpen(false);
+        setReviews(initialForm);
+        
+        // 목록 새로고침 (스크롤 위치 유지)
+        await fetchOrders(false);
+        
+        // 스크롤 위치 복원
+        window.scrollTo(0, currentScrollPosition);
+      }
+    } catch (error) {
+      showAlert(error.response.data.message ? error.response.data.message : '리뷰 작성 실패');
       setReviews(initialForm);
     }
   };
@@ -385,6 +399,24 @@ const OrderListPage = () => {
     if (e.key === 'Enter') {
       handleSearchClick();
     }
+  };
+
+  // textarea에서 엔터키 입력 시 모달 닫힘 방지
+  const handleTextareaKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.stopPropagation();
+    }
+  };
+
+  // 개행을 <br/> 태그로 변환하는 함수
+  const formatContentWithLineBreaks = (content) => {
+    if (!content) return '';
+    return content.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < content.split('\n').length - 1 && <br />}
+      </span>
+    ));
   };
 
   return (
@@ -948,6 +980,7 @@ const OrderListPage = () => {
                         name="content"
                         value={reviews.content}
                         onChange={handleContentChange}
+                        onKeyDown={handleTextareaKeyDown}
                         placeholder="리뷰를 남겨주세요."
                       ></textarea>
                     </div>
@@ -1160,7 +1193,7 @@ const OrderListPage = () => {
                               </span>
                             )}
 
-                            <p className="w-85 sm-w-100">{review.content}</p>
+                            <p className="w-85 sm-w-100">{formatContentWithLineBreaks(review.content)}</p>
                           </div>
                         </div>
                       </div>

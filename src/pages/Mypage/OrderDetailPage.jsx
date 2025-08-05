@@ -19,6 +19,7 @@ import { postReviewRegister } from '@/api/products/reviewsApi';
 const MyPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [order, setOrder] = useState({});
   const [delivery, setDelivery] = useState({});
   const [payment, setPayment] = useState({});
   const [product, setProduct] = useState({});
@@ -27,6 +28,7 @@ const MyPage = () => {
   const [productInfo, setProductInfo] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState({
+    orderNumber: '',
     rate: 0,
     content: '',
     images: [],
@@ -46,6 +48,16 @@ const MyPage = () => {
   const [meReviews, setMeReviews] = useState({});
   const orderNumber = searchParams.get('orderNumber'); // ✅ URL에서 key 값 가져오기
   const copyToClipboard = useCopyToClipboard();
+
+  // 알림 모달 상태 추가
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  // 알림 모달 표시 함수
+  const showAlert = (message) => {
+    setAlertMessage(message);
+    setIsAlertModalOpen(true);
+  };
 
   const initialForm = {
     rate: 0,
@@ -93,12 +105,17 @@ const MyPage = () => {
           return;
         }
         const order = data.data;
+        setOrder(order);
         setDelivery(order.delivery);
         setPayment(order.payment);
         setProduct(order.product);
         setVBankData(order.vBankData);
         setActions(order.product.nextActions);
         setProductInfo(order.productInfo);
+        setOrderTarget({
+          orderNumber: order.orderNumber,
+          productInfo: order.productInfo,
+        });
       } catch (error) {
         console.error(error);
       }
@@ -145,6 +162,13 @@ const MyPage = () => {
     console.log(files);
   };
 
+  // textarea에서 엔터키 입력 시 모달 닫힘 방지
+  const handleTextareaKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.stopPropagation();
+    }
+  };
+
   // 백엔드 요청하기 전 S3 파일 업로드 (순차 업로드)
   const handleGetFileUploadPath = async () => {
     let completedUrls = [];
@@ -184,12 +208,43 @@ const MyPage = () => {
     }
 
     // 이후 로직 (예: 업로드된 파일 URL을 백엔드에 전송)
-    const res = await postReviewRegister(orderNumber, {
-      ...reviews,
-      images: completedUrls,
-    });
-    if (res.status === 200) {
-      setIsModalOpen(false);
+    try {
+      const updateReviews = {
+        ...reviews,
+        orderNumber: orderTarget.orderNumber,
+      };
+      
+      const res = await postReviewRegister(productTargetId, {
+        ...updateReviews,
+        images: completedUrls,
+      });
+        if (res.status === 200) {
+          // 현재 스크롤 위치 저장
+          const currentScrollPosition = window.scrollY;
+
+          setIsReviewWriteModalOpen(false);
+          setReviews(initialForm);
+
+          // 페이지 새로고침 (스크롤 위치 유지)
+          window.location.reload();
+
+          // 스크롤 위치 복원
+          setTimeout(() => {
+            window.scrollTo(0, currentScrollPosition);
+          }, 100);
+       }
+    } catch (error) {
+      console.error(error);
+      let errorMessage = '리뷰 작성에 실패했습니다.';
+      
+      if (error.response && error.response.data) {
+        // 서버에서 전달된 메시지가 있으면 사용
+        if (error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      }
+      
+      showAlert(errorMessage);
       setReviews(initialForm);
     }
   };
@@ -386,7 +441,9 @@ const MyPage = () => {
                     {actions.findDeliveryInfo && (
                       <Link
                         to={`https://www.ilogen.com/web/personal/trace/${product.invoiceNumber}`}
+                        target="_blank"
                         className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
+                        rel="noopener noreferrer"
                       >
                         <span>
                           <span
@@ -419,15 +476,14 @@ const MyPage = () => {
 
                     {/* nextActions 속성값에 리뷰쓰기가 있으면 표시 */}
                     {actions.canWriteReview && (
-                      <Link
-                        href="#"
+                      <button
                         className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
                         onClick={() => {
                           setOrderTarget({
-                            orderNumber: product.orderNumber,
-                            productInfo: product.productInfo,
+                            orderNumber: order.orderNumber,
+                            productInfo: productInfo,
                           });
-                          setProductTargetId(product.productInfo[0].productId);
+                          setProductTargetId(productInfo[0].productId);
 
                           setIsReviewWriteModalOpen(true);
                         }}
@@ -440,14 +496,24 @@ const MyPage = () => {
                             리뷰쓰기
                           </span>
                         </span>
-                      </Link>
+                      </button>
                     )}
                     {/* nextActions 속성값에 리뷰보기가 있으면 표시 */}
                     {actions.canViewReview && (
-                      <Link
-                        href="#"
+                      <button
                         className="btn btn-white order-btn btn-large btn-switch-text border w-40 me-2 mt-2"
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => {
+                          setOrderTarget({
+                            orderNumber: order.orderNumber,
+                            productInfo: productInfo,
+                          });
+                          setProductTargetId(productInfo[0].productId);
+                          handleFetchMeReviews(
+                            order.orderNumber,
+                            productInfo[0].productId
+                          );
+                          setIsReviewReadModalOpen(true);
+                        }}
                       >
                         <span>
                           <span
@@ -457,7 +523,7 @@ const MyPage = () => {
                             리뷰보기
                           </span>
                         </span>
-                      </Link>
+                      </button>
                     )}
 
                     {/* nextActions 속성값에 결제취소가 있으면 표시 */}
@@ -798,7 +864,7 @@ const MyPage = () => {
                           name="scope"
                           onChange={(e) => handleReviewTargetChange(e, 'write')}
                         >
-                          {orderTarget.productInfo.map((product, idx) => (
+                          {productInfo?.map((product, idx) => (
                             <option
                               key={product.productId}
                               value={product.productId}
@@ -841,6 +907,7 @@ const MyPage = () => {
                         name="content"
                         value={reviews.content}
                         onChange={handleContentChange}
+                        onKeyDown={handleTextareaKeyDown}
                         placeholder="리뷰를 남겨주세요."
                       ></textarea>
                     </div>
@@ -966,7 +1033,7 @@ const MyPage = () => {
                           name="scope"
                           onChange={(e) => handleReviewTargetChange(e, 'read')}
                         >
-                          {orderTarget.productInfo.map((product, idx) => (
+                          {productInfo?.map((product, idx) => (
                             <option
                               key={product.productId}
                               value={product.productId}
@@ -1102,6 +1169,38 @@ const MyPage = () => {
                       <button
                         className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1"
                         onClick={() => setIsConfirmPurchaseModalOpen(false)}
+                      >
+                        확인
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 알림 모달 */}
+      <Modal
+        isOpen={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+      >
+        <div className="w-100">
+          <div className="modal-content p-0 rounded shadow-lg">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="p-7 sm-p-7 bg-white">
+                  <div className="row justify-content-center">
+                    <div className="col-md-9 text-center">
+                      <h6 className="text-dark-gray fw-500 fs-24 sm-fs-18">
+                        {alertMessage}
+                      </h6>
+                    </div>
+                    <div className="col-lg-12 text-center text-lg-center pt-3">
+                      <button
+                        className="btn btn-white btn-large btn-box-shadow border-1 border-default me-1 border-radius-6px"
+                        onClick={() => setIsAlertModalOpen(false)}
                       >
                         확인
                       </button>
