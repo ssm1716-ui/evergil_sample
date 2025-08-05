@@ -119,10 +119,16 @@ const StorePage = () => {
                           {product.productName}
                         </a>
                         <div className="price lh-22 md-lh-40 fs-18 md-fs-20 sm-fs-12">
-                          <del className="me-10px">
-                            {product.price.toLocaleString()}원
-                          </del>
-                          {(product.price - product.discountedPrice).toLocaleString()}원
+                          {product.discountedPrice > 0 ? (
+                            <>
+                              <del className="me-10px">
+                                {product.price.toLocaleString()}원
+                              </del>
+                              {(product.price - product.discountedPrice).toLocaleString()}원
+                            </>
+                          ) : (
+                            <span>{product.price.toLocaleString()}원</span>
+                          )}
                         </div>
                       </div>
                     </div>

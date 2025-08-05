@@ -357,10 +357,6 @@ const ShopPage = () => {
                     spaceBetween={10}
                     loop={false} // ✅ 루프 설정
                     loopedSlides={6} // ✅ 루프된 슬라이드 갯수 설정
-                    // autoplay={{
-                    //   delay: 2000,
-                    //   disableOnInteraction: false,
-                    // }}
                     navigation={{
                       nextEl: '.slider-product-next',
                       prevEl: '.slider-product-prev',
@@ -380,14 +376,6 @@ const ShopPage = () => {
                         />
                       </SwiperSlide>
                     ))}
-                    {/* <SwiperSlide>
-                      <img
-                        className="w-100"
-                        src={sampleImage2}
-                        alt="Product 2"
-                      />
-                    </SwiperSlide>
-                    */}
                   </Swiper>
                 </div>
 
@@ -418,10 +406,6 @@ const ShopPage = () => {
                         />
                       </SwiperSlide>
                     ))}
-                    {/* <SwiperSlide>
-                      <img className="w-100" src={sampleImage1} alt="Thumb 1" />
-                    </SwiperSlide>
-                    */}
                   </Swiper>
                 </div>
               </div>
@@ -460,10 +444,16 @@ const ShopPage = () => {
               </div>
               <div className="product-price mb-10px">
                 <span className="text-dark-gray fs-20 xs-fs-24 fw-700">
-                  <del className="text-medium-gray me-10px fw-400 fs-20">
-                    {Number(product.price).toLocaleString()}원
-                  </del>
-                  {Number(product.price - product.discountedPrice).toLocaleString()}원
+                  {product.discountedPrice > 0 ? (
+                    <>
+                      <del className="text-medium-gray me-10px fw-400 fs-20">
+                        {Number(product.price).toLocaleString()}원
+                      </del>
+                      {Number(product.price - product.discountedPrice).toLocaleString()}원
+                    </>
+                  ) : (
+                    <span>{Number(product.price).toLocaleString()}원</span>
+                  )}
                 </span>
               </div>
               <p className="mb-30px fs-18" style={{ whiteSpace: 'pre-line' }}>
