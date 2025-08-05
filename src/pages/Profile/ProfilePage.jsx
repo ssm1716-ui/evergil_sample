@@ -155,13 +155,15 @@ const ProfilePage = () => {
   }, [isFetching, profileState.hasNext, profileState.page, isotopeReady]);
 
   const handleMovePageProfile = (profileId, nickname) => {
-    // if (activeTab === 'My Profiles') {
-    //   navigate(`/profile/edit-profile/${profileId}`);
-    //   return;
-    // }
-    // navigate(`/profile/view-profile/${profileId}`);
-
-    navigate(`/@${nickname}`);
+    if (nickname) {
+      navigate(`/@${nickname}`);
+    } else {
+      if (activeTab === 'My Profiles') {
+        navigate(`/profile/edit-profile/${profileId}`);
+        return;
+      }
+      navigate(`/profile/view-profile/${profileId}`);
+    }
   };
   const handleRemoveConfirm = (id) => {
     setProfileId(id);
