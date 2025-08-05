@@ -1401,7 +1401,6 @@ const EditProfilePage = () => {
                       : 'row position-absolute md-position-initial bottom-minus-95px end-0 z-index-1 pe-1'
                   }
                 >
-                  {/* <div className="col-xl-10 col-lg-12 col-sm-7 lg-mb-30px md-mb-0"></div> */}
                   <div
                     className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 gap-sm-5 sm-px-20px py-lg-0 py-md-4"
                     style={{
@@ -1409,7 +1408,7 @@ const EditProfilePage = () => {
                     }}
                   >
                     <WebShareButton />
-                    {result === 'PUBLIC_PROFILE_OWNER' || result === 'YOU_HAVE_OWNER_PERMISSION' && (
+                    {(result === 'PUBLIC_PROFILE_OWNER' || result === 'YOU_HAVE_OWNER_PERMISSION') && (
                       <Link
                         className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
                         to={`/profile/manage-profile/${profileId}`}
