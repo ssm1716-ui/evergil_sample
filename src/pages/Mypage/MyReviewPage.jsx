@@ -368,11 +368,20 @@ const MyReviewPage = () => {
 
         <div className="row g-0 mb-4 md-mb-30">
           {isLoading ? (
-            <div className="col-12 text-center py-100px">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
+            // 로딩 중일 때
+            <div className="row justify-content-center">
+              <div className="col-12 text-center">
+                <div className="feature-box pt-10 pb-15 text-center overflow-hidden">
+                  <div className="feature-box-icon">
+                    <i className="bi bi-arrow-clockwise icon-extra-large text-medium-gray" style={{animation: 'spin 1s linear infinite'}}></i>
+                  </div>
+                  <div className="feature-box-content last-paragraph-no-margin pt-1">
+                    <p className="text-dark-gray opacity-5">
+                      리뷰를 불러오는 중입니다...
+                    </p>
+                  </div>
+                </div>
               </div>
-              <p className="mt-3 text-muted">리뷰를 불러오는 중...</p>
             </div>
           ) : meReviews.length > 0 ? (
             meReviews.map((review, index) => (
@@ -385,7 +394,7 @@ const MyReviewPage = () => {
                   <div className="position-absolute top-0 end-0 z-index-1">
                     <div className="header-language-icon widget fs-13 fw-600">
                       <div
-                        className={`header-language dropdown ${
+                        className={`header-language dropdown cursor-pointer ${
                           selectedId === review.id ? 'open' : ''
                         }`}
                         onClick={() => handleDrodownOpen(review.id)}
