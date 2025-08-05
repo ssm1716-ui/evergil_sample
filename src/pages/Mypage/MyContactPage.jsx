@@ -5,8 +5,8 @@ import SuccessModal from '@/components/common/Modal/SuccessModal';
 import useIsMobile from '@/hooks/useIsMobile';
 import { postInquiryRequest } from '@/api/guest/guestApi';
 import { isValidEmail } from '@/utils/validators';
-import everlinkTop from '@/assets/images/everlink-top.jpeg';
-import everlinkTopMobile from '@/assets/images/everlink-top-mobile.jpeg';
+import everlinkTop from '@/assets/images/evergil_contact.jpeg';
+import everlinkTopMobile from '@/assets/images/evergil_contact.jpeg';
 
 const MyContactPage = () => {
   const initialFormState = { writerName: '', writerEmail: '', message: '' };
@@ -102,6 +102,8 @@ const MyContactPage = () => {
             >
               <div className="col-12 position-relative page-title-large md-mb-15px xs-mb-5px">
                 <img
+                  className='h-350px sm-h-150px'
+                  style={{ width: '100%', objectFit: 'cover' }}
                   src={isMobile ? everlinkTopMobile : everlinkTop}
                   alt="everlinkTop"
                 />
