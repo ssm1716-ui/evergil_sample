@@ -62,7 +62,7 @@ export const postReviewRegister = async (id, param) => {
         return res;
     } catch (err) {
         console.error(err);
-        // return err.response ? err.response : { status: 500, data: 'Unknown error' };
+        throw new Error(err.response?.data?.message || '처리 중 오류가 발생했습니다.');
     }
 };
 
