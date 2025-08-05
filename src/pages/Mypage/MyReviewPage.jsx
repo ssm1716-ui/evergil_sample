@@ -47,32 +47,40 @@ const MyReviewPage = () => {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
+  // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(true); // 초기 로딩 상태 추가
+
   // 알림 모달 표시 함수
   const showAlert = (message) => {
     setAlertMessage(message);
     setIsAlertModalOpen(true);
   };
 
-  // 리뷰 조회
-  useEffect(() => {
-    const getMeReviews = async () => {
-      try {
-        const { status, data } = await postMeReviews(viewSelect);
-        if (status !== 200) {
-          alert('통신 에러가 발생했습니다.');
-          return;
-        }
-        const arr = data.data;
-        console.log(arr);
-        // review만 추출하여 상태 업데이트
-        const extractedReviews = arr.map((item) => item.review);
-        setMeReviews(extractedReviews);
-        setFullReviewDt(arr);
-      } catch (error) {
-        console.error(error);
+  // 👉 데이터 로드 함수
+  const getMeReviews = async () => {
+    try {
+      const { status, data } = await postMeReviews(viewSelect);
+      if (status !== 200) {
+        showAlert('통신 에러가 발생했습니다.');
+        return;
       }
-    };
+      const arr = data.data;
+      console.log(arr);
+      // review만 추출하여 상태 업데이트
+      const extractedReviews = arr.map((item) => item.review);
+      setMeReviews(extractedReviews);
+      setFullReviewDt(arr);
+    } catch (error) {
+      console.error(error);
+      showAlert('리뷰 조회 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false); // 로딩 완료
+    }
+  };
 
+  // 👉 초기 로딩 및 조건 변경 시 데이터 조회
+  useEffect(() => {
+    setIsLoading(true); // 로딩 상태 시작
     getMeReviews();
   }, [viewSelect]);
 
@@ -255,6 +263,13 @@ const MyReviewPage = () => {
     ));
   };
 
+  // textarea에서 엔터키 입력 시 모달 닫힘 방지
+  const handleTextareaKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.stopPropagation();
+    }
+  };
+
   return (
     <>
       <div className="col-xxl-10 col-lg-9 md-ps-15px">
@@ -352,7 +367,14 @@ const MyReviewPage = () => {
         </div>
 
         <div className="row g-0 mb-4 md-mb-30">
-          {meReviews.length > 0 ? (
+          {isLoading ? (
+            <div className="col-12 text-center py-100px">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mt-3 text-muted">리뷰를 불러오는 중...</p>
+            </div>
+          ) : meReviews.length > 0 ? (
             meReviews.map((review, index) => (
               <div
                 key={review.id || index}
@@ -522,6 +544,7 @@ const MyReviewPage = () => {
                         name="content"
                         value={reviews.content}
                         onChange={handleContentChange}
+                        onKeyDown={handleTextareaKeyDown}
                         placeholder="리뷰를 남겨주세요."
                       ></textarea>
                     </div>

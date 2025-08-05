@@ -244,8 +244,22 @@ const OrderListPage = () => {
         images: completedUrls,
       });
       if (res.status === 200) {
+        // 현재 스크롤 위치 저장
+        const currentScrollPosition = window.scrollY;
+        
         setIsReviewWriteModalOpen(false);
         setReviews(initialForm);
+        
+        // 무한 스크롤 상태를 유지하면서 목록 새로고침
+        setViewSelect((prev) => ({
+          ...prev,
+          page: 0, // 페이지를 0으로 리셋
+        }));
+        
+        // 스크롤 위치 복원 (다음 렌더링 사이클에서)
+        setTimeout(() => {
+          window.scrollTo(0, currentScrollPosition);
+        }, 0);
       }
     } catch (error) {
       showAlert(error.response.data.message ? error.response.data.message : '리뷰 작성 실패');
