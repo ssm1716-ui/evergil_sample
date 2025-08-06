@@ -353,6 +353,48 @@ const HomeSubPage = () => {
                   />
                   <figcaption className="d-flex flex-column w-100 h-100 p-60px lg-p-35px z-index-1"></figcaption>
                 </figure>
+                <div className="btn-row" style={{ 
+                  paddingBottom: '10%', 
+                  display: 'grid', 
+                  gridTemplateColumns: '0.43fr 0.40fr', 
+                  gap: '10px',
+                  justifyItems: 'center'
+                }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Link
+                      className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                      style={{ 
+                        width: isMobile ? '80px' : '200px', 
+                        height: isMobile ? '14px' : '44px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        fontSize: isMobile ? '13px' : '16px',
+                        padding: isMobile ? '0 8px' : '0 20px'
+                      }}
+                      onClick={() => window.open('/@evergil', '_self')}
+                    >
+                      사람
+                    </Link>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Link
+                      className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
+                      style={{ 
+                        width: isMobile ? '130px' : '200px', 
+                        height: isMobile ? '34px' : '44px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        fontSize: isMobile ? '13px' : '16px',
+                        padding: isMobile ? '0 8px' : '0 16px'
+                      }}
+                      onClick={() => window.open('/@tan', '_self')}
+                    >
+                      반려동물
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
