@@ -26,12 +26,12 @@ const btnRowStyle = `
 @media (max-width: 768px) {
   .btn-row {
     flex-direction: row;
-    gap: 8px;
+    gap: 18px;
     align-items: center;
     justify-content: center;
   }
   .btn-row .btn {
-    width: 180px !important;
+    width: 120px !important;
     height: 40px !important;
   }
 }
@@ -364,8 +364,8 @@ const HomeSubPage = () => {
                     <Link
                       className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
                       style={{ 
-                        width: isMobile ? '80px' : '200px', 
-                        height: isMobile ? '14px' : '44px', 
+                        width: isMobile ? '80vw' : '200px', 
+                        height: isMobile ? '32px' : '44px', 
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center',
@@ -381,13 +381,13 @@ const HomeSubPage = () => {
                     <Link
                       className="btn btn-extra-large btn-base-color text-transform-none btn-rounded btn-hover-animation-switch popup-youtube"
                       style={{ 
-                        width: isMobile ? '130px' : '200px', 
-                        height: isMobile ? '34px' : '44px', 
+                        width: isMobile ? '80vw' : '200px', 
+                        height: isMobile ? '32px' : '44px', 
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center',
                         fontSize: isMobile ? '13px' : '16px',
-                        padding: isMobile ? '0 8px' : '0 16px'
+                        padding: isMobile ? '0 8px' : '0 20px'
                       }}
                       onClick={() => window.open('/@tan', '_self')}
                     >
