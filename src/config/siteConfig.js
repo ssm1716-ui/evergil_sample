@@ -21,7 +21,7 @@ export const siteConfig = {
   
   // 소셜 미디어 정보
   social: {
-    youtubeMainLink: 'https://www.youtube.com/embed/1z4dG6vip1M?si=CgB8kkC66JqmrhIv',
+    youtubeMainLink: 'https://www.youtube.com/embed/PRfZKYItOFs?si=Hx1afs72cLM4DLI1',
     youtube: 'https://www.youtube.com/@Evergil.official',
     instagram: 'https://www.instagram.com/evergil.official',
     kakao: 'https://pf.kakao.com/_jXMxfn'
