@@ -205,7 +205,9 @@ const ManagePage = () => {
 
   const handleCopylink = () => {
     navigator.clipboard.writeText(
-      window.location.origin + '/@' + profile.nickname
+      profile.nickname && profile.nickname.trim() ? 
+        window.location.origin + '/@' + profile.nickname : 
+        window.location.origin + '/profile/view-profile/' + profileId
     );
     setIsModalCopyLinkOpen(true);
   };
