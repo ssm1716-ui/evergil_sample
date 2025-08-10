@@ -8,8 +8,7 @@ import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-thumbnail.css';
 import 'lightgallery/css/lg-fullscreen.css';
-import 'lightgallery/css/lg-zoom.css';
-import lgZoom from 'lightgallery/plugins/zoom';
+import 'lightgallery/css/lg-zoom.css';// 스크롤 플러그인 CSS스크롤 플러그인 JS
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Button from '@/components/common/Button/Button';
@@ -520,6 +519,8 @@ const EditProfilePage = () => {
     if (closeBtn) {
       closeBtn.click(); // ✅ LightGallery 닫기 버튼 강제 클릭
     }
+    // 갤러리 닫힐 때 배경 스크롤 복원
+    document.body.style.touchAction = '';
   };
 
   const handleEdit = (id) => {
@@ -656,6 +657,8 @@ const EditProfilePage = () => {
   // ✅ LightGallery가 열린 후 실행되는 이벤트 핸들러
   const handleGalleryOpen = () => {
     addCustomButtons();
+    // 갤러리 열릴 때 배경 스크롤 방지
+    document.body.style.touchAction = 'none';
   };
 
   const addCustomButtons = () => {
@@ -1528,6 +1531,10 @@ const EditProfilePage = () => {
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"
                         onAfterOpen={handleGalleryOpen}
+                        onClose={() => {
+                          // 갤러리 닫힐 때 배경 스크롤 복원
+                          document.body.style.touchAction = '';
+                        }}
                         onInit={onInit}
                         ref={lgRef}
                         // 모바일에서 닫기 버튼 표시를 위한 설정 (다른 페이지와 동일)
