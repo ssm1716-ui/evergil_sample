@@ -12,6 +12,17 @@ export const postSignUp = async (param) => {
     }
 };
 
+//회원가입
+export const postSnsSignUp = async (param) => {
+    try {
+        const res = await axiosInstance.post('/sns-sign-up', param);
+        return res.status;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
 //로그인
 export const postSignIn = async (param) => {
     try {
@@ -116,6 +127,58 @@ export const getAccessToken = async () => {
     } catch (err) {
         console.error(err);
     }
+};
+
+// SNS 회원가입 API
+export const postSnsSignup = async (snsData) => {
+  try {
+    const response = await fetch('/api/auth/sns/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(snsData),
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'SNS 회원가입에 실패했습니다.');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('SNS 회원가입 오류:', error);
+    throw error;
+  }
+};
+
+// SNS 로그인 API
+export const postSnsLogin = async (provider, code, state) => {
+  try {
+    const response = await fetch('/api/auth/sns/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        provider,
+        code,
+        state
+      }),
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'SNS 로그인에 실패했습니다.');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('SNS 로그인 오류:', error);
+    throw error;
+  }
 };
 
 

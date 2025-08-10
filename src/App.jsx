@@ -50,6 +50,7 @@ import ErrorBoundary from '@/components/common/ErrorBoundary';
 import AuthRedirect from '@/components/common/AuthRedirect';
 import ErrorPage from '@/pages/ErrorPage';
 import CheckPointPage from '@/pages/CheckPointPage';
+import SnsSignUpPage from '@/pages/Member/SnsSignUpPage';
 import TestPage from '@/pages/TestPage';
 import QRScanner from '@/pages/QRScanner';
 import QRCofirm from '@/pages/QRCofirm';
@@ -89,6 +90,7 @@ const App = () => {
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/check-point" element={<CheckPointPage />} />
+              <Route path="/sns-signup" element={<SnsSignUpPage />} />
               <Route path="/error" element={<ErrorPage />} />
               <Route path="/error-profile-inactive" element={<ProfileInactiveErrorPage />} />
               <Route path="/error-profile-not-found" element={<ProfileNotFoundPage />} />
