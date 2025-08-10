@@ -269,6 +269,12 @@ const ViewProfilePage = () => {
     setTabList(['이미지', '하늘편지']);
   }, [hasFamilyTree]);
 
+  // LightGallery가 열린 후 실행되는 이벤트 핸들러
+  const handleGalleryOpen = () => {
+    // 갤러리 열릴 때 배경 스크롤 방지
+    document.body.style.touchAction = 'none';
+  };
+
   // 현재 선택된 이미지의 index 찾기
   const getCurrentImageIndex = () => {
     const gallery = lgRef.current?.instance;
@@ -674,6 +680,11 @@ const ViewProfilePage = () => {
                         thumbnail={true}
                         plugins={[lgThumbnail]}
                         selector=".gallery-item"
+                        onAfterOpen={handleGalleryOpen}
+                        onClose={() => {
+                          // 갤러리 닫힐 때 배경 스크롤 복원
+                          document.body.style.touchAction = '';
+                        }}
                         // onInit={onInit}
                         // ref={lgRef}
                       >
