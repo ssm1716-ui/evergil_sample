@@ -1536,10 +1536,10 @@ const EditProfilePage = () => {
                           showCloseIcon: true,
                         }}
                         // DOM 조작 최소화를 위한 설정
-                        allowMediaOverlap={false}
-                        backdropDuration={400}
-                        startAnimationDuration={400}
-                        endAnimationDuration={400}
+                        // allowMediaOverlap={false}
+                        // backdropDuration={400}
+                        // startAnimationDuration={400}
+                        // endAnimationDuration={400}
                       >
                         <div className="gallery-grid">
                           {/* 업로드 버튼 */}
