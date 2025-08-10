@@ -52,6 +52,19 @@ const SignUpPage = () => {
   // Redux 상태에서 인증 여부 가져오기
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  // 토큰 처리 및 URL 정리
+  useEffect(() => {
+    if (token) {
+      // 토큰을 세션스토리지에 저장
+      sessionStorage.setItem('sns_access_token', token);
+      
+      // URL에서 토큰 파라미터 제거
+      const url = new URL(window.location);
+      url.searchParams.delete('access_token');
+      window.history.replaceState({}, document.title, url.pathname);
+    }
+  }, [token]);
+
   // 인증된 사용자가 /signin 페이지에 접속하면 리다이렉트
   useEffect(() => {
     if (isAuthenticated) {
