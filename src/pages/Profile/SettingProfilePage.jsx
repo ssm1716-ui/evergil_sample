@@ -15,7 +15,8 @@ import checkCircle from '@/assets/images/check-circle-solid.png';
 
 const SettingProfilePage = () => {
   const location = useLocation();
-  const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const { profileId: urlProfileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const [profileId, setProfileId] = useState(urlProfileId); // 상태로 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formProfile, setFormProfile] = useState({
     qrKey: '', //QR key
@@ -125,11 +126,7 @@ const SettingProfilePage = () => {
       return;
     }
 
-    //테스트 프로필 생성
-    // const updateProfile = {
-    //   ...formProfile,
-    //   qrKey: 'RGeqBguSH28XpMJ3',
-    // };
+    debugger;
 
     try {
       let res;
@@ -139,6 +136,8 @@ const SettingProfilePage = () => {
       } else {
         //추모 프로필 생성
         res = await postRegisterProfile(formProfile);
+        const newProfileId = res.data.data;
+        setProfileId(newProfileId);
       }
 
       if (res.status === 200) {
