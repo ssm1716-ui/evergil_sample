@@ -40,11 +40,68 @@ const QRScanner = () => {
     return () => window.removeEventListener('pageshow', handlePageShow);
   }, []);
 
-  // 삼성 브라우저 감지
-  const isSamsungBrowser = () => {
+  // 브라우저별 최적화 설정
+  const getBrowserOptimizations = () => {
     const userAgent = navigator.userAgent.toLowerCase();
-    return userAgent.includes('samsungbrowser') || 
-           (userAgent.includes('android') && userAgent.includes('samsung'));
+    
+    // 삼성 브라우저
+    if (userAgent.includes('samsungbrowser') || 
+        (userAgent.includes('android') && userAgent.includes('samsung'))) {
+      return {
+        scale: 0.5,
+        frameRate: 15,
+        scanInterval: 200,
+        useContrast: true,
+        width: 1280,
+        height: 720
+      };
+    }
+    
+    // iOS Safari
+    if (userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('ipod')) {
+      return {
+        scale: 0.8,
+        frameRate: 24,
+        scanInterval: 150,
+        useContrast: false,
+        width: 1280,
+        height: 720
+      };
+    }
+    
+    // Chrome
+    if (userAgent.includes('chrome') && !userAgent.includes('edg')) {
+      return {
+        scale: 0.8,
+        frameRate: 30,
+        scanInterval: 100,
+        useContrast: false,
+        width: 1920,
+        height: 1080
+      };
+    }
+    
+    // Firefox
+    if (userAgent.includes('firefox')) {
+      return {
+        scale: 0.7,
+        frameRate: 25,
+        scanInterval: 120,
+        useContrast: false,
+        width: 1280,
+        height: 720
+      };
+    }
+    
+    // 기본값 (Edge, 기타 브라우저)
+    return {
+      scale: 0.8,
+      frameRate: 25,
+      scanInterval: 100,
+      useContrast: false,
+      width: 1280,
+      height: 720
+    };
   };
 
   // 카메라 비율 조정 함수
@@ -80,7 +137,7 @@ const QRScanner = () => {
     });
   };
 
-  // QR 스캔 함수 (삼성 브라우저 최적화)
+  // QR 스캔 함수 (브라우저별 최적화)
   const scanQRCode = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -88,36 +145,32 @@ const QRScanner = () => {
     if (!video || !canvas || !isScanning) return;
 
     try {
-      // 삼성 브라우저에서는 더 작은 해상도로 처리
-      const scale = isSamsungBrowser() ? 0.5 : 1;
-      const width = video.videoWidth * scale;
-      const height = video.videoHeight * scale;
+      const optimizations = getBrowserOptimizations();
+      const width = video.videoWidth * optimizations.scale;
+      const height = video.videoHeight * optimizations.scale;
       
       canvas.width = width;
       canvas.height = height;
       
       const ctx = canvas.getContext('2d');
-      
-      // 삼성 브라우저에서 더 안정적인 이미지 그리기
       ctx.drawImage(video, 0, 0, width, height);
       
       const imageData = ctx.getImageData(0, 0, width, height);
       const data = imageData.data;
 
-      // 삼성 브라우저에서 더 강한 대비 처리
-      if (isSamsungBrowser()) {
-        // 대비 강화
+      // 브라우저별 이미지 처리
+      if (optimizations.useContrast) {
+        // 삼성 브라우저: 대비 강화
         for (let i = 0; i < data.length; i += 4) {
-          const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-          const contrast = 1.5; // 대비 강화
+          const contrast = 1.5;
           const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
           
-          data[i] = factor * (data[i] - 128) + 128;
-          data[i + 1] = factor * (data[i + 1] - 128) + 128;
-          data[i + 2] = factor * (data[i + 2] - 128) + 128;
+          data[i] = Math.max(0, Math.min(255, factor * (data[i] - 128) + 128));
+          data[i + 1] = Math.max(0, Math.min(255, factor * (data[i + 1] - 128) + 128));
+          data[i + 2] = Math.max(0, Math.min(255, factor * (data[i + 2] - 128) + 128));
         }
       } else {
-        // 기존 반전 처리
+        // 기타 브라우저: 반전 처리
         for (let i = 0; i < data.length; i += 4) {
           data[i] = 255 - data[i];
           data[i + 1] = 255 - data[i + 1];
@@ -165,13 +218,15 @@ const QRScanner = () => {
 
     const startCamera = async () => {
       try {
-        // 삼성 브라우저 최적화된 카메라 설정
+        const optimizations = getBrowserOptimizations();
+        
+        // 브라우저별 최적화된 카메라 설정
         const constraints = {
           video: {
             facingMode: 'environment',
-            width: { ideal: isSamsungBrowser() ? 1280 : 1920 },
-            height: { ideal: isSamsungBrowser() ? 720 : 1080 },
-            frameRate: { ideal: isSamsungBrowser() ? 15 : 30 }
+            width: { ideal: optimizations.width },
+            height: { ideal: optimizations.height },
+            frameRate: { ideal: optimizations.frameRate }
           }
         };
 
@@ -188,9 +243,8 @@ const QRScanner = () => {
           adjustVideoStyle(video);
           setIsScanning(true);
           
-          // 삼성 브라우저에서는 더 느린 스캔 주기
-          const scanInterval = isSamsungBrowser() ? 200 : 100;
-          scanIntervalRef.current = setInterval(scanQRCode, scanInterval);
+          // 브라우저별 스캔 주기 설정
+          scanIntervalRef.current = setInterval(scanQRCode, optimizations.scanInterval);
         });
         
         await video.play();
@@ -210,7 +264,7 @@ const QRScanner = () => {
           video.addEventListener('loadedmetadata', () => {
             adjustVideoStyle(video);
             setIsScanning(true);
-            scanIntervalRef.current = setInterval(scanQRCode, 200);
+            scanIntervalRef.current = setInterval(scanQRCode, 150);
           });
           
           await video.play();
@@ -302,7 +356,7 @@ const QRScanner = () => {
           border-top: none;
         }
 
-        /* 삼성 브라우저 최적화 */
+        /* 브라우저별 최적화 */
         @media screen and (-webkit-min-device-pixel-ratio: 0) {
           video {
             -webkit-transform: translateZ(0);
