@@ -79,17 +79,17 @@ const Header = () => {
             >
               <ul className="navbar-nav navbar-left justify-content-start">
                 <li className="nav-item">
-                  <Link to="/" className="nav-link" onClick={closeMenu}>
+                  <Link to="/" className="nav-link w-100" onClick={closeMenu}>
                     홈
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/about" className="nav-link" onClick={closeMenu}>
+                  <Link to="/about" className="nav-link w-100" onClick={closeMenu}>
                     회사소개
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/store" className="nav-link" onClick={closeMenu}>
+                  <Link to="/store" className="nav-link w-100" onClick={closeMenu}>
                     쇼핑
                   </Link>
                 </li>
@@ -98,7 +98,7 @@ const Header = () => {
                   <li className="nav-item">
                     <Link
                       to="/contact"
-                      className="nav-link"
+                      className="nav-link w-100"
                       onClick={closeMenu}
                     >
                       문의하기
@@ -108,7 +108,7 @@ const Header = () => {
                   <li className="nav-item">
                     <Link
                       to="/profile"
-                      className="nav-link"
+                      className="nav-link w-100"
                       onClick={closeMenu}
                     >
                       My Profiles
