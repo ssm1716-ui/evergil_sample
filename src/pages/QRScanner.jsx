@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import jsQR from 'jsqr';
+import { BrowserMultiFormatReader, Result } from '@zxing/library';
 import { getLastPathSegment } from '@/utils/utils';
 import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
@@ -8,8 +8,8 @@ const QRScanner = () => {
   const [scanResult, setScanResult] = useState(null);
   const [videoStyle, setVideoStyle] = useState({});
   const videoRef = useRef(null);
-  const canvasRef = useRef(null);
   const navigate = useNavigate();
+  const codeReaderRef = useRef(null);
 
   useEffect(() => {
     const handlePageShow = (event) => {
@@ -51,120 +51,119 @@ const QRScanner = () => {
   };
 
   useEffect(() => {
-    let animationId;
     let stream;
 
-    const startCamera = async (constraints) => {
+    const startScanning = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia(constraints);
-        const video = videoRef.current;
-        video.srcObject = stream;
-        video.setAttribute('playsinline', true);
+        // ZXing 코드 리더 초기화
+        codeReaderRef.current = new BrowserMultiFormatReader();
         
-        video.onloadedmetadata = () => {
-          adjustVideoStyle(video);
-          video.play();
-          scanLoop();
+        // 카메라 설정
+        const constraints = {
+          video: { 
+            facingMode: 'environment',
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
+          }
+        };
+
+        // ZXing으로 스캔 시작
+        const result = await codeReaderRef.current.decodeFromConstraints(
+          constraints,
+          videoRef.current,
+          (result, error) => {
+            if (result) {
+              console.log('QR 코드 감지:', result.text);
+              setScanResult(result.text);
+
+              const key = result.text;
+              const isPathKey = getLastPathSegment(key);
+
+              if (!isPathKey) {
+                navigate('/error?desc=유효한 QR코드 아닙니다.&pageUrl=/profile');
+                return;
+              }
+
+              // 스캔 중지
+              if (codeReaderRef.current) {
+                codeReaderRef.current.reset();
+              }
+
+              window.location.href = key;
+            }
+            
+            if (error && error.name !== 'NotFoundException') {
+              console.error('스캔 오류:', error);
+            }
+          }
+        );
+
+        // 비디오 스타일 조정
+        videoRef.current.onloadedmetadata = () => {
+          adjustVideoStyle(videoRef.current);
         };
 
       } catch (err) {
-        console.error('카메라 실행 실패:', err);
-        throw err;
-      }
-    };
-
-    const scanLoop = () => {
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
-      if (!video || !canvas || video.paused || video.ended) {
-        animationId = requestAnimationFrame(scanLoop);
-        return;
-      }
-    
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      const videoWidth = video.videoWidth;
-      const videoHeight = video.videoHeight;
-    
-      // QR 인식 영역 (중앙 400px 정사각형) 설정
-      const scanSize = 400;
-      const x = (videoWidth / 2) - (scanSize / 2);
-      const y = (videoHeight / 2) - (scanSize / 2);
-    
-      // 캔버스 크기를 인식 영역에 맞게 설정
-      canvas.width = scanSize;
-      canvas.height = scanSize;
-    
-      // 비디오에서 인식 영역만 캔버스에 그리기
-      ctx.drawImage(video, x, y, scanSize, scanSize, 0, 0, scanSize, scanSize);
-    
-      const imageData = ctx.getImageData(0, 0, scanSize, scanSize);
-      const data = imageData.data;
-    
-      // 픽셀 데이터를 흑백으로 변환 (인식률 향상)
-      for (let i = 0; i < data.length; i += 4) {
-        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        data[i] = avg;
-        data[i + 1] = avg;
-        data[i + 2] = avg;
-      }
-    
-      const code = jsQR(data, scanSize, scanSize);
-    
-      if (code) {
-        console.log('QR 코드 감지:', code.data);
-        setScanResult(code.data);
-    
-        const key = code.data;
-        const isPathKey = getLastPathSegment(key);
-    
-        if (!isPathKey) {
-          navigate('/error?desc=유효한 QR코드 아닙니다.&pageUrl=/profile');
-          return;
-        }
-    
-        const tracks = video.srcObject?.getTracks();
-        tracks?.forEach((track) => track.stop());
-        cancelAnimationFrame(animationId);
-    
-        window.location.href = key;
-        return;
-      }
-    
-      animationId = requestAnimationFrame(scanLoop);
-    };
-
-    (async () => {
-      const highResConstraints = {
-        video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } }
-      };
-      const basicConstraints = {
-        video: { facingMode: 'environment' }
-      };
-
-      try {
-        await startCamera(highResConstraints);
-      } catch (err) {
-        console.log('고해상도 실패, 기본 해상도로 재시도');
+        console.error('ZXing 스캔 시작 실패:', err);
+        
+        // 폴백: 기본 카메라 설정으로 재시도
         try {
-          await startCamera(basicConstraints);
+          const basicConstraints = {
+            video: { facingMode: 'environment' }
+          };
+          
+          codeReaderRef.current = new BrowserMultiFormatReader();
+          await codeReaderRef.current.decodeFromConstraints(
+            basicConstraints,
+            videoRef.current,
+            (result, error) => {
+              if (result) {
+                console.log('QR 코드 감지 (폴백):', result.text);
+                setScanResult(result.text);
+
+                const key = result.text;
+                const isPathKey = getLastPathSegment(key);
+
+                if (!isPathKey) {
+                  navigate('/error?desc=유효한 QR코드 아닙니다.&pageUrl=/profile');
+                  return;
+                }
+
+                if (codeReaderRef.current) {
+                  codeReaderRef.current.reset();
+                }
+
+                window.location.href = key;
+              }
+              
+              if (error && error.name !== 'NotFoundException') {
+                console.error('폴백 스캔 오류:', error);
+              }
+            }
+          );
+
+          videoRef.current.onloadedmetadata = () => {
+            adjustVideoStyle(videoRef.current);
+          };
+
         } catch (fallbackErr) {
-          console.error('카메라 실행에 최종적으로 실패했습니다.', fallbackErr);
+          console.error('ZXing 폴백도 실패:', fallbackErr);
         }
       }
-    })();
+    };
+
+    startScanning();
 
     return () => {
-      cancelAnimationFrame(animationId);
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+      if (codeReaderRef.current) {
+        codeReaderRef.current.reset();
       }
     };
   }, [navigate]);
 
   const handleBack = () => {
-    const video = videoRef.current;
-    if (video?.srcObject) {
-      video.srcObject.getTracks().forEach((track) => track.stop());
+    if (codeReaderRef.current) {
+      codeReaderRef.current.reset();
     }
     navigate('/profile');
   };
@@ -183,8 +182,8 @@ const QRScanner = () => {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 400px;
-            height: 400px;
+            width: 300px;
+            height: 300px;
             transform: translate(-50%, -50%);
             box-sizing: border-box;
             z-index: 2;
@@ -192,9 +191,9 @@ const QRScanner = () => {
 
           .overlay-box .corner {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 3px solid yellow;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #00ff00;
           }
 
           .overlay-box .top-left {
@@ -223,6 +222,21 @@ const QRScanner = () => {
             right: 0;
             border-left: none;
             border-top: none;
+          }
+
+          .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            animation: scan 2s linear infinite;
+          }
+
+          @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
           }
         `}
       </style>
@@ -258,28 +272,27 @@ const QRScanner = () => {
         {/* 비디오 출력 */}
         <video ref={videoRef} style={videoStyle} />
 
-        {/* 흑백 변환 및 QR 인식용 캔버스 (숨김 처리) */}
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: 'absolute',
-            top: '-9999px',
-            left: '-9999px',
-            width: '1px',
-            height: '1px'
-          }}
-        />
-
         {/* 🔲 오버레이 (QR 가이드 박스) */}
         <div className="overlay-box">
           <div className="corner top-left" />
           <div className="corner top-right" />
           <div className="corner bottom-left" />
           <div className="corner bottom-right" />
+          <div className="scan-line" />
         </div>
 
         {scanResult && (
-          <div>
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            background: 'rgba(0,0,0,0.8)',
+            color: 'white',
+            padding: '20px',
+            borderRadius: '10px',
+            zIndex: 3
+          }}>
             <h3>스캔 결과:</h3>
             <p>{scanResult}</p>
           </div>
