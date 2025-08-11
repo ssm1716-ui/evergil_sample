@@ -26,7 +26,7 @@ const QRScanner = () => {
     if (!video) return;
     const { videoWidth, videoHeight } = video;
     const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight - 63; // 헤더 높이 제외
+    const screenHeight = window.innerHeight - 63;
 
     const videoAspectRatio = videoWidth / videoHeight;
     const screenAspectRatio = screenWidth / screenHeight;
@@ -69,7 +69,7 @@ const QRScanner = () => {
 
       } catch (err) {
         console.error('카메라 실행 실패:', err);
-        throw err; // 에러를 다시 던져서 폴백 로직이 처리하도록 함
+        throw err;
       }
     };
 
@@ -85,8 +85,8 @@ const QRScanner = () => {
       const videoWidth = video.videoWidth;
       const videoHeight = video.videoHeight;
     
-      // 큐알 인식 영역 (중앙 200px 정사각형) 설정
-      const scanSize = 200;
+      // QR 인식 영역 (중앙 400px 정사각형) 설정
+      const scanSize = 400;
       const x = (videoWidth / 2) - (scanSize / 2);
       const y = (videoHeight / 2) - (scanSize / 2);
     
@@ -98,7 +98,17 @@ const QRScanner = () => {
       ctx.drawImage(video, x, y, scanSize, scanSize, 0, 0, scanSize, scanSize);
     
       const imageData = ctx.getImageData(0, 0, scanSize, scanSize);
-      const code = jsQR(imageData.data, scanSize, scanSize);
+      const data = imageData.data;
+    
+      // 픽셀 데이터를 흑백으로 변환 (인식률 향상)
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+    
+      const code = jsQR(data, scanSize, scanSize);
     
       if (code) {
         console.log('QR 코드 감지:', code.data);
@@ -125,16 +135,16 @@ const QRScanner = () => {
 
     (async () => {
       const highResConstraints = {
-        video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }
+        video: { facingMode: 'environment', width: { ideal: 3840 }, height: { ideal: 2160 } }
+      };
+      const basicConstraints = {
+        video: { facingMode: 'environment' }
       };
 
       try {
         await startCamera(highResConstraints);
       } catch (err) {
         console.log('고해상도 실패, 기본 해상도로 재시도');
-        const basicConstraints = {
-          video: { facingMode: 'environment' }
-        };
         try {
           await startCamera(basicConstraints);
         } catch (fallbackErr) {
@@ -173,8 +183,8 @@ const QRScanner = () => {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 200px;
-            height: 200px;
+            width: 400px;
+            height: 400px;
             transform: translate(-50%, -50%);
             box-sizing: border-box;
             z-index: 2;
@@ -182,8 +192,8 @@ const QRScanner = () => {
 
           .overlay-box .corner {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 40px;
+            height: 40px;
             border: 3px solid yellow;
           }
 
@@ -248,7 +258,7 @@ const QRScanner = () => {
         {/* 비디오 출력 */}
         <video ref={videoRef} style={videoStyle} />
 
-        {/* 반전 캔버스 (QR 인식용) - 숨김 처리 */}
+        {/* 흑백 변환 및 QR 인식용 캔버스 (숨김 처리) */}
         <canvas
           ref={canvasRef}
           style={{
