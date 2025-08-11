@@ -46,6 +46,21 @@ const AboutPage = () => {
                 src={isMobile ? AboutOurStory : AboutOurStory}
                 alt=""
                 className="w-100 about-img1 md-w-50 sm-w-100"
+                style={{
+                  // 모바일에서만 세로형 이미지 최적화
+                  ...(isMobile && {
+                    maxHeight: '42vh', // 60vh에서 70% 줄여서 약 42vh
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    margin: '0 auto',
+                    display: 'block',
+                    aspectRatio: '2/3',
+                    width: 'auto',
+                    height: 'auto'
+                  })
+                }}
               />
             </div>
             <div
@@ -86,7 +101,26 @@ const AboutPage = () => {
               data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
             >
               <h6 className="text-dark-gray mb-5 md-fs-28">Our Mission</h6>
-              <img src={isMobile ? AboutOurMission : AboutOurMission} alt="" className="w-100" />
+              <img 
+                src={isMobile ? AboutOurMission : AboutOurMission} 
+                alt="" 
+                className="w-100"
+                style={{
+                  // 모바일에서만 세로형 이미지 최적화
+                  ...(isMobile && {
+                    maxHeight: '42vh', // 60vh에서 70% 줄여서 약 42vh
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    margin: '0 auto',
+                    display: 'block',
+                    aspectRatio: '2/3',
+                    width: 'auto',
+                    height: 'auto'
+                  })
+                }}
+              />
               <h5 className="text-dark-gray mb-4 xs-mb-30px w-90 xl-w-100 mx-auto"></h5>
               <p className="lg-w-100 mt-5 lh-24 fs-18 md-fs-16 sm-fs-14  md-lh-30 text-keep-all">
                 에버길의 사명은 사랑하는 사람의 기억을 의미 있게,
