@@ -78,8 +78,9 @@ const QRScanner = () => {
 
               const key = result.text;
               const isPathKey = getLastPathSegment(key);
+              const isEvergilDomain = key.includes('evergil.kr');
 
-              if (!isPathKey) {
+              if (!isPathKey || !isEvergilDomain) {
                 navigate('/error?desc=유효한 QR코드 아닙니다.&pageUrl=/profile');
                 return;
               }
@@ -123,8 +124,9 @@ const QRScanner = () => {
 
                 const key = result.text;
                 const isPathKey = getLastPathSegment(key);
+                const isEvergilDomain = key.includes('evergil.kr');
 
-                if (!isPathKey) {
+                if (!isPathKey || !isEvergilDomain) {
                   navigate('/error?desc=유효한 QR코드 아닙니다.&pageUrl=/profile');
                   return;
                 }
@@ -281,7 +283,7 @@ const QRScanner = () => {
           <div className="scan-line" />
         </div>
 
-        {scanResult && (
+        {/* {scanResult && (
           <div style={{
             position: 'absolute',
             top: '50%',
@@ -296,7 +298,7 @@ const QRScanner = () => {
             <h3>스캔 결과:</h3>
             <p>{scanResult}</p>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );
