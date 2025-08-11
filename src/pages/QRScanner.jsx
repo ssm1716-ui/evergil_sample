@@ -6,6 +6,7 @@ import defaultLogo from '@/assets/images/evergil_logo_pc.png';
 
 const QRScanner = () => {
   const [scanResult, setScanResult] = useState(null);
+  const [isScanning, setIsScanning] = useState(false);
   const [videoStyle, setVideoStyle] = useState({
     width: '100%',
     height: 'calc(100vh - 63px)',
@@ -20,6 +21,7 @@ const QRScanner = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const navigate = useNavigate();
+  const scanIntervalRef = useRef(null);
 
   // ✅ 뒤로가기로 들어올 때 bfcache를 막고 강제로 초기화
   useEffect(() => {
@@ -37,6 +39,13 @@ const QRScanner = () => {
     window.addEventListener('pageshow', handlePageShow);
     return () => window.removeEventListener('pageshow', handlePageShow);
   }, []);
+
+  // 삼성 브라우저 감지
+  const isSamsungBrowser = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return userAgent.includes('samsungbrowser') || 
+           (userAgent.includes('android') && userAgent.includes('samsung'));
+  };
 
   // 카메라 비율 조정 함수
   const adjustVideoStyle = (video) => {
@@ -71,80 +80,153 @@ const QRScanner = () => {
     });
   };
 
+  // QR 스캔 함수 (삼성 브라우저 최적화)
+  const scanQRCode = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    
+    if (!video || !canvas || !isScanning) return;
+
+    try {
+      // 삼성 브라우저에서는 더 작은 해상도로 처리
+      const scale = isSamsungBrowser() ? 0.5 : 1;
+      const width = video.videoWidth * scale;
+      const height = video.videoHeight * scale;
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      const ctx = canvas.getContext('2d');
+      
+      // 삼성 브라우저에서 더 안정적인 이미지 그리기
+      ctx.drawImage(video, 0, 0, width, height);
+      
+      const imageData = ctx.getImageData(0, 0, width, height);
+      const data = imageData.data;
+
+      // 삼성 브라우저에서 더 강한 대비 처리
+      if (isSamsungBrowser()) {
+        // 대비 강화
+        for (let i = 0; i < data.length; i += 4) {
+          const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+          const contrast = 1.5; // 대비 강화
+          const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+          
+          data[i] = factor * (data[i] - 128) + 128;
+          data[i + 1] = factor * (data[i + 1] - 128) + 128;
+          data[i + 2] = factor * (data[i + 2] - 128) + 128;
+        }
+      } else {
+        // 기존 반전 처리
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] = 255 - data[i];
+          data[i + 1] = 255 - data[i + 1];
+          data[i + 2] = 255 - data[i + 2];
+        }
+      }
+
+      // QR 코드 인식 시도
+      const code = jsQR(data, width, height, {
+        inversionAttempts: "dontInvert"
+      });
+
+      if (code?.data) {
+        console.log('QR 코드 감지:', code.data);
+        setScanResult(code.data);
+
+        const key = code.data;
+        const isPathKey = getLastPathSegment(key);
+
+        if (!isPathKey) {
+          navigate('/error?desc=유효한 QR코드 아닙니다.&pageUrl=/profile');
+          return;
+        }
+
+        // 스캔 중지
+        setIsScanning(false);
+        if (scanIntervalRef.current) {
+          clearInterval(scanIntervalRef.current);
+        }
+
+        // 카메라 정지
+        const tracks = video.srcObject?.getTracks();
+        tracks?.forEach((track) => track.stop());
+
+        window.location.href = key;
+        return;
+      }
+    } catch (error) {
+      console.error('QR 스캔 오류:', error);
+    }
+  };
+
   useEffect(() => {
-    let animationId;
     let stream;
 
     const startCamera = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' },
-        });
+        // 삼성 브라우저 최적화된 카메라 설정
+        const constraints = {
+          video: {
+            facingMode: 'environment',
+            width: { ideal: isSamsungBrowser() ? 1280 : 1920 },
+            height: { ideal: isSamsungBrowser() ? 720 : 1080 },
+            frameRate: { ideal: isSamsungBrowser() ? 15 : 30 }
+          }
+        };
+
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
 
         const video = videoRef.current;
         video.srcObject = stream;
         video.setAttribute('playsinline', true);
+        video.setAttribute('autoplay', true);
+        video.setAttribute('muted', true);
         
         // 비디오 메타데이터 로드 후 스타일 조정
         video.addEventListener('loadedmetadata', () => {
           adjustVideoStyle(video);
+          setIsScanning(true);
+          
+          // 삼성 브라우저에서는 더 느린 스캔 주기
+          const scanInterval = isSamsungBrowser() ? 200 : 100;
+          scanIntervalRef.current = setInterval(scanQRCode, scanInterval);
         });
         
         await video.play();
 
-        const scanLoop = () => {
-          const canvas = canvasRef.current;
-          if (!video || !canvas) return;
-
-          const ctx = canvas.getContext('2d');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const data = imageData.data;
-
-          // 반전 처리
-          for (let i = 0; i < data.length; i += 4) {
-            data[i] = 255 - data[i];
-            data[i + 1] = 255 - data[i + 1];
-            data[i + 2] = 255 - data[i + 2];
-          }
-
-          const code = jsQR(data, canvas.width, canvas.height);
-
-          if (code?.data) {
-            setScanResult(code.data);
-
-            const key = code.data;
-            const isPathKey = getLastPathSegment(key);
-
-            if (!isPathKey) {
-              navigate('/error?desc=유효한 QR코드 아닙니다.&pageUrl=/profile');
-              return;
-            }
-
-            const tracks = video.srcObject?.getTracks();
-            tracks?.forEach((track) => track.stop());
-            cancelAnimationFrame(animationId);
-
-            window.location.href = key;
-            return;
-          }
-
-          animationId = requestAnimationFrame(scanLoop);
-        };
-
-        scanLoop();
       } catch (err) {
         console.error('카메라 실행 실패:', err);
+        // 폴백: 기본 설정으로 재시도
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment' }
+          });
+          
+          const video = videoRef.current;
+          video.srcObject = stream;
+          video.setAttribute('playsinline', true);
+          
+          video.addEventListener('loadedmetadata', () => {
+            adjustVideoStyle(video);
+            setIsScanning(true);
+            scanIntervalRef.current = setInterval(scanQRCode, 200);
+          });
+          
+          await video.play();
+        } catch (fallbackErr) {
+          console.error('폴백 카메라 실행도 실패:', fallbackErr);
+        }
       }
     };
 
     startCamera();
 
     return () => {
-      cancelAnimationFrame(animationId);
+      setIsScanning(false);
+      if (scanIntervalRef.current) {
+        clearInterval(scanIntervalRef.current);
+      }
       const video = videoRef.current;
       if (video?.srcObject) {
         video.srcObject.getTracks().forEach((track) => track.stop());
@@ -154,6 +236,10 @@ const QRScanner = () => {
   }, [navigate]);
 
   const handleBack = () => {
+    setIsScanning(false);
+    if (scanIntervalRef.current) {
+      clearInterval(scanIntervalRef.current);
+    }
     if (videoRef.current?.srcObject) {
       videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     }
@@ -214,6 +300,14 @@ const QRScanner = () => {
           right: 0;
           border-left: none;
           border-top: none;
+        }
+
+        /* 삼성 브라우저 최적화 */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+          video {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+          }
         }
       `}
       </style>
