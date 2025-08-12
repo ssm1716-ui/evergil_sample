@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '@/state/slices/authSlices';
 import { useNavigate } from 'react-router-dom';
 import { signLogout } from '@/api/memberApi';
+import useIsMobile from '@/hooks/useIsMobile';
 
 import defaultLogo_pc from '@/assets/images/evergil_logo_pc.png';
 import defaultLogo_mobile from '@/assets/images/evergil_logo_mobile.png';
@@ -11,12 +12,21 @@ import defaultLogo_mobile from '@/assets/images/evergil_logo_mobile.png';
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   // Redux 상태에서 로그인 여부와 사용자 정보 가져오기
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   // 메뉴 닫기 버튼 Ref
   const navbarTogglerRef = useRef(null);
+
+  const handleLogin = () => {
+    const currentPath = window.location.pathname + window.location.search;
+    const redirectPath = currentPath === '/contact' ? '/mypage/my-contact' : currentPath;
+    localStorage.setItem('redirectAfterLogin', redirectPath);
+    closeMenu();
+    navigate('/signin');
+  };
 
   const handleLogout = async () => {
     await signLogout();
@@ -120,19 +130,26 @@ const Header = () => {
                 {!isAuthenticated ? (
                   <li className="nav-item">
                     <button
-                      className="nav-link feature-box border-0 bg-transparent"
-                      onClick={() => {
-                        const currentPath = window.location.pathname + window.location.search;
-                        const redirectPath = currentPath === '/contact' ? '/mypage/my-contact' : currentPath;
-                        localStorage.setItem('redirectAfterLogin', redirectPath);
-                        closeMenu();
-                        navigate('/signin');
+                      className={`nav-link ${!isMobile ? 'feature-box' : ''} border-0 bg-transparent`}
+                      style={{
+                        ...(isMobile && {
+                          width: '100%',
+                          textAlign: 'left', // button 자체에 좌측 정렬 적용
+                        }),
                       }}
+                      onClick={handleLogin}
                     >
                       <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
                         <i className="feather icon-feather-log-in align-middle icon-extra-medium"></i>
                       </div>
-                      <div className="feature-box-content header-box-content">
+                      <div
+                        className="feature-box-content header-box-content"
+                        style={{
+                          ...(isMobile && {
+                            textAlign: 'left', // 내부 div에도 좌측 정렬 적용
+                          }),
+                        }}
+                      >
                         <span className="d-inline-block">로그인</span>
                       </div>
                     </button>
@@ -140,13 +157,25 @@ const Header = () => {
                 ) : (
                   <li className="nav-item">
                     <Link
-                      className="nav-link feature-box"
+                      className={`nav-link ${!isMobile ? 'feature-box' : ''}`}
+                      style={{
+                        ...(isMobile && {
+                          width: '100%',
+                          textAlign: 'left'
+                        })
+                      }}
                       onClick={handleLogout}
                     >
                       <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
                         <i className="feather icon-feather-log-out align-middle icon-extra-medium"></i>
                       </div>
-                      <div className="feature-box-content header-box-content">
+                      <div className="feature-box-content header-box-content"
+                      style={{
+                        ...(isMobile && {
+                          textAlign: 'left'
+                        })
+                      }}
+                      >
                         <span className="d-inline-block">로그아웃</span>
                       </div>
                     </Link>
@@ -156,13 +185,24 @@ const Header = () => {
                   <li className="nav-item">
                     <Link
                       to="/mypage/order-list"
-                      className="nav-link feature-box"
+                      className={`nav-link ${!isMobile ? 'feature-box' : ''}`}
+                      style={{
+                        ...(isMobile && {
+                          width: '100%'
+                        })
+                      }}
                       onClick={closeMenu}
                     >
                       <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
                         <i className="feather icon-feather-user align-middle icon-extra-medium"></i>
                       </div>
-                      <div className="feature-box-content header-box-content">
+                      <div className="feature-box-content header-box-content"
+                      style={{
+                        ...(isMobile && {
+                          textAlign: 'left'
+                        })
+                      }}
+                      >
                         <span className="d-inline-block">마이페이지</span>
                       </div>
                     </Link>
@@ -171,13 +211,24 @@ const Header = () => {
                 <li className="nav-item">
                   <Link
                     to="/cart"
-                    className="nav-link feature-box"
+                    className={`nav-link ${!isMobile ? 'feature-box' : ''}`}
+                    style={{
+                      ...(isMobile && {
+                        width: '100%'
+                      })
+                    }}
                     onClick={closeMenu}
                   >
                     <div className="feature-box-icon mb-5px d-lg-flex header-box-icon">
                       <i className="feather icon-feather-shopping-cart align-middle icon-extra-medium"></i>
                     </div>
-                    <div className="feature-box-content header-box-content">
+                    <div className="feature-box-content header-box-content"
+                    style={{
+                      ...(isMobile && {
+                        textAlign: 'left'
+                      })
+                    }}
+                    >
                       <span className="d-inline-block">장바구니</span>
                     </div>
                   </Link>
