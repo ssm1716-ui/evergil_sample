@@ -205,6 +205,35 @@ const EditProfilePage = () => {
     };
   }, []);
 
+  // 모달이 열려있을 때 엔터 키 이벤트 무효화
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (isRegisterModalOpen && event.key === 'Enter') {
+        // 텍스트 영역에서는 엔터 허용 (줄바꿈을 위해)
+        if (event.target.tagName === 'TEXTAREA') {
+          return;
+        }
+        // 입력 필드에서는 폼 제출과 모달 닫힘 방지
+        if (event.target.tagName === 'INPUT') {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+        // 다른 요소에서는 모든 엔터 키 동작 방지
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+
+    if (isRegisterModalOpen) {
+      document.addEventListener('keydown', handleKeyDown, true);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown, true);
+    };
+  }, [isRegisterModalOpen]);
+
   // 업로드 버튼 클릭 시 파일 업로드 창 열기
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -2080,7 +2109,10 @@ const EditProfilePage = () => {
                       </h4>
                     </div>
                   </div>
-                  <form className="row">
+                  <form 
+                    className="row"
+                    onSubmit={(e) => e.preventDefault()}
+                  >
                     <div className="col-12 mb-20px ">
                       <label className="mb-10px">이름</label>
                       <input
@@ -2089,6 +2121,13 @@ const EditProfilePage = () => {
                         name="displayName"
                         value={postLetter.displayName}
                         onChange={handleLettersChange}
+                        onKeyDown={(e) => {
+                          // input에서 엔터키 누를 때 폼 제출과 모달 닫힘 방지
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }
+                        }}
                         required
                       />
                       {/* {errors.deliveryName && (
@@ -2106,6 +2145,12 @@ const EditProfilePage = () => {
                         cols="5"
                         value={postLetter.content}
                         onChange={handleLettersChange}
+                        onKeyDown={(e) => {
+                          // textarea에서 엔터키는 줄바꿈으로 처리하고 폼 제출 방지
+                          if (e.key === 'Enter') {
+                            e.stopPropagation();
+                          }
+                        }}
                         placeholder=""
                       ></textarea>
                       {/* {errors.recipientName && (
