@@ -458,7 +458,7 @@ const HomeSubPage = () => {
                         width="100%"
                         height="550"
                         src={siteConfig.social.youtubeMainLink}
-                        allowfullscreen
+                        allowFullScreen
                       ></iframe>
                     </div>
                   </div>

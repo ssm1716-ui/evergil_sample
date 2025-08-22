@@ -2465,8 +2465,39 @@
         var fullScreenObj = $('.full-screen'),
             minHeight = getWindowHeight(),
             headerHeight = getHeaderHeight();
-        if (!$('header').hasClass('sticky')) {
-            fullScreenObj.parents('section').imagesLoaded(function () {
+        
+        // fullScreenObj가 존재하고 길이가 0보다 큰지 확인
+        if (fullScreenObj.length > 0 && !$('header').hasClass('sticky')) {
+            var sectionParents = fullScreenObj.parents('section');
+            
+            // sectionParents가 존재하고 길이가 0보다 큰지 확인
+            if (sectionParents.length > 0) {
+                sectionParents.imagesLoaded(function () {
+                    if ($('section:first.full-screen, section:first .full-screen').length && ($('.top-space-margin').length || $('.mobile-top-space').length) || $('.ipad-top-space-margin').length) {
+                        if ($('.ipad-top-space-margin').length) {
+                            if (getWindowWidth() <= menuBreakPoint) {
+                                $('section:first.full-screen, section:first .full-screen').css('height', minHeight - headerHeight);
+                            } else {
+                                $('section:first.full-screen, section:first .full-screen').css('height', minHeight);
+                            }
+                        } else {
+                            $('section:first.full-screen, section:first .full-screen').css('height', minHeight - headerHeight);
+                        }
+                    } else if ($('header nav.navbar').hasClass('top-space-margin') || $('header nav.navbar').hasClass('mobile-top-space')) {
+                        if ($('header nav.navbar').hasClass('ipad-top-space-margin')) {
+                            if (getWindowWidth() <= menuBreakPoint) {
+                                minHeight = minHeight - $('header nav.navbar').outerHeight();
+                            }
+                        } else {
+                            minHeight = minHeight - $('header nav.navbar').outerHeight();
+                        }
+                        fullScreenObj.css('height', minHeight);
+                    } else {
+                        fullScreenObj.css('height', minHeight);
+                    }
+                });
+            } else {
+                // sectionParents가 없으면 직접 실행
                 if ($('section:first.full-screen, section:first .full-screen').length && ($('.top-space-margin').length || $('.mobile-top-space').length) || $('.ipad-top-space-margin').length) {
                     if ($('.ipad-top-space-margin').length) {
                         if (getWindowWidth() <= menuBreakPoint) {
@@ -2489,7 +2520,7 @@
                 } else {
                     fullScreenObj.css('height', minHeight);
                 }
-            });
+            }
         }
     }
 
