@@ -110,11 +110,11 @@ axiosInstance.interceptors.response.use(
             const currentPath = window.location.pathname;
             const isAuthRequiredPage = authRequiredPaths.some(path => currentPath.startsWith(path));
             
-            if (isAuthRequiredPage && currentPath !== '/signin' && currentPath !== '/signup') {
-                // 사용자에게 알림 후 리다이렉트
-                alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-                window.location.href = '/signin';
-            }
+            // if (isAuthRequiredPage && currentPath !== '/signin' && currentPath !== '/signup') {
+            //     // 사용자에게 알림 후 리다이렉트
+            //     alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+            //     window.location.href = '/signin';
+            // }
             
             return Promise.reject(new Error('인증이 필요합니다. 다시 로그인해주세요.'));
         }
