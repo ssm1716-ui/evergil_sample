@@ -71,7 +71,6 @@ const MyInfoPage = () => {
 
   // 상태 업데이트 확인
   useEffect(() => {
-    console.log(currentView);
     if (currentView === 'infoList') {
       handlePasswordConfirm();
     }
@@ -84,7 +83,6 @@ const MyInfoPage = () => {
         const res = await getMemberSettingSelect();
 
         if (res && res.status === 200) {
-          console.log(res);
           const { data } = res.data;
           setIsPlatform(data.platform !== 'LOCAL');
         }

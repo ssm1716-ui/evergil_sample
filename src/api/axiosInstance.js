@@ -82,24 +82,54 @@ axiosInstance.interceptors.response.use(
         console.log(error);
         console.log(error.response);
 
-        // 401 Unauthorized 에러 처리
-        if (error.response?.status === 401) {
-            localStorage.removeItem('token');
-            // 현재 페이지가 이미 /signin 또는 /signup이 아닌 경우에만 리다이렉트
-            if (window.location.pathname !== '/signin' && window.location.pathname !== '/signup') {
-                window.location.href = '/signin';
-            }
-            return Promise.reject(error);
-        }
-
         // 네트워크 에러 등 response가 없는 경우
         if (!error.response) {
-            localStorage.removeItem('token');
-            // 현재 페이지가 이미 /signin이 아닌 경우에만 리다이렉트
-            if (window.location.pathname !== '/signin') {
-                // window.location.href = '/signin';
+            // 네트워크 연결 상태 확인
+            if (!navigator.onLine) {
+                console.warn('네트워크 연결이 끊어졌습니다.');
+                return Promise.reject(new Error('네트워크 연결을 확인해주세요.'));
             }
-            return Promise.reject(error);
+            
+            // 서버 연결 실패 등의 경우 - 토큰은 유지하고 단순히 에러만 반환
+            console.warn('서버 연결에 실패했습니다:', error.message);
+            return Promise.reject(new Error('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.'));
+        }
+
+        // 5xx 서버 에러 처리 - 토큰 유지
+        if (error.response?.status >= 500) {
+            console.error('서버 에러 발생:', error.response.status, error.response.data);
+            return Promise.reject(new Error('서버에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해주세요.'));
+        }
+
+        // 4xx 클라이언트 에러 중 401만 특별 처리
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            
+            // 현재 페이지가 인증이 필요한 페이지인 경우에만 리다이렉트
+            const authRequiredPaths = ['/mypage', '/profile', '/order', '/cart'];
+            const currentPath = window.location.pathname;
+            const isAuthRequiredPage = authRequiredPaths.some(path => currentPath.startsWith(path));
+            
+            if (isAuthRequiredPage && currentPath !== '/signin' && currentPath !== '/signup') {
+                // 사용자에게 알림 후 리다이렉트
+                if (confirm('로그인이 만료되었습니다. 다시 로그인해주세요.')) {
+                    window.location.href = '/signin';
+                }
+            }
+            
+            return Promise.reject(new Error('인증이 필요합니다. 다시 로그인해주세요.'));
+        }
+
+        // 403 Forbidden 에러 처리 - 권한 부족
+        if (error.response?.status === 403) {
+            console.warn('접근 권한이 없습니다:', error.response.data);
+            return Promise.reject(new Error('접근 권한이 없습니다.'));
+        }
+
+        // 404 Not Found 에러 처리
+        if (error.response?.status === 404) {
+            console.warn('요청한 리소스를 찾을 수 없습니다:', error.response.data);
+            return Promise.reject(new Error('요청한 리소스를 찾을 수 없습니다.'));
         }
 
         return Promise.reject(error);

@@ -24,7 +24,6 @@ const StorePage = () => {
         const { status, data } = await getProductsSelected();
         if (status !== 200)
           throw new Error('데이터를 불러오는데 실패했습니다.');
-        console.log(data);
 
         setProducts(data.data || []); // 리스트 없을 경우 빈 배열 처리
       } catch (error) {

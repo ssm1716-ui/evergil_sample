@@ -65,7 +65,6 @@ const MyReviewPage = () => {
         return;
       }
       const arr = data.data;
-      console.log(arr);
       // review만 추출하여 상태 업데이트
       const extractedReviews = arr.map((item) => item.review);
       setMeReviews(extractedReviews);
