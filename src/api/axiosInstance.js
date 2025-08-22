@@ -112,9 +112,8 @@ axiosInstance.interceptors.response.use(
             
             if (isAuthRequiredPage && currentPath !== '/signin' && currentPath !== '/signup') {
                 // 사용자에게 알림 후 리다이렉트
-                if (confirm('로그인이 만료되었습니다. 다시 로그인해주세요.')) {
-                    window.location.href = '/signin';
-                }
+                alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                window.location.href = '/signin';
             }
             
             return Promise.reject(new Error('인증이 필요합니다. 다시 로그인해주세요.'));
