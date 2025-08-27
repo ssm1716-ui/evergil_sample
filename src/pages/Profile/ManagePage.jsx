@@ -279,12 +279,12 @@ const ManagePage = () => {
                   <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-3 md-mb-4 sm-fs-20">
                     초대 및 사용자 관리 페이지
                   </h5>
-                  <Link onClick={handleCopylink}>
-                    <h6 className="text-base-color fs-18 md-fs-16 fw-800 w-100 text-end pb-2">
+                  <h6 className="text-base-color fs-18 md-fs-16 fw-800 w-100 text-end pb-2">
+                    <span className='cursor-pointer' onClick={handleCopylink} role='button' aria-label='Copy link'>
                       <FaLink className="me-2" />
                       Copy link
-                    </h6>
-                  </Link>
+                    </span>
+                  </h6>
                   <div className="d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-5">
                     <div>
                       <input
