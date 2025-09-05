@@ -10,7 +10,7 @@ const MetaTags = ({
 }) => {
   useEffect(() => {
     // 기본값 설정
-    const metaTitle = title || siteConfig.name;
+    const metaTitle = title || siteConfig.share.title;
     const metaDescription = description || siteConfig.description;
     const metaUrl = url || siteConfig.domain;
     const metaImage = image || `${siteConfig.domain}${siteConfig.og.image}`;
@@ -38,16 +38,20 @@ const MetaTags = ({
 
     // 기본 메타 태그
     updateMetaTag('description', metaDescription);
-    updateMetaTag('keywords', '에버길, 추모, 기억, 프로필, QR코드');
-    updateMetaTag('author', siteConfig.name);
+    updateMetaTag('keywords', siteConfig.keywords);
+    updateMetaTag('author', siteConfig.author);
 
     // Open Graph 태그
     updatePropertyTag('og:title', metaTitle);
     updatePropertyTag('og:description', metaDescription);
     updatePropertyTag('og:url', metaUrl);
     updatePropertyTag('og:image', metaImage);
+    updatePropertyTag('og:image:width', '512');
+    updatePropertyTag('og:image:height', '512');
+    updatePropertyTag('og:image:alt', '에버길 로고 - 소중한 사람들을 기억하는 추모페이지');
     updatePropertyTag('og:type', type);
-    updatePropertyTag('og:site_name', siteConfig.name);
+    updatePropertyTag('og:site_name', siteConfig.og.siteName);
+    updatePropertyTag('og:locale', siteConfig.og.locale);
 
     // Twitter Card 태그
     updatePropertyTag('twitter:card', 'summary_large_image');
