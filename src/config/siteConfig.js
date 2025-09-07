@@ -19,7 +19,7 @@ export const siteConfig = {
   og: {
     image: '/favicon/android-chrome-512x512.png',
     type: 'website',
-    siteName: '에버길(Evergil)',
+    siteName: '에버길 (Evergil)',
     locale: 'ko_KR'
   },
   
