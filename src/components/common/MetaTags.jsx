@@ -42,7 +42,7 @@ const MetaTags = ({
     updateMetaTag('author', siteConfig.author);
 
     // Open Graph 태그
-    updatePropertyTag('og:title', metaTitle);
+    updatePropertyTag('og:title', "에버길");
     updatePropertyTag('og:description', metaDescription);
     updatePropertyTag('og:url', metaUrl);
     updatePropertyTag('og:image', metaImage);
