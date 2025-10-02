@@ -12,7 +12,7 @@ const useProfilePermission = (profileId, options = {}) => {
   const [shouldShowEditComponent, setShouldShowEditComponent] = useState(false);
   const [currentPermission, setCurrentPermission] = useState(null);
 
-  const { shouldRedirect = true, nickname = null } = options; // nickname 옵션 추가
+  const { shouldRedirect = true, nickname = null } = options;
 
   useEffect(() => {
     const fetchPermission = async () => {
@@ -23,11 +23,10 @@ const useProfilePermission = (profileId, options = {}) => {
         const currentPath = window.location.pathname;
 
         // nickname 기반 URL인지 확인
-        const isNicknameUrl = nickname && currentPath.startsWith(`/${nickname}`);
+        const isNicknameUrl = nickname && currentPath === `/${nickname}`;  // ✅ @ 제거
 
-        // nickname URL 형태와 일반 URL 형태 정의
-        const viewProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/view-profile/${profileId}`;
-        const editProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/edit-profile/${profileId}`;
+        const viewProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/view/${profileId}`;
+        const editProfilePath = isNicknameUrl ? `/${nickname}` : `/profile/edit/${profileId}`;
 
         setCurrentPermission(result);
 

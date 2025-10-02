@@ -20,9 +20,15 @@ import InvitationPage from '@/pages/Profile/InvitationPage';
 
 import ProfilePage from '@/pages/Profile/ProfilePage';
 import SettingProfilePage from '@/pages/Profile/SettingProfilePage';
-import EditProfilePage from '@/pages/Profile/EditProfilePage';
-import ViewProfilePage from '@/pages/Profile/ViewProfilePage';
+
+// ✅ 새로 통합된 프로필 페이지
+import UnifiedProfilePage from '@/pages/Profile/UnifiedProfilePage';
+
+// 🔥 기존 3개 파일은 주석 처리 (나중에 삭제 예정)
+// import EditProfilePage from '@/pages/Profile/EditProfilePage';
+// import ViewProfilePage from '@/pages/Profile/ViewProfilePage';
 import PreviewProfilePage from '@/pages/Profile/PreviewProfilePage';
+
 import ManagePage from '@/pages/Profile/ManagePage';
 import ProfileInactiveErrorPage from '@/pages/Profile/ProfileInactiveErrorPage';
 import ProfileNotFoundPage from '@/pages/Profile/ProfileNotFoundPage';
@@ -45,7 +51,7 @@ import CompletePage from '@/pages/Order/CompletePage';
 import TermsPage from '@/pages/UserTerms/TermsPage';
 import PrivacyPolicyPage from '@/pages/UserTerms/PrivacyPolicyPage';
 
-import ScrollToTop from '@/components/common/ScrollToTop'; // 추가3
+import ScrollToTop from '@/components/common/ScrollToTop';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import AuthRedirect from '@/components/common/AuthRedirect';
 import ErrorPage from '@/pages/ErrorPage';
@@ -94,12 +100,8 @@ const App = () => {
               <Route path="/error" element={<ErrorPage />} />
               <Route path="/error-profile-inactive" element={<ProfileInactiveErrorPage />} />
               <Route path="/error-profile-not-found" element={<ProfileNotFoundPage />} />
-              {/* <Route path="/test" element={<ImageCompressor />} /> */}
 
-              {/* <Route path="/qr-scanner" element={<QRScanner />} /> */}
-              {/*<Route path="/qr-confirm" element={<QRCofirm />} /> */}
-
-              {/* QR스캐너*/}
+              {/* QR 스캐너 */}
               <Route
                 path="/qr-scanner"
                 element={
@@ -108,19 +110,9 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-
-              {/* QR 검증*/}
-              {/* <Route
-                path="/qr-confirm/:key"
-                element={
-                  <ProtectedRoute>
-                    <QRCofirm />
-                  </ProtectedRoute>
-                }
-              /> */}
               <Route path="/qr-confirm/:key" element={<QRCofirm />} />
 
-              {/* 프로필 영역 start*/}
+              {/* 프로필 영역 start */}
               <Route
                 path="/bridge-profile"
                 element={
@@ -131,6 +123,7 @@ const App = () => {
               />
               <Route path="/profile/invitation" element={<InvitationPage />} />
 
+              {/* 프로필 리스트 페이지 */}
               <Route
                 path="/profile"
                 element={
@@ -139,6 +132,8 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
+              
+              {/* 프로필 설정 페이지 */}
               <Route
                 path="/profile/setting-profile"
                 element={
@@ -155,30 +150,32 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
+
+              {/* ✅ 통합된 프로필 페이지 - 새로운 짧은 URL 패턴 */}
+              <Route 
+                path="/profile/:profileId" 
+                element={<UnifiedProfilePage />} 
+              />
+
+              {/* 🔄 기존 URL 패턴 지원 (하위 호환성) */}
               <Route
                 path="/profile/edit-profile/:profileId"
-                element={
-                  // <ProtectedRoute>
-                  <EditProfilePage />
-                  // </ProtectedRoute>
-                }
+                element={<UnifiedProfilePage mode="edit" />}
               />
               <Route
                 path="/profile/view-profile/:profileId"
-                element={
-                  // <ProtectedRoute>
-                  <ViewProfilePage />
-                  // </ProtectedRoute>
-                }
+                element={<UnifiedProfilePage mode="view" />}
               />
               <Route
                 path="/profile/preview-profile/:profileId"
-                element={
-                  // <ProtectedRoute>
-                  <PreviewProfilePage />
-                  // </ProtectedRoute>
-                }
+                element={<PreviewProfilePage mode="preview" />}
               />
+              <Route 
+                path="/:nickname/preview" 
+                element={<PreviewProfilePage />} 
+              />
+
+              {/* 프로필 관리 페이지 */}
               <Route
                 path="/profile/manage-profile/:profileId"
                 element={
@@ -188,7 +185,7 @@ const App = () => {
                 }
               />
 
-              {/* 프로필 영역 end*/}
+              {/* 프로필 영역 end */}
 
               {/* MyPAGE */}
               <Route
@@ -209,9 +206,12 @@ const App = () => {
                 <Route path="myinfo" element={<MyInfoPage />} />
                 <Route path="address" element={<AddressPage />} />
               </Route>
-              {/* MyPAGE*/}
 
-              <Route path="/:nickname" element={<ViewProfilePage />} />
+              {/* ✅ 닉네임으로 접근하는 경우 - 자동 모드 감지 */}
+              <Route 
+                path="/:nickname" 
+                element={<UnifiedProfilePage mode="auto" />} 
+              />
             </Routes>
           </Layout>
         </Router>

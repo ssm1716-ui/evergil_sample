@@ -29,6 +29,7 @@ import {
   getLetters,
   postLetters,
   putLetters,
+  getProfileIdByNickname,
 } from '@/api/memorial/memorialApi';
 
 import avatarImage from '@/assets/images/base-profile-image.png';
@@ -40,7 +41,8 @@ const initFormPrivateProfile = {
 
 const ViewProfilePage = () => {
   const navigate = useNavigate();
-  const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const { profileId: urlProfileId, nickname } = useParams(); // ✅ nickname 추가
+  const [profileId, setProfileId] = useState(urlProfileId); // ✅ state 추가
   const initLetter = {
     displayName: '',
     content: '',
@@ -110,7 +112,25 @@ const ViewProfilePage = () => {
   }, []);
 
   useEffect(() => {
+    const fetchProfileId = async () => {
+      if (nickname) {
+        try {
+          const res = await getProfileIdByNickname(nickname);
+          if (res && res.status === 200) {
+            setProfileId(res.data.data.profileId);
+          }
+        } catch (error) {
+          console.error(error);
+          navigate('/error-profile-not-found');
+        }
+      }
+    };
+    fetchProfileId();
+  }, [nickname, navigate]);
+
+  useEffect(() => {
     const fetchProfile = async () => {
+      if (!profileId) return;
       try {
         let res = await getSelectProfile(profileId);
         if (res.status === 200) {
@@ -129,7 +149,7 @@ const ViewProfilePage = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [profileId]);
 
   // 📌 탭 변경 시 데이터 로드 및 레이아웃 조정
   useEffect(() => {
