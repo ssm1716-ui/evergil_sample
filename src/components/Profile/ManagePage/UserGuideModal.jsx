@@ -3,6 +3,10 @@ import Modal from '@/components/common/Modal/Modal';
 import { FaInfoCircle, FaEnvelope, FaUserFriends, FaEye, FaEdit, FaUserLock } from 'react-icons/fa';
 
 import userGuide2 from '@/assets/images/userGuide2.jpeg';
+import userGuide3 from '@/assets/images/userGuide3.jpeg';
+import userGuide4_1 from '@/assets/images/userGuide4_1.jpeg';
+import userGuide4_2 from '@/assets/images/userGuide4_2.jpeg';
+import userGuide5 from '@/assets/images/userGuide5.jpeg';
 
 const UserGuideModal = ({ isOpen, onClose }) => {
   return (
@@ -83,11 +87,7 @@ const UserGuideModal = ({ isOpen, onClose }) => {
 
             <div className="guide-image-placeholder">
               {/* 이미지 자리 */}
-              <div className="placeholder-content">
-                <FaEnvelope size={48} />
-                <p>방문자 초대 3단계</p>
-                <span className="placeholder-note">(이미지 경로 추가 예정)</span>
-              </div>
+                <img src={userGuide3} alt="Profile Visibility Illustration" style={{ width: '100%', height: 'auto', borderRadius: 8 }} />
             </div>
             <p className="guide-image-caption">방문자 초대 3단계: 1️⃣ 이메일 입력 → 2️⃣ 초대 완료 → 3️⃣ 권한 설정</p>
             <div className="guide-divider"></div>
@@ -110,10 +110,7 @@ const UserGuideModal = ({ isOpen, onClose }) => {
                   보기 권한 (Viewer)
                 </h5>
                 <div className="guide-image-placeholder small">
-                  <div className="placeholder-content">
-                    <FaEye size={32} />
-                    <p>보기 권한 이미지</p>
-                  </div>
+                  <img src={userGuide4_1} alt="Profile Visibility Illustration" style={{ width: '100%', height: 'auto', borderRadius: 8 }} />
                 </div>
                 <p className="permission-description">추모관을 열람만 할 수 있습니다.</p>
                 <div className="permission-note">
@@ -128,10 +125,7 @@ const UserGuideModal = ({ isOpen, onClose }) => {
                   편집 권한 (Editor)
                 </h5>
                 <div className="guide-image-placeholder small">
-                  <div className="placeholder-content">
-                    <FaEdit size={32} />
-                    <p>편집 권한 이미지</p>
-                  </div>
+                  <img src={userGuide4_2} alt="Profile Visibility Illustration" style={{ width: '100%', height: 'auto', borderRadius: 8 }} />
                 </div>
                 <p className="permission-description">사진 업로드, 가족트리 추가, 콘텐츠 편집이 가능합니다.</p>
               </div>
@@ -160,11 +154,7 @@ const UserGuideModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="guide-image-placeholder">
-              <div className="placeholder-content">
-                <FaUserFriends size={48} />
-                <p>요청 관리 화면</p>
-                <span className="placeholder-note">(이미지 경로 추가 예정)</span>
-              </div>
+              <img src={userGuide5} alt="Profile Visibility Illustration" style={{ width: '100%', height: 'auto', borderRadius: 8 }} />
             </div>
             <p className="guide-image-caption">비공개 계정 보기 요청 관리 화면</p>
             <div className="guide-divider"></div>

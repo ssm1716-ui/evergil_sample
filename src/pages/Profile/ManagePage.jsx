@@ -314,7 +314,7 @@ const ManagePage = () => {
                               {invitation.isConfirmed ? (
                                 <select
                                   className="manage-select"
-                                  value={invitation.permission}
+                                  value={invitation.permission || ""}
                                   onChange={(e) =>
                                     handleInvitationsPermissionChange(
                                       invitation.invitationId,
@@ -330,7 +330,7 @@ const ManagePage = () => {
                               ) : (
                                 <select
                                   className="manage-select"
-                                  value={invitation.permission}
+                                  value={invitation.permission || ""}
                                   onChange={(e) =>
                                     handleInvitationsPermissionChange(
                                       invitation.invitationId,
@@ -370,7 +370,7 @@ const ManagePage = () => {
                           {invitation.isConfirmed ? (
                             <select
                               className="manage-select mobile"
-                              value={invitation.permission}
+                              value={invitation.permission || ""}
                               onChange={(e) =>
                                 handleInvitationsPermissionChange(
                                   invitation.invitationId,
@@ -386,7 +386,7 @@ const ManagePage = () => {
                           ) : (
                             <select
                               className="manage-select mobile"
-                              value={invitation.permission}
+                              value={invitation.permission || ""}
                               onChange={(e) =>
                                 handleInvitationsPermissionChange(
                                   invitation.invitationId,

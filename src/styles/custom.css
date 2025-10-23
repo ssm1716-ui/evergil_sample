@@ -2475,6 +2475,7 @@ header .navbar-brand .default-logo, footer .navbar-brand .default-logo {
   width: 100%;
 }
 
+/* action-btn 기본 스타일 */
 .action-btn {
   padding: 10px 20px;
   border: none;
@@ -2486,18 +2487,26 @@ header .navbar-brand .default-logo, footer .navbar-brand .default-logo {
   white-space: nowrap;
 }
 
+/* primary 버튼 - 메인 색상 적용 */
 .action-btn.primary {
   background: linear-gradient(135deg, #8FC5B7, #7ab5a5);
   color: white;
-  box-shadow: 0 2px 8px rgba(143, 197, 183, 0.25);
+  box-shadow: 0 4px 12px rgba(143, 197, 183, 0.3);
+  border: none;
 }
 
 .action-btn.primary:hover {
   background: linear-gradient(135deg, #7ab5a5, #6ba393);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(143, 197, 183, 0.35);
+  box-shadow: 0 6px 20px rgba(143, 197, 183, 0.45);
 }
 
+.action-btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(143, 197, 183, 0.3);
+}
+
+/* secondary 버튼 */
 .action-btn.secondary {
   background: white;
   color: #6b7280;
@@ -2508,6 +2517,7 @@ header .navbar-brand .default-logo, footer .navbar-brand .default-logo {
   background: #f9fafb;
   border-color: #d1d5db;
 }
+
 
 .action-buttons.mobile .action-btn {
   flex: 1;
