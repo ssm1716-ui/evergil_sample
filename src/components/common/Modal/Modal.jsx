@@ -58,7 +58,7 @@ const Modal = ({ isOpen, onClose, children }) => {
         style={{
           background: '#fff',
           borderRadius: '10px',
-          maxHeight: '80vh',
+          maxHeight: '95vh',
           WebkitOverflowScrolling: 'touch',
           overflowX: 'hidden',
           overflowY: 'auto',

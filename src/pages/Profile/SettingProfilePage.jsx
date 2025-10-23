@@ -13,19 +13,21 @@ import { allowOnlyAlphaNumeric } from '@/utils/utils';
 
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
+// custom.css에 스타일 추가 필요
+
 const SettingProfilePage = () => {
   const location = useLocation();
-  const { profileId: urlProfileId } = useParams(); //URL에서 :profileId 값 가져오기
-  const [profileId, setProfileId] = useState(urlProfileId); // 상태로 관리
+  const { profileId: urlProfileId } = useParams();
+  const [profileId, setProfileId] = useState(urlProfileId);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formProfile, setFormProfile] = useState({
-    qrKey: '', //QR key
-    memorialType: '', // 사람 or 동물
-    displayName: '', //이름
-    birthday: '', //생일
-    deathDate: '', //기일
-    nickname: '', //닉네임
-    scope: '', //공개 or 비공개
+    qrKey: '',
+    memorialType: '',
+    displayName: '',
+    birthday: '',
+    deathDate: '',
+    nickname: '',
+    scope: '',
   });
 
   const [errors, setErrors] = useState({
@@ -38,13 +40,17 @@ const SettingProfilePage = () => {
   });
   const navigate = useNavigate();
 
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 120 }, (_, i) => currentYear - i);
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await getSelectProfile(profileId);
         if (res.status === 200) {
           const { data } = res.data;
-          // PROFILE_INACTIVE 상태 확인
           if (data.result === 'PROFILE_INACTIVE') {
             navigate('/error-profile-inactive');
             return;
@@ -59,82 +65,65 @@ const SettingProfilePage = () => {
       fetchProfile();
       return;
     }
-    // if (!location.state?.qrKey) {
-    //   navigate(
-    //     `/error?desc=${'유효한 접근이 아닙니다.'}&pageUrl=${'/profile'}`
-    //   );
-    // }
     setFormProfile({ ...formProfile, qrKey: location.state?.qrKey });
   }, []);
 
-  // memorialType 버튼 선택 핸들러
   const handleProfileType = (type) => {
     setFormProfile({ ...formProfile, memorialType: type });
+    setErrors((prev) => ({ ...prev, memorialType: false }));
   };
 
-  // 값 입력 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     let processedValue = value;
 
     if (name === 'nickname') {
-      processedValue = allowOnlyAlphaNumeric(value); //영문,숫자로만 입력
+      processedValue = allowOnlyAlphaNumeric(value);
     }
 
     setFormProfile({
       ...formProfile,
       [name]: processedValue,
     });
+    
+    setErrors((prev) => ({ ...prev, [name]: false }));
   };
 
-  // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const {
-      memorialType, // 사람 or 동물
+      memorialType,
       displayName,
-      birthday,
-      deathDate,
-      nickname,
       scope,
     } = { ...formProfile };
 
+    let hasError = false;
+    const newErrors = {};
+
     if (memorialType.trim() === '') {
-      setErrors((prev) => ({ ...prev, memorialType: true }));
-      return;
+      newErrors.memorialType = true;
+      hasError = true;
     }
     if (displayName.trim() === '') {
-      setErrors((prev) => ({ ...prev, displayName: true }));
-      return;
+      newErrors.displayName = true;
+      hasError = true;
     }
-    // if (birthday.trim() === '') {
-    //   setErrors((prev) => ({ ...prev, birthday: true }));
-    //   return;
-    // }
-    // if (deathDate.trim() === '') {
-    //   setErrors((prev) => ({ ...prev, deathDate: true }));
-    //   return;
-    // }
-    // if (nickname.trim() === '') {
-    //   setErrors((prev) => ({ ...prev, nickname: true }));
-    //   return;
-    // }
     if (scope.trim() === '') {
-      setErrors((prev) => ({ ...prev, scope: true }));
-      return;
+      newErrors.scope = true;
+      hasError = true;
     }
 
-    debugger;
+    if (hasError) {
+      setErrors(newErrors);
+      return;
+    }
 
     try {
       let res;
       if (profileId) {
-        //추모 프로필 수정
         res = await putModifyProfile(profileId, formProfile);
       } else {
-        //추모 프로필 생성
         res = await postRegisterProfile(formProfile);
         const newProfileId = res.data.data;
         setProfileId(newProfileId);
@@ -153,188 +142,285 @@ const SettingProfilePage = () => {
 
   return (
     <>
-      <section>
-        <div className="container">
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0 justify-content-center overㄹㄹlow-hidden">
-            <div className="col contact-form-style-04">
-              <div className="pt-15 text-center">
-                <div className="pb-15 md-pb-0">
-                  <h6 className="fw-600 text-dark-gray mb-8 ls-minus-1px">
-                    추모페이지 설정
-                  </h6>
-                  <p className="fs-16 md-fs-14">
-                    사랑하는 사람에 대한 정보를 등록해보세요.
-                    <br />
-                    언제든지 이 정보는 수정할 수 있습니다.
-                  </p>
-                  {/* 사람/동물 버튼 */}
-                  <div className="xs-mb-15px pt-50px md-pt-0 d-flex justify-content-around ">
-                    <Button
-                      className={`btn w-30 lg-mb-15px border border-1 btn-box-shadow btn-round-edge ${
-                        formProfile.memorialType === 'HUMAN'
-                          ? 'btn-black'
-                          : 'btn-white'
-                      }`}
-                      onClick={() => handleProfileType('HUMAN')}
-                    >
-                      사람
-                    </Button>
-                    <Button
-                      className={`btn w-30 lg-mb-15px border border-1 btn-box-shadow btn-round-edge ${
-                        formProfile.memorialType === 'ANIMAL'
-                          ? 'btn-black'
-                          : 'btn-white'
-                      }`}
-                      onClick={() => handleProfileType('ANIMAL')}
-                    >
-                      동물
-                    </Button>
-                  </div>
-                  {errors.memorialType && (
-                    <p className="text-danger text-center pt-3">
-                      사람 또는 동물을 선택 해주세요.
-                    </p>
-                  )}
-                </div>
+      <div className="container" style={{ maxWidth: '720px', margin: '0 auto', padding: '120px 20px' }}>
+        {/* 헤더 */}
+        <div className="page-header">
+          <h1 className="page-title">프로필 설정</h1>
+          <p className="page-subtitle">추모할 대상의 정보를 입력해주세요</p>
+        </div>
 
-                {/* 폼 시작 */}
-                <form>
-                  {/* 이름 */}
-                  <label className="text-dark-gray fw-500 d-block text-start">
-                    <span className="text-red">*</span>이름
-                  </label>
-                  <input
-                    className="mb-5px bg-very-light-white form-control md-input-small text-black required"
-                    type="text"
-                    name="displayName"
-                    placeholder="이름을 입력해 주세요."
-                    value={formProfile.displayName}
-                    onChange={handleChange}
-                  />
-                  {errors.displayName && (
-                    <p className="text-danger text-start">
-                      이름을 입력 해 주세요.
-                    </p>
-                  )}
+        {/* 추모 대상 선택 카드 */}
+        <div className="modern-card">
+          <div className="modern-card-header">
+            <i className="bi bi-heart-fill" style={{ color: '#ef4444', fontSize: '20px' }}></i>
+            <h2 className="modern-card-title">추모 대상 선택</h2>
+          </div>
+          
+          <div className="profile-type-group">
+            <button
+              type="button"
+              className={`profile-type-btn ${formProfile.memorialType === 'HUMAN' ? 'active' : ''}`}
+              onClick={() => handleProfileType('HUMAN')}
+            >
+              <i className="bi bi-person-fill"></i>
+              사람
+            </button>
+            <button
+              type="button"
+              className={`profile-type-btn ${formProfile.memorialType === 'ANIMAL' ? 'active' : ''}`}
+              onClick={() => handleProfileType('ANIMAL')}
+            >
+              <i className="bi bi-heart-fill"></i>
+              반려동물
+            </button>
+          </div>
+          
+          {errors.memorialType && (
+            <p className="error-message">사람 또는 반려동물을 선택해주세요.</p>
+          )}
+        </div>
 
-                  {/* 생년월일 */}
-                  <label className="text-dark-gray fw-500 d-block text-start">
-                    생년월일
-                  </label>
-                  <div className="position-relative">
-                    <input
-                      className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
-                      type="date"
-                      name="birthday"
-                      value={formProfile.birthday}
-                      onChange={handleChange}
-                    />
-                    {formProfile.birthday && (
-                      <button
-                        type="button"
-                        className="btn btn-sm position-absolute fs-5"
-                        style={{ right: '10px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}
-                        onClick={() => handleChange({ target: { name: 'birthday', value: '' } })}
-                      >
-                        <i className="bi bi-x-circle text-muted"></i>
-                      </button>
-                    )}
-                  </div>
-                  {errors.birthday && (
-                    <p className="text-danger text-start">
-                      생년월일 입력 해 주세요.
-                    </p>
-                  )}
+        {/* 기본 정보 카드 */}
+        <div className="modern-card">
+          <div className="modern-card-header">
+            <i className="bi bi-info-circle-fill" style={{ color: '#3b82f6', fontSize: '20px' }}></i>
+            <h2 className="modern-card-title">기본 정보</h2>
+          </div>
 
-                  {/* 기일 */}
-                  <label className="text-dark-gray fw-500 d-block text-start">
-                    기일
-                  </label>
-                  <div className="position-relative">
-                    <input
-                      className="mb-5px bg-very-light-white form-control md-input-small text-black custom-date"
-                      type="date"
-                      name="deathDate"
-                      value={formProfile.deathDate}
-                      onChange={handleChange}
-                    />
-                    {formProfile.deathDate && (
-                      <button
-                        type="button"
-                        className="btn btn-sm position-absolute fs-5"
-                        style={{ right: '10px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}
-                        onClick={() => handleChange({ target: { name: 'deathDate', value: '' } })}
-                      >
-                        <i className="bi bi-x-circle text-muted"></i>
-                      </button>
-                    )}
-                  </div>
-                  {errors.deathDate && (
-                    <p className="text-danger text-start">
-                      기일을 입력 해 주세요.
-                    </p>
-                  )}
+          <form onSubmit={handleSubmit}>
+            {/* 이름 */}
+            <div className="mb-4">
+              <label className="modern-label">
+                {formProfile.memorialType === 'ANIMAL' ? '반려동물 이름' : '이름'}
+                <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                name="displayName"
+                className={`modern-input ${errors.displayName ? 'error' : ''}`}
+                placeholder={formProfile.memorialType === 'ANIMAL' ? '반려동물 이름을 입력해주세요' : '이름을 입력해주세요'}
+                value={formProfile.displayName}
+                onChange={handleChange}
+              />
+              {errors.displayName && (
+                <p className="error-message">이름을 입력해주세요.</p>
+              )}
+            </div>
 
-                  {/* 닉네임 */}
-                  <label className="text-dark-gray fw-500 d-block text-start">
-                    닉네임
-                  </label>
-                  <input
-                    className="mb-5px bg-very-light-white form-control md-input-small text-black"
-                    type="text"
-                    name="nickname"
-                    placeholder={`${window.location.origin}/@nickname`}
-                    value={formProfile.nickname}
-                    onChange={handleChange}
-                  />
-                  {errors.nickname && (
-                    <p className="text-danger text-start">
-                      닉네임을 입력 해 주세요.
-                    </p>
-                  )}
+            {/* 생년월일 */}
+            <div className="mb-4">
+              <label className="modern-label">생년월일 <span className="required">*</span></label>
+              <div className="date-grid">
+                <select 
+                  name="birthYear" 
+                  className="modern-select"
+                  value={formProfile.birthday ? formProfile.birthday.split('-')[0] : ''}
+                  onChange={(e) => {
+                    const year = e.target.value;
+                    const month = formProfile.birthday ? formProfile.birthday.split('-')[1] : '01';
+                    const day = formProfile.birthday ? formProfile.birthday.split('-')[2] : '01';
+                    handleChange({ target: { name: 'birthday', value: year ? `${year}-${month}-${day}` : '' }});
+                  }}
+                >
+                  <option value="">연도</option>
+                  {years.map(year => (
+                    <option key={year} value={year}>{year}년</option>
+                  ))}
+                </select>
+                <select 
+                  name="birthMonth" 
+                  className="modern-select"
+                  value={formProfile.birthday ? formProfile.birthday.split('-')[1] : ''}
+                  onChange={(e) => {
+                    const year = formProfile.birthday ? formProfile.birthday.split('-')[0] : currentYear;
+                    const month = e.target.value.padStart(2, '0');
+                    const day = formProfile.birthday ? formProfile.birthday.split('-')[2] : '01';
+                    handleChange({ target: { name: 'birthday', value: month ? `${year}-${month}-${day}` : '' }});
+                  }}
+                >
+                  <option value="">월</option>
+                  {months.map(month => (
+                    <option key={month} value={month}>{month}월</option>
+                  ))}
+                </select>
+                <select 
+                  name="birthDay" 
+                  className="modern-select"
+                  value={formProfile.birthday ? formProfile.birthday.split('-')[2] : ''}
+                  onChange={(e) => {
+                    const year = formProfile.birthday ? formProfile.birthday.split('-')[0] : currentYear;
+                    const month = formProfile.birthday ? formProfile.birthday.split('-')[1] : '01';
+                    const day = e.target.value.padStart(2, '0');
+                    handleChange({ target: { name: 'birthday', value: day ? `${year}-${month}-${day}` : '' }});
+                  }}
+                >
+                  <option value="">일</option>
+                  {days.map(day => (
+                    <option key={day} value={day}>{day}일</option>
+                  ))}
+                </select>
+              </div>
+              {errors.birthday && (
+                <p className="error-message">생년월일을 입력해주세요.</p>
+              )}
+            </div>
 
-                  {/* 계정 공개 범위 */}
-                  <label className="text-dark-gray fw-500 d-block text-start">
-                    <span className="text-red">*</span>계정 공개 범위
-                  </label>
-                  <div className="select">
-                    <select
-                      className="form-control md-input-small text-black"
-                      name="scope"
-                      value={formProfile.scope}
-                      onChange={handleChange}
-                    >
-                      <option value="">선택</option>
-                      <option value="PUBLIC">전체공개</option>
-                      <option value="PRIVATE">비공개</option>
-                    </select>
-                  </div>
-                  {errors.scope && (
-                    <p className="text-danger text-start">
-                      계정 공개 범위를 선택 해주세요.
-                    </p>
-                  )}
+            {/* 기일 */}
+            <div className="mb-4">
+              <label className="modern-label">기일 <span className="required">*</span></label>
+              <div className="date-grid">
+                <select 
+                  name="deathYear" 
+                  className="modern-select"
+                  value={formProfile.deathDate ? formProfile.deathDate.split('-')[0] : ''}
+                  onChange={(e) => {
+                    const year = e.target.value;
+                    const month = formProfile.deathDate ? formProfile.deathDate.split('-')[1] : '01';
+                    const day = formProfile.deathDate ? formProfile.deathDate.split('-')[2] : '01';
+                    handleChange({ target: { name: 'deathDate', value: year ? `${year}-${month}-${day}` : '' }});
+                  }}
+                >
+                  <option value="">연도</option>
+                  {years.map(year => (
+                    <option key={year} value={year}>{year}년</option>
+                  ))}
+                </select>
+                <select 
+                  name="deathMonth" 
+                  className="modern-select"
+                  value={formProfile.deathDate ? formProfile.deathDate.split('-')[1] : ''}
+                  onChange={(e) => {
+                    const year = formProfile.deathDate ? formProfile.deathDate.split('-')[0] : currentYear;
+                    const month = e.target.value.padStart(2, '0');
+                    const day = formProfile.deathDate ? formProfile.deathDate.split('-')[2] : '01';
+                    handleChange({ target: { name: 'deathDate', value: month ? `${year}-${month}-${day}` : '' }});
+                  }}
+                >
+                  <option value="">월</option>
+                  {months.map(month => (
+                    <option key={month} value={month}>{month}월</option>
+                  ))}
+                </select>
+                <select 
+                  name="deathDay" 
+                  className="modern-select"
+                  value={formProfile.deathDate ? formProfile.deathDate.split('-')[2] : ''}
+                  onChange={(e) => {
+                    const year = formProfile.deathDate ? formProfile.deathDate.split('-')[0] : currentYear;
+                    const month = formProfile.deathDate ? formProfile.deathDate.split('-')[1] : '01';
+                    const day = e.target.value.padStart(2, '0');
+                    handleChange({ target: { name: 'deathDate', value: day ? `${year}-${month}-${day}` : '' }});
+                  }}
+                >
+                  <option value="">일</option>
+                  {days.map(day => (
+                    <option key={day} value={day}>{day}일</option>
+                  ))}
+                </select>
+              </div>
+              {errors.deathDate && (
+                <p className="error-message">기일을 입력해주세요.</p>
+              )}
+            </div>
+          </form>
+        </div>
 
-                  <Button
-                    type="submit"
-                    size="extra-large"
-                    radiusOn="radius-on"
-                    className="btn-large submit w-40 mt-60px md-mt-20px mb-5px"
-                    onClick={handleSubmit}
-                  >
-                    {profileId ? '수정하기' : '저장하기'}
-                  </Button>
-                </form>
+        {/* 프로필 설정 카드 */}
+        <div className="modern-card">
+          <div className="modern-card-header">
+            <i className="bi bi-gear-fill" style={{ color: '#8b5cf6', fontSize: '20px' }}></i>
+            <h2 className="modern-card-title">프로필 설정</h2>
+          </div>
+
+          {/* 닉네임 */}
+          <div className="mb-4">
+            <label className="modern-label">닉네임 (프로필 URL)</label>
+            <p className="helper-text mb-2">다른 사람들이 프로필에 접근할 때 사용할 짧은 URL입니다. 영문, 숫자, 언더바(_)만 사용 가능합니다.</p>
+            <div className="url-input-group">
+              <div className="url-prefix">
+                https://evergil.kr/@
+              </div>
+              <input
+                type="text"
+                name="nickname"
+                className={`modern-input ${errors.nickname ? 'error' : ''}`}
+                placeholder="evergil"
+                value={formProfile.nickname}
+                onChange={handleChange}
+              />
+            </div>
+            {formProfile.nickname && (
+              <div className="url-preview-box">
+                <i className="bi bi-check-circle-fill check-icon"></i>
+                <p className="url-preview-text">
+                  <strong>프로필 URL:</strong> https://evergil.kr/@{formProfile.nickname}
+                </p>
+              </div>
+            )}
+            {errors.nickname && (
+              <p className="error-message">닉네임을 입력해주세요.</p>
+            )}
+          </div>
+
+          {/* 공개 범위 */}
+          <div className="mb-4">
+            <label className="modern-label">
+              공개 범위 <span className="required">*</span>
+            </label>
+            
+            <div 
+              className={`privacy-option ${formProfile.scope === 'PUBLIC' ? 'active' : ''}`}
+              onClick={() => handleChange({ target: { name: 'scope', value: 'PUBLIC' }})}
+            >
+              <input
+                type="radio"
+                name="scope"
+                value="PUBLIC"
+                checked={formProfile.scope === 'PUBLIC'}
+                onChange={handleChange}
+                className="privacy-radio"
+              />
+              <div className="privacy-content">
+                <p className="privacy-title">공개</p>
+                <p className="privacy-description">누구나 이 프로필을 볼 수 있습니다</p>
               </div>
             </div>
+            
+            <div 
+              className={`privacy-option ${formProfile.scope === 'PRIVATE' ? 'active' : ''}`}
+              onClick={() => handleChange({ target: { name: 'scope', value: 'PRIVATE' }})}
+            >
+              <input
+                type="radio"
+                name="scope"
+                value="PRIVATE"
+                checked={formProfile.scope === 'PRIVATE'}
+                onChange={handleChange}
+                className="privacy-radio"
+              />
+              <div className="privacy-content">
+                <p className="privacy-title">비공개</p>
+                <p className="privacy-description">초대받은 사람만 이 프로필을 볼 수 있습니다</p>
+              </div>
+            </div>
+            
+            {errors.scope && (
+              <p className="error-message">공개 범위를 선택해주세요.</p>
+            )}
           </div>
+
+          {/* 제출 버튼 */}
+          <button type="submit" className="submit-btn" onClick={handleSubmit}>
+            {profileId ? '수정하기' : '저장하기'}
+          </button>
         </div>
-      </section>
-      {/* 모달 컴포넌트 */}
+      </div>
+
+      {/* 완료 모달 */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Slide up animation"
+        title="Profile Complete"
       >
         <div className="row justify-content-center overflow-hidden bg-white">
           <div className="contact-form-style-04">

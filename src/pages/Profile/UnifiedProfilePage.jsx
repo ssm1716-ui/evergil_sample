@@ -4,13 +4,6 @@ import { useSelector } from 'react-redux';
 import { debounce } from 'lodash';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import LightGallery from 'lightgallery/react';
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import 'lightgallery/css/lg-fullscreen.css';
-import 'lightgallery/css/lg-zoom.css';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
 import Confirm from '@/components/common/Modal/Confirm';
@@ -21,12 +14,20 @@ import { compressImage } from '@/utils/imageCompressor';
 import { postRequestPresignedUrl } from '@/api/fileupload/uploadApi';
 import useProfilePermission from '@/hooks/useProfilePermission';
 import { suppressDeprecationWarnings } from '@/utils/consoleSuppression';
-import '../../styles/profile-custom.css'
 
 // 컴포넌트 imports
 import ProfileImageModal from '@/components/Profile/Modals/ProfileImageModal';
 import LetterModal from '@/components/Profile/Modals/LetterModal';
 import ConfirmModals from '@/components/Profile/Modals/ConfirmModals';
+import ImageTab from '@/components/Profile/ProfileTabs/ImageTab';
+import LetterTab from '@/components/Profile/ProfileTabs/LetterTab';
+import FamilyTab from '@/components/Profile/ProfileTabs/FamilyTab/FamilyTab';
+import ContentTabs from '@/components/Profile/ProfileTabs/ContentTabs';
+
+import ProfileHeader from '@/components/Profile/ProfileInfo/ProfileHeader';
+import ProfileDescription from '@/components/Profile/ProfileInfo/ProfileDescription';
+import UploadOverlay from '@/components/Profile/ProfileActions/UploadOverlay';
+import LoadingScreen from '@/components/Profile/ProfileActions/LoadingScreen';
 
 import {
   getSelectProfile,
@@ -112,6 +113,10 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
   const [tabList, setTabList] = useState(['이미지', '하늘편지']);
   const [hasFamilyTree, setHasFamilyTree] = useState(false);
 
+  const [editingFamilyId, setEditingFamilyId] = useState(null);
+  const [uploadingFamilyImages, setUploadingFamilyImages] = useState({});
+  const [isAddingNewFamily, setIsAddingNewFamily] = useState(false);
+
   const [imageState, setImageState] = useState({
     images: [],
     page: 1,
@@ -157,6 +162,7 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
   const hasMountedRef = useRef(false);
   const imagesRef = useRef([]);
 
+  const currentUserId = useSelector((state) => state.auth.user?.id);
   const {
     isLoginModalOpen,
     setIsLoginModalOpen,
@@ -644,10 +650,37 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
 
   const letterInit = () => setPostLetter(initLetter);
 
+  // ===== 🔥 가족관계도 핸들러 함수들 =====
   const handleAddItem = () => {
-    const newItem = { displayName: '', familyTitle: '', isCustomInput: false };
-    setFamily([...family, newItem]);
+    const newItem = { 
+      displayName: '', 
+      familyTitle: '', 
+      isCustomInput: false,
+      profileImage: '',
+      id: `temp-${Date.now()}`
+    };
+    setFamily([newItem, ...family]);
+    setEditingFamilyId(0);
+    setIsAddingNewFamily(true);
     setFamilyDataLoaded(true);
+  };
+
+  const handleCancelAddFamily = () => {
+    if (isAddingNewFamily) {
+      setFamily(family.slice(1));
+    }
+    setIsAddingNewFamily(false);
+    setEditingFamilyId(null);
+  };
+
+  const handleSaveFamily = (index) => {
+    const member = family[index];
+    if (!member.displayName.trim() || !member.familyTitle.trim()) {
+      alert('이름과 관계를 모두 입력해주세요.');
+      return;
+    }
+    setEditingFamilyId(null);
+    setIsAddingNewFamily(false);
   };
 
   const onDragEnd = (result) => {
@@ -680,9 +713,81 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
   };
 
   const handleFailyDelete = (index) => {
-    const updatedItems = family.filter((_, i) => i !== index);
+    if (isAddingNewFamily && index !== 0) {
+      setFamily(family.slice(1));
+      setIsAddingNewFamily(false);
+      setEditingFamilyId(null);
+      const updatedItems = family.slice(1).filter((_, i) => i !== index - 1);
+      setFamily(updatedItems);
+    } else {
+      const updatedItems = family.filter((_, i) => i !== index);
+      setFamily(updatedItems);
+    }
+  };
+  
+  const handleEditFamily = (index) => {
+    if (isAddingNewFamily) {
+      setFamily(family.slice(1));
+    }
+    setIsAddingNewFamily(false);
+    setEditingFamilyId(index);
+  };
+
+  const getRelationshipBadgeStyle = (relationship) => {
+    if (!relationship) return { backgroundColor: '#6c757d', color: 'white' };
+    
+    if (relationship.includes('할아버지') || relationship.includes('할머니')) {
+      return { backgroundColor: '#6f42c1', color: 'white' };
+    }
+    if (relationship.includes('아버지') || relationship.includes('어머니')) {
+      return { backgroundColor: '#0d6efd', color: 'white' };
+    }
+    if (relationship.includes('딸') || relationship.includes('아들')) {
+      return { backgroundColor: '#198754', color: 'white' };
+    }
+    if (relationship.includes('남편') || relationship.includes('아내')) {
+      return { backgroundColor: '#dc3545', color: 'white' };
+    }
+    return { backgroundColor: '#6c757d', color: 'white' };
+  };
+
+  const handleFamilyImageChange = (index, imageUrl) => {
+    const updatedItems = family.map((item, i) =>
+      i === index ? { ...item, profileImage: imageUrl } : item
+    );
     setFamily(updatedItems);
   };
+
+  const handleFamilyImageUpload = async (file, index) => {
+    if (!file || !profileId) return;
+    
+    setUploadingFamilyImages(prev => ({ ...prev, [index]: true }));
+    
+    try {
+      const compressedFile = await compressImage(file);
+      const type = getFileType(file.type);
+      const presignedResponse = await postRequestPresignedUrl(type);
+      const { data } = presignedResponse.data;
+      const url = data.completedUrl;
+      
+      const response = await fetch(data.url, {
+        method: 'PUT',
+        body: compressedFile,
+        headers: { 'Content-Type': file.type },
+      });
+      
+      if (!response.ok) throw new Error(`업로드 실패: ${file.name}`);
+      
+      handleFamilyImageChange(index, url);
+      
+    } catch (error) {
+      console.error('가족 이미지 업로드 실패:', error);
+      alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setUploadingFamilyImages(prev => ({ ...prev, [index]: false }));
+    }
+  };
+  // ===== 가족관계도 핸들러 끝 =====
 
   const handleLoginModalOpen = () => {
     localStorage.setItem('redirectAfterLogin', window.location.pathname);
@@ -802,15 +907,7 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
   };
 
   if (pageMode === 'loading' || !profileId) {
-    return (
-      <>
-        <div className="blur-overlay"></div>
-        <div className="loading-container">
-          <div className="spinner"></div>
-          <p>프로필을 불러오는 중...</p>
-        </div>
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   const isOwner = result === 'PUBLIC_PROFILE_OWNER' || result === 'YOU_HAVE_OWNER_PERMISSION';
@@ -820,514 +917,98 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
     <>
       {!showScreen && <div className="blur-overlay"></div>}
       
-      {/* 배경 헤더 */}
-      <section className="top-space-margin page-title-big-typography cover-background position-relative p-0 border-radius-10px lg-no-border-radius">
-        <div className="container" style={{ position: 'relative' }}>
-          <div
-            className="row small-screen bg-light-gray"
-            style={{
-              backgroundSize: 'cover',
-              backgroundImage: `url(${profile.backgroundImageUrl})`,
-              cursor: pageMode === 'edit' || profile.backgroundImageUrl ? 'pointer' : 'default',
-            }}
-            onClick={handleBackgroundImageClick}
-            role="button"
-            tabIndex={0}
-            title={profile.backgroundImageUrl ? '배경 이미지 전체화면 보기' : pageMode === 'edit' ? '배경 이미지 선택' : ''}
-          >
-          </div>
-          
-          {/* 편집 버튼을 .container 레벨로 이동 */}
-          {pageMode === 'edit' && (
-            <div 
-              className="position-absolute" 
-              style={{ 
-                right: '20px', 
-                bottom: '10px',
-                zIndex: 10 
-              }}
-            >
-              <div
-                className="video-icon-box video-icon-medium feature-box-icon-rounded w-65px h-65px md-w-50px md-h-50px sm-w-40px sm-h-40px rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
-                style={{ backgroundColor: '#CDCDCD' }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (profile.backgroundImageUrl) {
-                    setIsBackgroundModalOpen(true);
-                  } else if (backImageInputRef.current) {
-                    backImageInputRef.current.click();
-                  }
-                }}
-              >
-                <span>
-                  <span className="video-icon">
-                    <i className="feather icon-feather-edit-1 icon-extra-medium text-white position-relative top-minus-2px m-0"></i>
-                  </span>
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* 프로필 정보 섹션 */}
-      <section className="p-0">
-        <div className="container">
-          <div className="row row-cols-1 row-cols-lg-4 row-cols-sm-2">
-            <div className="col-lg-12 col-md-12 position-relative page-title-extra-large align-self-center">
-              <div className="col-2 process-step-style-03 text-center last-paragraph-no-margin hover-box">
-                <div className="process-step-icon-box position-relative mb-20px">
-                  <div 
-                    className="image-container d-inline-block position-absolute overflow-hidden border-radius-100 progress-image md-left-0px w-180px md-w-120px h-180px md-h-120px top-minus-90px sm-w-80px sm-h-80px sm-top-minus-50px md-start-0 cursor-pointer"
-                    onClick={handleProfileImageClick}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <img src={profile.profileImageUrl || avatarImage} alt="" loading="lazy" />
-                  </div>
-                </div>
-              </div>
-              <div className="col-9 offset-3 ps-2 md-ps-30px sm-ps-20px">
-                <h5 className="text-dark-gray mb-5px fw-600 sm-fs-20 ellipsis-name" title={profile.displayName}>
-                  {profile.displayName}
-                </h5>
-                <h6 className="mb-0 sm-fs-18">
-                  {profile.birthday ? formatDateRelace(profile.birthday) : ''}
-                  {profile.birthday && profile.deathDate && ' ~ '}
-                  {profile.deathDate ? formatDateRelace(profile.deathDate) : ''}
-                </h6>
-              </div>
-              {showScreen && (
-                <div className={profile.birthday && profile.deathDate
-                  ? 'row position-absolute md-position-initial bottom-minus-60px end-0 z-index-1 pe-1'
-                  : 'row position-absolute md-position-initial bottom-minus-95px end-0 z-index-1 pe-1'
-                }>
-                  {/* 액션 버튼들 */}
-                  <div className="xs-mt-25px d-flex flex-lg-column flex-md-row justify-content-md-center gap-lg-0 gap-md-4 gap-sm-5 sm-px-20px py-lg-0 py-md-4">
-                    <WebShareButton />
-                    
-                    {pageMode === 'edit' && isOwner && (
-                      <Link
-                        className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
-                        to={`/profile/manage-profile/${profileId}`}
-                      >
-                        <span>
-                          <i className="feather icon-feather-users"></i>
-                          <span className="btn-double-text ls-0px" data-text="초대하기">초대하기</span>
-                        </span>
-                      </Link>
-                    )}
-                    
-                    {pageMode === 'view' && (isOwner || isEditor) && (
-                      <Link
-                        className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
-                        to={`/profile/edit/${profileId}`}
-                      >
-                        <span>
-                          <i className="feather icon-feather-edit align-middle"></i>
-                          <span className="btn-double-text ls-0px" data-text="편집하기">편집하기</span>
-                        </span>
-                      </Link>
-                    )}
-                    
-                    {pageMode === 'view' && (
-                      <button
-                        className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-white left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
-                        onClick={handleBookmarkToggle}
-                      >
-                        <span>
-                          <i className={`fa-${isBookmarks ? 'solid' : 'regular'} fa-bookmark align-middle text-base-color`}></i>
-                          <span className="btn-double-text ls-0px" data-text="북마크">북마크</span>
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 배경 헤더 & 프로필 */}
+     {!showScreen && <div className="blur-overlay"></div>}
+  
+      <ProfileHeader
+        profile={profile}
+        pageMode={pageMode}
+        showScreen={showScreen}
+        isOwner={isOwner}
+        isEditor={isEditor}
+        isBookmarks={isBookmarks}
+        profileId={profileId}
+        profileNickname={profile.nickname}
+        onBackgroundImageClick={handleBackgroundImageClick}
+        onProfileImageClick={handleProfileImageClick}
+        onBackgroundUploadClick={handleBackUploadClick}
+        onBookmarkToggle={handleBookmarkToggle}
+        backImageInputRef={backImageInputRef}
+      />
 
       {/* 설명 섹션 */}
-      {pageMode === 'edit' ? (
-        <section className="pt-60px md-pt-0 pb-0">
-          <div className="container">
-            <div className="row bottom-minus-60px end-0 z-index-1 pe-1 d-flex flex-column">
-              <div className="xs-mt-25px d-flex justify-content-center h-200px md-h-300px">
-                <ReactQuill
-                  theme="snow"
-                  value={content}
-                  onChange={setContent}
-                  onBlur={handleBlur}
-                  modules={modules}
-                  formats={formats}
-                  className="w-700px md-w-95 md-h-450px lh-initial"
-                />
-              </div>
-              <div className="mt-80px md-mt-0 sm-mt-30px text-center">
-                <Link
-                  className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon xs-me-0 w-40 sm-w-95 border-radius-15px"
-                  onClick={handleBlur}
-                >
-                  <span className="btn-double-text ls-0px" data-text="저장">저장</span>
-                </Link>
-              </div>
-              <div className="mt-30px md-mt-20px sm-mt-20px d-flex justify-content-evenly justify-content-md-center gap-2">
-                <Link
-                  className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
-                  to={`/profile/setting-profile/${profileId}`}
-                >
-                  <span className="btn-double-text ls-0px" data-text="설정">설정</span>
-                </Link>
-                <Link
-                  className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-gray left-icon btn-round-edge border-0 xs-me-0 w-20 md-w-45 mb-5 border-radius-30px"
-                  to={profile.nickname ? `/${profile.nickname}/preview` : `/profile/preview/${profileId}`}
-                >
-                  <span className="btn-double-text ls-0px" data-text="미리보기">미리보기</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : (
-        profile.description && profile.description.replace(/<[^>]*>?/gm, '').trim() && (
-          <section className="pt-50px md-pt-0 pb-2">
-            <div className="container">
-              <div className="bottom-minus-60px end-0 z-index-1 pe-1">
-                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px custom-quill-wrapper">
-                  <ReactQuill
-                    className="w-60 sm-w-100 mx-center"
-                    value={profile.description}
-                    readOnly={true}
-                    theme="snow"
-                    modules={{ toolbar: false }}
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        )
-      )}
+       <ProfileDescription
+        content={content}
+        setContent={setContent}
+        pageMode={pageMode}
+        profileId={profileId}
+        onBlur={handleBlur}
+        profile={profile}
+        saveDescription={saveDescription}
+      />
 
       {/* 탭 섹션 */}
       {showScreen && (
-        <section id="tab" className="pt-0 sm-pt-40px md-pb-70px">
-          <div className="container">
-            <div className="row">
-              <div className="col-12 tab-style-04">
-                <ul className="nav nav-tabs border-0 justify-content-center fs-20">
-                  {tabList.map((tab) => (
-                    <li key={tab} className="nav-item text-center">
-                      <button
-                        className={`nav-link ${activeTab === tab ? 'active text-base-color d-inline-block' : 'd-inline-block'}`}
-                        onClick={() => setActiveTab(tab)}
-                      >
-                        {tab}
-                        <span className="tab-border bg-base-color"></span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mb-5 h-1px w-100 bg-extra-medium-gray xs-mb-8"></div>
-                <div className="tab-content">
-                  {/* 이미지 탭 */}
-                  {activeTab === '이미지' && (
-                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                      <LightGallery
-                        key={galleryKey}
-                        speed={500}
-                        closable={true}
-                        download={false}
-                        controls={true}
-                        showCloseIcon={true}
-                        thumbnail={true}
-                        plugins={[lgThumbnail]}
-                        selector=".gallery-item"
-                        onAfterOpen={handleGalleryOpen}
-                        onClose={() => { document.body.style.touchAction = ''; }}
-                        onInit={pageMode === 'edit' ? addCustomButtons : undefined}
-                        ref={lgRef}
-                        mobileSettings={{ controls: true, showCloseIcon: true }}
-                      >
-                        <div className="gallery-grid">
-                          {pageMode === 'edit' && (
-                            <div
-                              onClick={handleUploadClick}
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: '#f0f0f0',
-                                cursor: 'pointer',
-                                border: '2px dashed #ccc',
-                              }}
-                              className={`gallery-grid-item ${!imageState.images.length ? 'gallery-item-frist' : ''}`}
-                            >
-                              <MdAddPhotoAlternate size={70} color="#888" />
-                              <input
-                                type="file"
-                                accept="image/*"
-                                multiple={true}
-                                ref={fileInputRef}
-                                style={{ display: 'none' }}
-                                onChange={handleFileChange}
-                              />
-                            </div>
-                          )}
-                          {imageState.images.map((image, index) => (
-                            <a
-                              href={image.url}
-                              key={image.id || index}
-                              className="gallery-item gallery-grid-item"
-                              data-src={image.url}
-                              data-id={image.id}
-                              data-page={Math.floor(index / 20) + 1}
-                              data-index={index}
-                            >
-                              <img src={image.url} loading="lazy" alt="추모 이미지" data-index={index} data-id={image.id} />
-                            </a>
-                          ))}
-                        </div>
-                      </LightGallery>
-                      {imageState.images.length === 0 && (
-                        <div className="col-12 text-center mt-100px pb-2 fs-24">
-                          <i className="feather icon-feather-camera align-middle icon-extra-large text-dark fs-50 md-fs-70 p-30px border border-4 border-dark border-radius-100px mb-1"></i>
-                          <p className="fs-30 fw-800 text-black">No Posts Yet</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
+        <ContentTabs
+          activeTab={activeTab}
+          tabs={tabList}
+          onTabChange={setActiveTab}
+          permission={pageMode}
+          isLoggedIn={isAuthenticated}
+        >
+          {/* 이미지 탭 */}
+          {activeTab === '이미지' && (
+            <ImageTab
+              imageState={imageState}
+              pageMode={pageMode}
+              galleryKey={galleryKey}
+              lgRef={lgRef}
+              fileInputRef={fileInputRef}
+              onEdit={handleEdit}
+              onDelete={handleImageDeleteConfirm}
+              onUpload={handleFileChange}
+              isUploading={isUploading}
+            />
+          )}
 
-                  {/* 하늘편지 탭 */}
-                  {activeTab === '하늘편지' && (
-                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                      <div className="row m-0">
-                        <div className="col-12 md-p-0">
-                          {(pageMode === 'edit' || pageMode === 'view') && (
-                            <div className="toolbar-wrapper w-100 mb-40px md-mb-30px">
-                              <div className="mx-auto me-md-0 col tab-style-08">
-                                <ul className="nav nav-tabs d-flex justify-content-between border-0 fs-18 fw-600 gap-2">
-                                  <li className="nav-item">
-                                    <div className="position-relative">
-                                      <input
-                                        className="border-1 nav-link w-400px md-w-100"
-                                        type="text"
-                                        name="keyword"
-                                        onChange={handleSearchInput}
-                                        placeholder="검색어를 입력 해주세요."
-                                      />
-                                      {isSearching ? (
-                                        <i className="fa-solid fa-spinner fa-spin align-middle icon-small position-absolute z-index-1 search-icon fa-spinner"></i>
-                                      ) : (
-                                        <i className="feather icon-feather-search align-middle icon-small position-absolute z-index-1 search-icon"></i>
-                                      )}
-                                    </div>
-                                  </li>
-                                  {isAuthenticated && pageMode !== 'preview' && (
-                                    <li className="nav-item">
-                                      <a
-                                        className="nav-link"
-                                        data-bs-toggle="tab"
-                                        href="#tab_sec2"
-                                        onClick={() => setIsRegisterModalOpen(true)}
-                                      >
-                                        <i className="fa-regular fa-comment-dots align-middle icon-small pe-10px"></i>
-                                        하늘 편지 쓰기
-                                      </a>
-                                    </li>
-                                  )}
-                                </ul>
-                              </div>
-                            </div>
-                          )}
-                          {letters.length > 0 ? (
-                            letters.map((letter, index) => (
-                              <div
-                                key={letter.letterId}
-                                className={`row border-color-dark-gray position-relative g-0 sm-border-bottom-0 md-p-5 ${
-                                  index % 2 ? 'paper-note-odd' : 'paper-note-even'
-                                }`}
-                              >
-                                <div className="col-12 d-flex justify-content-between align-items-center px-4 pt-2 pb-1">
-                                  <span className="text-dark-gray fs-16 fw-600">{letter.displayName}</span>
-                                  {pageMode === 'edit' && (
-                                    <div className="d-flex">
-                                      {letter.hasDeletePermission && (
-                                        <span
-                                          className="cursor-pointer me-4"
-                                          onClick={(e) => {
-                                            e.preventDefault();
-                                            handleRemoveLetterConfirm(letter.letterId);
-                                          }}
-                                        >
-                                          <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium"></i>
-                                        </span>
-                                      )}
-                                      {letter.hasModifyPermission && (
-                                        <span
-                                          className="cursor-pointer"
-                                          onClick={(e) => {
-                                            e.preventDefault();
-                                            handleModifyLetterConfirm(letter.letterId);
-                                          }}
-                                        >
-                                          <i className="ti-pencil align-middle text-dark-gray icon-extra-medium"></i>
-                                        </span>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="col-12 px-4 pb-1">
-                                  <span className="text-dark-gray fs-14">{letter.createdAt}</span>
-                                </div>
-                                <div className="col-12 px-4 pb-3">
-                                  <p className="m-0" dangerouslySetInnerHTML={{ __html: letter.content.replace(/\n/g, '<br />') }}></p>
-                                </div>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="col-12 text-center mt-100px pb-2 fs-24">
-                              <i className="line-icon-Letter-Open align-middle icon-extra-large text-light-gray pb-1"></i>
-                              <p>등록된 하늘편지가 없습니다.</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
+          {/* 하늘편지 탭 */}
+          {activeTab === '하늘편지' && (
+           <LetterTab
+              letters={letters}
+              pageMode={pageMode}
+              isAuthenticated={isAuthenticated}
+              isSearching={isSearching}
+              currentUserId={currentUserId} // 🔥 추가
+              onSearchInput={handleSearchInput}
+              onRegisterClick={() => setIsRegisterModalOpen(true)}
+              onModifyLetterConfirm={handleModifyLetterConfirm}
+              onRemoveLetterConfirm={handleRemoveLetterConfirm}
+            />
+          )}
 
-                  {/* 가족관계도 탭 */}
-                  {activeTab === '가족관계도' && (
-                    <div className="w-100 sm-mt-10px xs-mb-8 my-5">
-                      {pageMode === 'edit' ? (
-                        <div className="row">
-                          <div className="row align-items-center m-0">
-                            <div className="col-xl-12 col-lg-10 col-md-12 col-sm-5 form-results d-block mt-20px mb-mt-0 sm-mt-0 mb-0 text-center">
-                              <p className="text-black fs-18 md-fs-14 sm-fs-12">
-                                가족 관계도<br />
-                                아래 가족을 추가하고 드래그로 순서를 바꿔보세요.
-                              </p>
-                            </div>
-                          </div>
-                          <div className="row align-items-center">
-                            <div className="col-xl-10 col-lg-10 col-md-12 col-sm-5 text-end text-sm-center text-lg-end mb-25px pe-0">
-                              <Button
-                                className="btn btn-black btn-round-edge btn-box-shadow text-uppercase px-3 pt-5px pb-5px"
-                                size="small"
-                                onClick={handleAddItem}
-                              >
-                                <i className="feather icon-feather-plus align-sub text-white icon-extra-medium"></i>
-                                가족 추가하기
-                              </Button>
-                            </div>
-                          </div>
-                          <DragDropContext onDragEnd={onDragEnd}>
-                            <Droppable droppableId="list">
-                              {(provided) => (
-                                <div ref={provided.innerRef} {...provided.droppableProps}>
-                                  {family.map((f, index) => (
-                                    <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
-                                      {(provided) => (
-                                        <div
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                          className="sortable-item text-center list-item"
-                                        >
-                                          <div className="row border-color-dark-gray position-relative g-0 sm-border-bottom-0 sm-pb-5px ps-200px pe-200px md-ps-0 md-pe-0">
-                                            <div className="col-auto col-md-1 text-md-center align-self-center">
-                                              <i className="bi bi-grip-vertical align-middle icon-extra-medium text-gray md-fs-18"></i>
-                                            </div>
-                                            <div className="col-12 col-md-3 text-md-center align-self-center pt-1">
-                                              {f.isCustomInput ? (
-                                                <input
-                                                  className="border-color-transparent-dark-very-light form-control bg-transparent md-pt-0 md-pb-0 required"
-                                                  type="text"
-                                                  value={f.familyTitle === '직접 입력' ? '' : f.familyTitle}
-                                                  placeholder="직접 입력"
-                                                  onChange={(e) => handleCustomInputChange(index, e.target.value)}
-                                                />
-                                              ) : (
-                                                <select
-                                                  className="form-control border-color-transparent-dark-very-light bg-transparent md-pt-0 md-pb-0"
-                                                  value={f.familyTitle}
-                                                  onChange={(e) => handleSelectChange(index, e.target.value)}
-                                                >
-                                                  <option value="">- 선택 -</option>
-                                                  <option value="아버지">아버지</option>
-                                                  <option value="어머니">어머니</option>
-                                                  <option value="아들">아들</option>
-                                                  <option value="딸">딸</option>
-                                                  <option value="직접 입력">직접 입력</option>
-                                                </select>
-                                              )}
-                                            </div>
-                                            <div className="col-lg-6 col-md-7 last-paragraph-no-margin ps-30px pe-30px pe-30px pt-10px sm-pt-15px sm-pb-15px sm-px-0">
-                                              <input
-                                                maxLength={10}
-                                                className="md-mb-0 border-color-transparent-dark-very-light form-control bg-transparent required md-pt-0 md-pb-0"
-                                                type="text"
-                                                placeholder="이름을 입력해주세요."
-                                                value={f.displayName}
-                                                onChange={(e) => handleNameChange(index, e.target.value)}
-                                              />
-                                            </div>
-                                            <div className="col-auto col-md-1 align-self-start align-self-md-center text-end text-md-center sm-position-absolute right-5px">
-                                              <button onClick={() => handleFailyDelete(index)} className="btn btn-link">
-                                                <i className="feather icon-feather-trash-2 align-middle text-dark-gray icon-extra-medium md-fs-18"></i>
-                                              </button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  ))}
-                                  {provided.placeholder}
-                                </div>
-                              )}
-                            </Droppable>
-                          </DragDropContext>
-                        </div>
-                      ) : (
-                        <div className="container">
-                          {family.map((f, index) => (
-                            <div className="row row-cols-12 row-cols-lg-12 row-cols-sm-2 mt-1 text-center" key={index}>
-                              <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
-                                <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
-                                  <span className="progress-step-separator bg-dark-gray opacity-1 w-30 separator-line-1px"></span>
-                                  <div className="process-step-icon d-flex justify-content-start align-items-center ms-auto h-80px w-40 md-w-50 sm-w-100 fs-18 rounded-circle text-dark-gray fw-500">
-                                    <div className="process-step-icon d-flex justify-content-center align-items-center bg-black h-80px w-80px md-h-40px md-w-40px fs-18 rounded-circle text-dark-gray box-shadow-double-large fw-500">
-                                      <span className="number position-relative z-index-1 fw-600">
-                                        <i className="feather icon-feather-user align-middle icon-large text-white"></i>
-                                      </span>
-                                      <div className="box-overlay bg-black rounded-circle"></div>
-                                    </div>
-                                    <span className="number position-relative z-index-1 fw-600 sm-w-100">{f.familyTitle}</span>
-                                    <div className="box-overlay rounded-circle"></div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-6 text-center process-step-style-02 hover-box last-paragraph-no-margin">
-                                <div className="process-step-icon-box position-relative mt-30px md-mt-10px">
-                                  <div className="process-step-icon d-flex justify-content-start align-items-center mx-auto h-80px w-60 md-w-60 sm-w-60 fs-18 rounded-circle text-dark-gray fw-500">
-                                    <span className="number position-relative z-index-1 fw-600">{f.displayName}</span>
-                                    <div className="box-overlay rounded-circle"></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          {/* 가족관계도 탭 */}
+          {activeTab === '가족관계도' && (
+            <FamilyTab
+              family={family}
+              pageMode={pageMode}
+              isLoadingFamilyData={isLoadingFamilyData}
+              editingFamilyId={editingFamilyId}
+              isAddingNewFamily={isAddingNewFamily}
+              uploadingFamilyImages={uploadingFamilyImages}
+              onDragEnd={onDragEnd}
+              onAddItem={handleAddItem}
+              onNameChange={handleNameChange}
+              onSelectChange={handleSelectChange}
+              onCustomInputChange={handleCustomInputChange}
+              onImageUpload={handleFamilyImageUpload}
+              onEditFamily={handleEditFamily}
+              onDeleteFamily={handleFailyDelete}
+              onSaveFamily={handleSaveFamily}
+              onCancelAddFamily={handleCancelAddFamily}
+              getRelationshipBadgeStyle={getRelationshipBadgeStyle}
+            />
+          )}
+        </ContentTabs>
       )}
 
       {/* 모달들 */}

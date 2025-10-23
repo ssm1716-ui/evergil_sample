@@ -12,22 +12,21 @@ const WebShareButton = ({
   // 기본값 설정
   const { left = '27%', bottom = '70px' } = positionConfig;
 
-  const [showShareBox, setShowShareBox] = useState(false); // ✅ 공유 박스 상태
-  const [copied, setCopied] = useState(false); // ✅ URL 복사 상태
-  const buttonRef = useRef(null); // ✅ 버튼 참조
-  const shareBoxRef = useRef(null); // ✅ 공유 박스 참조
+  const [showShareBox, setShowShareBox] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const buttonRef = useRef(null);
+  const shareBoxRef = useRef(null);
 
-  // ✅ 모바일 환경 체크 함수
+  // 모바일 환경 체크 함수
   const isMobile = () => {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   };
 
-  // ✅ 공유 버튼 클릭 핸들러
+  // 공유 버튼 클릭 핸들러
   const handleShare = async (e) => {
     if (e?.preventDefault) e.preventDefault();
 
     if (isMobile() && navigator.share) {
-      // ✅ 모바일 환경에서만 Web Share API 실행
       try {
         await navigator.share({
           title: shareTitle,
@@ -38,26 +37,25 @@ const WebShareButton = ({
         console.error('공유 실패:', error);
       }
     } else {
-      // ✅ 데스크톱에서는 공유 박스 표시
       setShowShareBox((prev) => !prev);
     }
   };
 
-  // ✅ URL 복사 기능
+  // URL 복사 기능
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // ✅ 공유 박스 외 클릭 시 닫기
+  // 공유 박스 외 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         shareBoxRef.current &&
-        !shareBoxRef.current.contains(event.target) && // 공유 박스 외부 클릭 감지
+        !shareBoxRef.current.contains(event.target) &&
         buttonRef.current &&
-        !buttonRef.current.contains(event.target) // 공유 버튼 클릭이 아닐 때
+        !buttonRef.current.contains(event.target)
       ) {
         setShowShareBox(false);
       }
@@ -72,29 +70,35 @@ const WebShareButton = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showShareBox]);
 
+  // 🔥 공유하기 버튼 - #8FC5B7 색상
   const defaultTrigger = (
     <Link
-      className="btn btn-extra-large btn-switch-text btn-box-shadow btn-none-transform btn-base-color left-icon btn-round-edge border-0 me-5px xs-me-0 w-100 md-w-50 mb-5 md-mb-2"
+      className="btn btn-sm d-flex align-items-center gap-2"
       onClick={handleShare}
       ref={buttonRef}
+      style={{
+        backgroundColor: '#8FC5B7',
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        padding: '8px 16px',
+        fontSize: '14px',
+        fontWeight: '500',
+        whiteSpace: 'nowrap',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+        textDecoration: 'none',
+        width: '120px',
+        justifyContent: 'center'
+      }}
     >
-      <span>
-        <span>
-          <i className="feather icon-feather-share-2"></i>
-        </span>
-        <span
-          className="btn-double-text ls-0px position-relative"
-          data-text="공유하기"
-        >
-          공유하기
-        </span>
-      </span>
+      <i className="feather icon-feather-share-2" style={{ fontSize: '16px' }}></i>
+      <span className="ls-0px">공유하기</span>
     </Link>
   );
 
   return (
     <>
-      {/* ✅ 버튼: props로 받은 게 있으면 그걸, 없으면 기본 버튼 */}
+      {/* 버튼: props로 받은 게 있으면 그걸, 없으면 기본 버튼 */}
       {triggerElement
         ? React.cloneElement(triggerElement, {
             onClick: handleShare,
@@ -102,16 +106,16 @@ const WebShareButton = ({
           })
         : defaultTrigger}
 
-      {/* ✅ 공유 박스 (데스크톱에서만 버튼 아래 표시) */}
+      {/* 공유 박스 (데스크톱에서만 버튼 아래 표시) */}
       {showShareBox && (
         <div
-          ref={shareBoxRef} // ✅ 공유 박스 참조
+          ref={shareBoxRef}
           style={{
             position: 'absolute',
-            bottom, // ✅ 버튼 바로 아래 위치
-            left, // ✅ 버튼 중앙 정렬
+            bottom,
+            left,
             transform: 'translateX(-50%)',
-            width: '240px', // ✅ 박스 크기 조정
+            width: '240px',
             background: '#fff',
             padding: '12px',
             borderRadius: '8px',
@@ -159,7 +163,7 @@ const WebShareButton = ({
             </button>
           </div>
 
-          {/* ✅ 소셜 공유 버튼 */}
+          {/* 소셜 공유 버튼 */}
           <div style={{ display: 'flex', gap: '10px' }}>
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
@@ -183,7 +187,7 @@ const WebShareButton = ({
             </a>
           </div>
 
-          {/* ✅ URL 복사 입력 필드 */}
+          {/* URL 복사 입력 필드 */}
           <div style={{ display: 'flex', width: '100%', gap: '5px' }}>
             <input
               type="text"
@@ -213,7 +217,7 @@ const WebShareButton = ({
             </button>
           </div>
 
-          {/* ✅ 복사 완료 메시지 */}
+          {/* 복사 완료 메시지 */}
           {copied && (
             <span style={{ color: 'green', fontSize: '12px' }}>
               ✅ 링크가 복사되었습니다!

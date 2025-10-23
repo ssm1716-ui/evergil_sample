@@ -3,14 +3,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/Modal';
 import Select from 'react-select';
-import { FaEye, FaEyeSlash, FaLink, FaShareAlt } from 'react-icons/fa'; // 아이콘 가져오기
+import { FaEye, FaEyeSlash, FaLink, FaShareAlt, FaUserFriends, FaUserLock, FaEnvelope, FaUserShield, FaArrowLeft, FaQuestionCircle } from 'react-icons/fa';
 
 import everlinkTop from '@/assets/images/evergil_contact.jpeg';
+import UserGuideModal from '@/components/profile/ManagePage/UserGuideModal';
 
 import useProfilePermission from '@/hooks/useProfilePermission';
 import {
   postEmailInvitations,
-  postPrivateProfileAccessRequest,
   getInvitationsList,
   putInvitationPermissions,
   deleteInvitationPermissions,
@@ -51,7 +51,7 @@ const initFormPrivateProfile = {
 
 const ManagePage = () => {
   const navigate = useNavigate();
-  const { profileId } = useParams(); //URL에서 :profileId 값 가져오기
+  const { profileId } = useParams();
   const [receiverEmail, setReceiverEmail] = useState('');
   const [isError, setIsError] = useState(false);
   const [scope, setScope] = useState('PUBLIC');
@@ -59,14 +59,12 @@ const ManagePage = () => {
   const [invitations, setInvitations] = useState([]);
   const [privateRequests, setPrivateRequests] = useState([]);
 
-  //Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCopyLinkOpen, setIsModalCopyLinkOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isUserGuideModalOpen, setIsUserGuideModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(
-    initFormPrivateProfile
-  );
+  const [formRequestPrivateProfile, setFormRequestPrivateProfile] = useState(initFormPrivateProfile);
 
   const lgRef = useRef(null);
 
@@ -79,50 +77,6 @@ const ManagePage = () => {
     currentPermission,
   } = useProfilePermission(profileId, { shouldRedirect: false });
 
-  // 프로필 데이터 가져오기
-  const fetchProfile = async (id) => {
-    try {
-      const res = await getSelectProfile(id);
-      if (res.status === 200) {
-        const { profile, result } = res.data.data;
-        // PROFILE_INACTIVE 상태 확인
-        if (result === 'PROFILE_INACTIVE') {
-          navigate('/error-profile-inactive');
-          return;
-        }
-        setScope(profile.scope);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 초대된 계정 리스트 가져오기
-  const fetchInvitations = async (id) => {
-    try {
-      const res = await getInvitationsList(id);
-      if (res.status === 200) {
-        const { items } = res.data.data;
-        setInvitations(items);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 비공개 프로필 접근 요청 리스트 가져오기
-  const fetchPrivateAccessRequests = async (id) => {
-    try {
-      const res = await getPrivateProfileAccessRequests(id);
-      if (res.status === 200) {
-        setPrivateRequests(res.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // ✅ `Promise.all()`로 병렬 API 호출 최적화
   const fetchAllData = async (id) => {
     try {
       const [profileRes, invitationsRes, privateAccessRes] = await Promise.all([
@@ -133,7 +87,6 @@ const ManagePage = () => {
 
       if (profileRes.status === 200) {
         const { profile, result } = profileRes.data.data;
-        // PROFILE_INACTIVE 상태 확인
         if (result === 'PROFILE_INACTIVE') {
           navigate('/error-profile-inactive');
           return;
@@ -155,16 +108,14 @@ const ManagePage = () => {
     }
   };
 
-  //초기 데이터 가져오기
   useEffect(() => {
     if (profileId && showScreen) {
-      fetchAllData(profileId); // ✅ 병렬 호출로 성능 최적화
+      fetchAllData(profileId);
     }
   }, [profileId, showScreen]);
 
   const handleOptionChange = async (selectedOption) => {
     let seletedText = selectedOption.value === 'PUBLIC' ? '전체공개' : '비공개';
-
     const confirmed = window.confirm(`${seletedText}로 변경 하시겠습니까?`);
     if (!confirmed) return;
 
@@ -181,7 +132,6 @@ const ManagePage = () => {
     fetchAllData(profileId);
   };
 
-  //초대하기 발송
   const handleInvitation = async (e) => {
     e.preventDefault();
 
@@ -205,16 +155,14 @@ const ManagePage = () => {
 
   const handleCopylink = () => {
     navigator.clipboard.writeText(
-      profile.nickname && profile.nickname.trim() ? 
-        window.location.origin + '/@' + profile.nickname : 
-        window.location.origin + '/profile/view-profile/' + profileId
+      profile.nickname && profile.nickname.trim()
+        ? window.location.origin + '/@' + profile.nickname
+        : window.location.origin + '/profile/view-profile/' + profileId
     );
     setIsModalCopyLinkOpen(true);
   };
 
-  // 초대한 사용자 권한 변경 핸들러
   const handleInvitationsPermissionChange = async (invitationId, value) => {
-    // let updatedItems;
     let res;
     let message = '';
     if (!value) return;
@@ -222,7 +170,6 @@ const ManagePage = () => {
       const confirmed = window.confirm('정말로 삭제하시겠습니까?');
       if (!confirmed) return;
       res = await deleteInvitationPermissions(profileId, invitationId);
-      // message = '초대한 사용자가 삭제되었습니다.';
     } else if (value && (value === 'EDITOR' || value === 'VIEWER')) {
       res = await putInvitationPermissions(profileId, invitationId, value);
       const permissionText = value === 'EDITOR' ? '편집 권한' : '보기 권한';
@@ -231,14 +178,13 @@ const ManagePage = () => {
       const confirmed = window.confirm('정말로 초대취소하시겠습니까?');
       if (!confirmed) return;
       res = await deleteInvitationCancel(profileId, invitationId);
-      // message = '초대가 취소되었습니다.';
     }
-    
+
     if (res && res.status === 200 && message) {
       setSuccessMessage(message);
       setIsSuccessModalOpen(true);
     }
-    fetchInvitations(profileId);
+    fetchAllData(profileId);
   };
 
   const handlePrivateRequests = async (obj, status) => {
@@ -253,441 +199,397 @@ const ManagePage = () => {
       fetchAllData(profileId);
     }
   };
-  // 433f95be-7dc1-47a5-a7b4-974fd6d628e3 6049230d-fc41-4cbd-8327-3a84260dc937 DENY
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       {!showScreen && <div className="blur-overlay"></div>}
       {showScreen ? (
-        <>
-          <section className="top-space-margin big-section pb-0 pt-5 md-pt-30px">
-            <div className="container">
-              <div
-                className="row align-items-center justify-content-center"
-                data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
+        <div className="manage-page-wrapper">
+          {/* 뒤로가기 버튼 */}
+          <button className="manage-back-button" onClick={handleGoBack}>
+            <FaArrowLeft />
+          </button>
+
+          {/* 배너 이미지 */}
+          <div className="manage-banner" style={{ backgroundImage: `url(${everlinkTop})` }}>
+            <div className="manage-banner-overlay">
+              <h1 className="manage-banner-title">초대 및 사용자 관리</h1>
+              <p className="manage-banner-subtitle">프로필에 접근할 수 있는 사용자를 관리하세요</p>
+            </div>
+          </div>
+
+          <div className="manage-content-container">
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "12px" }}>
+              <button
+                className="user-guide-trigger-btn"
+                onClick={() => setIsUserGuideModalOpen(true)}
+                style={{
+                  border: "none",
+                  background: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  boxShadow: "none",
+                  fontSize: "16px"
+                }}
               >
-                <div className="col-12 text-center position-relative page-title-extra-large">
-                  <img src={everlinkTop} className='h-350px sm-h-150px' style={{ width: '100%', objectFit: 'cover' }} alt="everlinkTop" />
-                </div>
-                <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
-              </div>
+                <FaQuestionCircle style={{ marginRight: 4 }} />
+                <span>이용가이드</span>
+              </button>
             </div>
-          </section>
-          <section className="cover-background py-5">
-            <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-12 col-xl-7 col-lg-8 col-md-10 text-center">
-                  <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-3 md-mb-4 sm-fs-20">
-                    초대 및 사용자 관리 페이지
-                  </h5>
-                  <h6 className="text-base-color fs-18 md-fs-16 fw-800 w-100 text-end pb-2">
-                    <span className='cursor-pointer' onClick={handleCopylink} role='button' aria-label='Copy link'>
-                      <FaLink className="me-2" />
-                      Copy link
-                    </span>
-                  </h6>
-                  <div className="d-inline-block w-100 newsletter-style-01 position-relative box-shadow mb-5">
-                    <div>
-                      <input
-                        className="input-large md-input-medium border-1 bg-white border-color-gray form-control"
-                        type="email"
-                        name="email"
-                        value={receiverEmail}
-                        placeholder="Invite Email"
-                        onChange={(e) => setReceiverEmail(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            handleInvitation(e);
-                          }
-                        }}
-                      />
-                      <input type="hidden" name="redirect" value="" />
-                      <Button
-                        className="btn btn-medium btn-base-color"
-                        onClick={handleInvitation}
-                      >
-                        초대하기
-                      </Button>
-                      <div className="form-results border-radius-4px mt-15px pt-10px pb-10px ps-15px pe-15px fs-15 w-100 text-center position-absolute d-none"></div>
-                    </div>
+            {/* 이메일로 초대하기 섹션 */}
+            <div className="manage-section manage-section-primary">
+              <div className="manage-section-header-with-guide">
+                <div className="manage-section-header">
+                  <div className="manage-section-icon">
+                    <FaEnvelope />
+                  </div>
+                  <div>
+                    <h2 className="manage-section-title">이메일로 초대하기</h2>
+                    <p className="manage-section-description">이메일 주소를 입력하여 프로필 접근 권한을 부여하세요</p>
                   </div>
                 </div>
               </div>
+              <form onSubmit={handleInvitation} className="invite-form">
+                <div className="invite-input-wrapper">
+                  <input
+                    type="email"
+                    className="invite-input-field"
+                    placeholder="이메일 주소를 입력하세요 (예: user@example.com)"
+                    value={receiverEmail}
+                    onChange={(e) => setReceiverEmail(e.target.value)}
+                  />
+                  <button type="submit" className="invite-submit-button">
+                    <FaEnvelope />
+                    <span>초대하기</span>
+                  </button>
+                </div>
+              </form>
+              
+              <button className="copy-link-btn" onClick={handleCopylink}>
+                <FaLink />
+                <span>프로필 링크 복사</span>
+              </button>
             </div>
-          </section>
-          <section className="py-0">
-            <div className="container pb-1">
-              <div className="row align-items-start">
-                <div className="col-lg-12 pe-50px md-pe-15px">
-                  <div className="row align-items-center">
-                    <div className="col-12">
-                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1 sm-fs-16">
-                        초대된 계정
-                      </h6>
 
-                      {invitations.length > 0 ? (
-                        <>
-                          {/* 데스크탑 테이블 */}
-                          <div className="d-none d-md-block">
-                            <div className="table-responsive">
-                              <table className="table invite-table md-fs-14">
-                                <thead>
-                                  <tr>
-                                    <th scope="col" className="fw-600">
-                                      이메일
-                                    </th>
-                                    <th scope="col" className="fw-600">
-                                      회원정보
-                                    </th>
-                                    <th scope="col" className="fw-600">
-                                      권한
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {invitations.map((invitation, index) => (
-                                    <tr key={invitation.invitationId}>
-                                      <td className="product-name">
-                                        <a className="text-dark-gray fw-500 d-block">
-                                          {isValidEmail(invitation.email) ? invitation.email : ''}
-                                        </a>
-                                      </td>
-                                      <td>
-                                        {invitation.memberDisplayName || ''}
-                                      </td>
-                                      <td>
-                                        {invitation.isConfirmed ? (
-                                          <div className="select">
-                                            <select
-                                              className="form-control select-invite"
-                                              name="scope"
-                                              value={invitation.permission}
-                                              onChange={(e) =>
-                                                handleInvitationsPermissionChange(
-                                                  invitation.invitationId,
-                                                  e.target.value
-                                                )
-                                              }
-                                            >
-                                              <option value="">선택하기</option>
-                                              <option value="EDITOR">편집 권한</option>
-                                              <option value="VIEWER">보기 권한</option>
-                                              <option value="DELETE">삭제</option>
-                                            </select>
-                                          </div>
-                                        ) : (
-                                          <div className="select">
-                                            <select
-                                              className="form-control select-invite"
-                                              name="scope"
-                                              value={invitation.permission}
-                                              onChange={(e) =>
-                                                handleInvitationsPermissionChange(
-                                                  invitation.invitationId,
-                                                  e.target.value
-                                                )
-                                              }
-                                            >
-                                              <option value="">
-                                                초대수락 대기중
-                                              </option>
-                                              <option value="CANCEL">초대취소</option>
-                                            </select>
-                                          </div>
-                                        )}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
+            {/* 초대된 계정 섹션 */}
+            <div className="manage-section manage-section-secondary">
+              <div className="manage-section-header">
+                <div className="manage-section-icon">
+                  <FaUserFriends />
+                </div>
+                <div>
+                  <h2 className="manage-section-title">초대된 계정</h2>
+                  <p className="manage-section-description">초대한 사용자의 권한을 관리하세요</p>
+                </div>
+              </div>
 
-                          {/* 모바일 카드 */}
-                          <div className="d-block d-md-none">
-                            {invitations.map((invitation, index) => (
-                              <div key={invitation.invitationId} className="card mb-3 border border-1 border-color-gray">
-                                <div className="card-body p-3">
-                                  <div className="row">
-                                                                         <div className="col-12 mb-2">
-                                       <strong className="fs-14 text-base-color">이메일:</strong>
-                                       <div className="text-dark-gray fw-500">
-                                         {isValidEmail(invitation.email) ? invitation.email : ''}
-                                       </div>
-                                     </div>
-                                     <div className="col-12 mb-2">
-                                       <strong className="fs-14 text-base-color">회원정보:</strong>
-                                       <div className="text-dark-gray">
-                                         {invitation.memberDisplayName || ''}
-                                       </div>
-                                     </div>
-                                    <div className="col-12">
-                                      <strong className="fs-14 text-base-color">권한:</strong>
-                                      <div className="mt-2">
-                                        {invitation.isConfirmed ? (
-                                          <select
-                                            className="form-control form-select"
-                                            name="scope"
-                                            value={invitation.permission}
-                                            onChange={(e) =>
-                                              handleInvitationsPermissionChange(
-                                                invitation.invitationId,
-                                                e.target.value
-                                              )
-                                            }
-                                          >
-                                            <option value="">선택하기</option>
-                                            <option value="EDITOR">편집 권한</option>
-                                            <option value="VIEWER">보기 권한</option>
-                                            <option value="DELETE">삭제</option>
-                                          </select>
-                                        ) : (
-                                          <select
-                                            className="form-control form-select"
-                                            name="scope"
-                                            value={invitation.permission}
-                                            onChange={(e) =>
-                                              handleInvitationsPermissionChange(
-                                                invitation.invitationId,
-                                                e.target.value
-                                              )
-                                            }
-                                          >
-                                            <option value="">
-                                              초대수락 대기중
-                                            </option>
-                                            <option value="CANCEL">초대취소</option>
-                                          </select>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+              {invitations.length > 0 ? (
+                <>
+                  {/* 데스크톱 테이블 */}
+                  <div className="manage-table-wrapper desktop-only">
+                    <table className="manage-table">
+                      <thead>
+                        <tr>
+                          <th>이메일</th>
+                          <th>회원정보</th>
+                          <th>권한</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {invitations.map((invitation) => (
+                          <tr key={invitation.invitationId}>
+                            <td>
+                              <div className="table-cell-with-icon">
+                                <FaEnvelope className="table-icon" />
+                                <span>{isValidEmail(invitation.email) ? invitation.email : '-'}</span>
                               </div>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <p>초대하신 사용자가 없습니다.</p>
-                      )}
-                    </div>
+                            </td>
+                            <td>{invitation.memberDisplayName || '-'}</td>
+                            <td>
+                              {invitation.isConfirmed ? (
+                                <select
+                                  className="manage-select"
+                                  value={invitation.permission}
+                                  onChange={(e) =>
+                                    handleInvitationsPermissionChange(
+                                      invitation.invitationId,
+                                      e.target.value
+                                    )
+                                  }
+                                >
+                                  <option value="">선택하기</option>
+                                  <option value="EDITOR">편집 권한</option>
+                                  <option value="VIEWER">보기 권한</option>
+                                  <option value="DELETE">삭제</option>
+                                </select>
+                              ) : (
+                                <select
+                                  className="manage-select"
+                                  value={invitation.permission}
+                                  onChange={(e) =>
+                                    handleInvitationsPermissionChange(
+                                      invitation.invitationId,
+                                      e.target.value
+                                    )
+                                  }
+                                >
+                                  <option value="">초대수락 대기중</option>
+                                  <option value="CANCEL">초대취소</option>
+                                </select>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section className="p-0">
-            <div className="container pb-3 md-pb-5">
-              <div className="row row-cols-1 row-cols-lg-2 row-cols-md-1 g-0overflow-hidden">
-                <div className="col contact-form-style-04">
-                  <div className="text-left">
-                    <form>
-                      <label className="text-dark-gray  fw-500 d-block text-start">
-                        일반 액세스
-                      </label>
-                      <div className="w-30 md-w-50">
-                        <Select
-                          className="md-input-medium p-0"
-                          options={options}
-                          onChange={handleOptionChange}
-                          placeholder="선택하세요"
-                          value={options.find(
-                            (option) => option.value === scope
+
+                  {/* 모바일 카드 */}
+                  <div className="mobile-only">
+                    {invitations.map((invitation) => (
+                      <div key={invitation.invitationId} className="manage-mobile-card">
+                        <div className="mobile-card-row">
+                          <span className="mobile-card-label">이메일</span>
+                          <span className="mobile-card-value">
+                            {isValidEmail(invitation.email) ? invitation.email : '-'}
+                          </span>
+                        </div>
+                        <div className="mobile-card-row">
+                          <span className="mobile-card-label">회원정보</span>
+                          <span className="mobile-card-value">
+                            {invitation.memberDisplayName || '-'}
+                          </span>
+                        </div>
+                        <div className="mobile-card-row">
+                          <span className="mobile-card-label">권한</span>
+                          {invitation.isConfirmed ? (
+                            <select
+                              className="manage-select mobile"
+                              value={invitation.permission}
+                              onChange={(e) =>
+                                handleInvitationsPermissionChange(
+                                  invitation.invitationId,
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value="">선택하기</option>
+                              <option value="EDITOR">편집 권한</option>
+                              <option value="VIEWER">보기 권한</option>
+                              <option value="DELETE">삭제</option>
+                            </select>
+                          ) : (
+                            <select
+                              className="manage-select mobile"
+                              value={invitation.permission}
+                              onChange={(e) =>
+                                handleInvitationsPermissionChange(
+                                  invitation.invitationId,
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value="">초대수락 대기중</option>
+                              <option value="CANCEL">초대취소</option>
+                            </select>
                           )}
-                          isSearchable={false}
-                          menuPlacement="auto"
-                        />
+                        </div>
                       </div>
-                    </form>
+                    ))}
                   </div>
+                </>
+              ) : (
+                <div className="manage-empty-state">
+                  <div className="empty-state-icon">
+                    <FaUserFriends />
+                  </div>
+                  <p className="empty-state-text">초대하신 사용자가 없습니다.</p>
+                  <p className="empty-state-subtext">위의 입력창을 통해 사용자를 초대해보세요</p>
+                </div>
+              )}
+            </div>
+
+            {/* 일반 액세스 섹션 */}
+            <div className="manage-section manage-section-tertiary">
+              <div className="manage-section-header">
+                <div className="manage-section-icon">
+                  <FaUserShield />
+                </div>
+                <div>
+                  <h2 className="manage-section-title">일반 액세스</h2>
+                  <p className="manage-section-description">프로필의 공개 범위를 설정하세요</p>
                 </div>
               </div>
+              <div className="access-control-wrapper">
+                <label className="access-control-label">
+                  공개 설정
+                </label>
+                <Select
+                  value={options.find((option) => option.value === scope)}
+                  onChange={handleOptionChange}
+                  options={options}
+                  className="access-select"
+                  classNamePrefix="select"
+                  placeholder="공개 범위 선택"
+                />
+                <p className="access-control-hint">
+                  {scope === 'PUBLIC' 
+                    ? '✓ 모든 사용자가 이 프로필을 볼 수 있습니다' 
+                    : '✓ 초대된 사용자만 이 프로필을 볼 수 있습니다'}
+                </p>
+              </div>
             </div>
-          </section>
-          <section className="pt-0 ">
-            <div className="container pb-3">
-              <div className="row align-items-start">
-                <div className="col-lg-12 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
-                  <div className="row align-items-center">
-                    <div className="col-12">
-                      <h6 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-1 sm-fs-16">
-                        비공개 계정 보기 요청
-                      </h6>
 
-                      {privateRequests.length > 0 ? (
-                        <>
-                          {/* 데스크탑 테이블 */}
-                          <div className="d-none d-md-block">
-                            <div className="table-responsive">
-                              <table className="table nondisclosure-table md-fs-14">
-                                <thead>
-                                  <tr>
-                                    <th scope="col" className="fw-600">
-                                      회원정보
-                                    </th>
-                                    <th scope="col" className="fw-600">
-                                      이름
-                                    </th>
-                                    <th scope="col" className="fw-600">
-                                      메모
-                                    </th>
-                                    <th scope="col" className="fw-600">
-                                      허용 여부
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {privateRequests.map((p, index) => (
-                                    <tr key={index}>
-                                      <td>
-                                        {p.memberDisplayName}
-                                        {p.memberEmail && isValidEmail(p.memberEmail) && (
-                                          <>
-                                            &nbsp;({p.memberEmail})
-                                          </>
-                                        )}
-                                      </td>
-                                      <td>{p.name}</td>
-                                      <td>
-                                        {p.memo ? p.memo.split('\n').map((line, index) => (
-                                          <span key={index}>
-                                            {line}
-                                            {index < p.memo.split('\n').length - 1 && <br />}
-                                          </span>
-                                        )) : ''}
-                                      </td>
-                                      <td>
-                                        <div className="d-flex">
-                                          <Link
-                                            className="btn btn-black btn-small w-40 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-3 me-3"
-                                            onClick={(e) =>
-                                              handlePrivateRequests(p, 'ALLOW')
-                                            }
-                                          >
-                                            허용
-                                          </Link>
-                                          <Link
-                                            className="btn btn-white btn-small w-40 border-radius-10px d-table d-lg-inline-block md-mx-auto mt-3 me-3"
-                                            onClick={(e) =>
-                                              handlePrivateRequests(p, 'DENY')
-                                            }
-                                          >
-                                            거부
-                                          </Link>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
+            {/* 비공개 계정 보기 요청 섹션 */}
+            <div className="manage-section manage-section-quaternary">
+              <div className="manage-section-header">
+                <div className="manage-section-icon">
+                  <FaUserLock />
+                </div>
+                <div>
+                  <h2 className="manage-section-title">비공개 계정 보기 요청</h2>
+                  <p className="manage-section-description">프로필 접근을 요청한 사용자를 관리하세요</p>
+                </div>
+              </div>
+
+              {privateRequests.length > 0 ? (
+                <>
+                  {/* 데스크톱 테이블 */}
+                  <div className="manage-table-wrapper desktop-only">
+                    <table className="manage-table">
+                      <thead>
+                        <tr>
+                          <th>회원정보</th>
+                          <th>메모</th>
+                          <th>허용 여부</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {privateRequests.map((p, index) => (
+                          <tr key={index}>
+                            <td>
+                              <div className="member-info-cell">
+                                <strong>{p.memberDisplayName}</strong>
+                                {p.memberEmail && isValidEmail(p.memberEmail) && (
+                                  <div className="member-email">{p.memberEmail}</div>
+                                )}
+                              </div>
+                            </td>
+                            <td>
+                              <div className="memo-cell">
+                                {p.memo
+                                  ? p.memo.split('\n').map((line, idx) => (
+                                      <span key={idx}>
+                                        {line}
+                                        {idx < p.memo.split('\n').length - 1 && <br />}
+                                      </span>
+                                    ))
+                                  : '-'}
+                              </div>
+                            </td>
+                            <td>
+                              <div className="action-buttons">
+                                <button
+                                  className="action-btn primary"
+                                  onClick={() => handlePrivateRequests(p, 'ALLOW')}
+                                >
+                                  허용
+                                </button>
+                                <button
+                                  className="action-btn secondary"
+                                  onClick={() => handlePrivateRequests(p, 'DENY')}
+                                >
+                                  거부
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* 모바일 카드 */}
+                  <div className="mobile-only">
+                    {privateRequests.map((p, index) => (
+                      <div key={index} className="manage-mobile-card">
+                        <div className="mobile-card-row">
+                          <span className="mobile-card-label">회원정보</span>
+                          <div className="mobile-card-value">
+                            <strong>{p.memberDisplayName}</strong>
+                            {p.memberEmail && isValidEmail(p.memberEmail) && (
+                              <div className="member-email-small">{p.memberEmail}</div>
+                            )}
+                          </div>
+                        </div>
+                        {p.memo && (
+                          <div className="mobile-card-row">
+                            <span className="mobile-card-label">메모</span>
+                            <div className="mobile-card-value memo">
+                              {p.memo.split('\n').map((line, idx) => (
+                                <span key={idx}>
+                                  {line}
+                                  {idx < p.memo.split('\n').length - 1 && <br />}
+                                </span>
+                              ))}
                             </div>
                           </div>
-
-                          {/* 모바일 카드 */}
-                          <div className="d-block d-md-none">
-                            {privateRequests.map((p, index) => (
-                              <div key={index} className="card mb-3 border border-1 border-color-gray">
-                                <div className="card-body p-3">
-                                  <div className="row">
-                                                                         <div className="col-12 mb-2">
-                                       <strong className="fs-14 text-base-color">회원정보:</strong>
-                                       <div className="text-dark-gray">
-                                         {p.memberDisplayName}
-                                         {p.memberEmail && isValidEmail(p.memberEmail) && (
-                                           <>
-                                             &nbsp;({p.memberEmail})
-                                           </>
-                                         )}
-                                       </div>
-                                     </div>
-                                    <div className="col-12 mb-2">
-                                      <strong className="fs-14 text-base-color">이름:</strong>
-                                      <div className="text-dark-gray">{p.name}</div>
-                                    </div>
-                                    {p.memo && (
-                                      <div className="col-12 mb-3">
-                                        <strong className="fs-14 text-base-color">메모:</strong>
-                                        <div className="text-dark-gray">
-                                          {p.memo.split('\n').map((line, index) => (
-                                            <span key={index}>
-                                              {line}
-                                              {index < p.memo.split('\n').length - 1 && <br />}
-                                            </span>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    )}
-                                    <div className="col-12">
-                                      <strong className="fs-14 text-base-color">허용 여부:</strong>
-                                      <div className="d-flex gap-2 mt-2">
-                                        <button
-                                          className="btn btn-black btn-small flex-fill border-radius-10px"
-                                          onClick={(e) =>
-                                            handlePrivateRequests(p, 'ALLOW')
-                                          }
-                                        >
-                                          허용
-                                        </button>
-                                        <button
-                                          className="btn btn-white btn-small flex-fill border-radius-10px"
-                                          onClick={(e) =>
-                                            handlePrivateRequests(p, 'DENY')
-                                          }
-                                        >
-                                          거부
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
+                        )}
+                        <div className="mobile-card-row">
+                          <span className="mobile-card-label">허용 여부</span>
+                          <div className="action-buttons mobile">
+                            <button
+                              className="action-btn primary"
+                              onClick={() => handlePrivateRequests(p, 'ALLOW')}
+                            >
+                              허용
+                            </button>
+                            <button
+                              className="action-btn secondary"
+                              onClick={() => handlePrivateRequests(p, 'DENY')}
+                            >
+                              거부
+                            </button>
                           </div>
-                        </>
-                      ) : (
-                        <p>비공개로 요청한 사용자가 없습니다.</p>
-                      )}
-                    </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+                </>
+              ) : (
+                <div className="manage-empty-state">
+                  <div className="empty-state-icon">
+                    <FaUserLock />
+                  </div>
+                  <p className="empty-state-text">비공개로 요청한 사용자가 없습니다.</p>
+                  <p className="empty-state-subtext">요청이 들어오면 여기에 표시됩니다</p>
                 </div>
-              </div>
+              )}
             </div>
-          </section>
-        </>
+          </div>
+        </div>
       ) : (
-        <>
-          <section className="top-space-margin big-section pb-0 pt-5 md-pt-10px">
-            <div className="container">
-              <div
-                className="row align-items-center justify-content-center"
-                data-anime='{ "el": "childs", "translateY": [-15, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
-              >
-                <div className="col-12 text-center position-relative page-title-extra-large">
-                  <img src={everlinkTop} alt="everlinkTop" />
-                </div>
-                <div className="col-12 breadcrumb breadcrumb-style-01 d-flex justify-content-center"></div>
-              </div>
-            </div>
-          </section>
-          <section className="cover-background py-5">
-            <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-12 col-xl-7 col-lg-8 col-md-10 text-center">
-                  <h5 className="text-dark-gray fw-600 w-100 lg-w-90 md-w-100 mx-auto ls-minus-2px mb-2  md-mb-5">
-                    접근 할 수 없습니다.
-                  </h5>
-                  <Button
-                    className="btn btn-large btn-base-color"
-                    onClick={() => navigate('/profile')}
-                  >
-                    돌아가기
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </section>
-        </>
+        <div className="manage-access-denied-wrapper">
+          <div className="manage-access-denied-card">
+            <div className="access-denied-icon">🔒</div>
+            <h3 className="access-denied-title">접근할 수 없습니다</h3>
+            <p className="access-denied-text">이 페이지에 접근할 권한이 없습니다.</p>
+            <button
+              className="access-denied-button"
+              onClick={() => navigate('/profile')}
+            >
+              돌아가기
+            </button>
+          </div>
+        </div>
       )}
+
+      {/* 초대 결과 모달 */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
@@ -696,16 +598,18 @@ const ManagePage = () => {
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
+                      <div className="mb-4" style={{ fontSize: '48px' }}>
+                        {!isError ? '✅' : '❌'}
+                      </div>
                       <h6 className="text-dark-gray fw-500 mb-15px fs-22">
                         {!isError
-                          ? '초대 메일 발송 하였습니다.'
-                          : '이메일 형식으로 다시 작성 해주세요.'}
+                          ? '초대 메일을 발송했습니다!'
+                          : '올바른 이메일 형식으로 입력해주세요'}
                       </h6>
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
-                      <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="action-button primary"
                         onClick={() => {
                           setIsModalOpen(false);
                           setIsError(false);
@@ -721,10 +625,9 @@ const ManagePage = () => {
           </div>
         </div>
       </Modal>
-      <Modal
-        isOpen={isModalCopyLinkOpen}
-        onClose={() => setIsModalCopyLinkOpen(false)}
-      >
+
+      {/* 링크 복사 모달 */}
+      <Modal isOpen={isModalCopyLinkOpen} onClose={() => setIsModalCopyLinkOpen(false)}>
         <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
@@ -732,17 +635,17 @@ const ManagePage = () => {
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
+                      <div className="mb-4" style={{ fontSize: '48px' }}>
+                        📋
+                      </div>
                       <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
-                        프로필 링크가 복사 되었습니다.
+                        프로필 링크가 복사되었습니다
                       </h6>
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
-                      <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
-                        onClick={() => {
-                          setIsModalCopyLinkOpen(false);
-                        }}
+                        className="action-button primary"
+                        onClick={() => setIsModalCopyLinkOpen(false)}
                       >
                         확인
                       </button>
@@ -754,11 +657,10 @@ const ManagePage = () => {
           </div>
         </div>
       </Modal>
-      <Modal
-        isOpen={isRequestModalOpen}
-        onClose={() => setIsRequestModalOpen(false)}
-      >
-        <div className="100">
+
+      {/* 요청 모달 */}
+      <Modal isOpen={isRequestModalOpen} onClose={() => setIsRequestModalOpen(false)}>
+        <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
               <div className="col-12">
@@ -767,32 +669,33 @@ const ManagePage = () => {
                     <div className="col-md-9 text-center">
                       {currentPermission === 'PERMISSION_DENIED_BUT_REQUESTED' ? (
                         <>
+                          <div className="mb-4" style={{ fontSize: '48px' }}>
+                            ⏳
+                          </div>
                           <h6 className="text-dark-gray fw-500 mb-15px fs-22">
-                            이미 요청된 프로필입니다.
+                            이미 요청된 프로필입니다
                           </h6>
-                          <p className="text-dark-gray mb-15px">
-                            초대 승인을 기다려주세요
-                          </p>
-                          <p className="text-dark-gray mb-15px">
-                            감사합니다.
-                          </p>
+                          <p className="text-dark-gray mb-15px">초대 승인을 기다려주세요</p>
+                          <p className="text-dark-gray mb-15px">감사합니다.</p>
                         </>
                       ) : (
-                        <h6 className="text-dark-gray fw-500 mb-15px fs-22">
-                          접근 할 수 없습니다.
-                        </h6>
+                        <>
+                          <div className="mb-4" style={{ fontSize: '48px' }}>
+                            🔒
+                          </div>
+                          <h6 className="text-dark-gray fw-500 mb-15px fs-22">
+                            접근할 수 없습니다
+                          </h6>
+                        </>
                       )}
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
-                      <input type="hidden" name="redirect" value="" />
-
-                      <Button
-                        radiusOn="radius-on"
-                        className="btn btn-base-color btn-large btn-box-shadow btn-round-edge me-1 w-50"
+                      <button
+                        className="action-button primary"
                         onClick={() => navigate('/profile')}
                       >
                         돌아가기
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -801,10 +704,9 @@ const ManagePage = () => {
           </div>
         </div>
       </Modal>
-      <Modal
-        isOpen={isSuccessModalOpen}
-        onClose={() => setIsSuccessModalOpen(false)}
-      >
+
+      {/* 성공 모달 */}
+      <Modal isOpen={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)}>
         <div className="w-100">
           <div className="modal-content p-0 rounded shadow-lg">
             <div className="row justify-content-center">
@@ -812,14 +714,16 @@ const ManagePage = () => {
                 <div className="p-10 sm-p-7 bg-white">
                   <div className="row justify-content-center">
                     <div className="col-md-9 text-center">
+                      <div className="mb-4" style={{ fontSize: '48px' }}>
+                        ✅
+                      </div>
                       <h6 className="text-dark-gray fw-500 mb-15px fs-22 sm-fs-16">
                         {successMessage}
                       </h6>
                     </div>
                     <div className="col-lg-12 text-center text-lg-center pt-3">
-                      <input type="hidden" name="redirect" value="" />
                       <button
-                        className="btn btn-white btn-large btn-box-shadow btn-round-edge submit me-1"
+                        className="action-button primary"
                         onClick={() => {
                           setIsSuccessModalOpen(false);
                           setSuccessMessage('');
@@ -835,6 +739,12 @@ const ManagePage = () => {
           </div>
         </div>
       </Modal>
+
+      {/* 이용 가이드 모달 */}
+      <UserGuideModal 
+        isOpen={isUserGuideModalOpen} 
+        onClose={() => setIsUserGuideModalOpen(false)} 
+      />
     </>
   );
 };
