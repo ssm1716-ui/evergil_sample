@@ -1,0 +1,45 @@
+/* ===================================
+   CSS Variables
+   프로젝트 전역 변수
+==================================== */
+
+:root {
+  /* Main Colors */
+  --base-color: #8FC5B7;
+  --base-color-dark: #7ab5a5;
+  --base-color-darker: #6ba393;
+  
+  /* Permission Colors */
+  --owner-color: #2E7D32;
+  --editor-color: #607D8B;
+  
+  /* Basic Colors */
+  --black: #000000;
+  --white: #ffffff;
+  
+  /* Bootstrap Colors */
+  --bs-purple: #6f42c1;
+  --bs-primary: #0d6efd;
+  --bs-success: #198754;
+  --bs-danger: #dc3545;
+  --bs-warning: #ffc107;
+  --bs-info: #0dcaf0;
+  --bs-secondary: #6c757d;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(143, 197, 183, 0.3);
+  --shadow-lg: 0 12px 32px rgba(143, 197, 183, 0.25);
+}

@@ -1,0 +1,384 @@
+/* ==========================================
+   Profile Page (My Profiles)
+   프로필 목록 페이지
+========================================== */
+
+
+/* Section */
+.profile-page-section {
+  padding: 120px 0 80px;
+  min-height: calc(100vh - 200px);
+}
+
+/* Header */
+.profile-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 48px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.profile-page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.profile-page-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Tabs */
+.profile-tabs-wrapper {
+  margin-bottom: 40px;
+}
+
+.profile-tabs {
+  display: inline-flex;
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 6px;
+  gap: 6px;
+}
+
+.profile-tab {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.profile-tab:hover {
+  color: #374151;
+}
+
+.profile-tab.active {
+  background: white;
+  color: var(--base-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Grid */
+.profile-grid-uniform {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.profile-card-wrapper {
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Card */
+.profile-card-uniform {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-card-uniform:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(143, 197, 183, 0.25);
+}
+
+/* Card Image */
+.profile-card-image-uniform {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.profile-card-image-uniform img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.profile-card-uniform:hover .profile-card-image-uniform img {
+  transform: scale(1.05);
+}
+
+/* Card Body */
+.profile-card-body-uniform {
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 120px;
+}
+
+.profile-card-header-uniform {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 28px;
+  padding-right: 24px;
+}
+
+.profile-card-name-uniform {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+/* Delete Button */
+.profile-delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 12px;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  z-index: 10;
+}
+
+.profile-delete-btn:hover {
+  color: #ef4444;
+  transform: scale(1.15);
+}
+
+/* Date */
+.profile-card-date-wrapper {
+  min-height: 42px;
+  display: block;
+}
+
+.profile-card-date-uniform {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.date-separator {
+  margin: 0 4px;
+}
+
+/* Badge */
+.profile-badge {
+  display: inline-block;
+  padding: 0 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.8;
+  width: fit-content;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-top: 4px;
+}
+
+.profile-badge.owner {
+  background: var(--owner-color);
+  color: white;
+}
+
+.profile-badge.editor {
+  background: var(--editor-color);
+  color: white;
+}
+
+.profile-card-uniform:hover .profile-badge {
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Empty State */
+.profile-empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-icon {
+  font-size: 36px;
+  color: #9ca3af;
+}
+
+.empty-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.empty-description {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 32px;
+}
+
+/* Loading */
+.profile-loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.profile-loading p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .profile-grid-uniform {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page-section {
+    padding: 80px 0 60px;
+  }
+
+  .profile-page-header {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 32px;
+  }
+
+  .profile-page-title {
+    font-size: 24px;
+  }
+
+  .profile-tabs-wrapper {
+    margin-bottom: 16px;
+  }
+
+  .profile-tabs {
+    width: 100%;
+    display: flex;
+  }
+
+  .profile-tab {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .profile-grid-uniform {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .profile-badge {
+    font-size: 10px;
+    padding: 0 8px;
+    line-height: 1.7;
+  }
+
+  .profile-card-body-uniform {
+    min-height: 110px;
+  }
+
+  .profile-card-date-wrapper {
+    min-height: 40px;
+  }
+
+  .profile-delete-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .profile-card-header-uniform {
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-page-section {
+    padding: 60px 0 40px;
+  }
+
+  .profile-grid-uniform {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .profile-card-body-uniform {
+    padding: 14px;
+    min-height: 100px;
+    gap: 5px;
+  }
+
+  .profile-card-name-uniform {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .profile-card-date-uniform {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .profile-card-date-wrapper {
+    min-height: 32px;
+  }
+
+  .profile-badge {
+    font-size: 9px;
+    padding: 0 7px;
+    line-height: 1.7;
+    border-radius: 4px;
+    margin-top: 3px;
+  }
+
+  .profile-card-header-uniform {
+    min-height: 20px;
+    padding-right: 18px;
+  }
+
+  .profile-delete-btn {
+    padding: 8px;
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,572 @@
+/* ================================================
+   Bridge Page Styles
+   ================================================ */
+
+/* 메인 컨테이너 */
+.bridge-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+}
+
+/* 메인 카드 */
+.bridge-main-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  padding: 3rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .bridge-main-card {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* 아이콘 스타일 */
+.bridge-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.bridge-icon-large {
+  width: 60px; /* 80px에서 60px로 축소 */
+  height: 60px;
+  color: #8FC5B7; /* 메인 색상으로 변경 */
+}
+
+/* 아이콘별 색상 */
+.icon-color-heart {
+  color: #ef4444 !important; /* 레드 */
+}
+
+.icon-color-qr {
+  color: #8FC5B7 !important; /* 메인 색상 */
+}
+
+.icon-color-cart {
+  color: #232323 !important; /* 블랙 */
+}
+
+.icon-color-users {
+  color: #3b82f6 !important; /* 블루 */
+}
+
+.icon-color-help {
+  color: #f59e0b !important; /* 앰버/오렌지 */
+}
+
+.icon-color-link {
+  color: #10b981 !important; /* 그린 */
+}
+
+.icon-color-heart-feature {
+  color: #ec4899 !important; /* 핑크 */
+}
+
+/* 제목 */
+.bridge-title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .bridge-title {
+    font-size: 24px;
+  }
+}
+
+/* 부제목 */
+.bridge-subtitle {
+  font-size: 18px;
+  color: #828282;
+  margin-bottom: 1.5rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 767px) {
+  .bridge-subtitle {
+    font-size: 16px;
+  }
+}
+
+/* 설명 텍스트 */
+.bridge-description {
+  font-size: 16px;
+  color: #232323;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 767px) {
+  .bridge-description {
+    font-size: 14px;
+  }
+}
+
+/* QR 스캔 버튼 영역 */
+.bridge-scan-section {
+  margin-bottom: 2.5rem;
+}
+
+.bridge-scan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem; /* 패딩 축소 */
+  font-size: 15px; /* 폰트 크기 축소 */
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .bridge-scan-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 14px;
+    width: 100%;
+    justify-content: center;
+    max-width: 260px; /* 모바일에서도 약간 작게 */
+  }
+}
+
+.bridge-scan-hint {
+  font-size: 14px;
+  color: #828282;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .bridge-scan-hint {
+    font-size: 13px;
+    padding: 0 1rem;
+  }
+}
+
+/* 구분선 */
+.bridge-divider {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.bridge-divider-line {
+  width: 100%;
+  height: 1px;
+  background-color: #e6e6e6;
+}
+
+.bridge-divider-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 0 1.5rem;
+  color: #828282;
+  font-size: 14px;
+}
+
+/* 구매 안내 카드 */
+.bridge-purchase-card {
+  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .bridge-purchase-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .bridge-purchase-card .gap-4 {
+    gap: 1.5rem !important;
+  }
+}
+
+.bridge-purchase-icon-wrapper {
+  background-color: #ffffff;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 767px) {
+  .bridge-purchase-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+  }
+}
+
+.bridge-purchase-icon {
+  width: 40px;
+  height: 40px;
+  color: #232323; /* 블랙으로 변경 */
+}
+
+@media (max-width: 767px) {
+  .bridge-purchase-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.bridge-purchase-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 0.5rem;
+}
+
+.bridge-purchase-text {
+  font-size: 16px;
+  color: #828282;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .bridge-purchase-title {
+    font-size: 17px;
+    line-height: 1.4;
+  }
+  .bridge-purchase-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+.bridge-purchase-btn-wrapper {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .bridge-purchase-btn-wrapper {
+    width: auto;
+  }
+}
+
+.bridge-purchase-btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .bridge-purchase-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 15px;
+  }
+}
+
+/* 도움말 카드 */
+.bridge-help-card {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 767px) {
+  .bridge-help-card {
+    padding: 1.25rem;
+  }
+}
+
+.bridge-help-card.clickable {
+  cursor: pointer;
+}
+
+.bridge-help-card.clickable:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.bridge-help-icon-wrapper {
+  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+  border-radius: 10px;
+  padding: 1rem;
+  display: inline-flex;
+}
+
+@media (max-width: 767px) {
+  .bridge-help-icon-wrapper {
+    padding: 0.75rem;
+  }
+}
+
+.bridge-help-icon {
+  width: 32px;
+  height: 32px;
+}
+
+@media (max-width: 767px) {
+  .bridge-help-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.bridge-help-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .bridge-help-card-title {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+}
+
+.bridge-help-card-text {
+  font-size: 14px;
+  color: #828282;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .bridge-help-card-text {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+/* 사용 안내 섹션 */
+.bridge-guide-section {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 767px) {
+  .bridge-guide-section {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.bridge-guide-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #232323;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bridge-guide-title::before,
+.bridge-guide-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e6e6e6);
+  margin: 0 1.5rem;
+}
+
+.bridge-guide-title::after {
+  background: linear-gradient(to left, transparent, #e6e6e6);
+}
+
+@media (max-width: 767px) {
+  .bridge-guide-title {
+    font-size: 20px;
+    margin-bottom: 2rem;
+  }
+  
+  .bridge-guide-title::before,
+  .bridge-guide-title::after {
+    margin: 0 1rem;
+  }
+}
+
+/* 단계 표시 */
+.bridge-step-number {
+  background-color: #8FC5B7; /* 메인 색상으로 변경 */
+  color: #ffffff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .bridge-step-number {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .bridge-step-number span {
+    font-size: 20px !important;
+  }
+}
+
+.bridge-step-number span {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.bridge-step-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .bridge-step-title {
+    font-size: 16px;
+  }
+}
+
+.bridge-step-text {
+  font-size: 14px;
+  color: #828282;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .bridge-step-text {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+/* 연결선 (데스크톱용) - 숨김 처리 */
+.bridge-step-connector {
+  display: none; /* 완전히 숨김 */
+}
+
+.bridge-connector-line {
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(to right, #8FC5B7, transparent); /* 메인 색상으로 변경 */
+}
+
+/* 특징 소개 섹션 */
+.bridge-features-section {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 767px) {
+  .bridge-features-section {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.bridge-feature-icon-wrapper {
+  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 767px) {
+  .bridge-feature-icon-wrapper {
+    padding: 1.5rem;
+  }
+}
+
+.bridge-feature-icon {
+  width: 48px;
+  height: 48px;
+}
+
+@media (max-width: 767px) {
+  .bridge-feature-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.bridge-feature-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .bridge-feature-title {
+    font-size: 16px;
+  }
+}
+
+.bridge-feature-text {
+  font-size: 14px;
+  color: #828282;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .bridge-feature-text {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}
+
+/* 여백 조정 */
+.bridge-spacing-top {
+  margin-top: 5rem; /* 3rem에서 5rem으로 증가 (약 80px) */
+  padding-top: 2rem; /* 추가 패딩 */
+}
+
+.bridge-spacing-bottom {
+  margin-bottom: 5rem;
+  padding-bottom: 3rem;
+}
+
+@media (max-width: 767px) {
+  .bridge-spacing-top {
+    margin-top: 3rem; /* 모바일에서도 충분한 여백 */
+    padding-top: 1.5rem;
+  }
+  .bridge-spacing-bottom {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* 반응형 그리드 갭 */
+.bridge-help-cards .col-12:first-child {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .bridge-help-cards .col-12:first-child {
+    margin-bottom: 0;
+  }
+}

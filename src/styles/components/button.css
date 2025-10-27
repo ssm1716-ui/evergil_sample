@@ -1,0 +1,113 @@
+/* ==========================================
+   Button Components
+   공통 버튼 스타일
+========================================== */
+
+/* Action Button */
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, var(--base-color), var(--base-color-dark));
+  color: white;
+  box-shadow: 0 4px 12px rgba(143, 197, 183, 0.3);
+  border: none;
+}
+
+.action-btn.primary:hover {
+  background: linear-gradient(135deg, var(--base-color-dark), var(--base-color-darker));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(143, 197, 183, 0.45);
+}
+
+.action-btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(143, 197, 183, 0.3);
+}
+
+.action-btn.secondary {
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+}
+
+.action-btn.secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.action-btn.delete-confirm {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.action-btn.delete-confirm:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+/* 프로필 생성 버튼 */
+.btn-create-profile {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--base-color), var(--base-color-dark));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(143, 197, 183, 0.3);
+  white-space: nowrap;
+}
+
+.btn-create-profile:hover {
+  background: linear-gradient(135deg, var(--base-color-dark), var(--base-color-darker));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(143, 197, 183, 0.45);
+}
+
+.btn-create-profile:active {
+  transform: translateY(0);
+}
+
+/* 모바일 버튼 래퍼 */
+.btn-create-profile-mobile-wrapper {
+  display: none;
+  margin-bottom: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .btn-create-profile-desktop {
+    display: none;
+  }
+
+  .btn-create-profile-mobile-wrapper {
+    display: block;
+    width: 100%;
+  }
+
+  .btn-create-profile-mobile {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-create-profile-mobile {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+}

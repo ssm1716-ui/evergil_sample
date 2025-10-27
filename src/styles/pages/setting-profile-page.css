@@ -1,0 +1,317 @@
+/* ==========================================
+   Setting Profile Page
+   프로필 설정 페이지 (생성/편집)
+========================================== */
+
+
+/* Section */
+.setting-profile-section {
+  padding-top: 120px;
+  padding-bottom: 80px;
+}
+
+/* Form Container */
+.setting-profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Header */
+.setting-profile-header {
+  margin-bottom: 40px;
+}
+
+.setting-profile-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.setting-profile-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* Progress Bar */
+.setting-profile-progress {
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.progress-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.progress-step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #e5e7eb;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .progress-step-circle {
+  border-color: var(--base-color);
+  background: var(--base-color);
+  color: white;
+}
+
+.progress-step.completed .progress-step-circle {
+  border-color: var(--base-color);
+  background: var(--base-color);
+  color: white;
+}
+
+.progress-step-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.progress-step.active .progress-step-label {
+  color: var(--base-color);
+  font-weight: 600;
+}
+
+/* Form Section */
+.setting-form-section {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.setting-form-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+/* Form Group */
+.setting-form-group {
+  margin-bottom: 24px;
+}
+
+.setting-form-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.setting-form-label.required::after {
+  content: "*";
+  color: #ef4444;
+  margin-left: 4px;
+}
+
+.setting-form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.setting-form-input:focus {
+  outline: none;
+  border-color: var(--base-color);
+  box-shadow: 0 0 0 3px rgba(143, 197, 183, 0.1);
+}
+
+.setting-form-input.error {
+  border-color: #ef4444;
+}
+
+.setting-form-error {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.setting-form-helper {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* Image Upload */
+.setting-image-upload {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.setting-image-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.setting-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.setting-image-placeholder {
+  font-size: 48px;
+  color: #d1d5db;
+}
+
+.setting-image-actions {
+  flex: 1;
+}
+
+.setting-upload-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: white;
+  border: 2px solid var(--base-color);
+  color: var(--base-color);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.setting-upload-button:hover {
+  background: var(--base-color);
+  color: white;
+}
+
+/* Date Picker */
+.setting-date-group {
+  display: flex;
+  gap: 16px;
+}
+
+.setting-date-input {
+  flex: 1;
+}
+
+/* Actions */
+.setting-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.setting-prev-button,
+.setting-next-button,
+.setting-submit-button {
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.setting-prev-button {
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+}
+
+.setting-prev-button:hover {
+  background: #f9fafb;
+}
+
+.setting-next-button,
+.setting-submit-button {
+  background: var(--base-color);
+  color: white;
+  border: none;
+}
+
+.setting-next-button:hover,
+.setting-submit-button:hover {
+  background: var(--base-color-dark);
+  transform: translateY(-2px);
+}
+
+.setting-next-button:disabled,
+.setting-submit-button:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .setting-profile-section {
+    padding-top: 80px;
+    padding-bottom: 60px;
+  }
+
+  .setting-profile-title {
+    font-size: 24px;
+  }
+
+  .setting-form-section {
+    padding: 24px;
+  }
+
+  .setting-image-upload {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .setting-date-group {
+    flex-direction: column;
+  }
+
+  .setting-actions {
+    flex-direction: column;
+  }
+
+  .setting-prev-button,
+  .setting-next-button,
+  .setting-submit-button {
+    width: 100%;
+  }
+
+  .progress-step-label {
+    font-size: 11px;
+  }
+
+  .progress-step-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
