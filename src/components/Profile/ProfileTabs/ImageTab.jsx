@@ -183,7 +183,6 @@ const ImageTab = ({
         onAfterOpen={handleGalleryOpen}
         onClose={handleGalleryClose}
         onInit={pageMode === 'edit' ? addCustomButtons : undefined}
-        ref={lgRef}
         mobileSettings={{ controls: true, showCloseIcon: true }}
       >
         <div className="gallery-grid">

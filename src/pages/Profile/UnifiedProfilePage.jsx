@@ -28,6 +28,7 @@ import ProfileHeader from '@/components/Profile/ProfileInfo/ProfileHeader';
 import ProfileDescription from '@/components/Profile/ProfileInfo/ProfileDescription';
 import UploadOverlay from '@/components/Profile/ProfileActions/UploadOverlay';
 import LoadingScreen from '@/components/Profile/ProfileActions/LoadingScreen';
+import PrivateProfileModals from '@/components/Profile/Modals/PrivateProfileModals';
 
 import {
   getSelectProfile,
@@ -172,6 +173,30 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
     currentPermission,
   } = useProfilePermission(profileId, { shouldRedirect: false, nickname });
 
+  useEffect(() => {
+
+    // currentPermission만으로 모달 제어
+    if (!currentPermission) return; // currentPermission이 아직 로드되지 않았으면 종료
+
+    // 로그인 필요 상태
+    if (currentPermission === 'NEED_TO_LOGIN' || currentPermission === 'NOT_LOGGED_IN') {
+      setIsLoginModalOpen(true);
+      setIsRequestModalOpen(false);
+      return;
+    }
+
+    // 권한 거부 상태
+    if (currentPermission === 'PERMISSION_DENIED') {
+      setIsLoginModalOpen(false);
+      setIsRequestModalOpen(true);
+      return;
+    }
+
+    // 그 외 모든 경우 (접근 가능 상태)
+    setIsLoginModalOpen(false);
+    setIsRequestModalOpen(false);
+  }, [currentPermission, isAuthenticated, setIsLoginModalOpen, setIsRequestModalOpen]);
+
   const handleSearchLetters = useCallback(async (searchValue) => {
     if (!profileId) return;
     setIsSearching(true);
@@ -257,38 +282,44 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
   }, [nickname, navigate]);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (!profileId) return;
-      try {
-        const res = await getSelectProfile(profileId);
-        if (res.status === 200) {
-          const { profile, extension, result } = res.data.data;
-          if (result === 'PROFILE_INACTIVE') {
-            navigate('/error-profile-inactive');
-            return;
-          }
-          setResult(result);
-          setProfile(profile);
-          setContent(profile.description || '');
-          if (extension) {
-            if (pageMode === 'view') {
-              setIsBookmarks(extension.isBookmarked);
-            }
-            const isOwnerOrEditor = result === 'PUBLIC_PROFILE_OWNER' || 
-                                    result === 'YOU_HAVE_OWNER_PERMISSION' ||
-                                    result === 'PUBLIC_PROFILE_EDITOR' || 
-                                    result === 'YOU_HAVE_EDITOR_PERMISSION';
-            setHasFamilyTree(isOwnerOrEditor || extension.hasFamilyTree);
-          }
+  const fetchProfile = async () => {
+    if (!profileId) return;
+    try {
+      const res = await getSelectProfile(profileId);
+      if (res.status === 200) {
+        const { profile: fetchedProfile, extension, result } = res.data.data;
+        
+        if (result === 'PROFILE_INACTIVE') {
+          navigate('/error-profile-inactive');
+          return;
         }
-      } catch (error) {
-        console.error(error);
+        
+        setResult(result);
+        setProfile(fetchedProfile);  // ⬅️ 여기서 profile 설정
+        setContent(fetchedProfile.description || '');
+        
+        if (extension) {
+          if (pageMode === 'view') {
+            setIsBookmarks(extension.isBookmarked);
+          }
+          const isOwnerOrEditor = result === 'PUBLIC_PROFILE_OWNER' || 
+                                  result === 'YOU_HAVE_OWNER_PERMISSION' ||
+                                  result === 'PUBLIC_PROFILE_EDITOR' || 
+                                  result === 'YOU_HAVE_EDITOR_PERMISSION';
+          setHasFamilyTree(isOwnerOrEditor || extension.hasFamilyTree);
+        }
       }
-    };
-    if (showScreen && profileId) {
-      fetchProfile();
+    } catch (error) {
+      console.error('프로필 로딩 실패:', error);
     }
-  }, [profileId, showScreen, navigate, location.pathname]);
+  };
+  
+  // 🔥 showScreen 조건 제거 - 항상 프로필 데이터를 불러옵니다
+  if (profileId) {
+    fetchProfile();
+  }
+}, [profileId, navigate, location.pathname]);  // showScreen 제거
+
 
   useEffect(() => {
     if (hasFamilyTree) {
@@ -539,13 +570,21 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
   };
 
   const saveDescription = async (content) => {
-    if (!profileId) return;
-    try {
-      await putProfileDescription(profileId, { description: content });
-    } catch (error) {
-      console.error('저장 중 오류 발생:', error);
+  if (!profileId) return;
+  try {
+    await putProfileDescription(profileId, { description: content });
+    
+    // 🔥 저장 후 프로필 데이터 다시 불러오기
+    const res = await getSelectProfile(profileId);
+    if (res.status === 200) {
+      const { profile } = res.data.data;
+      setProfile(profile);
+      setContent(profile.description || '');
     }
-  };
+  } catch (error) {
+    console.error('저장 중 오류 발생:', error);
+  }
+};
 
   const handleBookmarkToggle = async (e) => {
     e.preventDefault();
@@ -905,9 +944,29 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
     document.body.appendChild(fileInput);
     fileInput.click();
   };
+  const privateModals = (
+    <PrivateProfileModals
+      isLoginModalOpen={isLoginModalOpen}
+      setIsLoginModalOpen={setIsLoginModalOpen}
+      isRequestModalOpen={isRequestModalOpen}
+      setIsRequestModalOpen={setIsRequestModalOpen}
+      isRequestCompletedModalOpen={isRequestCompletedModalOpen}
+      setIsRequestCompletedModalOpen={setIsRequestCompletedModalOpen}
+      currentPermission={currentPermission}
+      formRequestPrivateProfile={formRequestPrivateProfile}
+      handleFormRequestPrivateProfileChange={handleFormRequestPrivateProfileChange}
+      handleRequestPrivateProfile={handleRequestPrivateProfile}
+      handleLoginModalOpen={handleLoginModalOpen}
+    />
+  );
 
   if (pageMode === 'loading' || !profileId) {
-    return <LoadingScreen />;
+    return (
+      <>
+        {privateModals}
+        <LoadingScreen />
+      </>
+    );
   }
 
   const isOwner = result === 'PUBLIC_PROFILE_OWNER' || result === 'YOU_HAVE_OWNER_PERMISSION';
@@ -915,11 +974,10 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
 
   return (
     <>
+    {privateModals}
+    
+    {/* 로그인 모달 */}
       {!showScreen && <div className="blur-overlay"></div>}
-      
-      {/* 배경 헤더 & 프로필 */}
-     {!showScreen && <div className="blur-overlay"></div>}
-  
       <ProfileHeader
         profile={profile}
         pageMode={pageMode}
@@ -1051,29 +1109,12 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
         isProfileDeleteConfirmOpen={isProfileDeleteConfirmOpen}
         onProfileDeleteConfirmClose={() => setIsProfileDeleteConfirmOpen(false)}
         onProfileDeleteConfirm={handleProfileDelete}
-        
         isBackgroundDeleteConfirmOpen={isBackgroundDeleteConfirmOpen}
         onBackgroundDeleteConfirmClose={() => setIsBackgroundDeleteConfirmOpen(false)}
         onBackgroundDeleteConfirm={handleBackgroundDelete}
-        
         isImageDeleteConfirmOpen={isImageDeleteConfirmOpen}
         onImageDeleteConfirmClose={() => setIsImageDeleteConfirmOpen(false)}
         onImageDeleteConfirm={() => handleDelete(deleteImageId)}
-        
-        isLoginModalOpen={isLoginModalOpen}
-        onLoginModalClose={() => setIsLoginModalOpen(false)}
-        onLoginConfirm={handleLoginModalOpen}
-        
-        isRequestModalOpen={isRequestModalOpen}
-        onRequestModalClose={() => setIsRequestModalOpen(false)}
-        formRequestPrivateProfile={formRequestPrivateProfile}
-        onFormRequestChange={handleFormRequestPrivateProfileChange}
-        onRequestPrivateProfile={handleRequestPrivateProfile}
-        currentPermission={currentPermission}
-        
-        isRequestCompletedModalOpen={isRequestCompletedModalOpen}
-        onRequestCompletedModalClose={() => setIsRequestCompletedModalOpen(false)}
-        
         isUploading={isUploading}
       />
 

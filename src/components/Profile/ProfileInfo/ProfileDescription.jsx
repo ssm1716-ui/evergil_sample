@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -40,101 +40,66 @@ const ProfileDescription = ({
   profileNickname,
   onBlur,
   profile,
-  saveDescription, // 🔥 추가: 저장 함수 직접 받기
+  saveDescription,
 }) => {
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [tempContent, setTempContent] = useState(content || '');
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const quillEditRef = useRef(null);      // Edit 모드 에디터
+  const quillEditViewRef = useRef(null);  // Edit 모드 표시
+  const quillViewRef = useRef(null);      // View 모드
+
   const MAX_CONTENT_LENGTH = 500;
   const PREVIEW_LENGTH = 150;
 
-  // 편집 권한 체크 (pageMode로 이미 권한 판단됨)
   const canEdit = pageMode === 'edit';
 
-  // HTML 태그를 제거하고 텍스트 길이 계산
   const getTextLength = (html) => {
     if (!html) return 0;
     const text = html.replace(/<[^>]*>?/gm, '');
     return text.length;
   };
 
-  // 텍스트만 추출
   const getPlainText = (html) => {
     if (!html) return '';
     return html.replace(/<[^>]*>?/gm, '');
   };
 
-  // content가 변경되면 tempContent도 업데이트
   useEffect(() => {
     setTempContent(content || '');
   }, [content]);
 
-  // 소개글 영역 클릭 핸들러
   const handleDescriptionClick = () => {
-    console.log('=== 클릭 이벤트 발생 ===');
-    console.log('pageMode:', pageMode);
-    console.log('isOwner:', isOwner);
-    console.log('isEditor:', isEditor);
-    console.log('canEdit:', canEdit);
-    console.log('isEditingBio:', isEditingBio);
-    console.log('========================');
-    
     if (canEdit && !isEditingBio) {
-      console.log('에디터 열기!');
       setTempContent(content || '');
       setIsEditingBio(true);
-    } else {
-      console.log('조건 미충족:', { canEdit, isEditingBio });
     }
   };
 
-  // 에디터 내용 변경 핸들러
   const handleEditorChange = (value, delta, source, editor) => {
-    // ReactQuill editor 객체에서 순수 텍스트 길이 가져오기
     const textContent = editor.getText();
-    const textLength = textContent.length - 1; // 마지막 개행문자 제거
-    
-    console.log('현재 텍스트 길이:', textLength, '/ 최대:', MAX_CONTENT_LENGTH);
+    const textLength = textContent.length - 1;
     
     if (textLength <= MAX_CONTENT_LENGTH) {
       setTempContent(value);
     } else {
-      // 500자 초과시 이전 내용 유지
-      console.log('500자 초과! 입력 제한됨');
-      // 현재 내용을 500자로 자르기
       const trimmedText = textContent.substring(0, MAX_CONTENT_LENGTH);
       editor.setText(trimmedText);
     }
   };
 
-  // 저장 핸들러
   const handleSave = async () => {
-    console.log('=== 저장 버튼 클릭 ===');
-    console.log('tempContent:', tempContent);
-    console.log('saveDescription 함수 존재?', !!saveDescription);
-    
-    // 1. 부모 content state 업데이트
     setContent(tempContent);
-    
-    // 2. 에디터 닫기
     setIsEditingBio(false);
     
-    // 3. API 저장 - tempContent를 직접 전달
     if (tempContent.trim() !== '' && saveDescription) {
       try {
-        console.log('저장 시작...');
         await saveDescription(tempContent);
-        console.log('저장 완료!');
       } catch (error) {
         console.error('저장 중 오류:', error);
         alert('저장 중 오류가 발생했습니다: ' + error.message);
       }
-    } else {
-      console.log('저장 조건 불충족:', { 
-        contentEmpty: tempContent.trim() === '', 
-        noSaveFunction: !saveDescription 
-      });
     }
   };
 
@@ -142,19 +107,18 @@ const ProfileDescription = ({
   const hasContent = plainText.trim().length > 0;
   const shouldShowExpandButton = plainText.length > PREVIEW_LENGTH;
 
-  const hasProfileDates = profile.birthday || profile.deathDate;
-
   // Edit 모드 + 에디터 활성화 상태
   if (pageMode === 'edit' && isEditingBio) {
     const currentLength = getTextLength(tempContent);
     
     return (
-      <section className={`pb-0 description-section-edit ${!hasProfileDates ? 'no-dates' : ''}`}>
+      <section className="pb-0 description-section-edit">
         <div className="container">
           <div className="row d-flex flex-column">
             <div className="xs-mt-25px d-flex justify-content-center">
               <div className="description-editor-container" style={{ width: '100%' }}>
                 <ReactQuill
+                  ref={quillEditRef}
                   theme="snow"
                   value={tempContent}
                   onChange={handleEditorChange}
@@ -189,7 +153,7 @@ const ProfileDescription = ({
   // Edit 모드 + 일반 표시 상태
   if (pageMode === 'edit') {
     return (
-      <section className={`pb-5 description-section-view ${!hasProfileDates ? 'no-dates' : ''}`}>
+      <section className="pb-5 description-section-view">
         <div className="container">
           <div
             className="description-clickable"
@@ -218,6 +182,7 @@ const ProfileDescription = ({
                   <>
                     <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px custom-quill-wrapper">
                       <ReactQuill
+                        ref={quillEditViewRef}
                         className="w-100"
                         value={content || profile.description}
                         readOnly={true}
@@ -256,52 +221,62 @@ const ProfileDescription = ({
     );
   }
 
-  // View 모드 - 읽기 전용, 내용이 있을 때만 표시
-  if (pageMode === 'view' && hasContent) {
-    return (
-       <section className={`pb-5 description-section-view ${!hasProfileDates ? 'no-dates' : ''}`}>
-        <div className="container">
-          <div className="description-content">
-            {shouldShowExpandButton && !isExpanded ? (
-              <>
-                <div className="description-preview">
-                  {plainText.substring(0, PREVIEW_LENGTH)}...
-                </div>
-                <button 
-                  className="description-expand-button"
-                  onClick={() => setIsExpanded(true)}
-                >
-                  더보기
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px custom-quill-wrapper">
-                  <ReactQuill
-                    className="w-100"
-                    value={content || profile.description}
-                    readOnly={true}
-                    theme="snow"
-                    modules={{ toolbar: false }}
-                  />
-                </div>
-                {shouldShowExpandButton && (
+  // View 모드 - 읽기 전용
+  // 🔥 수정: 내용이 없어도 최소 공간 유지
+  if (pageMode === 'view') {
+    if (hasContent) {
+      return (
+        <section className="pb-5 description-section-view">
+          <div className="container">
+            <div className="description-content">
+              {shouldShowExpandButton && !isExpanded ? (
+                <>
+                  <div className="description-preview">
+                    {plainText.substring(0, PREVIEW_LENGTH)}...
+                  </div>
                   <button 
                     className="description-expand-button"
-                    onClick={() => setIsExpanded(false)}
+                    onClick={() => setIsExpanded(true)}
                   >
-                    접기
+                    더보기
                   </button>
-                )}
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <div className="col col-sm-12 offset-md-0 fs-20 md-ps-25px sm-ps-0 sm-mt-20px custom-quill-wrapper">
+                    <ReactQuill
+                      ref={quillViewRef}
+                      className="w-100"
+                      value={content || profile.description}
+                      readOnly={true}
+                      theme="snow"
+                      modules={{ toolbar: false }}
+                    />
+                  </div>
+                  {shouldShowExpandButton && (
+                    <button 
+                      className="description-expand-button"
+                      onClick={() => setIsExpanded(false)}
+                    >
+                      접기
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
-    );
+        </section>
+      );
+    } else {
+      // 🔥 추모글 없어도 최소 공간 확보 (버튼이 이미지와 겹치지 않도록)
+      return (
+        <section className="pb-5 description-section-view" style={{ minHeight: '50px' }}>
+          {/* 빈 공간 유지 */}
+        </section>
+      );
+    }
   }
 
-  // View 모드에서 내용 없으면 아무것도 렌더링하지 않음
   return null;
 };
 

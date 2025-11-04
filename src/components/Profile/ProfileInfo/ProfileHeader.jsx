@@ -124,226 +124,206 @@ const ProfileHeader = ({
                 </h6>
               </div>
 
-            {/* 액션 버튼들 - 반응형 개선 */}
-            {showScreen && (
-            <div
-                className="row position-absolute md-position-initial end-0 z-index-1 pe-1"
-                style={{
-                // 날짜 둘 다 있을 때: -110px
-                // 날짜 하나만 있거나 없을 때: -145px
-                bottom: profile.birthday && profile.deathDate ? '-110px' : '-145px'
-                }}
-            >
-                {/* 반응형 스타일 추가 */}
-                <style>
-                {`
-                    /* PC & 태블릿 - 우측 정렬 */
-                    .button-container-responsive {
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    gap: 8px;
-                    justify-content: flex-end;
-                    max-width: 100%;
-                    }
-                    
-                    /* 작은 모바일 (576px 이하) - 2개씩 2줄, 중앙 정렬 */
-                    @media (max-width: 576px) {
-                    .button-container-responsive {
-                        justify-content: center !important;
-                    }
-                    .button-container-responsive > * {
-                        width: calc(50% - 4px) !important;
-                        min-width: calc(50% - 4px) !important;
-                        flex: 0 0 calc(50% - 4px) !important;
-                    }
-                    /* 날짜 없을 때 버튼 위치 추가 조정 */
-                    .row.position-absolute.no-dates {
-                        bottom: -170px !important;
-                    }
-                    .row.position-absolute.has-dates {
-                        bottom: -150px !important;
-                    }
-                    }
-                    
-                    /* 중간 크기 (577px~780px) - 2개씩 2줄, 중앙 정렬 */
-                    @media (min-width: 577px) and (max-width: 780px) {
-                    .button-container-responsive {
-                        justify-content: center !important;
-                    }
-                    .button-container-responsive > * {
-                        width: calc(50% - 4px) !important;
-                        min-width: calc(50% - 4px) !important;
-                        flex: 0 0 calc(50% - 4px) !important;
-                        max-width: 200px !important;
-                    }
-                    /* 날짜 없을 때 버튼 위치 추가 조정 */
-                    .row.position-absolute.no-dates {
-                        bottom: -150px !important;
-                    }
-                    .row.position-absolute.has-dates {
-                        bottom: -130px !important;
-                    }
-                    }
-                    
-                    /* 태블릿 (781px~991px) - 4개 1줄, 중앙 정렬 */
-                    @media (min-width: 781px) and (max-width: 991px) {
-                    .button-container-responsive {
-                        justify-content: center !important;
-                    }
-                    .button-container-responsive > * {
-                        width: 110px !important;
-                        min-width: 110px !important;
-                        padding: 8px 12px !important;
-                        font-size: 13px !important;
-                    }
-                    .button-container-responsive span {
-                        display: inline !important;
-                    }
-                    }
-                `}
-                </style>
-
-                <div 
-                className={`button-container-responsive xs-mt-25px sm-px-20px py-lg-0 py-md-4 ${
-                    profile.birthday && profile.deathDate ? 'has-dates' : 'no-dates'
-                }`}
+              {/* 액션 버튼들 - 반응형 개선 */}
+              {showScreen && (
+                <div
+                  className="row position-absolute md-position-initial end-0 z-index-1 pe-1"
+                  style={{
+                    bottom: '-110px'
+                  }}
                 >
-                {/* 공유하기 버튼 */}
-                <WebShareButton />
-
-                {/* Edit 모드 버튼들 */}
-                {pageMode === 'edit' && isOwner && (
-                    <>
-                    {/* 초대하기 */}
-                    <Link
-                        to={`/profile/manage-profile/${profileId}`}
-                        className="btn btn-sm d-flex align-items-center gap-2"
-                        style={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#374151',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                        textDecoration: 'none',
-                        width: '120px',
-                        justifyContent: 'center'
-                        }}
-                    >
-                        <i className="feather icon-feather-users" style={{ fontSize: '16px' }}></i>
-                        <span>초대하기</span>
-                    </Link>
-
-                    {/* 프로필 설정 */}
-                    <Link
-                        to={`/profile/setting-profile/${profileId}`}
-                        className="btn btn-sm d-flex align-items-center gap-2"
-                        style={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#374151',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                        textDecoration: 'none',
-                        width: '120px',
-                        justifyContent: 'center'
-                        }}
-                    >
-                        <i className="feather icon-feather-settings" style={{ fontSize: '16px' }}></i>
-                        <span>프로필 설정</span>
-                    </Link>
-
-                    {/* 미리보기 */}
-                    <Link
-                        to={
-                        profileNickname
-                            ? `/${profileNickname}/preview`
-                            : `/profile/preview/${profileId}`
+                  {/* 반응형 스타일 추가 */}
+                  <style>
+                    {`
+                      /* PC & 태블릿 - 우측 정렬 */
+                      .button-container-responsive {
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        gap: 8px;
+                        justify-content: flex-end;
+                        max-width: 100%;
+                      }
+                      
+                      /* 작은 모바일 (576px 이하) - 2개씩 2줄, 중앙 정렬 */
+                      @media (max-width: 576px) {
+                        .button-container-responsive {
+                          justify-content: center !important;
                         }
+                        .button-container-responsive > * {
+                          width: calc(50% - 4px) !important;
+                          min-width: calc(50% - 4px) !important;
+                          flex: 0 0 calc(50% - 4px) !important;
+                        }
+                      }
+                      
+                      /* 중간 크기 (577px~780px) - 2개씩 2줄, 중앙 정렬 */
+                      @media (min-width: 577px) and (max-width: 780px) {
+                        .button-container-responsive {
+                          justify-content: center !important;
+                        }
+                        .button-container-responsive > * {
+                          width: calc(50% - 4px) !important;
+                          min-width: calc(50% - 4px) !important;
+                          flex: 0 0 calc(50% - 4px) !important;
+                          max-width: 200px !important;
+                        }
+                      }
+                      
+                      /* 태블릿 (781px~991px) - 4개 1줄, 중앙 정렬 */
+                      @media (min-width: 781px) and (max-width: 991px) {
+                        .button-container-responsive {
+                          justify-content: center !important;
+                        }
+                        .button-container-responsive > * {
+                          width: 110px !important;
+                          min-width: 110px !important;
+                          padding: 8px 12px !important;
+                          font-size: 13px !important;
+                        }
+                        .button-container-responsive span {
+                          display: inline !important;
+                        }
+                      }
+                    `}
+                  </style>
+
+                  <div className="button-container-responsive xs-mt-25px sm-px-20px py-lg-0 py-md-4">
+                    {/* 공유하기 버튼 */}
+                    <WebShareButton />
+
+                    {/* Edit 모드 버튼들 */}
+                    {pageMode === 'edit' && isOwner && (
+                      <>
+                        {/* 초대하기 */}
+                        <Link
+                          to={`/profile/manage-profile/${profileId}`}
+                          className="btn btn-sm d-flex align-items-center gap-2"
+                          style={{
+                            backgroundColor: 'white',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            padding: '8px 16px',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: '#374151',
+                            whiteSpace: 'nowrap',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                            textDecoration: 'none',
+                            width: '120px',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          <i className="feather icon-feather-users" style={{ fontSize: '16px' }}></i>
+                          <span>초대하기</span>
+                        </Link>
+
+                        {/* 프로필 설정 */}
+                        <Link
+                          to={`/profile/setting-profile/${profileId}`}
+                          className="btn btn-sm d-flex align-items-center gap-2"
+                          style={{
+                            backgroundColor: 'white',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            padding: '8px 16px',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: '#374151',
+                            whiteSpace: 'nowrap',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                            textDecoration: 'none',
+                            width: '120px',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          <i className="feather icon-feather-settings" style={{ fontSize: '16px' }}></i>
+                          <span>프로필 설정</span>
+                        </Link>
+
+                        {/* 미리보기 */}
+                        <Link
+                          to={
+                            profileNickname
+                              ? `/${profileNickname}/preview`
+                              : `/profile/preview/${profileId}`
+                          }
+                          className="btn btn-sm d-flex align-items-center gap-2"
+                          style={{
+                            backgroundColor: 'white',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            padding: '8px 16px',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: '#374151',
+                            whiteSpace: 'nowrap',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                            textDecoration: 'none',
+                            width: '120px',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          <i className="feather icon-feather-eye" style={{ fontSize: '16px' }}></i>
+                          <span>미리보기</span>
+                        </Link>
+                      </>
+                    )}
+
+                    {/* View 모드 - 편집하기 버튼 (owner/editor) */}
+                    {pageMode === 'view' && (isOwner || isEditor) && (
+                      <Link
+                        to={`/profile/edit/${profileId}`}
                         className="btn btn-sm d-flex align-items-center gap-2"
                         style={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#374151',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                        textDecoration: 'none',
-                        width: '120px',
-                        justifyContent: 'center'
+                          backgroundColor: 'white',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          padding: '8px 16px',
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          color: '#374151',
+                          whiteSpace: 'nowrap',
+                          boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                          textDecoration: 'none',
+                          width: '120px',
+                          justifyContent: 'center'
                         }}
-                    >
-                        <i className="feather icon-feather-eye" style={{ fontSize: '16px' }}></i>
-                        <span>미리보기</span>
-                    </Link>
-                    </>
-                )}
+                      >
+                        <i className="feather icon-feather-edit align-middle" style={{ fontSize: '16px' }}></i>
+                        <span>편집하기</span>
+                      </Link>
+                    )}
 
-                {/* View 모드 - 편집하기 버튼 (owner/editor) */}
-                {pageMode === 'view' && (isOwner || isEditor) && (
-                    <Link
-                    to={`/profile/edit/${profileId}`}
-                    className="btn btn-sm d-flex align-items-center gap-2"
-                    style={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#374151',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                        textDecoration: 'none',
-                        width: '120px',
-                        justifyContent: 'center'
-                    }}
-                    >
-                    <i className="feather icon-feather-edit align-middle" style={{ fontSize: '16px' }}></i>
-                    <span>편집하기</span>
-                    </Link>
-                )}
-
-                {/* View 모드 - 북마크 버튼 */}
-                {pageMode === 'view' && (
-                    <button
-                    onClick={onBookmarkToggle}
-                    className="btn btn-sm d-flex align-items-center gap-2"
-                    style={{
-                        backgroundColor: 'white',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#374151',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                        width: '120px',
-                        justifyContent: 'center'
-                    }}
-                    >
-                    <i
-                        className={`fa-${isBookmarks ? 'solid' : 'regular'} fa-bookmark align-middle`}
-                        style={{ fontSize: '16px', color: isBookmarks ? '#3b82f6' : '#374151' }}
-                    ></i>
-                    <span>북마크</span>
-                    </button>
-                )}
+                    {/* View 모드 - 북마크 버튼 */}
+                    {pageMode === 'view' && (
+                      <button
+                        onClick={onBookmarkToggle}
+                        className="btn btn-sm d-flex align-items-center gap-2"
+                        style={{
+                          backgroundColor: 'white',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          padding: '8px 16px',
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          color: '#374151',
+                          whiteSpace: 'nowrap',
+                          boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                          width: '120px',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <i
+                          className={`fa-${isBookmarks ? 'solid' : 'regular'} fa-bookmark align-middle`}
+                          style={{ fontSize: '16px', color: isBookmarks ? '#3b82f6' : '#374151' }}
+                        ></i>
+                        <span>북마크</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
-            </div>
-            )}
+              )}
             </div>
           </div>
         </div>
