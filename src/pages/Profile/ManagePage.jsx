@@ -242,7 +242,7 @@ const ManagePage = () => {
               </button>
             </div>
             {/* 이메일로 초대하기 섹션 */}
-            <div className="manage-section manage-section-primary">
+            <div className="manage-section manage-section-primary manage-section-invite">
               <div className="manage-section-header-with-guide">
                 <div className="manage-section-header">
                   <div className="manage-section-icon">
@@ -277,7 +277,7 @@ const ManagePage = () => {
             </div>
 
             {/* 초대된 계정 섹션 */}
-            <div className="manage-section manage-section-secondary">
+            <div className="manage-section manage-section-secondary manage-section-users">
               <div className="manage-section-header">
                 <div className="manage-section-icon">
                   <FaUserFriends />
@@ -415,7 +415,7 @@ const ManagePage = () => {
             </div>
 
             {/* 일반 액세스 섹션 */}
-            <div className="manage-section manage-section-tertiary">
+            <div className="manage-section manage-section-tertiary manage-section-access">
               <div className="manage-section-header">
                 <div className="manage-section-icon">
                   <FaUserShield />
@@ -446,7 +446,7 @@ const ManagePage = () => {
             </div>
 
             {/* 비공개 계정 보기 요청 섹션 */}
-            <div className="manage-section manage-section-quaternary">
+            <div className="manage-section manage-section-quaternary manage-section-requests">
               <div className="manage-section-header">
                 <div className="manage-section-icon">
                   <FaUserLock />
