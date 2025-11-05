@@ -217,6 +217,10 @@ const ProfileHeader = ({
                           <i className="feather icon-feather-users" style={{ fontSize: '16px' }}></i>
                           <span>초대하기</span>
                         </Link>
+                      </>
+                    )}
+                    {pageMode === 'edit' && (isOwner || isEditor) && (
+                      <>
 
                         {/* 프로필 설정 */}
                         <Link
