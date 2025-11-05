@@ -6,7 +6,7 @@ import Select from 'react-select';
 import { FaEye, FaEyeSlash, FaLink, FaShareAlt, FaUserFriends, FaUserLock, FaEnvelope, FaUserShield, FaArrowLeft, FaQuestionCircle } from 'react-icons/fa';
 
 import everlinkTop from '@/assets/images/evergil_contact.jpeg';
-import UserGuideModal from '@/components/profile/ManagePage/UserGuideModal';
+import UserGuideModal from '@/components/Profile/ManagePage/UserGuideModal';
 
 import useProfilePermission from '@/hooks/useProfilePermission';
 import {
