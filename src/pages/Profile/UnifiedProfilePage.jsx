@@ -154,6 +154,7 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
   const [isBackgroundDeleteConfirmOpen, setIsBackgroundDeleteConfirmOpen] = useState(false);
   const [deleteImageId, setDeleteImageId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [originalFamily, setOriginalFamily] = useState([]);
 
   const lgRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -345,7 +346,9 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
           try {
             res = await getFamilyProfile(profileId);
             if (res.status === 200) {
-              setFamily(res.data.data.items);
+              const familyData = res.data.data.items; // 🔥 이 줄 추가
+              setFamily(familyData);
+              setOriginalFamily(JSON.parse(JSON.stringify(familyData)));
               setFamilyDataLoaded(true);
             }
           } finally {
@@ -385,10 +388,12 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
       hasMountedRef.current = true;
       return;
     }
-    if (profileId && !isLoadingFamilyData && familyDataLoaded) {
+    // 🔥 편집 중이거나 추가 중일 때는 자동 저장 안 함
+    if (profileId && !isLoadingFamilyData && familyDataLoaded && editingFamilyId === null && !isAddingNewFamily) {
       debouncedSaveFamily(profileId, family);
     }
-  }, [family, profileId, isLoadingFamilyData, familyDataLoaded]);
+  }, [family, profileId, isLoadingFamilyData, familyDataLoaded, editingFamilyId, isAddingNewFamily]);
+
 
   const fetchImages = async (page = 1, append = false) => {
     try {
@@ -698,6 +703,7 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
       profileImage: '',
       id: `temp-${Date.now()}`
     };
+    setOriginalFamily(JSON.parse(JSON.stringify(family)));
     setFamily([newItem, ...family]);
     setEditingFamilyId(0);
     setIsAddingNewFamily(true);
@@ -706,20 +712,38 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
 
   const handleCancelAddFamily = () => {
     if (isAddingNewFamily) {
-      setFamily(family.slice(1));
+      // 새로 추가 중이던 항목 제거 + 원본 복원
+      setFamily(JSON.parse(JSON.stringify(originalFamily)));
+    } else if (editingFamilyId !== null) {
+      // 편집 중이던 항목 원본으로 복원
+      setFamily(JSON.parse(JSON.stringify(originalFamily)));
     }
     setIsAddingNewFamily(false);
     setEditingFamilyId(null);
   };
 
-  const handleSaveFamily = (index) => {
+  const handleSaveFamily = async (index) => {
     const member = family[index];
     if (!member.displayName.trim() || !member.familyTitle.trim()) {
       alert('이름과 관계를 모두 입력해주세요.');
       return;
     }
-    setEditingFamilyId(null);
-    setIsAddingNewFamily(false);
+    
+    try {
+      // 🔥 저장 버튼 클릭 시 즉시 DB에 저장
+      const validFamily = family.filter(
+        (item) => item.familyTitle.trim() !== '' && item.displayName.trim() !== ''
+      );
+      await putFamilyProfile(profileId, validFamily);
+      
+      // 저장 성공 후 원본 업데이트
+      setOriginalFamily(JSON.parse(JSON.stringify(family)));
+      setEditingFamilyId(null);
+      setIsAddingNewFamily(false);
+    } catch (error) {
+      console.error('가족 관계 저장 실패:', error);
+      alert('저장 중 오류가 발생했습니다.');
+    }
   };
 
   const onDragEnd = (result) => {
@@ -751,22 +775,37 @@ const UnifiedProfilePage = ({ mode = 'auto' }) => {
     setFamily(updatedItems);
   };
 
-  const handleFailyDelete = (index) => {
-    if (isAddingNewFamily && index !== 0) {
-      setFamily(family.slice(1));
+  const handleFailyDelete = async (index) => {
+    const updatedItems = family.filter((_, i) => i !== index);
+    setFamily(updatedItems);
+    
+    try {
+      // 🔥 삭제 후 즉시 DB에 저장
+      const validFamily = updatedItems.filter(
+        (item) => item.familyTitle.trim() !== '' && item.displayName.trim() !== ''
+      );
+      await putFamilyProfile(profileId, validFamily);
+      
+      // 저장 성공 후 원본 업데이트
+      setOriginalFamily(JSON.parse(JSON.stringify(updatedItems)));
+    } catch (error) {
+      console.error('가족 관계 삭제 실패:', error);
+      alert('삭제 중 오류가 발생했습니다.');
+    }
+    
+    if (isAddingNewFamily && index === 0) {
       setIsAddingNewFamily(false);
       setEditingFamilyId(null);
-      const updatedItems = family.slice(1).filter((_, i) => i !== index - 1);
-      setFamily(updatedItems);
-    } else {
-      const updatedItems = family.filter((_, i) => i !== index);
-      setFamily(updatedItems);
     }
   };
   
   const handleEditFamily = (index) => {
     if (isAddingNewFamily) {
-      setFamily(family.slice(1));
+      // 추가 중이던 항목 취소
+      setFamily(JSON.parse(JSON.stringify(originalFamily)));
+    } else {
+      // 🔥 추가: 편집 시작 전 현재 상태 백업
+      setOriginalFamily(JSON.parse(JSON.stringify(family)));
     }
     setIsAddingNewFamily(false);
     setEditingFamilyId(index);
