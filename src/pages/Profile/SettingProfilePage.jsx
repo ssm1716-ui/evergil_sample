@@ -13,8 +13,6 @@ import { allowOnlyAlphaNumeric } from '@/utils/utils';
 
 import checkCircle from '@/assets/images/check-circle-solid.png';
 
-// custom.css에 스타일 추가 필요
-
 const SettingProfilePage = () => {
   const location = useLocation();
   const { profileId: urlProfileId } = useParams();
@@ -42,8 +40,8 @@ const SettingProfilePage = () => {
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 120 }, (_, i) => currentYear - i);
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')); // '01', '02', ... '12'
+  const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')); // '01', '02', ... '31'
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -55,18 +53,45 @@ const SettingProfilePage = () => {
             navigate('/error-profile-inactive');
             return;
           }
-          setFormProfile(data.profile);
+          
+          // 🔥 날짜 형식 정규화 - DB에서 가져온 데이터의 날짜 형식 확인 및 변환
+          const profile = { ...data.profile };
+          
+          // birthday 정규화
+          if (profile.birthday) {
+            const parts = profile.birthday.split('-');
+            if (parts.length === 3) {
+              const year = parts[0];
+              const month = parts[1].padStart(2, '0');
+              const day = parts[2].padStart(2, '0');
+              profile.birthday = `${year}-${month}-${day}`;
+            }
+          }
+          
+          // deathDate 정규화
+          if (profile.deathDate) {
+            const parts = profile.deathDate.split('-');
+            if (parts.length === 3) {
+              const year = parts[0];
+              const month = parts[1].padStart(2, '0');
+              const day = parts[2].padStart(2, '0');
+              profile.deathDate = `${year}-${month}-${day}`;
+            }
+          }
+          
+          setFormProfile(profile);
         }
       } catch (error) {
         console.error(error);
       }
     };
+    
     if (profileId) {
       fetchProfile();
       return;
     }
     setFormProfile({ ...formProfile, qrKey: location.state?.qrKey });
-  }, []);
+  }, [profileId]);
 
   const handleProfileType = (type) => {
     setFormProfile({ ...formProfile, memorialType: type });
@@ -140,6 +165,14 @@ const SettingProfilePage = () => {
     }
   };
 
+  // 🔥 날짜 파싱 헬퍼 함수 - 안전하게 날짜 값을 가져옴
+  const getDatePart = (dateString, partIndex, defaultValue = '') => {
+    if (!dateString) return defaultValue;
+    const parts = dateString.split('-');
+    if (parts.length !== 3) return defaultValue;
+    return parts[partIndex] || defaultValue;
+  };
+
   return (
     <>
       <div className="container" style={{ maxWidth: '720px', margin: '0 auto', padding: '120px 20px' }}>
@@ -207,19 +240,20 @@ const SettingProfilePage = () => {
               )}
             </div>
 
-            {/* 생년월일 */}
+            {/* 🔥 생년월일 - 수정된 버전 */}
             <div className="mb-4">
               <label className="modern-label">생년월일 <span className="required">*</span></label>
               <div className="date-grid">
                 <select 
                   name="birthYear" 
                   className="modern-select"
-                  value={formProfile.birthday ? formProfile.birthday.split('-')[0] : ''}
+                  value={getDatePart(formProfile.birthday, 0)}
                   onChange={(e) => {
                     const year = e.target.value;
-                    const month = formProfile.birthday ? formProfile.birthday.split('-')[1] : '01';
-                    const day = formProfile.birthday ? formProfile.birthday.split('-')[2] : '01';
-                    handleChange({ target: { name: 'birthday', value: year ? `${year}-${month}-${day}` : '' }});
+                    const month = getDatePart(formProfile.birthday, 1, '01');
+                    const day = getDatePart(formProfile.birthday, 2, '01');
+                    const newDate = year ? `${year}-${month}-${day}` : '';
+                    handleChange({ target: { name: 'birthday', value: newDate }});
                   }}
                 >
                   <option value="">연도</option>
@@ -230,33 +264,35 @@ const SettingProfilePage = () => {
                 <select 
                   name="birthMonth" 
                   className="modern-select"
-                  value={formProfile.birthday ? formProfile.birthday.split('-')[1] : ''}
+                  value={getDatePart(formProfile.birthday, 1)}
                   onChange={(e) => {
-                    const year = formProfile.birthday ? formProfile.birthday.split('-')[0] : currentYear;
-                    const month = e.target.value.padStart(2, '0');
-                    const day = formProfile.birthday ? formProfile.birthday.split('-')[2] : '01';
-                    handleChange({ target: { name: 'birthday', value: month ? `${year}-${month}-${day}` : '' }});
+                    const year = getDatePart(formProfile.birthday, 0, String(currentYear));
+                    const month = e.target.value;
+                    const day = getDatePart(formProfile.birthday, 2, '01');
+                    const newDate = month ? `${year}-${month}-${day}` : '';
+                    handleChange({ target: { name: 'birthday', value: newDate }});
                   }}
                 >
                   <option value="">월</option>
                   {months.map(month => (
-                    <option key={month} value={month}>{month}월</option>
+                    <option key={month} value={month}>{parseInt(month)}월</option>
                   ))}
                 </select>
                 <select 
                   name="birthDay" 
                   className="modern-select"
-                  value={formProfile.birthday ? formProfile.birthday.split('-')[2] : ''}
+                  value={getDatePart(formProfile.birthday, 2)}
                   onChange={(e) => {
-                    const year = formProfile.birthday ? formProfile.birthday.split('-')[0] : currentYear;
-                    const month = formProfile.birthday ? formProfile.birthday.split('-')[1] : '01';
-                    const day = e.target.value.padStart(2, '0');
-                    handleChange({ target: { name: 'birthday', value: day ? `${year}-${month}-${day}` : '' }});
+                    const year = getDatePart(formProfile.birthday, 0, String(currentYear));
+                    const month = getDatePart(formProfile.birthday, 1, '01');
+                    const day = e.target.value;
+                    const newDate = day ? `${year}-${month}-${day}` : '';
+                    handleChange({ target: { name: 'birthday', value: newDate }});
                   }}
                 >
                   <option value="">일</option>
                   {days.map(day => (
-                    <option key={day} value={day}>{day}일</option>
+                    <option key={day} value={day}>{parseInt(day)}일</option>
                   ))}
                 </select>
               </div>
@@ -265,19 +301,20 @@ const SettingProfilePage = () => {
               )}
             </div>
 
-            {/* 기일 */}
+            {/* 🔥 기일 - 수정된 버전 */}
             <div className="mb-4">
               <label className="modern-label">기일 <span className="required">*</span></label>
               <div className="date-grid">
                 <select 
                   name="deathYear" 
                   className="modern-select"
-                  value={formProfile.deathDate ? formProfile.deathDate.split('-')[0] : ''}
+                  value={getDatePart(formProfile.deathDate, 0)}
                   onChange={(e) => {
                     const year = e.target.value;
-                    const month = formProfile.deathDate ? formProfile.deathDate.split('-')[1] : '01';
-                    const day = formProfile.deathDate ? formProfile.deathDate.split('-')[2] : '01';
-                    handleChange({ target: { name: 'deathDate', value: year ? `${year}-${month}-${day}` : '' }});
+                    const month = getDatePart(formProfile.deathDate, 1, '01');
+                    const day = getDatePart(formProfile.deathDate, 2, '01');
+                    const newDate = year ? `${year}-${month}-${day}` : '';
+                    handleChange({ target: { name: 'deathDate', value: newDate }});
                   }}
                 >
                   <option value="">연도</option>
@@ -288,33 +325,35 @@ const SettingProfilePage = () => {
                 <select 
                   name="deathMonth" 
                   className="modern-select"
-                  value={formProfile.deathDate ? formProfile.deathDate.split('-')[1] : ''}
+                  value={getDatePart(formProfile.deathDate, 1)}
                   onChange={(e) => {
-                    const year = formProfile.deathDate ? formProfile.deathDate.split('-')[0] : currentYear;
-                    const month = e.target.value.padStart(2, '0');
-                    const day = formProfile.deathDate ? formProfile.deathDate.split('-')[2] : '01';
-                    handleChange({ target: { name: 'deathDate', value: month ? `${year}-${month}-${day}` : '' }});
+                    const year = getDatePart(formProfile.deathDate, 0, String(currentYear));
+                    const month = e.target.value;
+                    const day = getDatePart(formProfile.deathDate, 2, '01');
+                    const newDate = month ? `${year}-${month}-${day}` : '';
+                    handleChange({ target: { name: 'deathDate', value: newDate }});
                   }}
                 >
                   <option value="">월</option>
                   {months.map(month => (
-                    <option key={month} value={month}>{month}월</option>
+                    <option key={month} value={month}>{parseInt(month)}월</option>
                   ))}
                 </select>
                 <select 
                   name="deathDay" 
                   className="modern-select"
-                  value={formProfile.deathDate ? formProfile.deathDate.split('-')[2] : ''}
+                  value={getDatePart(formProfile.deathDate, 2)}
                   onChange={(e) => {
-                    const year = formProfile.deathDate ? formProfile.deathDate.split('-')[0] : currentYear;
-                    const month = formProfile.deathDate ? formProfile.deathDate.split('-')[1] : '01';
-                    const day = e.target.value.padStart(2, '0');
-                    handleChange({ target: { name: 'deathDate', value: day ? `${year}-${month}-${day}` : '' }});
+                    const year = getDatePart(formProfile.deathDate, 0, String(currentYear));
+                    const month = getDatePart(formProfile.deathDate, 1, '01');
+                    const day = e.target.value;
+                    const newDate = day ? `${year}-${month}-${day}` : '';
+                    handleChange({ target: { name: 'deathDate', value: newDate }});
                   }}
                 >
                   <option value="">일</option>
                   {days.map(day => (
-                    <option key={day} value={day}>{day}일</option>
+                    <option key={day} value={day}>{parseInt(day)}일</option>
                   ))}
                 </select>
               </div>
